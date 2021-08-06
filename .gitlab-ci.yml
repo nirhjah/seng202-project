@@ -7,5 +7,5 @@ generate_artifacts:
    script:
       - mvn -B clean package
    artifacts:
-   paths:
-      - target/CAMS*.jar
+      paths:
+         - target/CAMS*.jar
