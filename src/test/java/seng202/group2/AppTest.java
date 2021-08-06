@@ -32,7 +32,9 @@ public class AppTest
      * Rigourous Test :-)
      */
     public void testApp()
-    {
-        assertTrue( true );
+    {	
+    	App test = new App();
+        
+        assertTrue(test.mosesTestFunction() == 1);
     }
 }

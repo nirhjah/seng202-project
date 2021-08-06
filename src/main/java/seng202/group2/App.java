@@ -10,4 +10,8 @@ public class App
     {
         System.out.println( "Hello World!" );
     }
+
+    int mosesTestFunction() {
+        return 1;
+    }
 }
