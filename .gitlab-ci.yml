@@ -8,4 +8,4 @@ generate_artifacts:
       - mvn -B clean package
    artifacts:
    paths:
-      - target/CAMS*.jar
+      - CAMS/target/CAMS*.jar
