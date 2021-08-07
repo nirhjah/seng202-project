@@ -14,4 +14,9 @@ public class App
     int mosesTestFunction() {
         return 1;
     }
+    
+    
+    int nirhjahTestFunction() {
+    	return 2;
+    }
 }

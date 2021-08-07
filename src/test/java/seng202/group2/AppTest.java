@@ -36,5 +36,8 @@ public class AppTest
     	App test = new App();
         
         assertTrue(test.mosesTestFunction() == 1);
+        assertTrue(test.nirhjahTestFunction() == 2);
     }
+    
+    
 }
