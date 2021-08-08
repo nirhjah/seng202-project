@@ -19,4 +19,8 @@ public class App
     int nirhjahTestFunction() {
     	return 2;
     }
+    
+    int samTestFunction() {
+    	return 3;
+    }
 }
