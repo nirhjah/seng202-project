@@ -23,4 +23,8 @@ public class App
     int samTestFunction() {
     	return 3;
     }
+    
+    int yiyangTestFunction() {
+    	return 4;
+    }
 }

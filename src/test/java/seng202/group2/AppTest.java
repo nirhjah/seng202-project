@@ -38,6 +38,7 @@ public class AppTest
         assertTrue(test.mosesTestFunction() == 1);
         assertTrue(test.nirhjahTestFunction() == 2);
         assertTrue(test.samTestFunction() == 3);
+        assertTrue(test.yiyangTestFunction() == 4);
     }
     
     
