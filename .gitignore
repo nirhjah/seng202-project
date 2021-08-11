@@ -4,6 +4,7 @@
 .settings/
  
 # Intellij
+CAMS/
 .idea/
 *.iml
 *.iws
