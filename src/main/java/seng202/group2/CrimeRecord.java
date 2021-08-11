@@ -283,7 +283,7 @@ public class CrimeRecord {
 	
 	/**
 	 * Sets the longitudinal location where the crime incident occurred.
-	 * @param latitude The longitudinal location where the crime incident occurred.
+	 * @param longitude The longitudinal location where the crime incident occurred.
 	 */
 	public void setLongitude(float longitude) {
 		this.longitude = longitude;
