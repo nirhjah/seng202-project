@@ -73,7 +73,6 @@ public enum DataCategory {
 	/**
 	 * Illinois Uniform Crime Reporting code.
 	 * Four digit code used to classify the criminal incident
-	 * @see  https://catalog.data.gov/dataset/chicago-police-department-illinois-uniform-crime-reporting-iucr-codes
 	 */
 	IUCR {
 		public void setCategoryValue(CrimeRecord record, Object data) {
@@ -171,7 +170,6 @@ public enum DataCategory {
 	/**
 	 * FBI crime code assigned to the crime incident.
 	 * Used to categorize crime incidents by the type of crime that occurred. 
-	 * @see https://ucr.fbi.gov/nibrs/2011/resources/nibrs-offense-codes/view
 	 */
 	FBI_CODE {
 		public void setCategoryValue(CrimeRecord record, Object data) {
