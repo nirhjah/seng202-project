@@ -1,86 +1,115 @@
 package seng202.group2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+/**
+ * CrimeData class is the main connector and manager of the core CrimeRecords.
+ *
+ * Any changes (Aside from update, that can be managed directly using CrimeRecord setters)to the core CrimeRecords should be done through here.
+ * ActiveData is a subset of crimeRecords stored here.
+ *
+ * @author Moses Wescombe, Sam Clark
+ */
 public class CrimeData {
 
-	/**
-	 * incremented counter used to give each instance of crimeRecord a unique identifier
-	 */
-	private int idCounter;
+	//Variables:
+
+	/** Incremented counter used to give each instance of crimeRecord a unique identifier */
+	private int idCounter = 0;
+	
+	/** A HashMap storing each CrimeRecord with its 'ID' */
+	private final HashMap<Integer, CrimeRecord> crimeRecords = new HashMap<Integer, CrimeRecord>();
 	
 	/**
-	 * An arraylist storing each crime record
-	 */
-	private ArrayList<CrimeRecord> crimeRecords;
-	
-	/**
-	 * The active data instance used by this crimeData instance for filtering crime data
-	 * 
-	 * TODO implement ActiveData class to avoid this error
+	 * The ActiveData instance used by this crimeData instance for filtering crime data
+	 * @see ActiveData
 	 */
 	private ActiveData activeData;
-	
-	/**
-	 * Increments the idCounter attribute so that each instance of CrimeRecord has a unique ID
-	 * 
-	 * TODO ask why this method returns an int on the class diagram
-	 */
-	public void incrementCounter() {
+
+
+	//Functions:
+
+	/** Increments the idCounter attribute so that each instance of CrimeRecord has a unique ID */
+	private void incrementCounter() {
 		idCounter++;
 	}
 	
 	/**
-	 * Adds an instance of CrimeRecord to the crimeRecords arraylist to store.
+	 * Adds an instance of CrimeRecord to the crimeRecords HashMap and increments counter
 	 * 
 	 * @param crimeRecord - an instance of crimeRecord to add to the crime data.
 	 */
 	public void addRecord(CrimeRecord crimeRecord) {
-		crimeRecords.add(crimeRecord);
+		crimeRecord.setID(idCounter); //Set The CrimeRecord's ID variable
+		crimeRecords.put(idCounter, crimeRecord);
+		incrementCounter();
+	}
+
+	/**
+	 * Delete record form CrimeData if it exits.
+	 *
+	 * @param id ID of the CrimeRecord
+	 * @return bool, true if CrimeRecords was removed, else false
+	 */
+	public boolean deleteRecord(int id) {
+		if (crimeRecords.containsKey(id)) {
+			crimeRecords.remove(id);
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	/**
-	 * TODO find out how this is to be implemented, should crimeRecords arraylist be a hashmap or do deleted files not get removed from the arraylist etc
-	 * TODO After finding out how this works I need to add the Javadoc for it
-	 * 
+	 * Using the given ID getCrimeRecord returns the matched CrimeRecord using the private crimeRecords HashMap.
+	 * If there is no CrimeRecord with the given ID, return null
+	 *
 	 * @param id - The id of the crime record requested.
-	 * @return the crime record requested by giving the method the crime records id.
+	 * @return CrimeRecord - The requested CrimerRecord with ID
 	 */
 	public CrimeRecord getCrimeRecord(int id) {
-		
+		if (crimeRecords.containsKey(id)) {
+			return crimeRecords.get(id);
+		} else {
+			return null;
+		}
 	}
 	
 	/**
 	 * Takes an ArrayList of ids and adds their corresponding crime records to an array list and returns it.
-	 * TODO note to self (and Moses) this requires the getCrimeRecord method to work.
-	 * @see getCrimeRecord 
+	 * If there is no CrimeRecord with the given ID, null will be added to the array.
+	 *
+	 * @see CrimeRecord getCrimeRecord(int id)
 	 * 
 	 * @param ids - an Arraylist of the ids of crimes for with crime records should be returned.
-	 * @return an arraylist of each of the crime records requested in the arraylist of crime ids.
+	 * @return an ArrayList of each of the crime records requested in the ArrayList of crime ids.
 	 */
 	public ArrayList<CrimeRecord> getCrimeRecords(ArrayList<Integer> ids) {
 		ArrayList<CrimeRecord> records = new ArrayList<CrimeRecord>();
 		for (int id : ids)
 		{
-			records.add(this.getCrimeRecord(id));
+			if (crimeRecords.containsKey(id)) {
+				records.add(getCrimeRecord(id));
+			} else {
+				records.add(null);
+			}
 		}
 		return records;
 	}
-	
+
 	/**
-	 * TODO this method has no int param in the class diagram, check how deletion works for this and getCrimeRecord methods
-	 * @param id
+	 * Get CrimeRecord size
+	 * @return Integer -- Number of stored CrimeRecords
 	 */
-	public void deleteRecord(int id) {
-		
+	public int getCrimeRecordCount() {
+		return crimeRecords.size();
 	}
-	
-	/**
-	 * TODO Again I have no idea how this all works. Thanks Moses.
-	 * TODO this method also requires the DataCategory enumeration to work.
-	 * @return
-	 */
-	public ArrayList<DataCategory> getCategories() {
-		
+
+
+	//Getters/Setters:
+
+	public int getIdCounter() {
+		return idCounter;
 	}
 }
