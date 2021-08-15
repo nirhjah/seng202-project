@@ -108,7 +108,10 @@ public class CrimeData {
 
 
 	//Getters/Setters:
-
+	/** 
+	 * Gets the current value of idCounter
+	 * @return Integer -- the current idCounter value
+	 */
 	public int getIdCounter() {
 		return idCounter;
 	}
