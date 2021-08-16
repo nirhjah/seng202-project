@@ -47,7 +47,7 @@
           <transformers>
             <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
               <manifestEntries>
-                <Main-Class>seng202.group2.App</Main-Class>
+                <Main-Class>seng202.group2.ApplicationEnvironment</Main-Class>
                 <X-Compile-Source-JDK>14</X-Compile-Source-JDK>
                 <X-Compile-Target-JDK>14</X-Compile-Target-JDK>
               </manifestEntries>
