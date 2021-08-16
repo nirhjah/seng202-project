@@ -219,4 +219,50 @@ public enum DataCategory {
 	 * @return The value of the CrimeRecord's attribute.
 	 */
 	public abstract Object getCategoryValue(CrimeRecord record);
+	
+	/**
+	 * Gets the DataCategory from a string representing a category.
+	 * Throws UnsupportedCategoryException if the string is not known to represent any category.
+	 * 
+	 * TODO: Add other strings which may identify a DataCategory
+	 * TODO: Improve efficiency by not checking every string against every valid string
+	 * 
+	 * @param categoryString The string which may represent a DataCategory
+	 * @return The DataCategroy represented by the category string
+	 * @throws UnsupportedCategoryException
+	 */
+	public static DataCategory getCategoryFromString(String categoryString) throws UnsupportedCategoryException {
+		switch (categoryString.replaceAll("\\s", "")) {
+			case "CASE#":
+				return CASE_NUM;
+			case "DATEOFOCCURRENCE":
+				return DATE;
+			case "BLOCK":
+				return BLOCK;
+			case "IUCR":
+				return IUCR;
+			case "PRIMARYDESCRIPTION":
+				return PRIMARY_DESCRIPTION;
+			case "SECONDARYDESCRIPTION":
+				return SECONDARY_DESCRIPTION;
+			case "LOCATIONDESCRIPTION":
+				return LOCATION_DESCRIPTION;
+			case "ARREST":
+				return ARREST;
+			case "DOMESTIC":
+				return DOMESTIC;
+			case "BEAT":
+				return BEAT;
+			case "WARD":
+				return WARD;
+			case "FBICD":
+				return FBI_CODE;
+			case "LATITUDE":
+				return LATITUDE;
+			case "LONGITUDE":
+				return LONGITUDE;
+			default:
+				throw new UnsupportedCategoryException(categoryString);
+		}
+	}
 }
