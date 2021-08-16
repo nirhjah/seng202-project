@@ -82,7 +82,7 @@ public class CrimeData {
 	 * @return All crime records currently stored in this object
 	 */
 	public ArrayList<CrimeRecord> getCrimeRecords() {
-		return (ArrayList<CrimeRecord>) crimeRecords.values();
+		return new ArrayList<CrimeRecord>(crimeRecords.values());
 	}
 	
 	/**
