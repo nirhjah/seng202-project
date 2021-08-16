@@ -1,6 +1,7 @@
 package seng202.group2;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * DataCategory enumerates the different categories of data stored in the attributes of CrimeRecord.
@@ -37,7 +38,12 @@ public enum DataCategory {
 	/** The case number associated with the crime record in the police database */
 	CASE_NUM {
 		public void setCategoryValue(CrimeRecord record, Object data) {
-			record.setCaseNum((String) data);
+			if (data == null)
+				record.setCaseNum(null);
+			else if (data instanceof String)
+				record.setCaseNum((String) data);
+			else
+				throw new IllegalArgumentException();
 		}
 		
 		public String getCategoryValue(CrimeRecord record) {
@@ -48,7 +54,12 @@ public enum DataCategory {
 	/** The date and time at which the crime incident occurred */
 	DATE {
 		public void setCategoryValue(CrimeRecord record, Object data) {
-			record.setDate((Calendar) data);
+			if (data == null)
+				record.setDate(null);
+			if (data instanceof Calendar)
+				record.setDate((Calendar) data);
+			else
+				throw new IllegalArgumentException();
 		}
 		
 		public Calendar getCategoryValue(CrimeRecord record) {
@@ -62,7 +73,12 @@ public enum DataCategory {
 	 */
 	BLOCK {
 		public void setCategoryValue(CrimeRecord record, Object data) {
-			record.setBlock((String) data);
+			if (data == null)
+				record.setBlock(null);
+			else if (data instanceof String)
+				record.setBlock((String) data);
+			else
+				throw new IllegalArgumentException();
 		}
 		
 		public String getCategoryValue(CrimeRecord record) {
@@ -76,7 +92,12 @@ public enum DataCategory {
 	 */
 	IUCR {
 		public void setCategoryValue(CrimeRecord record, Object data) {
-			record.setIucr((String) data);
+			if (data == null)
+				record.setIucr(null);
+			else if (data instanceof String)
+				record.setIucr((String) data);
+			else
+				throw new IllegalArgumentException();
 		}
 		
 		public String getCategoryValue(CrimeRecord record) {
@@ -87,7 +108,12 @@ public enum DataCategory {
 	/** A textual description of the type of the crime incident */
 	PRIMARY_DESCRIPTION {
 		public void setCategoryValue(CrimeRecord record, Object data) {
-			record.setPrimaryDescription((String) data);
+			if (data == null)
+				record.setPrimaryDescription(null);
+			else if (data instanceof String)
+				record.setPrimaryDescription((String) data);
+			else
+				throw new IllegalArgumentException();
 		}
 		
 		public String getCategoryValue(CrimeRecord record) {
@@ -101,7 +127,12 @@ public enum DataCategory {
 	 */
 	SECONDARY_DESCRIPTION {
 		public void setCategoryValue(CrimeRecord record, Object data) {
-			record.setSecondaryDescription((String) data);
+			if (data == null)
+				record.setSecondaryDescription(null);
+			else if (data instanceof String)
+				record.setSecondaryDescription((String) data);
+			else
+				throw new IllegalArgumentException();
 		}
 		
 		public String getCategoryValue(CrimeRecord record) {
@@ -112,7 +143,12 @@ public enum DataCategory {
 	/** A textual description of the location where the crime incident occurred */
 	LOCATION_DESCRIPTION {
 		public void setCategoryValue(CrimeRecord record, Object data) {
-			record.setLocationDescription((String) data);
+			if (data == null)
+				record.setLocationDescription(null);
+			else if (data instanceof String)
+				record.setLocationDescription((String) data);
+			else
+				throw new IllegalArgumentException();
 		}
 		
 		public String getCategoryValue(CrimeRecord record) {
@@ -123,7 +159,12 @@ public enum DataCategory {
 	/** True if the crime incident resulted in an arrest being made */
 	ARREST {
 		public void setCategoryValue(CrimeRecord record, Object data) {
-			record.setArrest((Boolean) data);
+			if (data == null)
+				record.setArrest(null);
+			else if (data instanceof Boolean)
+				record.setArrest((Boolean) data);
+			else
+				throw new IllegalArgumentException();
 		}
 		
 		public Boolean getCategoryValue(CrimeRecord record) {
@@ -134,7 +175,12 @@ public enum DataCategory {
 	/** True if the crime incident was classified as domestic */
 	DOMESTIC {
 		public void setCategoryValue(CrimeRecord record, Object data) {
-			record.setDomestic((Boolean) data);
+			if (data == null)
+				record.setDomestic(null);
+			else if (data instanceof Boolean)
+				record.setDomestic((Boolean) data);
+			else
+				throw new IllegalArgumentException();
 		}
 		
 		public Boolean getCategoryValue(CrimeRecord record) {
@@ -148,7 +194,12 @@ public enum DataCategory {
 	 */
 	BEAT {
 		public void setCategoryValue(CrimeRecord record, Object data) {
-			record.setBeat((Short) data);
+			if (data == null)
+				record.setBeat(null);
+			else if (data instanceof Short)
+				record.setBeat((Short) data);
+			else
+				throw new IllegalArgumentException();
 		}
 		
 		public Short getCategoryValue(CrimeRecord record) {
@@ -159,7 +210,12 @@ public enum DataCategory {
 	/** Election precinct where the crime incident occurred. */
 	WARD {
 		public void setCategoryValue(CrimeRecord record, Object data) {
-			record.setWard((Short) data);
+			if (data == null)
+				record.setWard(null);
+			else if (data instanceof Short)
+				record.setWard((Short) data);
+			else
+				throw new IllegalArgumentException();
 		}
 		
 		public Short getCategoryValue(CrimeRecord record) {
@@ -173,7 +229,12 @@ public enum DataCategory {
 	 */
 	FBI_CODE {
 		public void setCategoryValue(CrimeRecord record, Object data) {
-			record.setFbiCode((String) data);
+			if (data == null)
+				record.setFbiCode(null);
+			else if (data instanceof String)
+				record.setFbiCode((String) data);
+			else
+				throw new IllegalArgumentException();
 		}
 		
 		public String getCategoryValue(CrimeRecord record) {
@@ -184,7 +245,12 @@ public enum DataCategory {
 	/** The latitudinal location where the crime incident occurred. */
 	LATITUDE {
 		public void setCategoryValue(CrimeRecord record, Object data) {
-			record.setLatitude((Float) data);
+			if (data == null)
+				record.setLatitude(null);
+			else if (data instanceof Float)
+				record.setLatitude((Float) data);
+			else
+				throw new IllegalArgumentException();
 		}
 		
 		public Float getCategoryValue(CrimeRecord record) {
@@ -195,7 +261,12 @@ public enum DataCategory {
 	/** The longitudinal location where the crime incident occurred. */
 	LONGITUDE {
 		public void setCategoryValue(CrimeRecord record, Object data) {
-			record.setLongitude((Float) data);
+			if (data == null)
+				record.setLongitude(null);
+			else if (data instanceof Float)
+				record.setLongitude((Float) data);
+			else
+				throw new IllegalArgumentException();
 		}
 		
 		public Float getCategoryValue(CrimeRecord record) {
