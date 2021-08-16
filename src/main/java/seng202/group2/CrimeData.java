@@ -77,6 +77,15 @@ public class CrimeData {
 	}
 	
 	/**
+	 * Returns all crime records currently stored in this object.
+	 * 
+	 * @return All crime records currently stored in this object
+	 */
+	public ArrayList<CrimeRecord> getCrimeRecords() {
+		return (ArrayList<CrimeRecord>) crimeRecords.values();
+	}
+	
+	/**
 	 * Takes an ArrayList of ids and adds their corresponding crime records to an array list and returns it.
 	 * If there is no CrimeRecord with the given ID, null will be added to the array.
 	 *
