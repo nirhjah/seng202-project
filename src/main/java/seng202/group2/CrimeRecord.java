@@ -12,6 +12,14 @@ import java.util.Calendar;
  *
  */
 public class CrimeRecord {
+
+	//Variables:
+
+	/** The ID of the crime record as stored in the HashMap in CrimeData
+	 * NOTE: This is not final as the CrimeData must assign it an ID
+	 * TODO Discuss if this is what we are wanting.
+	 */
+	private Integer ID;
 	
 	/** The case number associated with the crime record in the police database */
 	private String caseNum;
@@ -28,7 +36,7 @@ public class CrimeRecord {
 	/**
 	 * Illinois Uniform Crime Reporting code.
 	 * Four digit code used to classify the criminal incident
-	 * @see  https://catalog.data.gov/dataset/chicago-police-department-illinois-uniform-crime-reporting-iucr-codes
+	 * @see <a href="https://catalog.data.gov/dataset/chicago-police-department-illinois-uniform-crime-reporting-iucr-codes">DataSet</a>
 	 */
 	private String iucr;
 	
@@ -62,7 +70,7 @@ public class CrimeRecord {
 	/**
 	 * FBI crime code assigned to the crime incident.
 	 * Used to categorize crime incidents by the type of crime that occurred. 
-	 * @see https://ucr.fbi.gov/nibrs/2011/resources/nibrs-offense-codes/view
+	 * @see <a href="https://ucr.fbi.gov/nibrs/2011/resources/nibrs-offense-codes/view">Offense Codes</a>
 	 */
 	private String fbiCode;
 	
@@ -71,8 +79,18 @@ public class CrimeRecord {
 	
 	/** The longitudinal location where the crime incident occurred. */
 	private float longitude;
-	
-	
+
+
+	//Getters/Setters:
+
+	public Integer getID() {
+		return ID;
+	}
+
+	public void setID(Integer ID) {
+		this.ID = ID;
+	}
+
 	/**
 	 * Sets the caseNum
 	 * @param caseNum The case number associated with the crime record in the police database
