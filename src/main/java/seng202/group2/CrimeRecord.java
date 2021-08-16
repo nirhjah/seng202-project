@@ -1,5 +1,6 @@
 package seng202.group2;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 /**
@@ -88,6 +89,26 @@ public class CrimeRecord {
 	/** The longitudinal location where the crime incident occurred. */
 	private Float longitude;
 
+	
+	public String toString() {
+		String dateString = DateTimeFormatter.ISO_INSTANT.format(date.toInstant());
+		
+		return "Crime record: " + ID + "\n" +
+				"Case Number: " + caseNum + "\n" +
+				"Date: " + dateString + "\n" +
+				"Block: " + block + "\n" +
+				"IUCR: " + iucr + "\n" +
+				"Primary Description: " + primaryDescription + "\n" +
+				"Secondary Description: " + secondaryDescription + "\n" +
+				"Location Description: " + locationDescription + "\n" +
+				"Arrest: " + arrest + "\n" +
+				"Domestic: " + domestic + "\n" +
+				"Beat: " + beat + "\n" +
+				"Ward: " + ward + "\n" +
+				"FBI Code: " + fbiCode + "\n" +
+				"Latitude: " + latitude + "\n" +
+				"Longitude: " + longitude;
+	}
 
 	//Getters/Setters:
 
