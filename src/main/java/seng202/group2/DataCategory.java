@@ -55,6 +55,8 @@ public enum DataCategory {
 		}
 
 		public String parseString(String value) {
+			if (value == "")
+				return null;
 			return value;
 		}
 	},
@@ -79,28 +81,36 @@ public enum DataCategory {
 		}
 
 		public Calendar parseString(String value) {
+			if (value == "")
+				return null;
+			
 			// Parses data from format "dd/mm/yyyy hh:mm:ss PM"
-			String[] splitValue = value.split(" ");
-			
-			// Split date/time into date and time
-			String date = splitValue[0];
-			String time = splitValue[1];
-			String am_pm = splitValue[2];
-			
-			// Get date in day, month, year
-			String[] splitDate = date.split("/");
-			int day = Integer.parseInt(splitDate[1]);
-			int month = Integer.parseInt(splitDate[0]);
-			int year = Integer.parseInt(splitDate[2]);
-			
-			// Get time in hour, minute, second
-			String[] splitTime = time.split(":");
-			int hour = (am_pm == "PM") ?  Integer.parseInt(splitTime[0]) + 12 : Integer.parseInt(splitTime[0]);
-			int minute = Integer.parseInt(splitTime[1]);
-			int second = Integer.parseInt(splitTime[2]);
-			
-			// Return a calender object representing date/time
-			return new GregorianCalendar(year, month, day, hour, minute, second);
+			try {
+				String[] splitValue = value.split(" ");
+				
+				// Split date/time into date, time and am/pm
+				String date = splitValue[0];
+				String time = splitValue[1];
+				String am_pm = splitValue[2];
+				
+				// Get date in day, month, year
+				String[] splitDate = date.split("/");
+				int day = Integer.parseInt(splitDate[1]);
+				int month = Integer.parseInt(splitDate[0]);
+				int year = Integer.parseInt(splitDate[2]);
+				
+				// Get time in hour, minute, second
+				String[] splitTime = time.split(":");
+				int hour = (am_pm == "PM") ?  Integer.parseInt(splitTime[0]) + 12 : Integer.parseInt(splitTime[0]);
+				int minute = Integer.parseInt(splitTime[1]);
+				int second = Integer.parseInt(splitTime[2]);
+				
+				// Return a calender object representing date/time
+				return new GregorianCalendar(year, month, day, hour, minute, second);
+				
+			} catch (Exception error) {
+				throw new IllegalArgumentException(error);
+			}
 		}
 	},
 	
@@ -127,6 +137,8 @@ public enum DataCategory {
 		}
 
 		public String parseString(String value) {
+			if (value == "")
+				return null;
 			return value;
 		}
 	},
@@ -154,6 +166,8 @@ public enum DataCategory {
 		}
 
 		public String parseString(String value) {
+			if (value == "")
+				return null;
 			return value;
 		}
 	},
@@ -178,6 +192,8 @@ public enum DataCategory {
 		}
 
 		public String parseString(String value) {
+			if (value == "")
+				return null;
 			return value;
 		}
 	},
@@ -205,6 +221,8 @@ public enum DataCategory {
 		}
 
 		public String parseString(String value) {
+			if (value == "")
+				return null;
 			return value;
 		}
 	},
@@ -229,6 +247,8 @@ public enum DataCategory {
 		}
 
 		public String parseString(String value) {
+			if (value == "")
+				return null;
 			return value;
 		}
 	},
@@ -253,12 +273,14 @@ public enum DataCategory {
 		}
 
 		public Boolean parseString(String value) {
-			if (value.equals("Y"))
+			if (value == "")
+				return null;
+			else if (value.equals("Y"))
 				return true;
 			else if (value.equals("N"))
 				return false;
 			else
-				return null;
+				throw new IllegalArgumentException();
 		}
 	},
 	
@@ -282,12 +304,14 @@ public enum DataCategory {
 		}
 
 		public Boolean parseString(String value) {
-			if (value.equals("Y"))
+			if (value == "")
+				return null;
+			else if (value.equals("Y"))
 				return true;
 			else if (value.equals("N"))
 				return false;
 			else
-				return null;
+				throw new IllegalArgumentException();
 		}
 	},
 	
@@ -316,7 +340,12 @@ public enum DataCategory {
 		public Short parseString(String value) {
 			if (value == "")
 				return null;
-			return Short.parseShort(value);
+			
+			try {
+				return Short.parseShort(value);
+			} catch (NumberFormatException error) {
+				throw new IllegalArgumentException(error);
+			}
 		}
 	},
 	
@@ -342,7 +371,12 @@ public enum DataCategory {
 		public Short parseString(String value) {
 			if (value == "")
 				return null;
-			return Short.parseShort(value);
+
+			try {
+				return Short.parseShort(value);
+			} catch (NumberFormatException error) {
+				throw new IllegalArgumentException(error);
+			}
 		}
 	},
 	
@@ -369,6 +403,8 @@ public enum DataCategory {
 		}
 
 		public String parseString(String value) {
+			if (value == "")
+				return null;
 			return value;
 		}
 	},
@@ -395,7 +431,12 @@ public enum DataCategory {
 		public Float parseString(String value) {
 			if (value == "")
 				return null;
-			return Float.parseFloat(value);
+
+			try {
+				return Float.parseFloat(value);
+			} catch (NumberFormatException error) {
+				throw new IllegalArgumentException(error);
+			}
 		}
 	},
 	
@@ -421,7 +462,12 @@ public enum DataCategory {
 		public Float parseString(String value) {
 			if (value == "")
 				return null;
-			return Float.parseFloat(value);
+
+			try {
+				return Float.parseFloat(value);
+			} catch (NumberFormatException error) {
+				throw new IllegalArgumentException(error);
+			}
 		}
 	};
 	
