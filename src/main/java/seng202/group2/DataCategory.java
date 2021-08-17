@@ -49,6 +49,10 @@ public enum DataCategory {
 		public String getCategoryValue(CrimeRecord record) {
 			return record.getCaseNum();
 		}
+		
+		public String toString() {
+			return "Case Number";
+		}
 	},
 	
 	/** The date and time at which the crime incident occurred */
@@ -64,6 +68,10 @@ public enum DataCategory {
 		
 		public Calendar getCategoryValue(CrimeRecord record) {
 			return record.getDate();
+		}
+		
+		public String toString() {
+			return "Date";
 		}
 	},
 	
@@ -84,6 +92,10 @@ public enum DataCategory {
 		public String getCategoryValue(CrimeRecord record) {
 			return record.getBlock();
 		}
+		
+		public String toString() {
+			return "Block";
+		}
 	},
 	
 	/**
@@ -103,6 +115,10 @@ public enum DataCategory {
 		public String getCategoryValue(CrimeRecord record) {
 			return record.getIucr();
 		}
+		
+		public String toString() {
+			return "IUCR";
+		}
 	},
 	
 	/** A textual description of the type of the crime incident */
@@ -118,6 +134,10 @@ public enum DataCategory {
 		
 		public String getCategoryValue(CrimeRecord record) {
 			return record.getPrimaryDescription();
+		}
+		
+		public String toString() {
+			return "Primary Description";
 		}
 	},
 	
@@ -138,6 +158,10 @@ public enum DataCategory {
 		public String getCategoryValue(CrimeRecord record) {
 			return record.getSecondaryDescription();
 		}
+		
+		public String toString() {
+			return "Secondary Description";
+		}
 	},
 	
 	/** A textual description of the location where the crime incident occurred */
@@ -153,6 +177,10 @@ public enum DataCategory {
 		
 		public String getCategoryValue(CrimeRecord record) {
 			return record.getLocationDescription();
+		}
+		
+		public String toString() {
+			return "Location Description";
 		}
 	},
 	
@@ -170,6 +198,10 @@ public enum DataCategory {
 		public Boolean getCategoryValue(CrimeRecord record) {
 			return record.getArrest();
 		}
+		
+		public String toString() {
+			return "Arrest";
+		}
 	},
 	
 	/** True if the crime incident was classified as domestic */
@@ -185,6 +217,10 @@ public enum DataCategory {
 		
 		public Boolean getCategoryValue(CrimeRecord record) {
 			return record.getDomestic();
+		}
+		
+		public String toString() {
+			return "Domestic";
 		}
 	},
 	
@@ -205,6 +241,10 @@ public enum DataCategory {
 		public Short getCategoryValue(CrimeRecord record) {
 			return record.getBeat();
 		}
+		
+		public String toString() {
+			return "Beat";
+		}
 	},
 	
 	/** Election precinct where the crime incident occurred. */
@@ -220,6 +260,10 @@ public enum DataCategory {
 		
 		public Short getCategoryValue(CrimeRecord record) {
 			return record.getWard();
+		}
+		
+		public String toString() {
+			return "Ward";
 		}
 	},
 	
@@ -240,6 +284,10 @@ public enum DataCategory {
 		public String getCategoryValue(CrimeRecord record) {
 			return record.getFbiCode();
 		}
+		
+		public String toString() {
+			return "FBI Code";
+		}
 	},
 	
 	/** The latitudinal location where the crime incident occurred. */
@@ -256,6 +304,10 @@ public enum DataCategory {
 		public Float getCategoryValue(CrimeRecord record) {
 			return record.getLatitude();
 		}
+		
+		public String toString() {
+			return "Latitude";
+		}
 	},
 	
 	/** The longitudinal location where the crime incident occurred. */
@@ -271,6 +323,10 @@ public enum DataCategory {
 		
 		public Float getCategoryValue(CrimeRecord record) {
 			return record.getLongitude();
+		}
+		
+		public String toString() {
+			return "Longitude";
 		}
 	};
 	
