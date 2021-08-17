@@ -53,6 +53,10 @@ public enum DataCategory {
 		public String toString() {
 			return "Case Number";
 		}
+
+		public String parseString(String value) {
+			return value;
+		}
 	},
 	
 	/** The date and time at which the crime incident occurred */
@@ -72,6 +76,31 @@ public enum DataCategory {
 		
 		public String toString() {
 			return "Date";
+		}
+
+		public Calendar parseString(String value) {
+			// Parses data from format "dd/mm/yyyy hh:mm:ss PM"
+			String[] splitValue = value.split(" ");
+			
+			// Split date/time into date and time
+			String date = splitValue[0];
+			String time = splitValue[1];
+			String am_pm = splitValue[2];
+			
+			// Get date in day, month, year
+			String[] splitDate = date.split("/");
+			int day = Integer.parseInt(splitDate[1]);
+			int month = Integer.parseInt(splitDate[0]);
+			int year = Integer.parseInt(splitDate[2]);
+			
+			// Get time in hour, minute, second
+			String[] splitTime = time.split(":");
+			int hour = (am_pm == "PM") ?  Integer.parseInt(splitTime[0]) + 12 : Integer.parseInt(splitTime[0]);
+			int minute = Integer.parseInt(splitTime[1]);
+			int second = Integer.parseInt(splitTime[2]);
+			
+			// Return a calender object representing date/time
+			return new GregorianCalendar(year, month, day, hour, minute, second);
 		}
 	},
 	
@@ -96,6 +125,10 @@ public enum DataCategory {
 		public String toString() {
 			return "Block";
 		}
+
+		public String parseString(String value) {
+			return value;
+		}
 	},
 	
 	/**
@@ -119,6 +152,10 @@ public enum DataCategory {
 		public String toString() {
 			return "IUCR";
 		}
+
+		public String parseString(String value) {
+			return value;
+		}
 	},
 	
 	/** A textual description of the type of the crime incident */
@@ -138,6 +175,10 @@ public enum DataCategory {
 		
 		public String toString() {
 			return "Primary Description";
+		}
+
+		public String parseString(String value) {
+			return value;
 		}
 	},
 	
@@ -162,6 +203,10 @@ public enum DataCategory {
 		public String toString() {
 			return "Secondary Description";
 		}
+
+		public String parseString(String value) {
+			return value;
+		}
 	},
 	
 	/** A textual description of the location where the crime incident occurred */
@@ -181,6 +226,10 @@ public enum DataCategory {
 		
 		public String toString() {
 			return "Location Description";
+		}
+
+		public String parseString(String value) {
+			return value;
 		}
 	},
 	
@@ -202,6 +251,15 @@ public enum DataCategory {
 		public String toString() {
 			return "Arrest";
 		}
+
+		public Boolean parseString(String value) {
+			if (value.equals("Y"))
+				return true;
+			else if (value.equals("N"))
+				return false;
+			else
+				return null;
+		}
 	},
 	
 	/** True if the crime incident was classified as domestic */
@@ -221,6 +279,15 @@ public enum DataCategory {
 		
 		public String toString() {
 			return "Domestic";
+		}
+
+		public Boolean parseString(String value) {
+			if (value.equals("Y"))
+				return true;
+			else if (value.equals("N"))
+				return false;
+			else
+				return null;
 		}
 	},
 	
@@ -245,6 +312,12 @@ public enum DataCategory {
 		public String toString() {
 			return "Beat";
 		}
+
+		public Short parseString(String value) {
+			if (value == "")
+				return null;
+			return Short.parseShort(value);
+		}
 	},
 	
 	/** Election precinct where the crime incident occurred. */
@@ -264,6 +337,12 @@ public enum DataCategory {
 		
 		public String toString() {
 			return "Ward";
+		}
+
+		public Short parseString(String value) {
+			if (value == "")
+				return null;
+			return Short.parseShort(value);
 		}
 	},
 	
@@ -288,6 +367,10 @@ public enum DataCategory {
 		public String toString() {
 			return "FBI Code";
 		}
+
+		public String parseString(String value) {
+			return value;
+		}
 	},
 	
 	/** The latitudinal location where the crime incident occurred. */
@@ -308,6 +391,12 @@ public enum DataCategory {
 		public String toString() {
 			return "Latitude";
 		}
+		
+		public Float parseString(String value) {
+			if (value == "")
+				return null;
+			return Float.parseFloat(value);
+		}
 	},
 	
 	/** The longitudinal location where the crime incident occurred. */
@@ -327,6 +416,12 @@ public enum DataCategory {
 		
 		public String toString() {
 			return "Longitude";
+		}
+		
+		public Float parseString(String value) {
+			if (value == "")
+				return null;
+			return Float.parseFloat(value);
 		}
 	};
 	
@@ -392,4 +487,12 @@ public enum DataCategory {
 				throw new UnsupportedCategoryException(categoryString);
 		}
 	}
+	
+	/**
+	 * Parses a string representing a value of data corresponding to this DataCategory
+	 * into whatever type is used by a CrimeRecord to store data corresponding to this DataCategory.
+	 * @param value A value string representing a value of data corresponding to this DataCategory.
+	 * @return The value represented by the value string parsed into the type used to store data corresponding to this DataCategory.
+	 */
+	public abstract Object parseString(String value);
 }
