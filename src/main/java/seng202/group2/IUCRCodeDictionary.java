@@ -37,27 +37,31 @@ public class IUCRCodeDictionary {
 	 */
 	public static void importFromCSV(File file) throws FileNotFoundException, IOException {
 		CSVReader fileReader = new CSVReader(new FileReader(file));
-		fileReader.skip(1);
-		
-		String[] values;
-		while ((values = fileReader.readNextSilently()) != null) {
-			String iucr = values[0];
-			String primaryDescription = values[1];
-			String secondaryDescription = values[2];
-			String indexCode = values[3];
+		try {
+			fileReader.skip(1);
 			
-			Boolean index = null;
-			if (indexCode == "I")
-				index = true;
-			else if (indexCode == "N")
-				index = false;
-			
-			if (!IUCRCodes.containsKey(iucr)) {
-				IUCRCode code = new IUCRCode(iucr, primaryDescription, secondaryDescription, index);
-				IUCRCodes.put(iucr, code);
-			} else {
-				throw new IOException("Duplicate IUCR code listing");
+			String[] values;
+			while ((values = fileReader.readNextSilently()) != null) {
+				String iucr = values[0];
+				String primaryDescription = values[1];
+				String secondaryDescription = values[2];
+				String indexCode = values[3];
+				
+				Boolean index = null;
+				if (indexCode == "I")
+					index = true;
+				else if (indexCode == "N")
+					index = false;
+				
+				if (!IUCRCodes.containsKey(iucr)) {
+					IUCRCode code = new IUCRCode(iucr, primaryDescription, secondaryDescription, index);
+					IUCRCodes.put(iucr, code);
+				} else {
+					throw new IOException("Duplicate IUCR code listing");
+				}
 			}
+		} finally {
+			fileReader.close();
 		}
 	}
 	
