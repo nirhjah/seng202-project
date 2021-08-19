@@ -172,7 +172,7 @@ class DataCategoryTest {
 	void testGetIucr() {
 		DataCategory category = DataCategory.IUCR;
 		
-		String iucr = "820";
+		IUCRCode iucr = new IUCRCode("110", "HOMICIDE", "FIRST DEGREE MURDER", true);
 		
 		// Set value of record attribute
 		record.setIucr(iucr);
@@ -181,7 +181,7 @@ class DataCategoryTest {
 		assertEquals(category.getCategoryValue(record), iucr);
 		
 		// Check return type of DataCategory method correct
-		assertTrue(category.getCategoryValue(record) instanceof String);
+		assertTrue(category.getCategoryValue(record) instanceof IUCRCode);
 	}
 	
 	

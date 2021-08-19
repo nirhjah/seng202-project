@@ -151,13 +151,13 @@ public enum DataCategory {
 		public void setCategoryValue(CrimeRecord record, Object data) {
 			if (data == null)
 				record.setIucr(null);
-			else if (data instanceof String)
-				record.setIucr((String) data);
+			else if (data instanceof IUCRCode)
+				record.setIucr((IUCRCode) data);
 			else
 				throw new IllegalArgumentException();
 		}
 		
-		public String getCategoryValue(CrimeRecord record) {
+		public IUCRCode getCategoryValue(CrimeRecord record) {
 			return record.getIucr();
 		}
 		
@@ -165,10 +165,12 @@ public enum DataCategory {
 			return "IUCR";
 		}
 
-		public String parseString(String value) {
+		public IUCRCode parseString(String value) {
 			if (value == "")
 				return null;
-			return value;
+			while (value.startsWith("0"))
+				value.replaceFirst("0", "");
+			return IUCRCodeDictionary.getCode(value);
 		}
 	},
 	

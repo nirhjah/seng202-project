@@ -39,7 +39,7 @@ public class CrimeRecord {
 	 * Four digit code used to classify the criminal incident
 	 * @see <a href="https://catalog.data.gov/dataset/chicago-police-department-illinois-uniform-crime-reporting-iucr-codes">DataSet</a>
 	 */
-	private String iucr;
+	private IUCRCode iucr;
 	
 	/** A textual description of the type of the crime incident */
 	private String primaryDescription;
@@ -172,7 +172,7 @@ public class CrimeRecord {
 	 * Sets the Illinois Uniform Crime Reporting code.
 	 * @param iucr The Illinois Uniform Crime Reporting code classifying the crime incident.
 	 */
-	public void setIucr(String iucr) {
+	public void setIucr(IUCRCode iucr) {
 		this.iucr = iucr;
 	}
 	
@@ -180,7 +180,7 @@ public class CrimeRecord {
 	 * Gets the Illinois Uniform Crime Reporting code.
 	 * @return The Illinois Uniform Crime Reporting code classifying the crime incident.
 	 */
-	public String getIucr() {
+	public IUCRCode getIucr() {
 		return iucr;
 	}
 	
@@ -317,6 +317,10 @@ public class CrimeRecord {
 	 * @param latitude The latitudinal location where the crime incident occurred.
 	 */
 	public void setLatitude(Float latitude) {
+		if (latitude != null)
+			if (!(-90.0f <= latitude && latitude <= 90.0f))
+				throw new IllegalArgumentException("Latitude out of bounds");
+		
 		this.latitude = latitude;
 	}
 	
@@ -333,6 +337,10 @@ public class CrimeRecord {
 	 * @param longitude The longitudinal location where the crime incident occurred.
 	 */
 	public void setLongitude(Float longitude) {
+		if (longitude != null)
+			if (!(-180.0f <= longitude && longitude <= 180.0f))
+				throw new IllegalArgumentException("Longitude out of bounds");
+		
 		this.longitude = longitude;
 	}
 	
