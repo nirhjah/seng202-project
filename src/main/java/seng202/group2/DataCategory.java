@@ -169,7 +169,7 @@ public enum DataCategory {
 			if (value == "")
 				return null;
 			while (value.startsWith("0"))
-				value.replaceFirst("0", "");
+				value = value.replaceFirst("0", "");
 			return IUCRCodeDictionary.getCode(value);
 		}
 	},
