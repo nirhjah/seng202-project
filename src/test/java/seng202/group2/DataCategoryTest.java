@@ -154,7 +154,7 @@ class DataCategoryTest {
 	void testSetIucr() {
 		DataCategory category = DataCategory.IUCR;
 		
-		String iucr = "820";
+		IUCRCode iucr = new IUCRCode("820", "THEFT", "$500 AND UNDER", true);
 		
 		// Set value of record attribute using DataCategory method
 		category.setCategoryValue(record, iucr);
@@ -466,7 +466,7 @@ class DataCategoryTest {
 	void testSetFbiCode() {
 		DataCategory category = DataCategory.FBI_CODE;
 		
-		String fbiCode = "6";
+		NIBRSCode fbiCode = new NIBRSCode("13C", "INTIMIDATION", "PERSON", "A");
 		
 		// Set value of record attribute using DataCategory method
 		category.setCategoryValue(record, fbiCode);
@@ -484,7 +484,7 @@ class DataCategoryTest {
 	void testGetFbiCode() {
 		DataCategory category = DataCategory.FBI_CODE;
 		
-		String fbiCode = "6";
+		NIBRSCode fbiCode = new NIBRSCode("13C", "INTIMIDATION", "PERSON", "A");
 		
 		// Set value of record attribute
 		record.setFbiCode(fbiCode);
@@ -493,7 +493,7 @@ class DataCategoryTest {
 		assertEquals(category.getCategoryValue(record), fbiCode);
 		
 		// Check return type of DataCategory method correct
-		assertTrue(category.getCategoryValue(record) instanceof String);
+		assertTrue(category.getCategoryValue(record) instanceof NIBRSCode);
 	}
 	
 	
