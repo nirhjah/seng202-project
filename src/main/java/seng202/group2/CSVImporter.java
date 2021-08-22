@@ -70,7 +70,14 @@ public class CSVImporter extends DataImporter {
 			try {
 				// Try to determine DataCategory of column from header string
 				category = DataCategory.getCategoryFromString(categories[i]);
-				categoryMap.put(i, category);
+				
+				switch (category) {
+					case PRIMARY_DESCRIPTION:
+					case SECONDARY_DESCRIPTION:
+						throw new UnsupportedCategoryException("Primary/Secondary Descriptions are determined by NIBRS code.");
+					default:
+						categoryMap.put(i, category);
+				}
 			} catch (UnsupportedCategoryException e) {
 				// If DataCategory could not be determined from header string
 				// It is assumed to be an unsupported category of data
@@ -99,6 +106,9 @@ public class CSVImporter extends DataImporter {
 			} catch (IllegalArgumentException e) {
 				// An error occurred while trying to parse the value
 				System.out.println("Error parsing value: " + values[i] + " for category: " + category);
+			} catch (UnsupportedCategoryException e) {
+				// Cannot set category value of 
+				System.out.println("Tried to perform an operation on a data category that does not support it: " + e.toString());
 			}
 		}
 		

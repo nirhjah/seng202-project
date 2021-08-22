@@ -32,9 +32,10 @@ class DataCategoryTest {
 	/**
 	 * Checks the setCategoryValue method of CASE_NUM sets the attribute value 
 	 * of a crime record correctly.
+	 * @throws UnsupportedCategoryException 
 	 */
 	@Test
-	void testSetCaseNum() {
+	void testSetCaseNum() throws UnsupportedCategoryException {
 		DataCategory category = DataCategory.CASE_NUM;
 		
 		String caseNum = "JE163990";
@@ -71,9 +72,10 @@ class DataCategoryTest {
 	/**
 	 * Checks the setCategoryValue method of DATE sets the attribute value 
 	 * of a crime record correctly.
+	 * @throws UnsupportedCategoryException 
 	 */
 	@Test
-	void testSetDate() {
+	void testSetDate() throws UnsupportedCategoryException {
 		DataCategory category = DataCategory.DATE;
 		
 		Calendar date = new GregorianCalendar(2020, 11, 23, 15, 5);
@@ -110,9 +112,10 @@ class DataCategoryTest {
 	/**
 	 * Checks the setCategoryValue method of BLOCK sets the attribute value 
 	 * of a crime record correctly.
+	 * @throws UnsupportedCategoryException 
 	 */
 	@Test
-	void testSetBlock() {
+	void testSetBlock() throws UnsupportedCategoryException {
 		DataCategory category = DataCategory.BLOCK;
 		
 		String block = "073XX S SOUTH SHORE DR";
@@ -149,9 +152,10 @@ class DataCategoryTest {
 	/**
 	 * Checks the setCategoryValue method of IUCR sets the attribute value 
 	 * of a crime record correctly.
+	 * @throws UnsupportedCategoryException 
 	 */
 	@Test
-	void testSetIucr() {
+	void testSetIucr() throws UnsupportedCategoryException {
 		DataCategory category = DataCategory.IUCR;
 		
 		IUCRCode iucr = new IUCRCode("820", "THEFT", "$500 AND UNDER", true);
@@ -188,6 +192,7 @@ class DataCategoryTest {
 	/**
 	 * Checks the setCategoryValue method of PRIMARY_DESCRIPTION sets the attribute value 
 	 * of a crime record correctly.
+	 * @throws UnsupportedCategoryException 
 	 */
 	@Test
 	void testSetPrimaryDescription() {
@@ -196,11 +201,7 @@ class DataCategoryTest {
 		String primaryDescription = "THEFT";
 		
 		// Set value of record attribute using DataCategory method
-		category.setCategoryValue(record, primaryDescription);
-		
-		// Check value set correctly
-		assertEquals(primaryDescription, record.getPrimaryDescription());
-		
+		assertThrows(UnsupportedCategoryException.class, () -> { category.setCategoryValue(record, primaryDescription); });
 	}
 	
 	/**
@@ -211,13 +212,13 @@ class DataCategoryTest {
 	void testGetPrimaryDescription() {
 		DataCategory category = DataCategory.PRIMARY_DESCRIPTION;
 		
-		String primaryDescription = "THEFT";
+		IUCRCode iucr = new IUCRCode("110", "HOMICIDE", "FIRST DEGREE MURDER", true);
 		
 		// Set value of record attribute
-		record.setPrimaryDescription(primaryDescription);
+		record.setIucr(iucr);
 		
 		// Check value of record attribute gotten using DataCategory method is correct
-		assertEquals(category.getCategoryValue(record), primaryDescription);
+		assertEquals(category.getCategoryValue(record), iucr.PRIMARY_DESCRIPTION);
 		
 		// Check return type of DataCategory method correct
 		assertTrue(category.getCategoryValue(record) instanceof String);
@@ -235,11 +236,7 @@ class DataCategoryTest {
 		String secondaryDescription = "$500 AND UNDER";
 		
 		// Set value of record attribute using DataCategory method
-		category.setCategoryValue(record, secondaryDescription);
-		
-		// Check value set correctly
-		assertEquals(secondaryDescription, record.getSecondaryDescription());
-		
+		assertThrows(UnsupportedCategoryException.class, () -> { category.setCategoryValue(record, secondaryDescription); });
 	}
 	
 	/**
@@ -250,13 +247,13 @@ class DataCategoryTest {
 	void testGetSecondaryDescription() {
 		DataCategory category = DataCategory.SECONDARY_DESCRIPTION;
 		
-		String secondaryDescription = "$500 AND UNDER";
+		IUCRCode iucr = new IUCRCode("110", "HOMICIDE", "FIRST DEGREE MURDER", true);
 		
 		// Set value of record attribute
-		record.setSecondaryDescription(secondaryDescription);
+		record.setIucr(iucr);
 		
 		// Check value of record attribute gotten using DataCategory method is correct
-		assertEquals(category.getCategoryValue(record), secondaryDescription);
+		assertEquals(category.getCategoryValue(record), iucr.SECONDARY_DESCRIPTION);
 		
 		// Check return type of DataCategory method correct
 		assertTrue(category.getCategoryValue(record) instanceof String);
@@ -266,9 +263,10 @@ class DataCategoryTest {
 	/**
 	 * Checks the setCategoryValue method of LOCATION_DESCRIPTION sets the attribute value 
 	 * of a crime record correctly.
+	 * @throws UnsupportedCategoryException 
 	 */
 	@Test
-	void testSetLocationDescription() {
+	void testSetLocationDescription() throws UnsupportedCategoryException {
 		DataCategory category = DataCategory.LOCATION_DESCRIPTION;
 		
 		String locationDescription = "APARTMENT";
@@ -305,9 +303,10 @@ class DataCategoryTest {
 	/**
 	 * Checks the setCategoryValue method of ARREST sets the attribute value 
 	 * of a crime record correctly.
+	 * @throws UnsupportedCategoryException 
 	 */
 	@Test
-	void testSetArrest() {
+	void testSetArrest() throws UnsupportedCategoryException {
 		DataCategory category = DataCategory.ARREST;
 		
 		boolean arrest = false;
@@ -344,9 +343,10 @@ class DataCategoryTest {
 	/**
 	 * Checks the setCategoryValue method of DOMESTIC sets the attribute value 
 	 * of a crime record correctly.
+	 * @throws UnsupportedCategoryException 
 	 */
 	@Test
-	void testSetDomestic() {
+	void testSetDomestic() throws UnsupportedCategoryException {
 		DataCategory category = DataCategory.DOMESTIC;
 		
 		boolean domestic = false;
@@ -383,9 +383,10 @@ class DataCategoryTest {
 	/**
 	 * Checks the setCategoryValue method of BEAT sets the attribute value 
 	 * of a crime record correctly.
+	 * @throws UnsupportedCategoryException 
 	 */
 	@Test
-	void testSetBeat() {
+	void testSetBeat() throws UnsupportedCategoryException {
 		DataCategory category = DataCategory.BEAT;
 		
 		short beat = 334;
@@ -422,9 +423,10 @@ class DataCategoryTest {
 	/**
 	 * Checks the setCategoryValue method of WARD sets the attribute value 
 	 * of a crime record correctly.
+	 * @throws UnsupportedCategoryException 
 	 */
 	@Test
-	void testSetWard() {
+	void testSetWard() throws UnsupportedCategoryException {
 		DataCategory category = DataCategory.WARD;
 		
 		short ward = 7;
@@ -461,9 +463,10 @@ class DataCategoryTest {
 	/**
 	 * Checks the setCategoryValue method of FBI_CODE sets the attribute value 
 	 * of a crime record correctly.
+	 * @throws UnsupportedCategoryException 
 	 */
 	@Test
-	void testSetFbiCode() {
+	void testSetFbiCode() throws UnsupportedCategoryException {
 		DataCategory category = DataCategory.FBI_CODE;
 		
 		NIBRSCode fbiCode = new NIBRSCode("13C", "INTIMIDATION", "PERSON", "A");
@@ -500,9 +503,10 @@ class DataCategoryTest {
 	/**
 	 * Checks the setCategoryValue method of LATITUDE sets the attribute value 
 	 * of a crime record correctly.
+	 * @throws UnsupportedCategoryException 
 	 */
 	@Test
-	void testSetLatitude() {
+	void testSetLatitude() throws UnsupportedCategoryException {
 		DataCategory category = DataCategory.LATITUDE;
 		
 		float latitude = 41.7484863f;
@@ -539,9 +543,10 @@ class DataCategoryTest {
 	/**
 	 * Checks the setCategoryValue method of LONGITUDE sets the attribute value 
 	 * of a crime record correctly.
+	 * @throws UnsupportedCategoryException 
 	 */
 	@Test
-	void testSetLongitude() {
+	void testSetLongitude() throws UnsupportedCategoryException {
 		DataCategory category = DataCategory.LONGITUDE;
 		
 		float longitude = -87.6026751f;

@@ -32,7 +32,7 @@ class CrimeDataTest {
     @Test
     void testAddRecord() {
         CrimeRecord record = new CrimeRecord();
-        record.setPrimaryDescription("This is a test");
+        record.setCaseNum("This is a test");
 
         int initialID = crimeData.getIdCounter();
 

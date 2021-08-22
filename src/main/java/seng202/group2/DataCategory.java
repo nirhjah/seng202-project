@@ -176,13 +176,8 @@ public enum DataCategory {
 	
 	/** A textual description of the type of the crime incident */
 	PRIMARY_DESCRIPTION {
-		public void setCategoryValue(CrimeRecord record, Object data) {
-			if (data == null)
-				record.setPrimaryDescription(null);
-			else if (data instanceof String)
-				record.setPrimaryDescription((String) data);
-			else
-				throw new IllegalArgumentException();
+		public void setCategoryValue(CrimeRecord record, Object data) throws UnsupportedCategoryException {
+			throw new UnsupportedCategoryException("Cannot set value of primary description");
 		}
 		
 		public String getCategoryValue(CrimeRecord record) {
@@ -205,13 +200,8 @@ public enum DataCategory {
 	 * of the crime type provided in the primary description
 	 */
 	SECONDARY_DESCRIPTION {
-		public void setCategoryValue(CrimeRecord record, Object data) {
-			if (data == null)
-				record.setSecondaryDescription(null);
-			else if (data instanceof String)
-				record.setSecondaryDescription((String) data);
-			else
-				throw new IllegalArgumentException();
+		public void setCategoryValue(CrimeRecord record, Object data) throws UnsupportedCategoryException {
+			throw new UnsupportedCategoryException("Cannot set value of secondary description");
 		}
 		
 		public String getCategoryValue(CrimeRecord record) {
@@ -482,7 +472,7 @@ public enum DataCategory {
 	 * @param record The CrimeRecord instance whose attribute value is to be set.
 	 * @param data The data to set the CrimeRecord's attribute value to.
 	 */
-	public abstract void setCategoryValue(CrimeRecord record, Object data);
+	public abstract void setCategoryValue(CrimeRecord record, Object data) throws UnsupportedCategoryException;
 	
 	/**
 	 * Gets the value of the attribute of CrimeRecord record, which corresponds to this DataCategory

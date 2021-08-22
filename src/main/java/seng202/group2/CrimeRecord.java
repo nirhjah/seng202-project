@@ -41,15 +41,6 @@ public class CrimeRecord {
 	 */
 	private IUCRCode iucr;
 	
-	/** A textual description of the type of the crime incident */
-	private String primaryDescription;
-	
-	/**
-	 * A textual description giving more details supplementing the categorization
-	 * of the crime type provided in the primary description
-	 */
-	private String secondaryDescription;
-	
 	/** A textual description of the location where the crime incident occurred */
 	private String locationDescription;
 	
@@ -98,8 +89,8 @@ public class CrimeRecord {
 				"Date: " + dateString + "\n" +
 				"Block: " + block + "\n" +
 				"IUCR: " + iucr + "\n" +
-				"Primary Description: " + primaryDescription + "\n" +
-				"Secondary Description: " + secondaryDescription + "\n" +
+				"Primary Description: " + iucr.PRIMARY_DESCRIPTION + "\n" +
+				"Secondary Description: " + iucr.SECONDARY_DESCRIPTION + "\n" +
 				"Location Description: " + locationDescription + "\n" +
 				"Arrest: " + arrest + "\n" +
 				"Domestic: " + domestic + "\n" +
@@ -185,27 +176,11 @@ public class CrimeRecord {
 	}
 	
 	/**
-	 * Sets the primary description of the crime incident.
-	 * @param description A textual description of the type of the crime incident
-	 */
-	public void setPrimaryDescription(String description) {
-		primaryDescription = description;
-	}
-	
-	/**
 	 * Gets the primary description of the crime incident.
 	 * @return A textual description of the type of the crime incident
 	 */
 	public String getPrimaryDescription() {
-		return primaryDescription;
-	}
-	
-	/**
-	 * Sets the secondary description of the crime incident.
-	 * @param description A textual description giving supplementing details about the type of crime incident
-	 */
-	public void setSecondaryDescription(String description) {
-		secondaryDescription = description;
+		return iucr.PRIMARY_DESCRIPTION;
 	}
 	
 	/**
@@ -213,7 +188,7 @@ public class CrimeRecord {
 	 * @return A textual description giving supplementing details about the type of crime incident
 	 */
 	public String getSecondaryDescription() {
-		return secondaryDescription;
+		return iucr.SECONDARY_DESCRIPTION;
 	}
 	
 	/**
