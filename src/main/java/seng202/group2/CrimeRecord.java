@@ -81,7 +81,7 @@ public class CrimeRecord {
 	 * Used to categorize crime incidents by the type of crime that occurred. 
 	 * @see <a href="https://ucr.fbi.gov/nibrs/2011/resources/nibrs-offense-codes/view">Offense Codes</a>
 	 */
-	private String fbiCode;
+	private NIBRSCode nibrs;
 	
 	/** The latitudinal location where the crime incident occurred. */
 	private Float latitude;
@@ -105,7 +105,7 @@ public class CrimeRecord {
 				"Domestic: " + domestic + "\n" +
 				"Beat: " + beat + "\n" +
 				"Ward: " + ward + "\n" +
-				"FBI Code: " + fbiCode + "\n" +
+				"FBI Code: " + nibrs + "\n" +
 				"Latitude: " + latitude + "\n" +
 				"Longitude: " + longitude;
 	}
@@ -300,16 +300,16 @@ public class CrimeRecord {
 	 * Sets the FBI code used to categorize the crime incident based on type.
 	 * @param fbiCode FBI crime code assigned to the crime incident.
 	 */
-	public void setFbiCode(String fbiCode) {
-		this.fbiCode = fbiCode;
+	public void setFbiCode(NIBRSCode nibrs) {
+		this.nibrs = nibrs;
 	}
 	
 	/**
 	 * Gets the FBI code used to categorize the crime incident based on type.
 	 * @return FBI crime code assigned to the crime incident.
 	 */
-	public String getFbiCode() {
-		return fbiCode;
+	public NIBRSCode getFbiCode() {
+		return nibrs;
 	}
 	
 	/**

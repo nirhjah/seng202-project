@@ -390,13 +390,13 @@ public enum DataCategory {
 		public void setCategoryValue(CrimeRecord record, Object data) {
 			if (data == null)
 				record.setFbiCode(null);
-			else if (data instanceof String)
-				record.setFbiCode((String) data);
+			else if (data instanceof NIBRSCode)
+				record.setFbiCode((NIBRSCode) data);
 			else
 				throw new IllegalArgumentException();
 		}
 		
-		public String getCategoryValue(CrimeRecord record) {
+		public NIBRSCode getCategoryValue(CrimeRecord record) {
 			return record.getFbiCode();
 		}
 		
@@ -404,10 +404,12 @@ public enum DataCategory {
 			return "FBI Code";
 		}
 
-		public String parseString(String value) {
+		public NIBRSCode parseString(String value) {
 			if (value == "")
 				return null;
-			return value;
+			while (value.startsWith("0"))
+				value = value.replaceFirst("0", "");
+			return NIBRSCodeDictionary.getCode(value);
 		}
 	},
 	
