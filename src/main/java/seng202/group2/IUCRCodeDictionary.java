@@ -83,7 +83,7 @@ public class IUCRCodeDictionary {
 	 * Imports IUCR codes from the specified file when the dictionary is first referenced.
 	 */
 	static {
-		File file = new File("iucr-codes.csv");
+		File file = new File("config/iucr-codes.csv");
 		try {
 			importFromCSV(file);
 			System.out.println("Imported IUCR codes");
