@@ -123,7 +123,7 @@ class CaseNumberTest {
 	}
 	
 	/**
-	 * Checks the parseString method of CaseNumber returns the string passed to it.
+	 * Checks the parseString method of CaseNumber returns null when passed an empty string.
 	 */
 	@Test
 	void testParseString_Empty() {
@@ -133,7 +133,7 @@ class CaseNumberTest {
 	}
 	
 	/**
-	 * Checks the parseString method of CaseNumber returns the string passed to it.
+	 * Checks the parseString method of CaseNumber throws an exception when trying to parse null.
 	 */
 	@Test
 	void testParseString_Null() {
