@@ -3,26 +3,26 @@ package seng202.group2.datacategories;
 import seng202.group2.CrimeRecord;
 
 /**
- * The case number associated with the crime record in the police database.
+ * A textual description of the location where the crime incident occurred.
  * 
  * @author Connor Dunlop
  *
  */
-public class CaseNumber extends DataCategory {
+public class LocationDescription extends DataCategory {
 
 	@Override
 	public void setCategoryValue(CrimeRecord record, Object data) {
 		if (data == null)
-			record.setCaseNum(null);
+			record.setLocationDescription(null);
 		else if (data instanceof String)
-			record.setCaseNum((String) data);
+			record.setLocationDescription((String) data);
 		else
 			throw new IllegalArgumentException();
 	}
 
 	@Override
 	public String getCategoryValue(CrimeRecord record) {
-		return record.getCaseNum();
+		return record.getLocationDescription();
 	}
 
 	@Override
