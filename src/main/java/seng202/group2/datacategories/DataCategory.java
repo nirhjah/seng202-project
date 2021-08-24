@@ -11,9 +11,7 @@ public abstract class DataCategory {
 	 * @param data The data to set the CrimeRecord's attribute value to.
 	 * @throws UnsupportedCategoryException 
 	 */
-	public static void setCategoryValue(CrimeRecord record, Object data) throws UnsupportedCategoryException {
-		throw new UnsupportedCategoryException("The category has not implemented the method setCategoryValue.");
-	}
+	public abstract void setCategoryValue(CrimeRecord record, Object data) throws UnsupportedCategoryException;
 	
 	/**
 	 * Gets the value of the attribute of CrimeRecord record, which corresponds to this DataCategory
@@ -22,9 +20,7 @@ public abstract class DataCategory {
 	 * @return The value of the CrimeRecord's attribute.
 	 * @throws UnsupportedCategoryException 
 	 */
-	public static Object getCategoryValue(CrimeRecord record) throws UnsupportedCategoryException {
-		throw new UnsupportedCategoryException("The category has not implemented the method getCategoryValue.");
-	}
+	public abstract Object getCategoryValue(CrimeRecord record) throws UnsupportedCategoryException;
 	
 	/**
 	 * Parses a string representing a value of data corresponding to this DataCategory
@@ -33,40 +29,38 @@ public abstract class DataCategory {
 	 * @return The value represented by the value string parsed into the type used to store data corresponding to this DataCategory.
 	 * @throws UnsupportedCategoryException 
 	 */
-	public static Object parseString(String value) throws UnsupportedCategoryException {
-		throw new UnsupportedCategoryException("The category has not implemented the method parseString.");
-	}
+	public abstract Object parseString(String value) throws UnsupportedCategoryException;
 	
-	public static Class<? extends DataCategory> getCategoryFromString(String categoryString) throws UnsupportedCategoryException {
+	public static DataCategory getCategoryFromString(String categoryString) throws UnsupportedCategoryException {
 		switch (categoryString.replaceAll("\\s", "")) {
 		case "CASE#":
-			return CaseNumber.class;
-		case "DATEOFOCCURRENCE":
-			return Date.class;
-		case "BLOCK":
-			return Block.class;
-		case "IUCR":
-			return Iucr.class;
-		case "PRIMARYDESCRIPTION":
-			return PrimaryDescription.class;
-		case "SECONDARYDESCRIPTION":
-			return SecondaryDescription.class;
-		case "LOCATIONDESCRIPTION":
-			return LocationDescription.class;
-		case "ARREST":
-			return Arrest.class;
-		case "DOMESTIC":
-			return Domestic.class;
-		case "BEAT":
-			return Beat.class;
-		case "WARD":
-			return Ward.class;
-		case "FBICD":
-			return FBICode.class;
-		case "LATITUDE":
-			return Latitude.class;
-		case "LONGITUDE":
-			return Longitude.class;
+			return new CaseNumber();
+//		case "DATEOFOCCURRENCE":
+//			return Date.class;
+//		case "BLOCK":
+//			return Block.class;
+//		case "IUCR":
+//			return Iucr.class;
+//		case "PRIMARYDESCRIPTION":
+//			return PrimaryDescription.class;
+//		case "SECONDARYDESCRIPTION":
+//			return SecondaryDescription.class;
+//		case "LOCATIONDESCRIPTION":
+//			return LocationDescription.class;
+//		case "ARREST":
+//			return Arrest.class;
+//		case "DOMESTIC":
+//			return Domestic.class;
+//		case "BEAT":
+//			return Beat.class;
+//		case "WARD":
+//			return Ward.class;
+//		case "FBICD":
+//			return FBICode.class;
+//		case "LATITUDE":
+//			return Latitude.class;
+//		case "LONGITUDE":
+//			return Longitude.class;
 		default:
 			throw new UnsupportedCategoryException(categoryString);
 	}
