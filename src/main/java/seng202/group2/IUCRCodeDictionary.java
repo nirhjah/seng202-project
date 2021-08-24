@@ -47,6 +47,9 @@ public class IUCRCodeDictionary {
 				String secondaryDescription = values[2];
 				String indexCode = values[3];
 				
+				while (iucr.startsWith("0"))
+					iucr = iucr.replaceFirst("0", "");
+				
 				Boolean index = null;
 				if (indexCode == "I")
 					index = true;

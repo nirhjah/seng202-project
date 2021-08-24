@@ -47,6 +47,9 @@ public class NIBRSCodeDictionary {
 				String against= values[2];
 				String group = values[3];
 				
+				while (nibrs.startsWith("0"))
+					nibrs = nibrs.replaceFirst("0", "");
+				
 				if (!NIBRSCodes.containsKey(nibrs)) {
 					NIBRSCode code = new NIBRSCode(nibrs, description, against, group);
 					NIBRSCodes.put(nibrs, code);
