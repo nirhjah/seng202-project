@@ -121,7 +121,33 @@ class CaseNumberTest {
 	 * Checks the parseString method of CaseNumber returns the string passed to it.
 	 */
 	@Test
-	void testParseStringValid() {
+	void testParseString_Valid() {
+		CaseNumber category = new CaseNumber();
+		String caseNum = "JE163990";
 		
+		assertEquals(caseNum, category.parseString(caseNum));
+	}
+	
+	/**
+	 * Checks the parseString method of CaseNumber returns the string passed to it.
+	 */
+	@Test
+	void testParseString_Empty() {
+		CaseNumber category = new CaseNumber();
+		String caseNum = "";
+		
+		assertEquals(null, category.parseString(caseNum));
+	}
+	
+	/**
+	 * Checks the parseString method of CaseNumber returns the string passed to it.
+	 */
+	@Test
+	void testParseString_Null() {
+		CaseNumber category = new CaseNumber();
+		
+		assertThrows(IllegalArgumentException.class, () -> {
+			category.parseString(null);
+		});
 	}
 }
