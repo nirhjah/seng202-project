@@ -12,16 +12,22 @@ public class CaseNumber extends DataCategory {
 
 	@Override
 	public void setCategoryValue(CrimeRecord record, Object data) {
+		if (record == null)
+			throw new IllegalArgumentException("Cannot set attribute value of null record.");
+		
 		if (data == null)
 			record.setCaseNum(null);
 		else if (data instanceof String)
 			record.setCaseNum((String) data);
 		else
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Data was of an incorrect type for CaseNumber.");
 	}
 
 	@Override
 	public String getCategoryValue(CrimeRecord record) {
+		if (record == null)
+			throw new IllegalArgumentException("Cannot get attribute value of null record.");
+		
 		return record.getCaseNum();
 	}
 
