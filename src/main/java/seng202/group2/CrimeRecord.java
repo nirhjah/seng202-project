@@ -82,7 +82,11 @@ public class CrimeRecord {
 
 	
 	public String toString() {
-		String dateString = DateTimeFormatter.ISO_INSTANT.format(date.toInstant());
+		String dateString;
+		if (date == null)
+			dateString = null;
+		else
+			dateString = DateTimeFormatter.ISO_INSTANT.format(date.toInstant());
 		
 		return "Crime record: " + ID + "\n" +
 				"Case Number: " + caseNum + "\n" +
@@ -98,7 +102,7 @@ public class CrimeRecord {
 				"Ward: " + ward + "\n" +
 				"FBI Code: " + nibrs + "\n" +
 				"Latitude: " + latitude + "\n" +
-				"Longitude: " + longitude;
+				"Longitude: " + longitude + "\n";
 	}
 
 	//Getters/Setters:
