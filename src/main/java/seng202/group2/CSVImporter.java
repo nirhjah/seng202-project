@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 import com.opencsv.CSVReader;
 
-import seng202.group2.datacategories.UnsupportedCategoryException;
+import seng202.group2.datacategories.*;
 
 /**
  * A crime data importer used to import crime data from CSV files.
@@ -72,14 +72,7 @@ public class CSVImporter extends DataImporter {
 			try {
 				// Try to determine DataCategory of column from header string
 				category = DataCategory.getCategoryFromString(categories[i]);
-				
-				switch (category) {
-					case PRIMARY_DESCRIPTION:
-					case SECONDARY_DESCRIPTION:
-						throw new UnsupportedCategoryException("Primary/Secondary Descriptions are determined by NIBRS code.");
-					default:
-						categoryMap.put(i, category);
-				}
+				categoryMap.put(i, category);
 			} catch (UnsupportedCategoryException e) {
 				// If DataCategory could not be determined from header string
 				// It is assumed to be an unsupported category of data
