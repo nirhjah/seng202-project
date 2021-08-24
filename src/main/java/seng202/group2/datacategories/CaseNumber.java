@@ -33,7 +33,9 @@ public class CaseNumber extends DataCategory {
 
 	@Override
 	public String parseString(String value) {
-		if (value == "")
+		if (value == null)
+			throw new IllegalArgumentException("Cannot parse null string.");
+		else if (value == "")
 			return null;
 		return value;
 	}
