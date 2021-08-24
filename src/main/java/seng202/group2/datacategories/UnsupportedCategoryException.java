@@ -1,4 +1,4 @@
-package seng202.group2;
+package seng202.group2.datacategories;
 
 /**
  * This exception type is thrown when a process tries to perform an operation on or using

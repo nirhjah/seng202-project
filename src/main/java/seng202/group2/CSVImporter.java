@@ -8,6 +8,8 @@ import java.util.HashMap;
 
 import com.opencsv.CSVReader;
 
+import seng202.group2.datacategories.UnsupportedCategoryException;
+
 /**
  * A crime data importer used to import crime data from CSV files.
  * Uses OpenCSV for parsing CSV files.

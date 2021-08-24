@@ -3,6 +3,8 @@ package seng202.group2;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import seng202.group2.datacategories.UnsupportedCategoryException;
+
 /**
  * DataCategory enumerates the different categories of data stored in the attributes of CrimeRecord.
  * 

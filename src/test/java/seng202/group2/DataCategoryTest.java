@@ -8,6 +8,8 @@ import java.util.GregorianCalendar;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import seng202.group2.datacategories.UnsupportedCategoryException;
+
 /**
  * Tests the utility methods of DataCategory for setting and getting the value of a particular
  * category/attribute in a CrimeRecord instance.
