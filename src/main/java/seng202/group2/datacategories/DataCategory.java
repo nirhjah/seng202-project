@@ -2,6 +2,14 @@ package seng202.group2.datacategories;
 
 import seng202.group2.CrimeRecord;
 
+/**
+ * This class facilitates the selection of the various categories within a CrimeRecord,
+ * providing the methods setCategoryValue and getCategoryValue for setting and getting the value
+ * of an attribute of a CrimeRecord instance through the corresponding DataCategory.
+ * 
+ * @author Connor Dunlop
+ *
+ */
 public abstract class DataCategory {
 	
 	/**
