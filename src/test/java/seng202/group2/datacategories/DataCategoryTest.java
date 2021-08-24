@@ -31,17 +31,6 @@ class DataCategoryTest {
 			"LONGITUDE"
 	};
 	
-	/** List of invalid category strings. */
-	private String[] invalidStrings = {
-			"",
-			" ",
-			"NOT A REAL CATEGORY",
-			"0",
-			"999999",
-			" ".repeat(1000000),
-			"invalid".repeat(1000000)
-	};
-	
 	/**
 	 * List of category classes.
 	 * Index of classes matches index of corresponding string.
@@ -62,6 +51,17 @@ class DataCategoryTest {
 			FBICode.class,
 			Latitude.class,
 			Longitude.class
+	};
+	
+	/** List of invalid category strings. */
+	private String[] invalidStrings = {
+			"",
+			" ",
+			"NOT A REAL CATEGORY",
+			"0",
+			"999999",
+			" ".repeat(1000000),
+			"invalid".repeat(1000000)
 	};
 
 	/**
