@@ -18,6 +18,8 @@ class CaseNumberTest {
 	/** A crime record to use when testing methods of DataCategory */
 	private CrimeRecord record;
 	
+	private CaseNumber category = new CaseNumber();
+	
 	/**
 	 * Reset the values of the test record's attributes to default before each test.
 	 */
@@ -32,7 +34,6 @@ class CaseNumberTest {
 	 */
 	@Test
 	void testSetCategoryValue_ValidData() {
-		CaseNumber category = new CaseNumber();
 		String caseNum = "JE163990";
 		
 		// Set value of record attribute using  DataCategory method
@@ -47,12 +48,11 @@ class CaseNumberTest {
 	 */
 	@Test
 	void testSetCategoryValue_InvalidData() {
-		CaseNumber category = new CaseNumber();
 		Integer caseNum = 163990;
 		
-		// Try to set value of null records attribute using DataCategory method
+		// Try to set value of record attribute to incorrect data type
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(null, caseNum);
+			category.setCategoryValue(record, caseNum);
 		});
 	}
 	
@@ -61,7 +61,6 @@ class CaseNumberTest {
 	 */
 	@Test
 	void testSetCategoryValue_NullData() {
-		CaseNumber category = new CaseNumber();
 		String caseNum = null;
 		
 		// Set value of record attribute using  DataCategory method
@@ -76,7 +75,6 @@ class CaseNumberTest {
 	 */
 	@Test
 	void testSetCategoryValue_NullRecord() {
-		CaseNumber category = new CaseNumber();
 		String caseNum = "JE163990";
 		
 		// Try to set value of null records attribute using DataCategory method
@@ -91,7 +89,6 @@ class CaseNumberTest {
 	 */
 	@Test
 	void testGetCategoryValue() {
-		CaseNumber category = new CaseNumber();
 		String caseNum = "JE163990";
 		
 		// Set value of record attribute
@@ -109,8 +106,6 @@ class CaseNumberTest {
 	 */
 	@Test
 	void testGetCategoryValue_NullRecord() {
-		CaseNumber category = new CaseNumber();
-		
 		// Check value of record attribute gotten using DataCategory method is correct
 		assertThrows(IllegalArgumentException.class, () -> {
 			category.getCategoryValue(null);
@@ -122,7 +117,6 @@ class CaseNumberTest {
 	 */
 	@Test
 	void testParseString_Valid() {
-		CaseNumber category = new CaseNumber();
 		String caseNum = "JE163990";
 		
 		assertEquals(caseNum, category.parseString(caseNum));
@@ -133,7 +127,6 @@ class CaseNumberTest {
 	 */
 	@Test
 	void testParseString_Empty() {
-		CaseNumber category = new CaseNumber();
 		String caseNum = "";
 		
 		assertEquals(null, category.parseString(caseNum));
@@ -144,9 +137,7 @@ class CaseNumberTest {
 	 */
 	@Test
 	void testParseString_Null() {
-		CaseNumber category = new CaseNumber();
-		
-		assertThrows(IllegalArgumentException.class, () -> {
+			assertThrows(IllegalArgumentException.class, () -> {
 			category.parseString(null);
 		});
 	}
