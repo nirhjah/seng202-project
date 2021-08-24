@@ -35,32 +35,32 @@ public abstract class DataCategory {
 		switch (categoryString.replaceAll("\\s", "")) {
 		case "CASE#":
 			return new CaseNumber();
-//		case "DATEOFOCCURRENCE":
-//			return Date.class;
-//		case "BLOCK":
-//			return Block.class;
-//		case "IUCR":
-//			return Iucr.class;
-//		case "PRIMARYDESCRIPTION":
-//			return PrimaryDescription.class;
-//		case "SECONDARYDESCRIPTION":
-//			return SecondaryDescription.class;
-//		case "LOCATIONDESCRIPTION":
-//			return LocationDescription.class;
-//		case "ARREST":
-//			return Arrest.class;
-//		case "DOMESTIC":
-//			return Domestic.class;
-//		case "BEAT":
-//			return Beat.class;
-//		case "WARD":
-//			return Ward.class;
-//		case "FBICD":
-//			return FBICode.class;
-//		case "LATITUDE":
-//			return Latitude.class;
-//		case "LONGITUDE":
-//			return Longitude.class;
+		case "DATEOFOCCURRENCE":
+			return new Date();
+		case "BLOCK":
+			return new Block();
+		case "IUCR":
+			return new IUCRCode();
+		case "PRIMARYDESCRIPTION":
+			return new PrimaryDescription();
+		case "SECONDARYDESCRIPTION":
+			return new SecondaryDescription();
+		case "LOCATIONDESCRIPTION":
+			return new LocationDescription();
+		case "ARREST":
+			return new Arrest();
+		case "DOMESTIC":
+			return new Domestic();
+		case "BEAT":
+			return new Beat();
+		case "WARD":
+			return new Ward();
+		case "FBICD":
+			return new FBICode();
+		case "LATITUDE":
+			return new Latitude();
+		case "LONGITUDE":
+			return new Longitude();
 		default:
 			throw new UnsupportedCategoryException(categoryString);
 	}
