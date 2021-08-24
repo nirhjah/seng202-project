@@ -40,37 +40,40 @@ public abstract class DataCategory {
 	public abstract Object parseString(String value) throws UnsupportedCategoryException;
 	
 	public static DataCategory getCategoryFromString(String categoryString) throws UnsupportedCategoryException {
+		if (categoryString == null)
+			throw new IllegalArgumentException("No category string specified.");
+		
 		switch (categoryString.replaceAll("\\s", "")) {
-		case "CASE#":
-			return new CaseNumber();
-		case "DATEOFOCCURRENCE":
-			return new Date();
-		case "BLOCK":
-			return new Block();
-		case "IUCR":
-			return new IUCRCode();
-		case "PRIMARYDESCRIPTION":
-			return new PrimaryDescription();
-		case "SECONDARYDESCRIPTION":
-			return new SecondaryDescription();
-		case "LOCATIONDESCRIPTION":
-			return new LocationDescription();
-		case "ARREST":
-			return new Arrest();
-		case "DOMESTIC":
-			return new Domestic();
-		case "BEAT":
-			return new Beat();
-		case "WARD":
-			return new Ward();
-		case "FBICD":
-			return new FBICode();
-		case "LATITUDE":
-			return new Latitude();
-		case "LONGITUDE":
-			return new Longitude();
-		default:
-			throw new UnsupportedCategoryException(categoryString);
-	}
+			case "CASE#":
+				return new CaseNumber();
+			case "DATEOFOCCURRENCE":
+				return new Date();
+			case "BLOCK":
+				return new Block();
+			case "IUCR":
+				return new IUCRCode();
+			case "PRIMARYDESCRIPTION":
+				return new PrimaryDescription();
+			case "SECONDARYDESCRIPTION":
+				return new SecondaryDescription();
+			case "LOCATIONDESCRIPTION":
+				return new LocationDescription();
+			case "ARREST":
+				return new Arrest();
+			case "DOMESTIC":
+				return new Domestic();
+			case "BEAT":
+				return new Beat();
+			case "WARD":
+				return new Ward();
+			case "FBICD":
+				return new FBICode();
+			case "LATITUDE":
+				return new Latitude();
+			case "LONGITUDE":
+				return new Longitude();
+			default:
+				throw new UnsupportedCategoryException("The string \"" + categoryString + "\" could not be resolved to a DataCategory class.");
+		}
 	}
 }
