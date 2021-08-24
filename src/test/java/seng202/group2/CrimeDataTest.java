@@ -40,7 +40,7 @@ class CrimeDataTest {
 
         CrimeRecord result = crimeData.getCrimeRecord(initialID);
 
-        assertEquals(result.getPrimaryDescription(), "This is a test");
+        assertEquals(result.getCaseNum(), "This is a test");
         assertEquals(initialID, result.getID());
     }
 
