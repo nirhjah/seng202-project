@@ -15,22 +15,30 @@ public class Date extends DataCategory {
 
 	@Override
 	public void setCategoryValue(CrimeRecord record, Object data) {
+		if (record == null) 
+			throw new IllegalArgumentException("Cannot set attribute value of null record");
+		
 		if (data == null)
 			record.setDate(null);
-		if (data instanceof Calendar)
+		else if (data instanceof Calendar)
 			record.setDate((Calendar) data);
 		else
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Data was of an incorrect type for Date.");
 	}
 
 	@Override
 	public Calendar getCategoryValue(CrimeRecord record) {
+		if (record == null)
+			throw new IllegalArgumentException("Cannot get attribute value of null record.");
+		
 		return record.getDate();
 	}
 
 	@Override
 	public Calendar parseString(String value) {
-		if (value == "")
+		if (value == null)
+			throw new IllegalArgumentException("Cannot parse null string.");
+		else if (value == "")
 			return null;
 		
 		// Parses data from format "dd/mm/yyyy hh:mm:ss PM"
