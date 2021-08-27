@@ -25,11 +25,9 @@ public class Test {
         DBMS.addRecord("TEST3", "2001/12/12 03:40:12 PM", "Block3", "IUCR3", "pDesc3",  "SDec3",
                 "lDesc3", false, false, (short)3, (short)3, "fbiCode3", 3.0f, 3.0f);
 
-        activeData.addFilter(FilterType.EQ.createFilter(DataCategory.CASE_NUM, "TEST2"));
-        ArrayList<CrimeRecord> records =  activeData.getActiveRecords();
 
-        for (CrimeRecord record: records) {
-            System.out.println(record.getCaseNum());
-        }
+        CrimeRecord record = DBMS.getRecord(1);
+
+        System.out.println(record.getDate());
     }
 }

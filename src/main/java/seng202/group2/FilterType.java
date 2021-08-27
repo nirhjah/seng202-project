@@ -7,6 +7,11 @@ public enum FilterType {
             return new Filter(category.getSQL() + "= '" + pattern + "'", FilterType.EQ);
         }
     },
+    GT {
+        public Filter createFilter(DataCategory category, String pattern) {
+            return new Filter(category.getSQL() + "> '" + pattern + "'", FilterType.EQ);
+        }
+    },
     /** Category sort */
     SORT {
         /** @param ascending ASC | DESC */

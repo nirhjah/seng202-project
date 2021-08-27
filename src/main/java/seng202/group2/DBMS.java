@@ -52,7 +52,7 @@ public class DBMS {
 
                 //Build table
                 Statement state2 = conn.createStatement();
-                state2.execute("CREATE TABLE records(id int,"
+                state2.execute("CREATE TABLE records(id integer,"
                         + "caseNum string,"
                         + "date string,"
                         + "block string,"
