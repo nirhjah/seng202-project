@@ -4,8 +4,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -13,6 +17,46 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * Test the DBMS class, and its methods
  */
 public class DBMSTest {
+    //Date format for creating calander
+    private static final String DATE_FORMAT = "yyyy/MM/dd hh:mm:ss a";
+
+    /**
+     * Add a given number of crime records to the database, each crime records data is labeled by its ID, starting at 1
+     *
+     * @param max Number of records to add
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     * @throws ParseException
+     */
+    void addRecords(int max) throws SQLException, ClassNotFoundException, ParseException {
+        for (int i=1; i <= max; i++) {
+            String num = Integer.toString(i);
+            CrimeRecord record = new CrimeRecord();
+            record.setCaseNum("TEST" + num);
+
+            //Convert String from db to Calendar
+            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(sdf.parse("2001/12/12 03:40:12 PM"));
+            record.setDate(cal);
+
+            record.setBlock("Block" + num);
+            record.setIucr("IUCR" + num);
+            record.setPrimaryDescription("pDesc" + num);
+            record.setSecondaryDescription("sDesc" + num);
+            record.setLocationDescription("lDesc" + num);
+            record.setArrest(false);
+            record.setDomestic(false);
+            record.setWard((short) (int) Integer.valueOf(num));
+            record.setBeat((short) (int) Integer.valueOf(num));
+            record.setFbiCode("fbiCode" + num);
+            record.setLongitude((float)(int) Integer.valueOf(num));
+            record.setLatitude((float)(int) Integer.valueOf(num));
+            DBMS.addRecord(record);
+        }
+    }
+
+
     @BeforeEach
     void resetDataBase() throws SQLException, ClassNotFoundException {
         DBMS.clearDB();
@@ -25,11 +69,10 @@ public class DBMSTest {
      * @throws ClassNotFoundException
      */
     @Test
-    void addRecordTest() throws SQLException, ClassNotFoundException {
+    void addRecordTest() throws SQLException, ClassNotFoundException, ParseException {
         int oldSize = DBMS.getDBSize();
 
-        DBMS.addRecord("TEST1", "2001/12/12 03:40:12 PM", "Block1", "IUCR1", "pDesc1",  "SDec1",
-                "lDesc1", false, false, (short)1, (short)1, "fbiCode1", 1.0f, 1.0f);
+        addRecords(1);
 
         assertEquals((oldSize + 1), DBMS.getDBSize());
     }
@@ -41,15 +84,9 @@ public class DBMSTest {
      * @throws ClassNotFoundException
      */
     @Test
-    void getRecordTest() throws SQLException, ClassNotFoundException {
+    void getRecordTest() throws SQLException, ClassNotFoundException, ParseException {
         DBMS.clearDB();
-        //Add some data
-        DBMS.addRecord("TEST1", "2001/12/12 03:40:12 PM", "Block1", "IUCR1", "pDesc1",  "SDec1",
-                "lDesc1", false, false, (short)1, (short)1, "fbiCode1", 1.0f, 1.0f);
-        DBMS.addRecord("TEST2", "2001/12/12 03:40:12 PM", "Block2", "IUCR2", "pDesc2",  "SDec2",
-                "lDesc2", false, false, (short)2, (short)2, "fbiCode2", 2.0f, 2.0f);
-        DBMS.addRecord("TEST3", "2001/12/12 03:40:12 PM", "Block3", "IUCR3", "pDesc3",  "SDec3",
-                "lDesc3", false, false, (short)3, (short)3, "fbiCode3", 3.0f, 3.0f);
+        addRecords(5);
 
         CrimeRecord record = DBMS.getRecord(2);
         assertEquals("TEST2", record.getCaseNum());
@@ -62,14 +99,8 @@ public class DBMSTest {
      * @throws ClassNotFoundException
      */
     @Test
-    void getRecordsTest() throws SQLException, ClassNotFoundException {
-        //Add some data
-        DBMS.addRecord("TEST1", "2001/12/12 03:40:12 PM", "Block1", "IUCR1", "pDesc1",  "SDec1",
-                "lDesc1", false, false, (short)1, (short)1, "fbiCode1", 1.0f, 1.0f);
-        DBMS.addRecord("TEST2", "2001/12/12 03:40:12 PM", "Block2", "IUCR2", "pDesc2",  "SDec2",
-                "lDesc2", false, false, (short)2, (short)2, "fbiCode2", 2.0f, 2.0f);
-        DBMS.addRecord("TEST3", "2001/12/12 03:40:12 PM", "Block3", "IUCR3", "pDesc3",  "SDec3",
-                "lDesc3", false, false, (short)3, (short)3, "fbiCode3", 3.0f, 3.0f);
+    void getRecordsTest() throws SQLException, ClassNotFoundException, ParseException {
+        addRecords(5);
 
         ArrayList<Integer> ids = new ArrayList<>(Arrays.asList(1, 2));
         ArrayList<CrimeRecord> records = DBMS.getRecords(ids);
@@ -84,14 +115,8 @@ public class DBMSTest {
      * @throws ClassNotFoundException
      */
     @Test
-    void getAllRecordsTest() throws SQLException, ClassNotFoundException {
-        //Add some data
-        DBMS.addRecord("TEST1", "2001/12/12 03:40:12 PM", "Block1", "IUCR1", "pDesc1",  "SDec1",
-                "lDesc1", false, false, (short)1, (short)1, "fbiCode1", 1.0f, 1.0f);
-        DBMS.addRecord("TEST2", "2001/12/12 03:40:12 PM", "Block2", "IUCR2", "pDesc2",  "SDec2",
-                "lDesc2", false, false, (short)2, (short)2, "fbiCode2", 2.0f, 2.0f);
-        DBMS.addRecord("TEST3", "2001/12/12 03:40:12 PM", "Block3", "IUCR3", "pDesc3",  "SDec3",
-                "lDesc3", false, false, (short)3, (short)3, "fbiCode3", 3.0f, 3.0f);
+    void getAllRecordsTest() throws SQLException, ClassNotFoundException, ParseException {
+        addRecords(5);
 
         ResultSet results = DBMS.getAllRecords();
         results.next();
@@ -109,14 +134,8 @@ public class DBMSTest {
      * @throws ClassNotFoundException
      */
     @Test
-    void deleteRecordTest() throws SQLException, ClassNotFoundException {
-        //Add some data
-        DBMS.addRecord("TEST1", "2001/12/12 03:40:12 PM", "Block1", "IUCR1", "pDesc1",  "SDec1",
-                "lDesc1", false, false, (short)1, (short)1, "fbiCode1", 1.0f, 1.0f);
-        DBMS.addRecord("TEST2", "2001/12/12 03:40:12 PM", "Block2", "IUCR2", "pDesc2",  "SDec2",
-                "lDesc2", false, false, (short)2, (short)2, "fbiCode2", 2.0f, 2.0f);
-        DBMS.addRecord("TEST3", "2001/12/12 03:40:12 PM", "Block3", "IUCR3", "pDesc3",  "SDec3",
-                "lDesc3", false, false, (short)3, (short)3, "fbiCode3", 3.0f, 3.0f);
+    void deleteRecordTest() throws SQLException, ClassNotFoundException, ParseException {
+        addRecords(5);
 
         int oldSize = DBMS.getDBSize();
 

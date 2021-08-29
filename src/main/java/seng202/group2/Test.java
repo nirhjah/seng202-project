@@ -2,32 +2,69 @@ package seng202.group2;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
- * THIS IS A TEMPORARY TESTING CLASS. DO NOT HAVE THIS WHEN MERGING WITH MASTER
+ * THIS IS A TEMPORARY MANUAL TESTING CLASS. Use this as you wish! I have left this here so that you can see some methods of testing.
  */
 
 public class Test {
-    public static  void main(String[] args) throws SQLException, ClassNotFoundException {
+    private static final String DATE_FORMAT = "yyyy/MM/dd hh:mm:ss a";
+
+    public static  void main(String[] args) throws SQLException, ClassNotFoundException, ParseException {
         ActiveData activeData = new ActiveData();
         ResultSet results;
 
         DBMS.clearDB();
 
         //Add some data
-        DBMS.addRecord("TEST1", "2001/12/12 03:40:12 PM", "Block1", "IUCR1", "pDesc1",  "SDec1",
-                "lDesc1", false, false, (short)1, (short)1, "fbiCode1", 1.0f, 1.0f);
-        DBMS.addRecord("TEST2", "2001/12/12 03:40:12 PM", "Block2", "IUCR2", "pDesc2",  "SDec2",
-                "lDesc2", false, false, (short)2, (short)2, "fbiCode2", 2.0f, 2.0f);
-        DBMS.addRecord("TEST2", "2001/12/12 03:40:12 PM", "Block2", "IUCR2", "pDesc2",  "SDec2",
-                "lDesc2", false, false, (short)2, (short)2, "fbiCode2", 2.0f, 2.0f);
-        DBMS.addRecord("TEST3", "2001/12/12 03:40:12 PM", "Block3", "IUCR3", "pDesc3",  "SDec3",
-                "lDesc3", false, false, (short)3, (short)3, "fbiCode3", 3.0f, 3.0f);
+        for (int i=1; i < 5; i++) {
+            String num = Integer.toString(i);
+            CrimeRecord record = new CrimeRecord();
+            record.setCaseNum("TEST" + num);
 
+            //Convert String from db to Calendar
+            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(sdf.parse("2001/12/12 03:40:12 PM"));
+            record.setDate(cal);
+
+            record.setBlock("Block" + num);
+            record.setIucr("IUCR" + num);
+            record.setPrimaryDescription("pDesc" + num);
+            record.setSecondaryDescription("sDesc" + num);
+            record.setLocationDescription("lDesc" + num);
+            record.setArrest(false);
+            record.setDomestic(false);
+            record.setWard((short) (int) Integer.valueOf(num));
+            record.setBeat((short) (int) Integer.valueOf(num));
+            record.setFbiCode("fbiCode" + num);
+            record.setLongitude((float)(int) Integer.valueOf(num));
+            record.setLatitude((float)(int) Integer.valueOf(num));
+            DBMS.addRecord(record);
+        }
+
+        //Convert String from db to Calendar
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(sdf.parse("2001/12/12 03:40:12 PM"));
+
+        Calendar time = cal;
+        int year = time.get(Calendar.YEAR);
+        int month = time.get(Calendar.MONTH) + 1; // Note: zero based!
+        int day = time.get(Calendar.DAY_OF_MONTH);
+        int hour = time.get(Calendar.HOUR_OF_DAY);
+        int minute = time.get(Calendar.MINUTE);
+        int second = time.get(Calendar.SECOND);
+        int a = time.get(Calendar.AM_PM);
+
+        System.out.println(String.format("%d/%02d/%02d %02d:%02d:%02d ", year, month, day, hour, minute, second) + ((a == 0)? "AM": "PM")); // + ((a == 0)? "AM": "PM")
 
         CrimeRecord record = DBMS.getRecord(1);
 
-        System.out.println(record.getDate());
+        System.out.println(record.getDate().toString());
     }
 }

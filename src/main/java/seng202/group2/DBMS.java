@@ -189,26 +189,11 @@ public class DBMS {
     /**
      * Adds a record to the database.
      *
-     * @param caseNum
-     * @param date
-     * @param block
-     * @param IUCR
-     * @param primaryDescription
-     * @param secondaryDescription
-     * @param locationDescription
-     * @param arrest
-     * @param domestic
-     * @param beat
-     * @param ward
-     * @param fbiCode
-     * @param latitude
-     * @param longitude
+     * @param record -- CrimeRecord to add. This CrimeRecord does not need an id assigned
      * @throws SQLException
      * @throws ClassNotFoundException
      */
-    public static void addRecord(String caseNum, String date, String block, String IUCR, String primaryDescription, String secondaryDescription,
-                           String locationDescription, boolean arrest, boolean domestic, short beat, short ward, String fbiCode, float latitude,
-                           float longitude) throws SQLException, ClassNotFoundException {
+    public static void addRecord(CrimeRecord record) throws SQLException, ClassNotFoundException {
         if (conn == null) {
             getConnection();
         }
@@ -225,20 +210,31 @@ public class DBMS {
         //Insert into database
         PreparedStatement state = conn.prepareStatement("INSERT INTO records values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
         state.setInt(1, idCounter);
-        state.setString(2, caseNum);
-        state.setString(3, date);
-        state.setString(4,block);
-        state.setString(5,IUCR);
-        state.setString(6,primaryDescription);
-        state.setString(7,secondaryDescription);
-        state.setString(8,locationDescription);
-        state.setBoolean(9, arrest);
-        state.setBoolean(10, domestic);
-        state.setShort(11, beat);
-        state.setShort(12, ward);
-        state.setString(13, fbiCode);
-        state.setFloat(14, latitude);
-        state.setFloat(15, longitude);
+        state.setString(2, record.getCaseNum());
+
+        Calendar time = record.getDate();
+        int year = time.get(Calendar.YEAR);
+        int month = time.get(Calendar.MONTH) + 1; // Note: zero based!
+        int day = time.get(Calendar.DAY_OF_MONTH);
+        int hour = time.get(Calendar.HOUR_OF_DAY);
+        int minute = time.get(Calendar.MINUTE);
+        int second = time.get(Calendar.SECOND);
+        int a = time.get(Calendar.AM_PM);
+        state.setString(3, String.format("%d/%02d/%02d %02d:%02d:%02d ", year, month, day, hour, minute, second) + ((a == 0)? "AM": "PM"));
+
+
+        state.setString(4,record.getBlock());
+        state.setString(5, record.getIucr());
+        state.setString(6,record.getPrimaryDescription());
+        state.setString(7,record.getSecondaryDescription());
+        state.setString(8, record.getLocationDescription());
+        state.setBoolean(9, record.getArrest());
+        state.setBoolean(10, record.getDomestic());
+        state.setShort(11, record.getBeat());
+        state.setShort(12, record.getWard());
+        state.setString(13, record.getFbiCode());
+        state.setFloat(14, record.getLatitude());
+        state.setFloat(15, record.getLongitude());
         state.execute();
         idCounter++;
     }
