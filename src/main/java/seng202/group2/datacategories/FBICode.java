@@ -17,24 +17,24 @@ public class FBICode extends DataCategory {
 	public void setCategoryValue(CrimeRecord record, Object data) {
 		if (data == null)
 			record.setFbiCode(null);
-		else if (data instanceof NIBRSCode)
-			record.setFbiCode((NIBRSCode) data);
+		else if (data instanceof String)
+			record.setFbiCode((String) data);
 		else
 			throw new IllegalArgumentException();
 	}
 
 	@Override
-	public NIBRSCode getCategoryValue(CrimeRecord record) {
+	public String getCategoryValue(CrimeRecord record) {
 		return record.getFbiCode();
 	}
 
 	@Override
-	public NIBRSCode parseString(String value) {
+	public String parseString(String value) {
 		if (value == "")
 			return null;
 		while (value.startsWith("0"))
 			value = value.replaceFirst("0", "");
-		return NIBRSCodeDictionary.getCode(value);
+		return value;
 	}
 
 }
