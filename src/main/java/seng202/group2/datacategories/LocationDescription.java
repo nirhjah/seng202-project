@@ -20,7 +20,7 @@ public class LocationDescription extends DataCategory {
 		else if (data instanceof String)
 			record.setLocationDescription((String) data);
 		else
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Data was of an incorrect type for LocationDescription.");
 	}
 
 	@Override
