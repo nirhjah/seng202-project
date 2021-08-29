@@ -67,7 +67,7 @@ class DomesticTest {
 		category.setCategoryValue(record, domestic);
 		
 		// Check value set correctly
-		assertEquals(domestic, record.getArrest());
+		assertEquals(domestic, record.getDomestic());
 	}
 	
 	/**
