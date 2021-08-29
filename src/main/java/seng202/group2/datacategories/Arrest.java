@@ -43,7 +43,7 @@ public class Arrest extends DataCategory {
 		else if (value.equals("N") || value.equals("FALSE"))
 			return false;
 		else
-			throw new IllegalArgumentException("");
+			throw new IllegalArgumentException("String was invalid.");
 	}
 
 }
