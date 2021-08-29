@@ -41,7 +41,7 @@ public class Latitude extends DataCategory {
 		try {
 			Float latitude = Float.parseFloat(value);
 			
-			if (!(-90.0f < latitude || latitude < 90.0f))
+			if (!(-90.0f <= latitude && latitude <= 90.0f))
 				throw new IllegalArgumentException("Latitude out of bounds.");
 			
 			return latitude;
