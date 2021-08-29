@@ -33,6 +33,18 @@ import java.util.Calendar;
  *
  */
 public enum DataCategory {
+	/** ID associated with crime record in database */
+	ID {
+		public void setCategoryValue(CrimeRecord record, Object data) {
+			record.setID((int) data);
+		}
+
+		public Integer getCategoryValue(CrimeRecord record) {
+			return record.getID();
+		}
+
+		public String getSQL() { return "id";}
+	},
 	
 	/** The case number associated with the crime record in the police database */
 	CASE_NUM {
@@ -43,6 +55,8 @@ public enum DataCategory {
 		public String getCategoryValue(CrimeRecord record) {
 			return record.getCaseNum();
 		}
+
+		public String getSQL() { return "caseNum";}
 	},
 	
 	/** The date and time at which the crime incident occurred */
@@ -54,6 +68,8 @@ public enum DataCategory {
 		public Calendar getCategoryValue(CrimeRecord record) {
 			return record.getDate();
 		}
+
+		public String getSQL() { return "date";}
 	},
 	
 	/**
@@ -68,6 +84,8 @@ public enum DataCategory {
 		public String getCategoryValue(CrimeRecord record) {
 			return record.getBlock();
 		}
+
+		public String getSQL() { return "block";}
 	},
 	
 	/**
@@ -82,6 +100,8 @@ public enum DataCategory {
 		public String getCategoryValue(CrimeRecord record) {
 			return record.getIucr();
 		}
+
+		public String getSQL() { return "IUCR";}
 	},
 	
 	/** A textual description of the type of the crime incident */
@@ -93,6 +113,8 @@ public enum DataCategory {
 		public String getCategoryValue(CrimeRecord record) {
 			return record.getPrimaryDescription();
 		}
+
+		public String getSQL() { return "primaryDescription";}
 	},
 	
 	/**
@@ -107,6 +129,8 @@ public enum DataCategory {
 		public String getCategoryValue(CrimeRecord record) {
 			return record.getSecondaryDescription();
 		}
+
+		public String getSQL() { return "secondaryDescription";}
 	},
 	
 	/** A textual description of the location where the crime incident occurred */
@@ -118,6 +142,8 @@ public enum DataCategory {
 		public String getCategoryValue(CrimeRecord record) {
 			return record.getLocationDescription();
 		}
+
+		public String getSQL() { return "locationDescription";}
 	},
 	
 	/** True if the crime incident resulted in an arrest being made */
@@ -129,6 +155,8 @@ public enum DataCategory {
 		public Boolean getCategoryValue(CrimeRecord record) {
 			return record.getArrest();
 		}
+
+		public String getSQL() { return "arrest";}
 	},
 	
 	/** True if the crime incident was classified as domestic */
@@ -140,6 +168,8 @@ public enum DataCategory {
 		public Boolean getCategoryValue(CrimeRecord record) {
 			return record.getDomestic();
 		}
+
+		public String getSQL() { return "domestic";}
 	},
 	
 	/** 
@@ -154,6 +184,8 @@ public enum DataCategory {
 		public Short getCategoryValue(CrimeRecord record) {
 			return record.getBeat();
 		}
+
+		public String getSQL() { return "beat";}
 	},
 	
 	/** Election precinct where the crime incident occurred. */
@@ -165,6 +197,8 @@ public enum DataCategory {
 		public Short getCategoryValue(CrimeRecord record) {
 			return record.getWard();
 		}
+
+		public String getSQL() { return "ward";}
 	},
 	
 	/**
@@ -179,6 +213,8 @@ public enum DataCategory {
 		public String getCategoryValue(CrimeRecord record) {
 			return record.getFbiCode();
 		}
+
+		public String getSQL() { return "fbiCode";}
 	},
 	
 	/** The latitudinal location where the crime incident occurred. */
@@ -190,6 +226,8 @@ public enum DataCategory {
 		public Float getCategoryValue(CrimeRecord record) {
 			return record.getLatitude();
 		}
+
+		public String getSQL() { return "latitude";}
 	},
 	
 	/** The longitudinal location where the crime incident occurred. */
@@ -201,6 +239,8 @@ public enum DataCategory {
 		public Float getCategoryValue(CrimeRecord record) {
 			return record.getLongitude();
 		}
+
+		public String getSQL() { return "longitude";}
 	};
 	
 	
@@ -219,4 +259,11 @@ public enum DataCategory {
 	 * @return The value of the CrimeRecord's attribute.
 	 */
 	public abstract Object getCategoryValue(CrimeRecord record);
+
+	/**
+	 * Returns the SQL string format of the category
+	 *
+	 * @return SQL String
+	 */
+	public abstract String getSQL();
 }
