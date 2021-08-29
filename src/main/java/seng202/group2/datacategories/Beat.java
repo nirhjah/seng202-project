@@ -13,22 +13,30 @@ public class Beat extends DataCategory {
 
 	@Override
 	public void setCategoryValue(CrimeRecord record, Object data) {
+		if (record == null)
+			throw new IllegalArgumentException("Cannot set attribute value of null record.");
+		
 		if (data == null)
 			record.setBeat(null);
 		else if (data instanceof Short)
 			record.setBeat((Short) data);
 		else
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Data was of an incorrect type for Beat.");
 	}
 
 	@Override
 	public Short getCategoryValue(CrimeRecord record) {
+		if (record == null)
+			throw new IllegalArgumentException("Cannot get attribute value of null record.");
+		
 		return record.getBeat();
 	}
 
 	@Override
 	public Short parseString(String value) {
-		if (value == "")
+		if (value == null)
+			throw new IllegalArgumentException("Cannot parse null string.");
+		else if (value == "")
 			return null;
 		
 		try {
