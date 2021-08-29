@@ -18,7 +18,7 @@ class FBICodeTest {
 	/** A crime record to use when testing methods of DataCategory */
 	private CrimeRecord record;
 	
-	private CaseNumber category = new CaseNumber();
+	private FBICode category = new FBICode();
 	
 	/**
 	 * Reset the values of the test record's attributes to default before each test.
@@ -95,7 +95,7 @@ class FBICodeTest {
 		record.setFbiCode(fbiCode);
 		
 		// Check value of record attribute gotten using DataCategory method is correct
-		assertEquals(category.getCategoryValue(record), fbiCode);
+		assertEquals(fbiCode, category.getCategoryValue(record));
 		// Check return type of DataCategory method correct
 		assertTrue(category.getCategoryValue(record) instanceof String);
 	}
@@ -119,7 +119,7 @@ class FBICodeTest {
 	void testParseString_Valid() {
 		String fbiCode = "08A";
 		
-		assertEquals(fbiCode, category.parseString(fbiCode));
+		assertEquals("8A", category.parseString(fbiCode));
 	}
 	
 	/**
