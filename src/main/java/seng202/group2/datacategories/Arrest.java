@@ -12,21 +12,30 @@ public class Arrest extends DataCategory {
 
 	@Override
 	public void setCategoryValue(CrimeRecord record, Object data) {
+		if (record == null)
+			throw new IllegalArgumentException("Cannot set attribute value of null record.");
+		
 		if (data == null)
 			record.setArrest(null);
 		else if (data instanceof Boolean)
 			record.setArrest((Boolean) data);
 		else
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Data was of an incorrect type for Arrest.");
 	}
 
 	@Override
 	public Boolean getCategoryValue(CrimeRecord record) {
+		if (record == null)
+			throw new IllegalArgumentException("Cannot get attribute value of null record.");
+		
 		return record.getArrest();
 	}
 
 	@Override
 	public Boolean parseString(String value) {
+		if (value == null)
+			throw new IllegalArgumentException("Cannot parse null string.");
+		
 		if (value == "")
 			return null;
 		else if (value.equals("Y"))
@@ -34,7 +43,7 @@ public class Arrest extends DataCategory {
 		else if (value.equals("N"))
 			return false;
 		else
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("");
 	}
 
 }
