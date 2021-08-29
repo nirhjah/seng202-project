@@ -40,7 +40,7 @@ class FBICodeTest {
 		category.setCategoryValue(record, fbiCode);
 		
 		// Check value set correctly
-		assertEquals(fbiCode, record.getCaseNum());
+		assertEquals(fbiCode, record.getFbiCode());
 	}
 	
 	/**
@@ -67,7 +67,7 @@ class FBICodeTest {
 		category.setCategoryValue(record, fbiCode);
 		
 		// Check value set correctly
-		assertEquals(fbiCode, record.getCaseNum());
+		assertEquals(fbiCode, record.getFbiCode());
 	}
 	
 	/**
@@ -92,7 +92,7 @@ class FBICodeTest {
 		String fbiCode = "08A";
 		
 		// Set value of record attribute
-		record.setCaseNum(fbiCode);
+		record.setFbiCode(fbiCode);
 		
 		// Check value of record attribute gotten using DataCategory method is correct
 		assertEquals(category.getCategoryValue(record), fbiCode);
