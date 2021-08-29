@@ -38,9 +38,9 @@ public class Arrest extends DataCategory {
 		
 		if (value == "")
 			return null;
-		else if (value.equals("Y"))
+		else if (value.equals("Y") || value.equals("TRUE"))
 			return true;
-		else if (value.equals("N"))
+		else if (value.equals("N") || value.equals("FALSE"))
 			return false;
 		else
 			throw new IllegalArgumentException("");
