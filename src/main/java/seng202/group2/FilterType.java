@@ -1,5 +1,7 @@
 package seng202.group2;
 
+import seng202.group2.datacategories.DataCategory;
+
 public enum FilterType {
     /** Category match */
     EQ {
