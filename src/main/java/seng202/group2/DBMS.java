@@ -111,9 +111,7 @@ public class DBMS {
             crimeRecord.setDate(cal);
 
             crimeRecord.setBlock(record.getString("block"));
-            crimeRecord.setIucr(record.getString("IUCR"));
-            crimeRecord.setPrimaryDescription(record.getString("primaryDescription"));
-            crimeRecord.setSecondaryDescription(record.getString("secondaryDescription"));
+            crimeRecord.setIucr(IUCRCodeDictionary.getCode(record.getString("IUCR")));
             crimeRecord.setLocationDescription(record.getString("locationDescription"));
             crimeRecord.setArrest(record.getBoolean("arrest"));
             crimeRecord.setDomestic(record.getBoolean("domestic"));
@@ -224,7 +222,7 @@ public class DBMS {
 
 
         state.setString(4,record.getBlock());
-        state.setString(5, record.getIucr());
+        state.setString(5, record.getIucr().IUCR);
         state.setString(6,record.getPrimaryDescription());
         state.setString(7,record.getSecondaryDescription());
         state.setString(8, record.getLocationDescription());
