@@ -1,5 +1,7 @@
 package seng202.group2.datacategories;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -12,6 +14,12 @@ import seng202.group2.CrimeRecord;
  *
  */
 public class Date extends DataCategory {
+	
+	/** Date formats that may be encountered while parsing */
+	public static String[] dateFormats = {
+			"MM/dd/yyyy HH:mm:ss aa",
+			"yyyy-MM-dd'T'HH:mm:ss"
+	};
 
 	@Override
 	public void setCategoryValue(CrimeRecord record, Object data) {
@@ -41,33 +49,21 @@ public class Date extends DataCategory {
 		else if (value == "")
 			return null;
 		
-		// Parses data from format "dd/mm/yyyy hh:mm:ss PM"
-		try {
-			String[] splitValue = value.split(" ");
-			
-			// Split date/time into date, time and am/pm
-			String date = splitValue[0];
-			String time = splitValue[1];
-			String am_pm = splitValue[2];
-			
-			// Get date in day, month, year
-			String[] splitDate = date.split("/");
-			int day = Integer.parseInt(splitDate[1]);
-			int month = Integer.parseInt(splitDate[0]);
-			int year = Integer.parseInt(splitDate[2]);
-			
-			// Get time in hour, minute, second
-			String[] splitTime = time.split(":");
-			int hour = (am_pm == "PM") ?  Integer.parseInt(splitTime[0]) + 12 : Integer.parseInt(splitTime[0]);
-			int minute = Integer.parseInt(splitTime[1]);
-			int second = Integer.parseInt(splitTime[2]);
-			
-			// Return a calender object representing date/time
-			return new GregorianCalendar(year, month, day, hour, minute, second);
-			
-		} catch (Exception error) {
-			throw new IllegalArgumentException(error);
+		java.util.Date date = null;
+		for (int i = 0; i < dateFormats.length; i++) {
+			try {
+				date = new SimpleDateFormat(dateFormats[i]).parse(value);
+			} catch (ParseException e) {
+				continue;
+			}
 		}
+		
+		if (date == null)
+			throw new IllegalArgumentException("Date was not in a supported format.");
+		
+		Calendar parsedDate = Calendar.getInstance();
+		parsedDate.setTime(date);
+		return parsedDate;
 	}
 
 }
