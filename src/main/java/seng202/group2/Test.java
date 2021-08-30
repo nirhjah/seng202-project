@@ -33,9 +33,7 @@ public class Test {
             record.setDate(cal);
 
             record.setBlock("Block" + num);
-            record.setIucr("IUCR" + num);
-            record.setPrimaryDescription("pDesc" + num);
-            record.setSecondaryDescription("sDesc" + num);
+            record.setIucr(IUCRCodeDictionary.getCode("110"));
             record.setLocationDescription("lDesc" + num);
             record.setArrest(false);
             record.setDomestic(false);
