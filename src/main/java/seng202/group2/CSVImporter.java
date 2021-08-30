@@ -57,29 +57,36 @@ public class CSVImporter extends DataImporter {
 	private void parseCategories() throws IOException {
 		
 		categoryMap = new HashMap<Integer, DataCategory>();
-		String[] categories = {};
+		String[] categoryLine = {};
 		
 		try {
 			// Try to parse header line into String[]
-			categories = fileReader.readNextSilently();
+			categoryLine = fileReader.readNextSilently();
 		} catch (IOException error) {
 			throw error;
 		}
 		
 		// Map supported DataCategory's to their index in a row
-		for (int i = 0; i < categories.length; i++) {
+		for (int i = 0; i < categoryLine.length; i++) {
 			DataCategory category;
 			try {
 				// Try to determine DataCategory of column from header string
-				category = DataCategory.getCategoryFromString(categories[i]);
-				categoryMap.put(i, category);
-			} catch (UnsupportedCategoryException e) {
+				category = DataCategory.getCategoryFromString(categoryLine[i]);
+				
+				if (category instanceof Importable)
+					categoryMap.put(i, category);
+				else
+					throw new UnsupportedCategoryException("Category exists but is not importable.");
+				
+			} catch (UnsupportedCategoryException error) {
 				// If DataCategory could not be determined from header string
 				// It is assumed to be an unsupported category of data
-				System.out.println("Did not import unsupported data category: " + categories[i]);
+				System.out.println("Did not import data category " + categoryLine[i] + ": " + error.getMessage());
 			}
 			
 		}
+		
+		System.out.print('\n');
 	}
 	
 	/**
