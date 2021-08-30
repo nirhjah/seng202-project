@@ -1,4 +1,4 @@
-package seng202.group2;
+package seng202.group2.model;
 
 import java.sql.*;
 import java.text.ParseException;
@@ -13,8 +13,10 @@ import java.util.Calendar;
 public class DBMS {
 
     private static Connection conn;
+    private static ActiveData activeData = new ActiveData();
     private static int idCounter = -1;
     private static  boolean hasDataBase = false;
+    //String.format("%d/%02d/%02d %02d:%02d:%02d ", year, month, day, hour, minute, second) + ((a == 0)? "AM": "PM")
     private static final String DATE_FORMAT = "yyyy/MM/dd hh:mm:ss a";
 
     /**
@@ -291,5 +293,9 @@ public class DBMS {
 
         res.next();
         return res.getInt("total");
+    }
+
+    public static ActiveData getActiveData() {
+        return activeData;
     }
 }

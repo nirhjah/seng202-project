@@ -1,4 +1,4 @@
-package seng202.group2;
+package seng202.group2.model;
 
 public enum FilterType {
     /** Category match */

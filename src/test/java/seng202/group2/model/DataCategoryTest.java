@@ -1,4 +1,4 @@
-package seng202.group2;
+package seng202.group2.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,6 +7,8 @@ import java.util.GregorianCalendar;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import seng202.group2.model.CrimeRecord;
+import seng202.group2.model.DataCategory;
 
 /**
  * Tests the utility methods of DataCategory for setting and getting the value of a particular

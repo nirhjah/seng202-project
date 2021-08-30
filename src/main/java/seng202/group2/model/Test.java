@@ -1,10 +1,11 @@
-package seng202.group2;
+package seng202.group2.model;
+
+import seng202.group2.controller.ObserverTest;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -15,13 +16,14 @@ public class Test {
     private static final String DATE_FORMAT = "yyyy/MM/dd hh:mm:ss a";
 
     public static  void main(String[] args) throws SQLException, ClassNotFoundException, ParseException {
-        ActiveData activeData = new ActiveData();
+        ActiveData activeData = DBMS.getActiveData();
+        ObserverTest observer = new ObserverTest();
         ResultSet results;
 
         DBMS.clearDB();
 
         //Add some data
-        for (int i=1; i < 5; i++) {
+        for (int i=1; i <= 5; i++) {
             String num = Integer.toString(i);
             CrimeRecord record = new CrimeRecord();
             record.setCaseNum("TEST" + num);
@@ -47,24 +49,7 @@ public class Test {
             DBMS.addRecord(record);
         }
 
-        //Convert String from db to Calendar
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(sdf.parse("2001/12/12 03:40:12 PM"));
-
-        Calendar time = cal;
-        int year = time.get(Calendar.YEAR);
-        int month = time.get(Calendar.MONTH) + 1; // Note: zero based!
-        int day = time.get(Calendar.DAY_OF_MONTH);
-        int hour = time.get(Calendar.HOUR_OF_DAY);
-        int minute = time.get(Calendar.MINUTE);
-        int second = time.get(Calendar.SECOND);
-        int a = time.get(Calendar.AM_PM);
-
-        System.out.println(String.format("%d/%02d/%02d %02d:%02d:%02d ", year, month, day, hour, minute, second) + ((a == 0)? "AM": "PM")); // + ((a == 0)? "AM": "PM")
-
-        CrimeRecord record = DBMS.getRecord(1);
-
-        System.out.println(record.getDate().toString());
+        activeData.addObserver(observer);
+        activeData.updateObservers();
     }
 }

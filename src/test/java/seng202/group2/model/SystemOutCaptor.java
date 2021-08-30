@@ -1,4 +1,4 @@
-package seng202.group2;
+package seng202.group2.model;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

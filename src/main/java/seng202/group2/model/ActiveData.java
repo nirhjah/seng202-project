@@ -1,4 +1,4 @@
-package seng202.group2;
+package seng202.group2.model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
  *
  * TODO Add Junit tests.
  */
-public class ActiveData {
+public class ActiveData extends DataSource{
     /** List of filters */
     private ArrayList<Filter> filters = new ArrayList<>();
 
@@ -20,6 +20,8 @@ public class ActiveData {
      */
     public void addFilter(Filter filter) {
         filters.add(filter);
+
+        updateObservers();
     }
 
     /**
@@ -30,6 +32,8 @@ public class ActiveData {
     public void removeFilter(Filter filter) {
         if (filters.contains(filter)) {
             filters.remove(filter);
+
+            updateObservers();
         }
     }
 
@@ -69,8 +73,12 @@ public class ActiveData {
             first = false;
         }
 
+        if (first) {
+            sortQuery += " ORDER BY id";
+        }
+
         //Get list of IDs
-        System.out.println(sortQuery + whereQuery + ";");
+        //System.out.println(sortQuery + whereQuery + ";");
         ResultSet results = DBMS.customQuery(sortQuery + whereQuery + ";");
         ArrayList<Integer> IDs = new ArrayList<>();
 

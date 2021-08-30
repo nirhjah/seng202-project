@@ -1,4 +1,4 @@
-package seng202.group2;
+package seng202.group2.model;
 
 /**
  * Filters allow specific data and data order to be retrieved from the database.
