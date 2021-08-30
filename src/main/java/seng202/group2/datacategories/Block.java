@@ -9,7 +9,7 @@ import seng202.group2.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class Block extends DataCategory {
+public class Block extends DataCategory implements Importable {
 
 	@Override
 	public void setCategoryValue(CrimeRecord record, Object data) {

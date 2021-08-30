@@ -10,7 +10,7 @@ import seng202.group2.IUCRCodeDictionary;
  * @author Connor Dunlop
  *
  */
-public class IUCRCode extends DataCategory {
+public class IUCRCode extends DataCategory implements Importable {
 
 	@Override
 	public void setCategoryValue(CrimeRecord record, Object data) {

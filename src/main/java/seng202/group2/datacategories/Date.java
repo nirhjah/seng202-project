@@ -13,7 +13,7 @@ import seng202.group2.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class Date extends DataCategory {
+public class Date extends DataCategory implements Importable {
 	
 	/** Date formats that may be encountered while parsing */
 	public static String[] dateFormats = {
