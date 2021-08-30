@@ -3,7 +3,6 @@ package seng202.group2.datacategories;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import seng202.group2.CrimeRecord;
 
@@ -17,8 +16,10 @@ public class Date extends DataCategory implements Importable {
 	
 	/** Date formats that may be encountered while parsing */
 	public static String[] dateFormats = {
-			"MM/dd/yyyy HH:mm:ss aa",
-			"yyyy-MM-dd'T'HH:mm:ss"
+			"MM'/'dd'/'yyyy hh':'mm':'ss a",
+			"MM'/'dd'/'yyyy HH':'mm':'ss",
+			"MM'-'dd'-'yyyy HH':'mm':'ss",
+			"yyyy'-'MM'-'dd'T'HH':'mm':'ss"
 	};
 
 	@Override
@@ -53,8 +54,9 @@ public class Date extends DataCategory implements Importable {
 		for (int i = 0; i < dateFormats.length; i++) {
 			try {
 				date = new SimpleDateFormat(dateFormats[i]).parse(value);
+				break;
 			} catch (ParseException e) {
-				continue;
+				date = null;
 			}
 		}
 		
