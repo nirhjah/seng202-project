@@ -33,4 +33,9 @@ public class SecondaryDescription extends DataCategory {
 		return value;
 	}
 
+	@Override
+	public String getSQL() {
+		return "secondaryDescription";
+	}
+
 }

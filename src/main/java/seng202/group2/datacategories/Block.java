@@ -41,4 +41,9 @@ public class Block extends DataCategory implements Importable {
 		return value;
 	}
 
+	@Override
+	public String getSQL() {
+		return "block";
+	}
+
 }

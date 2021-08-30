@@ -39,6 +39,13 @@ public abstract class DataCategory {
 	 */
 	public abstract Object parseString(String value) throws UnsupportedCategoryException;
 	
+	/**
+	 * Returns the SQL string format of the category
+	 *
+	 * @return SQL String
+	 */
+	public abstract String getSQL();
+	
 	public static DataCategory getCategoryFromString(String categoryString) throws UnsupportedCategoryException {
 		if (categoryString == null)
 			throw new IllegalArgumentException("No category string specified.");

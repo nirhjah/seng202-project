@@ -32,4 +32,9 @@ public class PrimaryDescription extends DataCategory {
 		return value;
 	}
 
+	@Override
+	public String getSQL() {
+		return "primaryDescription";
+	}
+
 }

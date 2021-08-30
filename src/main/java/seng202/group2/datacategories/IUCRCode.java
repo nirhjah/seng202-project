@@ -44,4 +44,9 @@ public class IUCRCode extends DataCategory implements Importable {
 		return IUCRCodeDictionary.getCode(value);
 	}
 
+	@Override
+	public String getSQL() {
+		return "IUCR";
+	}
+
 }

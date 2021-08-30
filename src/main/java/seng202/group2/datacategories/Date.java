@@ -68,4 +68,9 @@ public class Date extends DataCategory implements Importable {
 		return parsedDate;
 	}
 
+	@Override
+	public String getSQL() {
+		return "date";
+	}
+
 }

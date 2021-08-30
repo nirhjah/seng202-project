@@ -50,4 +50,9 @@ public class Latitude extends DataCategory implements Importable {
 		}
 	}
 
+	@Override
+	public String getSQL() {
+		return "latitude";
+	}
+
 }

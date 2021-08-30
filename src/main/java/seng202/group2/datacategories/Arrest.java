@@ -46,4 +46,9 @@ public class Arrest extends DataCategory implements Importable {
 			throw new IllegalArgumentException("String was invalid.");
 	}
 
+	@Override
+	public String getSQL() {
+		return "arrest";
+	}
+
 }

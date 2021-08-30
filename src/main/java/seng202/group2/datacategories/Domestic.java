@@ -46,4 +46,9 @@ public class Domestic extends DataCategory implements Importable {
 			throw new IllegalArgumentException();
 	}
 
+	@Override
+	public String getSQL() {
+		return "domestic";
+	}
+
 }

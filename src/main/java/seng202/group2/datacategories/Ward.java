@@ -45,4 +45,9 @@ public class Ward extends DataCategory implements Importable {
 		}
 	}
 
+	@Override
+	public String getSQL() {
+		return "ward";
+	}
+
 }
