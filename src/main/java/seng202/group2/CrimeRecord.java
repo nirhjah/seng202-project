@@ -20,7 +20,7 @@ public class CrimeRecord {
 	 * NOTE: This is not final as the CrimeData must assign it an ID
 	 * TODO Discuss if this is what we are wanting.
 	 */
-	private Integer ID;
+	private int ID;
 	
 	/** The case number associated with the crime record in the police database */
 	private String caseNum;
@@ -107,11 +107,11 @@ public class CrimeRecord {
 
 	//Getters/Setters:
 
-	public Integer getID() {
+	public int getID() {
 		return ID;
 	}
 
-	public void setID(Integer ID) {
+	public void setID(int ID) {
 		this.ID = ID;
 	}
 

@@ -17,3 +17,6 @@ log/
 target/
 /bin/
 dependancy-reduced-pom.xml
+
+#Project
+CrimeRecords.db

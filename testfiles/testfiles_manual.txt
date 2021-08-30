@@ -1,0 +1,14 @@
+The folder called 'testfiles' contain potential files to test importing and error catching. 
+
+Author: Yiyang Yu
+Date: 20th August 2021
+
+Each file is named in format <index>_<testing_situation>_<interested_field>_field.xlsx
+
+<index> ranges from 1 - 50, which corresponds to the line number we are testing that file up to. Eg. 10_missing_ARREST_field.xlsx indicates that this file is being tested up to line 1 to 10 for missing ARREST field. Notice that line 1 in the file is the headings for each column and does not contain any data, and indexing starts from line 1.
+
+<testing_situation> can be for invalid, incorrect format, missing, extra data, not unique CASE ID, valid or invalid boundary cases. This indicates what type of testing situation we are error catching. 
+
+<interested_field> can be for the CASE_ID (CASE), DATE (DATE OF OCCURRENCE), BLOCK, IUCR, PRIMARY (PRIMARY DESCRIPTION), LOCATION (LOCATION DESCRIPTION), ARREST, DOMESTIC, BEAT, WARD, FBI_CD (FBI CD), X_COOR (X COORDINATE), Y_COOR (Y COORDINATE), LATITUDE, or LONGITUDE. This is the column we are interested in testing.  
+
+
