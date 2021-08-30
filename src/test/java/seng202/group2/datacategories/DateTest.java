@@ -124,25 +124,94 @@ class DateTest {
 				
 				"0000-00-00T00:00:00",
 				"2020-11-23T15:05:00",
-				"2020-08-10T07:30:00",
-				"9999-12-31T24:59:59"
+				"2020-08-10T07:30:00"
 		};
 		
 		Calendar[] parsedDates = {
-				new GregorianCalendar(0, 0, 0, 0, 0, 0),
-				new GregorianCalendar(0, 0, 0, 0, 0, 0),
-				new GregorianCalendar(2021, 6, 15, 9, 30, 0),
-				new GregorianCalendar(2021, 6, 15, 8, 10, 0),
-				new GregorianCalendar(2020, 11, 23, 15, 5, 0),
-				new GregorianCalendar(2020, 7, 29, 21, 0, 0),
-				new GregorianCalendar(0, 0, 0, 0, 0, 0),
-				new GregorianCalendar(2020, 11, 23, 15, 5, 0),
-				new GregorianCalendar(2020, 8, 10, 7, 30, 0),
-				new GregorianCalendar(9999, 12, 31, 24, 59, 59)
+				new Calendar.Builder().setFields(
+						Calendar.YEAR, 0,
+						Calendar.MONTH, -1,
+						Calendar.DAY_OF_MONTH, 0,
+						Calendar.HOUR_OF_DAY, 0,
+						Calendar.MINUTE, 0,
+						Calendar.SECOND, 0
+						).build(),
+				
+				new Calendar.Builder().setFields(
+						Calendar.YEAR, 0,
+						Calendar.MONTH, -1,
+						Calendar.DAY_OF_MONTH, 0,
+						Calendar.HOUR_OF_DAY, 0,
+						Calendar.MINUTE, 0,
+						Calendar.SECOND, 0
+						).build(),
+				
+				new Calendar.Builder().setFields(
+						Calendar.YEAR, 2021,
+						Calendar.MONTH, 5,
+						Calendar.DAY_OF_MONTH, 15,
+						Calendar.HOUR_OF_DAY, 9,
+						Calendar.MINUTE, 30,
+						Calendar.SECOND, 0
+						).build(),
+				
+				new Calendar.Builder().setFields(
+						Calendar.YEAR, 2021,
+						Calendar.MONTH, 5,
+						Calendar.DAY_OF_MONTH, 15,
+						Calendar.HOUR_OF_DAY, 8,
+						Calendar.MINUTE, 10,
+						Calendar.SECOND, 0
+						).build(),
+				
+				new Calendar.Builder().setFields(
+						Calendar.YEAR, 2020,
+						Calendar.MONTH, 10,
+						Calendar.DAY_OF_MONTH, 23,
+						Calendar.HOUR_OF_DAY, 15,
+						Calendar.MINUTE, 5,
+						Calendar.SECOND, 0
+						).build(),
+				
+				new Calendar.Builder().setFields(
+						Calendar.YEAR, 2020,
+						Calendar.MONTH, 6,
+						Calendar.DAY_OF_MONTH, 29,
+						Calendar.HOUR_OF_DAY, 21,
+						Calendar.MINUTE, 0,
+						Calendar.SECOND, 0
+						).build(),
+				
+				new Calendar.Builder().setFields(
+						Calendar.YEAR, 0,
+						Calendar.MONTH, -1,
+						Calendar.DAY_OF_MONTH, 0,
+						Calendar.HOUR_OF_DAY, 0,
+						Calendar.MINUTE, 0,
+						Calendar.SECOND, 0
+						).build(),
+				
+				new Calendar.Builder().setFields(
+						Calendar.YEAR, 2020,
+						Calendar.MONTH, 10,
+						Calendar.DAY_OF_MONTH, 23,
+						Calendar.HOUR_OF_DAY, 15,
+						Calendar.MINUTE, 5,
+						Calendar.SECOND, 0
+						).build(),
+				
+				new Calendar.Builder().setFields(
+						Calendar.YEAR, 2020,
+						Calendar.MONTH, 7,
+						Calendar.DAY_OF_MONTH, 10,
+						Calendar.HOUR_OF_DAY, 7,
+						Calendar.MINUTE, 30,
+						Calendar.SECOND, 0
+						).build(),
 		};
 		
 		for (int i = 0; i < validDates.length; i++) {
-			assertTrue(parsedDates[i].equals(category.parseString(validDates[i])));
+			assertEquals(parsedDates[i], category.parseString(validDates[i]));
 		}
 	}
 	
@@ -155,10 +224,6 @@ class DateTest {
 				"//::",
 				" ",
 				"Not a valid Date",
-				"13/32/9999 25:60:60",
-				"06/27/2020 13:50:50 PM",
-				"00/00/0000 00:00:00 24",
-				"9999-13-32T25:60:60"
 		};
 		
 		for (String invalidDate : invalidDates) {
