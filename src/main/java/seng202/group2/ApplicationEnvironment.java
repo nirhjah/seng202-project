@@ -12,9 +12,7 @@ public class ApplicationEnvironment {
 		File file = new File("testfiles/5_extra_arrest_field.csv");
 		DataImporter importer = new CSVImporter(file);
 		
-		CrimeData data = importer.importAllRecords();
-		
-		ArrayList<CrimeRecord> records = data.getCrimeRecords();
+		ArrayList<CrimeRecord> records = importer.importAllRecords();
 		for (CrimeRecord record : records)
 			System.out.println(record.toString());
 		

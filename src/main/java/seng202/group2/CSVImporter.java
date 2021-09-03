@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.opencsv.CSVReader;
@@ -118,17 +119,17 @@ public class CSVImporter extends DataImporter {
 	}
 	
 	@Override
-	public CrimeData importAllRecords() throws IOException {
+	public ArrayList<CrimeRecord> importAllRecords() throws IOException {
 		// Parse the header row if it has not been parsed yet.
 		if (categoryMap == null)
 			parseCategories();
 		
-		CrimeData crimeData = new CrimeData();
+		ArrayList<CrimeRecord> crimeData = new ArrayList<CrimeRecord>();
 		
 		// Read all crime records into crimeData object
 		String[] values;
 		while ((values = fileReader.readNextSilently()) != null) {
-			crimeData.addRecord(parseRecord(values));
+			crimeData.add(parseRecord(values));
 		}
 		
 		return crimeData;

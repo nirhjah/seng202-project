@@ -3,6 +3,7 @@ package seng202.group2;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * An abstract class providing an interface for importing crime data from a supported file type.
@@ -71,6 +72,6 @@ public abstract class DataImporter {
 	 * @return A CrimeData instance with all (valid) crime records from the file.
 	 * @throws IOException If an error occurs when trying to parse the file.
 	 */
-	public abstract CrimeData importAllRecords() throws IOException;
+	public abstract ArrayList<CrimeRecord> importAllRecords() throws IOException;
 	
 }
