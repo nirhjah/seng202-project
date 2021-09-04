@@ -1,5 +1,7 @@
 package seng202.group2.model;
 
+import seng202.group2.controller.IUCRCode;
+
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 

@@ -1,4 +1,4 @@
-package seng202.group2;
+package seng202.group2.controller;
 
 /**
  * This exception type is thrown when trying to import a file which

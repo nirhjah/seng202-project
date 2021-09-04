@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import seng202.group2.CrimeRecord;
+import seng202.group2.model.CrimeRecord;
+import seng202.group2.controller.IUCRCodeDictionary;
+import seng202.group2.model.datacategories.IUCRCode;
 
 /**
  * Unit tests for IUCRCode data category.
@@ -34,7 +36,7 @@ class IUCRCodeTest {
 	 */
 	@Test
 	void testSetCategoryValue_ValidData() {
-		seng202.group2.IUCRCode iucr = new seng202.group2.IUCRCode("820", "THEFT", "$500 AND UNDER", true);
+		seng202.group2.controller.IUCRCode iucr = new seng202.group2.controller.IUCRCode("820", "THEFT", "$500 AND UNDER", true);
 		
 		// Set value of record attribute using  DataCategory method
 		category.setCategoryValue(record, iucr);
@@ -61,7 +63,7 @@ class IUCRCodeTest {
 	 */
 	@Test
 	void testSetCategoryValue_NullData() {
-		seng202.group2.IUCRCode iucr = null;
+		seng202.group2.controller.IUCRCode iucr = null;
 		
 		// Set value of record attribute using  DataCategory method
 		category.setCategoryValue(record, iucr);
@@ -75,7 +77,7 @@ class IUCRCodeTest {
 	 */
 	@Test
 	void testSetCategoryValue_NullRecord() {
-		seng202.group2.IUCRCode iucr = new seng202.group2.IUCRCode("820", "THEFT", "$500 AND UNDER", true);
+		seng202.group2.controller.IUCRCode iucr = new seng202.group2.controller.IUCRCode("820", "THEFT", "$500 AND UNDER", true);
 		
 		// Try to set value of null records attribute using DataCategory method
 		assertThrows(IllegalArgumentException.class, () -> {
@@ -89,7 +91,7 @@ class IUCRCodeTest {
 	 */
 	@Test
 	void testGetCategoryValue() {
-		seng202.group2.IUCRCode iucr = new seng202.group2.IUCRCode("820", "THEFT", "$500 AND UNDER", true);
+		seng202.group2.controller.IUCRCode iucr = new seng202.group2.controller.IUCRCode("820", "THEFT", "$500 AND UNDER", true);
 		
 		// Set value of record attribute
 		record.setIucr(iucr);
@@ -97,7 +99,7 @@ class IUCRCodeTest {
 		// Check value of record attribute gotten using DataCategory method is correct
 		assertEquals(category.getCategoryValue(record), iucr);
 		// Check return type of DataCategory method correct
-		assertTrue(category.getCategoryValue(record) instanceof seng202.group2.IUCRCode);
+		assertTrue(category.getCategoryValue(record) instanceof seng202.group2.controller.IUCRCode);
 	}
 	
 	/**
@@ -118,7 +120,7 @@ class IUCRCodeTest {
 	@Test
 	void testParseString_Valid() {
 		String stringIucr = "820";
-		seng202.group2.IUCRCode iucr = seng202.group2.IUCRCodeDictionary.getCode(stringIucr);
+		seng202.group2.controller.IUCRCode iucr = IUCRCodeDictionary.getCode(stringIucr);
 		
 		assertEquals(iucr, category.parseString(stringIucr));
 	}

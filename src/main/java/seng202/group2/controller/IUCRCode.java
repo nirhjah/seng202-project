@@ -1,4 +1,4 @@
-package seng202.group2;
+package seng202.group2.controller;
 
 /**
  * A simple data structure for storing Illinois Uniform Crime Reporting Code information.

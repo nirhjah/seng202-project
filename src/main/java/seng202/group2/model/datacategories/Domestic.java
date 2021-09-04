@@ -1,14 +1,14 @@
-package seng202.group2.datacategories;
+package seng202.group2.model.datacategories;
 
-import seng202.group2.CrimeRecord;
+import seng202.group2.model.CrimeRecord;
 
 /**
- * True if the crime incident resulted in an arrest being made.
+ * True if the crime incident was classified as domestic.
  * 
  * @author Connor Dunlop
  *
  */
-public class Arrest extends DataCategory implements Importable {
+public class Domestic extends DataCategory implements Importable {
 
 	@Override
 	public void setCategoryValue(CrimeRecord record, Object data) {
@@ -16,11 +16,11 @@ public class Arrest extends DataCategory implements Importable {
 			throw new IllegalArgumentException("Cannot set attribute value of null record.");
 		
 		if (data == null)
-			record.setArrest(null);
+			record.setDomestic(null);
 		else if (data instanceof Boolean)
-			record.setArrest((Boolean) data);
+			record.setDomestic((Boolean) data);
 		else
-			throw new IllegalArgumentException("Data was of an incorrect type for Arrest.");
+			throw new IllegalArgumentException("Data was of an incorrect type for Domestic.");
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class Arrest extends DataCategory implements Importable {
 		if (record == null)
 			throw new IllegalArgumentException("Cannot get attribute value of null record.");
 		
-		return record.getArrest();
+		return record.getDomestic();
 	}
 
 	@Override
@@ -43,12 +43,12 @@ public class Arrest extends DataCategory implements Importable {
 		else if (value.equals("N") || value.equals("FALSE"))
 			return false;
 		else
-			throw new IllegalArgumentException("String was invalid.");
+			throw new IllegalArgumentException();
 	}
 
 	@Override
 	public String getSQL() {
-		return "arrest";
+		return "domestic";
 	}
 
 }

@@ -5,7 +5,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import seng202.group2.CrimeRecord;
+import seng202.group2.model.CrimeRecord;
+import seng202.group2.controller.IUCRCode;
+import seng202.group2.controller.IUCRCodeDictionary;
+import seng202.group2.model.datacategories.PrimaryDescription;
+import seng202.group2.model.datacategories.UnsupportedCategoryException;
 
 /**
  * Unit tests for PrimaryDescription data category.
@@ -47,7 +51,7 @@ class PrimaryDescriptionTest {
 	 */
 	@Test
 	void testGetCategoryValue() {
-		seng202.group2.IUCRCode iucr = seng202.group2.IUCRCodeDictionary.getCode("820");
+		IUCRCode iucr = IUCRCodeDictionary.getCode("820");
 		
 		// Set value of record attribute
 		record.setIucr(iucr);

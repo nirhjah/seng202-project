@@ -1,6 +1,6 @@
-package seng202.group2.datacategories;
+package seng202.group2.model.datacategories;
 
-import seng202.group2.CrimeRecord;
+import seng202.group2.model.CrimeRecord;
 
 /**
  * A textual description giving more details supplementing the categorization

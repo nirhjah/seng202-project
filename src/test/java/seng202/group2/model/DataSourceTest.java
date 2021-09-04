@@ -2,6 +2,7 @@ package seng202.group2.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import seng202.group2.controller.IUCRCode;
 import seng202.group2.controller.ObserverTestClass;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -36,9 +37,9 @@ public class DataSourceTest {
             record.setDate(cal);
 
             record.setBlock("Block" + i);
-            record.setIucr("IUCR" + i);
-            record.setPrimaryDescription("pDesc" + i);
-            record.setSecondaryDescription("sDesc" + i);
+            record.setIucr(new IUCRCode("430", "pDesc" + i, "sDesc" + i, false));
+//            record.setPrimaryDescription("pDesc" + i);
+//            record.setSecondaryDescription("sDesc" + i);
             record.setLocationDescription("lDesc" + i);
             record.setArrest(false);
             record.setDomestic(false);

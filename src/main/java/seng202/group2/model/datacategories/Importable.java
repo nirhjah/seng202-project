@@ -1,4 +1,4 @@
-package seng202.group2.datacategories;
+package seng202.group2.model.datacategories;
 
 /**
  * A simple interface used to mark DataCategory classes as being importable. 

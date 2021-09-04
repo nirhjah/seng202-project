@@ -1,6 +1,6 @@
 package seng202.group2.model;
 
-import seng202.group2.datacategories.DataCategory;
+import seng202.group2.model.datacategories.DataCategory;
 
 public enum FilterType {
     /** Category match */

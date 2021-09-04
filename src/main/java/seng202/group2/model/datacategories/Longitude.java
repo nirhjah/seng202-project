@@ -1,14 +1,14 @@
-package seng202.group2.datacategories;
+package seng202.group2.model.datacategories;
 
-import seng202.group2.CrimeRecord;
+import seng202.group2.model.CrimeRecord;
 
 /**
- * The latitudinal location where the crime incident occurred.
+ * The longitudinal location where the crime incident occurred.
  * 
  * @author Connor Dunlop
  *
  */
-public class Latitude extends DataCategory implements Importable {
+public class Longitude extends DataCategory implements Importable {
 
 	@Override
 	public void setCategoryValue(CrimeRecord record, Object data) {
@@ -16,11 +16,11 @@ public class Latitude extends DataCategory implements Importable {
 			throw new IllegalArgumentException("Cannot set attribute value of null record.");
 		
 		if (data == null)
-			record.setLatitude(null);
+			record.setLongitude(null);
 		else if (data instanceof Float)
-			record.setLatitude((Float) data);
+			record.setLongitude((Float) data);
 		else
-			throw new IllegalArgumentException("Data was of an incorrect type for Latitude.");
+			throw new IllegalArgumentException("Data was of an incorrect type for Longitude.");
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class Latitude extends DataCategory implements Importable {
 		if (record == null)
 			throw new IllegalArgumentException("Cannot get attribute value of null record.");
 		
-		return record.getLatitude();
+		return record.getLongitude();
 	}
 
 	@Override
@@ -39,12 +39,12 @@ public class Latitude extends DataCategory implements Importable {
 			return null;
 
 		try {
-			Float latitude = Float.parseFloat(value);
+			Float longitude = Float.parseFloat(value);
 			
-			if (!(-90.0f <= latitude && latitude <= 90.0f))
+			if (!(-180.0f <= longitude && longitude <= 180.0f))
 				throw new IllegalArgumentException("Latitude out of bounds.");
 			
-			return latitude;
+			return longitude;
 		} catch (NumberFormatException error) {
 			throw new IllegalArgumentException(error);
 		}
@@ -52,7 +52,7 @@ public class Latitude extends DataCategory implements Importable {
 
 	@Override
 	public String getSQL() {
-		return "latitude";
+		return "longitude";
 	}
 
 }

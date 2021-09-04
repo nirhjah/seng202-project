@@ -1,7 +1,7 @@
-package seng202.group2.datacategories;
+package seng202.group2.model.datacategories;
 
-import seng202.group2.CrimeRecord;
-import seng202.group2.IUCRCodeDictionary;
+import seng202.group2.model.CrimeRecord;
+import seng202.group2.controller.IUCRCodeDictionary;
 
 /**
  * Illinois Uniform Crime Reporting code.
@@ -19,14 +19,14 @@ public class IUCRCode extends DataCategory implements Importable {
 			
 		if (data == null)
 			record.setIucr(null);
-		else if (data instanceof seng202.group2.IUCRCode)
-			record.setIucr((seng202.group2.IUCRCode) data);
+		else if (data instanceof seng202.group2.controller.IUCRCode)
+			record.setIucr((seng202.group2.controller.IUCRCode) data);
 		else
 			throw new IllegalArgumentException("Data was of an incorrect type for IUCRCode.");
 	}
 
 	@Override
-	public seng202.group2.IUCRCode getCategoryValue(CrimeRecord record) {
+	public seng202.group2.controller.IUCRCode getCategoryValue(CrimeRecord record) {
 		if (record == null)
 			throw new IllegalArgumentException("Cannot get attribute value of null record.");
 		
@@ -34,7 +34,7 @@ public class IUCRCode extends DataCategory implements Importable {
 	}
 
 	@Override
-	public seng202.group2.IUCRCode parseString(String value) {
+	public seng202.group2.controller.IUCRCode parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
 		else if (value == "")

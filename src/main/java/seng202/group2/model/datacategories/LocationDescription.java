@@ -1,14 +1,14 @@
-package seng202.group2.datacategories;
+package seng202.group2.model.datacategories;
 
-import seng202.group2.CrimeRecord;
+import seng202.group2.model.CrimeRecord;
 
 /**
- * The case number associated with the crime record in the police database.
+ * A textual description of the location where the crime incident occurred.
  * 
  * @author Connor Dunlop
  *
  */
-public class CaseNumber extends DataCategory implements Importable {
+public class LocationDescription extends DataCategory implements Importable {
 
 	@Override
 	public void setCategoryValue(CrimeRecord record, Object data) {
@@ -16,11 +16,11 @@ public class CaseNumber extends DataCategory implements Importable {
 			throw new IllegalArgumentException("Cannot set attribute value of null record.");
 		
 		if (data == null)
-			record.setCaseNum(null);
+			record.setLocationDescription(null);
 		else if (data instanceof String)
-			record.setCaseNum((String) data);
+			record.setLocationDescription((String) data);
 		else
-			throw new IllegalArgumentException("Data was of an incorrect type for CaseNumber.");
+			throw new IllegalArgumentException("Data was of an incorrect type for LocationDescription.");
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class CaseNumber extends DataCategory implements Importable {
 		if (record == null)
 			throw new IllegalArgumentException("Cannot get attribute value of null record.");
 		
-		return record.getCaseNum();
+		return record.getLocationDescription();
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class CaseNumber extends DataCategory implements Importable {
 
 	@Override
 	public String getSQL() {
-		return "caseNum";
+		return "locationDescription";
 	}
 
 }

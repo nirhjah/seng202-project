@@ -8,7 +8,8 @@ import java.util.GregorianCalendar;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import seng202.group2.CrimeRecord;
+import seng202.group2.model.CrimeRecord;
+import seng202.group2.model.datacategories.Date;
 
 class DateTest {
 

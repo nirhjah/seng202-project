@@ -1,4 +1,6 @@
-package seng202.group2;
+package seng202.group2.controller;
+
+import seng202.group2.model.CrimeRecord;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,7 +26,7 @@ public abstract class DataImporter {
 	/**
 	 * Sets the path to the file to import crime data from.
 	 * 
-	 * @param fileName The path of the file to import crime data from.
+	 * @param file The path of the file to import crime data from.
 	 */
 	public DataImporter(File file) {
 		this.file = file;

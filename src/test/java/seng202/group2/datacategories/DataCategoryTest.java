@@ -3,6 +3,7 @@ package seng202.group2.datacategories;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import seng202.group2.model.datacategories.*;
 
 /**
  * Unit test for DataCategory class methods.

@@ -1,5 +1,7 @@
 package seng202.group2.model;
 
+import seng202.group2.controller.IUCRCodeDictionary;
+
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

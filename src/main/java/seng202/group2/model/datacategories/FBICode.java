@@ -1,14 +1,14 @@
-package seng202.group2.datacategories;
+package seng202.group2.model.datacategories;
 
-import seng202.group2.CrimeRecord;
-
+import seng202.group2.model.CrimeRecord;
 /**
- * A textual description of the location where the crime incident occurred.
+ * FBI crime code assigned to the crime incident.
+ * Used to categorize crime incidents by the type of crime that occurred.
  * 
  * @author Connor Dunlop
  *
  */
-public class LocationDescription extends DataCategory implements Importable {
+public class FBICode extends DataCategory implements Importable {
 
 	@Override
 	public void setCategoryValue(CrimeRecord record, Object data) {
@@ -16,11 +16,11 @@ public class LocationDescription extends DataCategory implements Importable {
 			throw new IllegalArgumentException("Cannot set attribute value of null record.");
 		
 		if (data == null)
-			record.setLocationDescription(null);
+			record.setFbiCode(null);
 		else if (data instanceof String)
-			record.setLocationDescription((String) data);
+			record.setFbiCode((String) data);
 		else
-			throw new IllegalArgumentException("Data was of an incorrect type for LocationDescription.");
+			throw new IllegalArgumentException("Data was of an incorrect type for FBICode.");
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class LocationDescription extends DataCategory implements Importable {
 		if (record == null)
 			throw new IllegalArgumentException("Cannot get attribute value of null record.");
 		
-		return record.getLocationDescription();
+		return record.getFbiCode();
 	}
 
 	@Override
@@ -37,12 +37,14 @@ public class LocationDescription extends DataCategory implements Importable {
 			throw new IllegalArgumentException("Cannot parse null string.");
 		else if (value == "")
 			return null;
+		while (value.startsWith("0"))
+			value = value.replaceFirst("0", "");
 		return value;
 	}
 
 	@Override
 	public String getSQL() {
-		return "locationDescription";
+		return "fbiCode";
 	}
 
 }

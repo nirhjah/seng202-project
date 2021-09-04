@@ -1,4 +1,4 @@
-package seng202.group2;
+package seng202.group2.controller;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,7 +9,12 @@ import java.util.HashMap;
 
 import com.opencsv.CSVReader;
 
-import seng202.group2.datacategories.*;
+import seng202.group2.controller.DataImporter;
+import seng202.group2.model.datacategories.*;
+import seng202.group2.model.CrimeRecord;
+import seng202.group2.model.datacategories.DataCategory;
+import seng202.group2.model.datacategories.Importable;
+import seng202.group2.model.datacategories.UnsupportedCategoryException;
 
 /**
  * A crime data importer used to import crime data from CSV files.

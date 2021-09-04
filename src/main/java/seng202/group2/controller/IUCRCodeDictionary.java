@@ -1,4 +1,4 @@
-package seng202.group2;
+package seng202.group2.controller;
 
 import java.io.File;
 import java.io.FileNotFoundException;
