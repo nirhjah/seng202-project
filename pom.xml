@@ -16,6 +16,19 @@
       <version>2.8.7</version>
     </dependency>
 
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<version>3.8.1</version>
+		<scope>test</scope>
+	</dependency>
+	
+	<dependency>
+  		<groupId>com.opencsv</groupId>
+  		<artifactId>opencsv</artifactId>
+  		<version>5.5.1</version>
+	</dependency>
+	
     <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
@@ -24,17 +37,10 @@
     </dependency>
 
     <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>3.8.1</version>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.xerial</groupId>
       <artifactId>sqlite-jdbc</artifactId>
       <version>3.36.0.2</version>
     </dependency>
-
   </dependencies>
 
   <!-- Java version setup -->
@@ -53,7 +59,7 @@
           <transformers>
             <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
               <manifestEntries>
-                <Main-Class>seng202.group2.App</Main-Class>
+                <Main-Class>seng202.group2.ApplicationEnvironment</Main-Class>
                 <X-Compile-Source-JDK>14</X-Compile-Source-JDK>
                 <X-Compile-Target-JDK>14</X-Compile-Target-JDK>
               </manifestEntries>

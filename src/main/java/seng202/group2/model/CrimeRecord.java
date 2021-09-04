@@ -1,5 +1,6 @@
 package seng202.group2.model;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 /**
@@ -38,34 +39,33 @@ public class CrimeRecord {
 	 * Four digit code used to classify the criminal incident
 	 * @see <a href="https://catalog.data.gov/dataset/chicago-police-department-illinois-uniform-crime-reporting-iucr-codes">DataSet</a>
 	 */
-	private String iucr;
-	
-	/** A textual description of the type of the crime incident */
-	private String primaryDescription;
-	
-	/**
-	 * A textual description giving more details supplementing the categorization
-	 * of the crime type provided in the primary description
-	 */
-	private String secondaryDescription;
+	private IUCRCode iucr;
 	
 	/** A textual description of the location where the crime incident occurred */
 	private String locationDescription;
 	
-	/** True if the crime incident resulted in an arrest being made */
-	private boolean arrest;
+	/** 
+	 * 1 if the crime incident resulted in an arrest being made
+	 * 0 if the crime incident did not result in an arrest being made
+	 * -1 if there is no information provided
+	 */
+	private Boolean arrest;
 	
-	/** True if the crime incident was classified as domestic */
-	private boolean domestic;
+	/**
+	 * 1 if the crime incident was classified as domestic
+	 * 0 if the crime incident was not classified as domestic
+	 * -1 if there is no information provided
+	 * */
+	private Boolean domestic;
 	
 	/** 
 	 * Police district where the crime incident occurred.
 	 * (Area of the city broken down for patrol and statistical purposes)
 	 */
-	private short beat;
+	private Short beat;
 	
 	/** Election precinct where the crime incident occurred. */
-	private short ward;
+	private Short ward;
 	
 	/**
 	 * FBI crime code assigned to the crime incident.
@@ -75,11 +75,35 @@ public class CrimeRecord {
 	private String fbiCode;
 	
 	/** The latitudinal location where the crime incident occurred. */
-	private float latitude;
+	private Float latitude;
 	
 	/** The longitudinal location where the crime incident occurred. */
-	private float longitude;
+	private Float longitude;
 
+	
+	public String toString() {
+		String dateString;
+		if (date == null)
+			dateString = null;
+		else
+			dateString = DateTimeFormatter.ISO_INSTANT.format(date.toInstant());
+		
+		return "Crime record: " + ID + "\n" +
+				"Case Number: " + caseNum + "\n" +
+				"Date: " + dateString + "\n" +
+				"Block: " + block + "\n" +
+				"IUCR: " + iucr + "\n" +
+				"Primary Description: " + iucr.PRIMARY_DESCRIPTION + "\n" +
+				"Secondary Description: " + iucr.SECONDARY_DESCRIPTION + "\n" +
+				"Location Description: " + locationDescription + "\n" +
+				"Arrest: " + arrest + "\n" +
+				"Domestic: " + domestic + "\n" +
+				"Beat: " + beat + "\n" +
+				"Ward: " + ward + "\n" +
+				"FBI Code: " + fbiCode + "\n" +
+				"Latitude: " + latitude + "\n" +
+				"Longitude: " + longitude + "\n";
+	}
 
 	//Getters/Setters:
 
@@ -143,7 +167,7 @@ public class CrimeRecord {
 	 * Sets the Illinois Uniform Crime Reporting code.
 	 * @param iucr The Illinois Uniform Crime Reporting code classifying the crime incident.
 	 */
-	public void setIucr(String iucr) {
+	public void setIucr(IUCRCode iucr) {
 		this.iucr = iucr;
 	}
 	
@@ -151,16 +175,8 @@ public class CrimeRecord {
 	 * Gets the Illinois Uniform Crime Reporting code.
 	 * @return The Illinois Uniform Crime Reporting code classifying the crime incident.
 	 */
-	public String getIucr() {
+	public IUCRCode getIucr() {
 		return iucr;
-	}
-	
-	/**
-	 * Sets the primary description of the crime incident.
-	 * @param description A textual description of the type of the crime incident
-	 */
-	public void setPrimaryDescription(String description) {
-		primaryDescription = description;
 	}
 	
 	/**
@@ -168,15 +184,7 @@ public class CrimeRecord {
 	 * @return A textual description of the type of the crime incident
 	 */
 	public String getPrimaryDescription() {
-		return primaryDescription;
-	}
-	
-	/**
-	 * Sets the secondary description of the crime incident.
-	 * @param description A textual description giving supplementing details about the type of crime incident
-	 */
-	public void setSecondaryDescription(String description) {
-		secondaryDescription = description;
+		return iucr.PRIMARY_DESCRIPTION;
 	}
 	
 	/**
@@ -184,7 +192,7 @@ public class CrimeRecord {
 	 * @return A textual description giving supplementing details about the type of crime incident
 	 */
 	public String getSecondaryDescription() {
-		return secondaryDescription;
+		return iucr.SECONDARY_DESCRIPTION;
 	}
 	
 	/**
@@ -207,7 +215,7 @@ public class CrimeRecord {
 	 * Sets the boolean value arrest, which is used to indicate whether or not the crime incident resulted in an arrest.
 	 * @param arrest Set to true if the crime incident resulted in an arrest being made.
 	 */
-	public void setArrest(boolean arrest) {
+	public void setArrest(Boolean arrest) {
 		this.arrest = arrest;
 	}
 	
@@ -215,7 +223,7 @@ public class CrimeRecord {
 	 * Gets the boolean value arrest, which is used to indicate whether or not the crime incident resulted in an arrest.
 	 * @return True if the crime incident resulted in an arrest being made.
 	 */
-	public boolean getArrest() {
+	public Boolean getArrest() {
 		return arrest;
 	}
 	
@@ -223,7 +231,7 @@ public class CrimeRecord {
 	 * Sets the boolean value domestic, which is used to indicate whether or not the crime incident was classified as domestic.
 	 * @param domestic Set to true if the crime incident was classified as domestic
 	 */
-	public void setDomestic(boolean domestic) {
+	public void setDomestic(Boolean domestic) {
 		this.domestic = domestic;
 	}
 	
@@ -231,7 +239,7 @@ public class CrimeRecord {
 	 * Gets the boolean value domestic, which is used to indicate whether or not the crime incident was classified as domestic.
 	 * @return True if the crime incident was classified as domestic
 	 */
-	public boolean getDomestic() {
+	public Boolean getDomestic() {
 		return domestic;
 	}
 	
@@ -239,7 +247,7 @@ public class CrimeRecord {
 	 * Sets the beat where the crime incident occurred.
 	 * @param beat Police district where the crime incident occurred.
 	 */
-	public void setBeat(short beat) {
+	public void setBeat(Short beat) {
 		this.beat = beat;
 	}
 	
@@ -247,7 +255,7 @@ public class CrimeRecord {
 	 * Gets the beat where the crime incident occurred.
 	 * @return Police district where the crime incident occurred.
 	 */
-	public short getBeat() {
+	public Short getBeat() {
 		return beat;
 	}
 	
@@ -255,7 +263,7 @@ public class CrimeRecord {
 	 * Sets the ward where the crime incident occurred.
 	 * @param ward Election precinct where the crime incident occurred.
 	 */
-	public void setWard(short ward) {
+	public void setWard(Short ward) {
 		this.ward = ward;
 	}
 	
@@ -263,7 +271,7 @@ public class CrimeRecord {
 	 * Gets the ward where the crime incident occurred.
 	 * @return Election precinct where the crime incident occurred.
 	 */
-	public short getWard() {
+	public Short getWard() {
 		return ward;
 	}
 	
@@ -287,7 +295,11 @@ public class CrimeRecord {
 	 * Sets the latitudinal location where the crime incident occurred.
 	 * @param latitude The latitudinal location where the crime incident occurred.
 	 */
-	public void setLatitude(float latitude) {
+	public void setLatitude(Float latitude) {
+		if (latitude != null)
+			if (!(-90.0f <= latitude && latitude <= 90.0f))
+				throw new IllegalArgumentException("Latitude out of bounds");
+		
 		this.latitude = latitude;
 	}
 	
@@ -295,7 +307,7 @@ public class CrimeRecord {
 	 * Gets the latitudinal location where the crime incident occurred.
 	 * @return The latitudinal location where the crime incident occurred.
 	 */
-	public float getLatitude() {
+	public Float getLatitude() {
 		return latitude;
 	}
 	
@@ -303,7 +315,11 @@ public class CrimeRecord {
 	 * Sets the longitudinal location where the crime incident occurred.
 	 * @param longitude The longitudinal location where the crime incident occurred.
 	 */
-	public void setLongitude(float longitude) {
+	public void setLongitude(Float longitude) {
+		if (longitude != null)
+			if (!(-180.0f <= longitude && longitude <= 180.0f))
+				throw new IllegalArgumentException("Longitude out of bounds");
+		
 		this.longitude = longitude;
 	}
 	
@@ -311,7 +327,7 @@ public class CrimeRecord {
 	 * gets the longitudinal location where the crime incident occurred.
 	 * @return The longitudinal location where the crime incident occurred.
 	 */
-	public float getLongitude() {
+	public Float getLongitude() {
 		return longitude;
 	}
 }
