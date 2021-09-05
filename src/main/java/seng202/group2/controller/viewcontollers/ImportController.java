@@ -76,23 +76,25 @@ public class ImportController {
 	{
 		Stage stage = (Stage) importPathTextField.getScene().getWindow();
 
-//		File file = new File(importPathTextField.getText());
-//		try {
-//			DataImporter importer = new CSVImporter(file);
-//			DBMS.addRecords(importer.importAllRecords());
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-
+		File file = new File(importPathTextField.getText());
 		try {
-			addRecords(10);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
+			DataImporter importer = new CSVImporter(file);
+			DBMS.addRecords(importer.importAllRecords());
+
+			importer.close();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+//		try {
+//			addRecords(10);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} catch (ClassNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
 
 		stage.close();
 		System.out.println("Retrieving file : " + importPathTextField.getText());

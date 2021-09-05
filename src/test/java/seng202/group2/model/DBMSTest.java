@@ -49,11 +49,11 @@ public class DBMSTest {
             record.setLocationDescription("lDesc" + num);
             record.setArrest(false);
             record.setDomestic(false);
-            record.setWard((short) (int) Integer.valueOf(num));
-            record.setBeat((short) (int) Integer.valueOf(num));
+            record.setWard((short) (int) Integer.parseInt(num));
+            record.setBeat((short) (int) Integer.parseInt(num));
             record.setFbiCode("fbiCode" + num);
-            record.setLongitude((float)(int) Integer.valueOf(num));
-            record.setLatitude((float)(int) Integer.valueOf(num));
+            record.setLongitude((float)(int) Integer.parseInt(num));
+            record.setLatitude((float)(int) Integer.parseInt(num));
             DBMS.addRecord(record, false);
         }
     }
