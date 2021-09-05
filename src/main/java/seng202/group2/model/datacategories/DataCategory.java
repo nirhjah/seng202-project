@@ -49,7 +49,7 @@ public abstract class DataCategory {
 	public static DataCategory getCategoryFromString(String categoryString) throws UnsupportedCategoryException {
 		if (categoryString == null)
 			throw new IllegalArgumentException("No category string specified.");
-		
+
 		switch (categoryString.replaceAll("\\s", "")) {
 			case "CASE#":
 				return new CaseNumber();

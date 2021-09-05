@@ -146,6 +146,10 @@ public class CrimeRecord {
 	 * @return The date/time on which the crime incident occurred, in a string format.
 	 */
 	public String getDateString() {
+		if (date == null) {
+			return "NONE";
+		}
+
 		int year = date.get(Calendar.YEAR);
 		int month = date.get(Calendar.MONTH) + 1; // Note: zero based!
 		int day = date.get(Calendar.DAY_OF_MONTH);
