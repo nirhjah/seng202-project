@@ -206,6 +206,9 @@ public class CrimeRecord {
 	 * @return A textual description of the type of the crime incident
 	 */
 	public String getPrimaryDescription() {
+		if (iucr == null) {
+			return "";
+		}
 		return iucr.PRIMARY_DESCRIPTION;
 	}
 	
@@ -214,6 +217,9 @@ public class CrimeRecord {
 	 * @return A textual description giving supplementing details about the type of crime incident
 	 */
 	public String getSecondaryDescription() {
+		if (iucr == null) {
+			return "";
+		}
 		return iucr.SECONDARY_DESCRIPTION;
 	}
 	

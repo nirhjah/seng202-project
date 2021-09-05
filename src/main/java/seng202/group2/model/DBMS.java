@@ -278,9 +278,17 @@ public class DBMS {
 
 
         state.setValue("block", record.getBlock());
-        state.setValue("IUCR", record.getIucr().IUCR);
-        state.setValue("primaryDescription", record.getPrimaryDescription());
-        state.setValue("secondaryDescription", record.getSecondaryDescription());
+        try {
+            state.setValue("IUCR", record.getIucr().IUCR);
+            state.setValue("primaryDescription", record.getPrimaryDescription());
+            state.setValue("secondaryDescription", record.getSecondaryDescription());
+        } catch (NullPointerException e) {
+            System.out.println("IUCR Error in addData");
+            state.setValue("IUCR", null);
+            state.setValue("primaryDescription", null);
+            state.setValue("secondaryDescription",null);
+
+        }
         state.setValue("locationDescription", record.getLocationDescription());
         state.setValue("arrest", String.valueOf(record.getArrest()));
         state.setValue("domestic", String.valueOf(record.getDomestic()));
