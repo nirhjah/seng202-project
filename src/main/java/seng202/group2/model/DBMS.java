@@ -241,6 +241,18 @@ public class DBMS {
         idCounter++;
     }
 
+    public static void addRecords(ArrayList<CrimeRecord> records) {
+        for (CrimeRecord record : records) {
+            try {
+                addRecord(record);
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        activeData.updateObservers();
+    }
+
     /**
      * Delete record from database by ID
      *

@@ -1,11 +1,22 @@
 package seng202.group2.controller.viewcontollers;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import seng202.group2.controller.CSVImporter;
+import seng202.group2.controller.DataImporter;
+import seng202.group2.controller.IUCRCode;
+import seng202.group2.model.CrimeRecord;
+import seng202.group2.model.DBMS;
 
 /**
  * ImportController is the controller class for the crime import GUI.
@@ -35,7 +46,15 @@ public class ImportController {
 	public void importFileFromField()
 	{
 		Stage stage = (Stage) importPathTextField.getScene().getWindow();
-		
+
+		File file = new File(importPathTextField.getText());
+		try {
+			DataImporter importer = new CSVImporter(file);
+			DBMS.addRecords(importer.importAllRecords());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		stage.close();
 		System.out.println("Retrieving file : " + importPathTextField.getText());
 	}

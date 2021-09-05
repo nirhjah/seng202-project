@@ -18,6 +18,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.controller.DataObserver;
+import seng202.group2.model.DBMS;
 
 /**
  * MainController is the GUI controller for the main Cams window.
@@ -140,7 +141,9 @@ public class MainController extends DataObserver implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		idColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Integer>("id"));
+		DBMS.getActiveData().addObserver(this);
+
+		idColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Integer>("ID"));
 		caseNumColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("caseNum"));
 		dateColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("date"));
 		blockColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("block"));
@@ -157,9 +160,11 @@ public class MainController extends DataObserver implements Initializable {
 		longitudeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("longitude"));
 	}
 
-
+	@Override
 	public void updateModel(ArrayList<CrimeRecord> activeRecords)
 	{
+		System.out.println("Attempted update");
+
 		tableView.getItems().removeAll();
 		for (CrimeRecord record: activeRecords)
 			tableView.getItems().add(record);
