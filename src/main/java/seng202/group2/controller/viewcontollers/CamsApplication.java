@@ -32,6 +32,7 @@ public class CamsApplication extends Application {
         Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("main.fxml"));
         primaryStage.setTitle("CAMS - Crime Advertising Management System");
         primaryStage.setScene(new Scene(root, 1280, 720));
+        primaryStage.getScene().getStylesheets().add(CamsApplication.class.getClassLoader().getResource("main.css").toExternalForm());
         primaryStage.show();
     }
   
