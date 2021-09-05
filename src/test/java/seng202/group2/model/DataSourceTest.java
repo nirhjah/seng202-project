@@ -48,7 +48,7 @@ public class DataSourceTest {
             record.setFbiCode("fbiCode" + i);
             record.setLongitude((float) i);
             record.setLatitude((float) i);
-            DBMS.addRecord(record);
+            DBMS.addRecord(record,false);
         }
     }
 

@@ -142,13 +142,29 @@ public class CrimeRecord {
 	}
 	
 	/**
+	 * Gets the date/time on which the crime incident occurred in string format.
+	 * @return The date/time on which the crime incident occurred, in a string format.
+	 */
+	public String getDateString() {
+		int year = date.get(Calendar.YEAR);
+		int month = date.get(Calendar.MONTH) + 1; // Note: zero based!
+		int day = date.get(Calendar.DAY_OF_MONTH);
+		int hour = date.get(Calendar.HOUR_OF_DAY);
+		int minute = date.get(Calendar.MINUTE);
+		int second = date.get(Calendar.SECOND);
+		int a = date.get(Calendar.AM_PM);
+
+		return String.format("%d/%02d/%02d %02d:%02d:%02d ", year, month, day, hour, minute, second) + ((a == 0)? "AM": "PM"); // + ((a == 0)? "AM": "PM")
+	}
+
+	/**
 	 * Gets the date/time on which the crime incident occurred.
 	 * @return The date/time on which the crime incident occurred.
 	 */
 	public Calendar getDate() {
 		return date;
 	}
-	
+
 	/**
 	 * Sets the block where the crime incident occurred.
 	 * @param block The address of the crime incident at a city block level.

@@ -34,6 +34,35 @@ public class ImportController {
 	/** The textField used for entering a filepath. */
 	@FXML private TextField importPathTextField;
 
+	void addRecords(int max) throws SQLException, ClassNotFoundException, ParseException {
+		for (int i=1; i <= max; i++) {
+			CrimeRecord record = new CrimeRecord();
+			record.setCaseNum("TEST" + i);
+
+			//Convert String from db to Calendar
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss a");
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(sdf.parse("2001/12/12 03:40:12 PM"));
+			record.setDate(cal);
+
+			record.setBlock("Block" + i);
+			record.setIucr(new IUCRCode("430", "pDesc" + i, "sDesc" + i, false));
+//            record.setPrimaryDescription("pDesc" + i);
+//            record.setSecondaryDescription("sDesc" + i);
+			record.setLocationDescription("lDesc" + i);
+			record.setArrest(false);
+			record.setDomestic(false);
+			record.setWard((short) i);
+			record.setBeat((short) i);
+			record.setFbiCode("fbiCode" + i);
+			record.setLongitude((float) i);
+			record.setLatitude((float) i);
+			DBMS.addRecord(record,false);
+		}
+
+		DBMS.getActiveData().updateObservers();
+	}
+
 	/**
 	 * importFileFromField takes the giving filepath and passes it the importer.
 	 *
@@ -47,11 +76,21 @@ public class ImportController {
 	{
 		Stage stage = (Stage) importPathTextField.getScene().getWindow();
 
-		File file = new File(importPathTextField.getText());
+//		File file = new File(importPathTextField.getText());
+//		try {
+//			DataImporter importer = new CSVImporter(file);
+//			DBMS.addRecords(importer.importAllRecords());
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+
 		try {
-			DataImporter importer = new CSVImporter(file);
-			DBMS.addRecords(importer.importAllRecords());
-		} catch (IOException e) {
+			addRecords(10);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 
