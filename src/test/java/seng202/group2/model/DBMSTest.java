@@ -54,7 +54,7 @@ public class DBMSTest {
             record.setFbiCode("fbiCode" + num);
             record.setLongitude((float)(int) Integer.valueOf(num));
             record.setLatitude((float)(int) Integer.valueOf(num));
-            DBMS.addRecord(record);
+            DBMS.addRecord(record, false);
         }
     }
 

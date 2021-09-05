@@ -189,13 +189,14 @@ public class DBMS {
     }
 
     /**
-     * Adds a record to the database.
+     * Adds a record to the database. Update the observers if desired
      *
      * @param record -- CrimeRecord to add. This CrimeRecord does not need an id assigned
+     * @param update -- If true, the observers will be updated
      * @throws SQLException
      * @throws ClassNotFoundException
      */
-    public static void addRecord(CrimeRecord record) throws SQLException, ClassNotFoundException {
+    public static void addRecord(CrimeRecord record, boolean update) throws SQLException, ClassNotFoundException {
         if (conn == null) {
             getConnection();
         }
@@ -222,13 +223,13 @@ public class DBMS {
         int minute = time.get(Calendar.MINUTE);
         int second = time.get(Calendar.SECOND);
         int a = time.get(Calendar.AM_PM);
-        state.setString(3, String.format("%d/%02d/%02d %02d:%02d:%02d ", year, month, day, hour, minute, second) + ((a == 0)? "AM": "PM"));
+        state.setString(3, String.format("%d/%02d/%02d %02d:%02d:%02d ", year, month, day, hour, minute, second) + ((a == 0) ? "AM" : "PM"));
 
 
-        state.setString(4,record.getBlock());
+        state.setString(4, record.getBlock());
         state.setString(5, record.getIucr().IUCR);
-        state.setString(6,record.getPrimaryDescription());
-        state.setString(7,record.getSecondaryDescription());
+        state.setString(6, record.getPrimaryDescription());
+        state.setString(7, record.getSecondaryDescription());
         state.setString(8, record.getLocationDescription());
         state.setBoolean(9, record.getArrest());
         state.setBoolean(10, record.getDomestic());
@@ -239,12 +240,21 @@ public class DBMS {
         state.setFloat(15, record.getLongitude());
         state.execute();
         idCounter++;
+
+        if (update) {
+            activeData.updateObservers();
+        }
     }
 
+    /**
+     * Add an ArrayList of CrimeRecords to the database.
+     *
+     * @param records
+     */
     public static void addRecords(ArrayList<CrimeRecord> records) {
         for (CrimeRecord record : records) {
             try {
-                addRecord(record);
+                addRecord(record, false);
             } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
             }

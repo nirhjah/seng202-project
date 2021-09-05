@@ -145,7 +145,7 @@ public class MainController extends DataObserver implements Initializable {
 
 		idColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Integer>("ID"));
 		caseNumColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("caseNum"));
-		dateColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("date"));
+		dateColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("dateString"));
 		blockColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("block"));
 		iucrColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("iucr"));
 		primaryDescriptionColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("primaryDescription"));
