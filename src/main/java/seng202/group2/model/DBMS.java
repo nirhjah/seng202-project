@@ -32,7 +32,7 @@ public class DBMS {
     private static void getConnection() throws ClassNotFoundException, SQLException {
         //Create db connection
         Class.forName("org.sqlite.JDBC");
-        conn = DriverManager.getConnection("jdbc:sqlite:CrimeRecords.db");
+        conn = DriverManager.getConnection("jdbc:sqlite::memory:");
 
         //Initialize tables
         initialize();
