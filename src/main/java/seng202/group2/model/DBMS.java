@@ -22,8 +22,8 @@ public class DBMS {
     private static ActiveData activeData = new ActiveData();
     private static int idCounter = -1;
     private static  boolean hasDataBase = false;
-    //String.format("%d/%02d/%02d %02d:%02d:%02d ", year, month, day, hour, minute, second) + ((a == 0)? "AM": "PM")
     private static final String DATE_FORMAT = "yyyy/MM/dd hh:mm:ss a";
+    //String.format("%d/%02d/%02d %02d:%02d:%02d ", year, month, day, hour, minute, second) + ((a == 0)? "AM": "PM")
 
     /**
      * Connect to the database

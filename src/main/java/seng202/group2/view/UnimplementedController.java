@@ -1,4 +1,4 @@
-package seng202.group2.controller.viewcontollers;
+package seng202.group2.view;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

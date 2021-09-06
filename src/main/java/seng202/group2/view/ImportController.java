@@ -1,7 +1,6 @@
-package seng202.group2.controller.viewcontollers;
+package seng202.group2.view;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
