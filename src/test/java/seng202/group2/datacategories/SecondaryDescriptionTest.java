@@ -31,15 +31,15 @@ class SecondaryDescriptionTest {
 
 	/**
 	 * Checks the setCategoryValue method of SecondaryDescription throws an UnsupportedCategoryException
+	 * @throws UnsupportedCategoryException 
 	 */
 	@Test
-	void testSetCategoryValue() {
+	void testSetCategoryValue() throws UnsupportedCategoryException {
 		String description = "$500 AND UNDER";
 		
-		// Try to set value of record attribute to incorrect data type
-		assertThrows(UnsupportedCategoryException.class, () -> {
-			category.setRecordValue(record, description);
-		});
+		category.setRecordValue(record, description);
+		
+		assertEquals(description, record.getSecondaryDescription());
 	}
 	
 	/**

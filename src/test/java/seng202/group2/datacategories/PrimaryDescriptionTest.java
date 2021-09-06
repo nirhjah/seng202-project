@@ -32,15 +32,15 @@ class PrimaryDescriptionTest {
 
 	/**
 	 * Checks the setCategoryValue method of PrimaryDescription throws an UnsupportedCategoryException
+	 * @throws UnsupportedCategoryException 
 	 */
 	@Test
-	void testSetCategoryValue() {
+	void testSetCategoryValue() throws UnsupportedCategoryException {
 		String description = "THEFT";
 		
-		// Try to set value of record attribute to incorrect data type
-		assertThrows(UnsupportedCategoryException.class, () -> {
-			category.setRecordValue(record, description);
-		});
+		category.setRecordValue(record, description);
+		
+		assertEquals(description, record.getPrimaryDescription());
 	}
 	
 	/**
