@@ -8,8 +8,6 @@ import java.util.HashMap;
 
 import com.opencsv.CSVReader;
 
-import seng202.group2.controller.IUCRCode;
-
 /**
  * A dictionary of Illinois Crime Reporting Codes and their meanings.
  * 
@@ -18,12 +16,31 @@ import seng202.group2.controller.IUCRCode;
  */
 public class IUCRCodeDictionary {
 	
+	private static class IUCRCodeStruct {
+		public final String IUCR;
+		public final String PRIMARY_DESCRIPTION;
+		public final String SECONDARY_DESCRIPTION;
+		public final Boolean IS_INDEX;
+		
+		IUCRCodeStruct(String iucr, String primaryDescription, String secondaryDescription, Boolean is_index) {
+			this.IUCR = iucr;
+			this.PRIMARY_DESCRIPTION = primaryDescription;
+			this.SECONDARY_DESCRIPTION = secondaryDescription;
+			this.IS_INDEX = is_index;
+		}
+	}
+	
 	/** The dictionary used to store the IUCR codes */
-	private static HashMap<String, IUCRCode> IUCRCodes = new HashMap<String, IUCRCode>();
+	private static HashMap<String, IUCRCodeStruct> IUCRCodes = new HashMap<String, IUCRCodeStruct>();
 	
 	/** Empties the IUCRCode dictionary totally. */
 	public static void clear() {
-		IUCRCodes = new HashMap<String, IUCRCode>();
+		IUCRCodes = new HashMap<String, IUCRCodeStruct>();
+	}
+	
+	/** Adds an iucr code to the dictionary of valid iucr codes */
+	public static void addCode(String iucr, String primaryDescription, String secondaryDescription, Boolean is_index) {
+		IUCRCodes.put(iucr, new IUCRCodeStruct(iucr, primaryDescription, secondaryDescription, is_index));
 	}
 	
 	/**
@@ -59,8 +76,7 @@ public class IUCRCodeDictionary {
 					index = false;
 				
 				if (!IUCRCodes.containsKey(iucr)) {
-					IUCRCode code = new IUCRCode(iucr, primaryDescription, secondaryDescription, index);
-					IUCRCodes.put(iucr, code);
+					addCode(iucr, primaryDescription, secondaryDescription, index);
 				} else {
 					throw new IOException("Duplicate IUCR code listing");
 				}
@@ -68,20 +84,6 @@ public class IUCRCodeDictionary {
 		} finally {
 			fileReader.close();
 		}
-	}
-	
-	/**
-	 * Returns the IUCRCode object from its IUCR code.
-	 * 
-	 * @param iucr The IUCR code as a string, used as a key to find the IUCRCode object.
-	 * @return The IUCRCode object for the IUCR code.
-	 * @throws IllegalArgumentException If the IUCR does not exist within the dictionary.
-	 */
-	public static IUCRCode getCode(String iucr) {
-		if (IUCRCodes.containsKey(iucr))
-			return IUCRCodes.get(iucr);
-		else
-			throw new IllegalArgumentException("Non-existent IUCR: " + iucr);
 	}
 	
 	/**
@@ -99,5 +101,57 @@ public class IUCRCodeDictionary {
 			System.out.println("An error occurred while trying to read the IUCR Code dictionary file.");
 			System.exit(1);
 		}
+	}
+	
+	/**
+	 * Returns the primary description associated with a particular IUCR code.
+	 * 
+	 * @param iucr The IUCR code as a string, used as a key to find the IUCRCodeStruct object in the dictionary.
+	 * @return The primary description associated with the iucr code.
+	 * @throws IllegalArgumentException If the IUCR does not exist within the dictionary.
+	 */
+	public static String getPrimaryDescription(String iucr) {
+		if (IUCRCodes.containsKey(iucr))
+			return IUCRCodes.get(iucr).PRIMARY_DESCRIPTION;
+		else
+			throw new IllegalArgumentException("Non-existent IUCR: " + iucr);
+	}
+	
+	/**
+	 * Returns the secondary description associated with a particular IUCR code.
+	 * 
+	 * @param iucr The IUCR code as a string, used as a key to find the IUCRCodeStruct object in the dictionary.
+	 * @return The secondary description associated with the iucr code.
+	 * @throws IllegalArgumentException If the IUCR does not exist within the dictionary.
+	 */
+	public static String getSecondaryDescription(String iucr) {
+		if (IUCRCodes.containsKey(iucr))
+			return IUCRCodes.get(iucr).SECONDARY_DESCRIPTION;
+		else
+			throw new IllegalArgumentException("Non-existent IUCR: " + iucr);
+	}
+	
+	/**
+	 * Returns the index code associated with a particular IUCR code.
+	 * 
+	 * @param iucr The IUCR code as a string, used as a key to find the IUCRCodeStruct object in the dictionary.
+	 * @return True if the IUCRCode is an index code.
+	 * @throws IllegalArgumentException If the IUCR does not exist within the dictionary.
+	 */
+	public static boolean getIndex(String iucr) {
+		if (IUCRCodes.containsKey(iucr))
+			return IUCRCodes.get(iucr).IS_INDEX;
+		else
+			throw new IllegalArgumentException("Non-existent IUCR: " + iucr);
+	}
+	
+	/**
+	 * Checks if the given IUCR code exists in the dictionary of valid IUCR codes.
+	 * 
+	 * @param iucr An iucr code to check if exists within the dictionary.
+	 * @return True if the iucr exist in the dictionary, false otherwise.
+	 */
+	public static boolean contains(String iucr) {
+		return IUCRCodes.containsKey(iucr);
 	}
 }
