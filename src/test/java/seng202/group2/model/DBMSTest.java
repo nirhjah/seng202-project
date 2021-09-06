@@ -46,7 +46,9 @@ public class DBMSTest {
             record.setDate(cal);
 
             record.setBlock("Block" + num);
-            record.setIucr(IUCRCodeDictionary.getCode("110"));
+            record.setIucr("110");
+            record.setPrimaryDescription("pDesc" + num);
+            record.setSecondaryDescription("pDesc" + num);
             record.setLocationDescription("lDesc" + num);
             record.setArrest(false);
             record.setDomestic(false);
