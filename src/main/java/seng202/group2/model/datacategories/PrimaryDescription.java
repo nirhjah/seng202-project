@@ -8,11 +8,22 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class PrimaryDescription extends DataCategory {
+public abstract class PrimaryDescription extends DataCategory implements Importable {
+	
+	/** The primary description of the crime type this code corresponds to */
+	private String primaryDescription = null;
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) throws UnsupportedCategoryException {
-		throw new UnsupportedCategoryException("Cannot set value of primary description");
+		if (record == null)
+			throw new IllegalArgumentException("Cannot set attribute value of null record.");
+			
+		if (data == null)
+			record.setPrimaryDescription(null);
+		else if (data instanceof String)
+			record.setPrimaryDescription((String) data);
+		else
+			throw new IllegalArgumentException("Data was of an incorrect type for PrimaryDescription.");
 	}
 
 	@Override
@@ -35,6 +46,21 @@ public class PrimaryDescription extends DataCategory {
 	@Override
 	public String getSQL() {
 		return "primaryDescription";
+	}
+
+	@Override
+	public void setValue(Object value) {
+		if (value == null)
+			this.primaryDescription = null;
+		else if (value instanceof String)
+			this.primaryDescription = (String) value;
+		else
+			throw new IllegalArgumentException("Data was of an incorrect type for PrimaryDescription.");
+	}
+
+	@Override
+	public Object getValue() {
+		return this.primaryDescription;
 	}
 
 }

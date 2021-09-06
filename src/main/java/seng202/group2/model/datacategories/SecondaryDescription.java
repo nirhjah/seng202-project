@@ -9,11 +9,22 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class SecondaryDescription extends DataCategory {
+public class SecondaryDescription extends DataCategory implements Importable {
+	
+	/** The secondary description of the crime type this code corresponds to */
+	private String secondaryDescription = null;
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) throws UnsupportedCategoryException {
-		throw new UnsupportedCategoryException("Cannot set value of secondary description");
+		if (record == null)
+			throw new IllegalArgumentException("Cannot set attribute value of null record.");
+			
+		if (data == null)
+			record.setSecondaryDescription(null);
+		else if (data instanceof String)
+			record.setSecondaryDescription((String) data);
+		else
+			throw new IllegalArgumentException("Data was of an incorrect type for SecondaryDescription.");
 	}
 
 	@Override
@@ -36,6 +47,21 @@ public class SecondaryDescription extends DataCategory {
 	@Override
 	public String getSQL() {
 		return "secondaryDescription";
+	}
+
+	@Override
+	public void setValue(Object value) {
+		if (value == null)
+			this.secondaryDescription = null;
+		else if (value instanceof String)
+			this.secondaryDescription = (String) value;
+		else
+			throw new IllegalArgumentException("Data was of an incorrect type for SecondaryDescription.");
+	}
+
+	@Override
+	public Object getValue() {
+		return this.secondaryDescription;
 	}
 
 }
