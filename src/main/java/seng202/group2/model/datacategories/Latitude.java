@@ -9,6 +9,9 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class Latitude extends DataCategory implements Importable {
+	
+	/** The latitudinal location where the crime incident occurred. */
+	private Float latitude = null;
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
@@ -53,6 +56,21 @@ public class Latitude extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "latitude";
+	}
+
+	@Override
+	public void setValue(Object value) {
+		if (value == null)
+			this.latitude = null;
+		else if (value instanceof Float)
+			this.latitude = (Float) value;
+		else
+			throw new IllegalArgumentException("Data was of an incorrect type for Latitude.");
+	}
+
+	@Override
+	public Float getValue() {
+		return this.latitude;
 	}
 
 }

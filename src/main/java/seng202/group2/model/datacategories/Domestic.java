@@ -9,6 +9,13 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class Domestic extends DataCategory implements Importable {
+	
+	/**
+	 * 1 if the crime incident was classified as domestic
+	 * 0 if the crime incident was not classified as domestic
+	 * null if there is no information provided
+	 */
+	private Boolean domestic = null;
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
@@ -49,6 +56,21 @@ public class Domestic extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "domestic";
+	}
+
+	@Override
+	public void setValue(Object value) {
+		if (value == null)
+			this.domestic = null;
+		else if (value instanceof Boolean)
+			this.domestic = (Boolean) value;
+		else
+			throw new IllegalArgumentException("Data was of an incorrect type for Domestic.");
+	}
+
+	@Override
+	public Boolean getValue() {
+		return this.domestic;
 	}
 
 }

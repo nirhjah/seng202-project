@@ -10,6 +10,12 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class Beat extends DataCategory implements Importable {
+	
+	/**
+	 * Police district where the crime incident occurred.
+	 * (Area of the city broken down for patrol and statistical purposes)
+	 */
+	private Short beat = null;
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
@@ -49,6 +55,21 @@ public class Beat extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "beat";
+	}
+
+	@Override
+	public void setValue(Object value) {
+		if (value == null)
+			this.beat = null;
+		else if (value instanceof Short)
+			this.beat = (Short) value;
+		else
+			throw new IllegalArgumentException("Data was of an incorrect type for Beat.");
+	}
+
+	@Override
+	public Short getValue() {
+		return this.beat;
 	}
 
 }

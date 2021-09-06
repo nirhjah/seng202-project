@@ -9,6 +9,9 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class CaseNumber extends DataCategory implements Importable {
+	
+	/** The case number associated with the crime record in the police database */
+	private String caseNum = null;
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
@@ -43,6 +46,21 @@ public class CaseNumber extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "caseNum";
+	}
+
+	@Override
+	public void setValue(Object value) {
+		if (value == null)
+			this.caseNum = null;
+		else if (value instanceof String)
+			this.caseNum = (String) value;
+		else
+			throw new IllegalArgumentException("Data was of an incorrect type for CaseNumber.");
+	}
+
+	@Override
+	public String getValue() {
+		return this.caseNum;
 	}
 
 }

@@ -9,6 +9,9 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class LocationDescription extends DataCategory implements Importable {
+	
+	/** A textual description of the location where the crime incident occurred */
+	private String locationDescription = null;
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
@@ -43,6 +46,21 @@ public class LocationDescription extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "locationDescription";
+	}
+
+	@Override
+	public void setValue(Object value) {
+		if (value == null)
+			this.locationDescription = null;
+		else if (value instanceof String)
+			this.locationDescription = (String) value;
+		else
+			throw new IllegalArgumentException("Data was of an incorrect type for LocationDescription.");
+	}
+
+	@Override
+	public String getValue() {
+		return this.locationDescription;
 	}
 
 }

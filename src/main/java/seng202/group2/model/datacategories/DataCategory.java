@@ -83,4 +83,16 @@ public abstract class DataCategory {
 				throw new UnsupportedCategoryException("The string \"" + categoryString + "\" could not be resolved to a DataCategory class.");
 		}
 	}
+	
+	/**
+	 * Sets the value of the data stored within this DataCategory.
+	 * @param value The value of data to be stored in this category.
+	 */
+	public abstract void setValue(Object value);
+	
+	/**
+	 * Gets the value of the data stored within this DataCategory.
+	 * @return The value of the data stored in this category.
+	 */
+	public abstract Object getValue();
 }

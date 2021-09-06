@@ -10,6 +10,12 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class Block extends DataCategory implements Importable {
+	
+	/**
+	 * The address of the crime incident at a city block level.
+	 * Zip code with last two digits anonymized followed by street name.
+	 */
+	private String block = null;
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
@@ -44,6 +50,21 @@ public class Block extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "block";
+	}
+
+	@Override
+	public void setValue(Object value) {
+		if (value == null)
+			this.block = null;
+		else if (value instanceof String)
+			this.block = (String) value;
+		else
+			throw new IllegalArgumentException("Data was of an incorrect type for Block.");
+	}
+
+	@Override
+	public String getValue() {
+		return this.block;
 	}
 
 }

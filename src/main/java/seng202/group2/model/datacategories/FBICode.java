@@ -9,6 +9,13 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class FBICode extends DataCategory implements Importable {
+	
+	/**
+	 * FBI crime code assigned to the crime incident.
+	 * Used to categorize crime incidents by the type of crime that occurred. 
+	 * @see <a href="https://ucr.fbi.gov/nibrs/2011/resources/nibrs-offense-codes/view">Offense Codes</a>
+	 */
+	private String fbiCode = null;
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
@@ -45,6 +52,21 @@ public class FBICode extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "fbiCode";
+	}
+
+	@Override
+	public void setValue(Object value) {
+		if (value == null)
+			this.fbiCode = null;
+		else if (value instanceof String)
+			this.fbiCode = (String) value;
+		else
+			throw new IllegalArgumentException("Data was of an incorrect type for FBICode.");
+	}
+
+	@Override
+	public String getValue() {
+		return this.fbiCode;
 	}
 
 }

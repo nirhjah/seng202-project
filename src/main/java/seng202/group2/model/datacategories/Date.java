@@ -14,6 +14,9 @@ import seng202.group2.model.CrimeRecord;
  */
 public class Date extends DataCategory implements Importable {
 	
+	/** The date and time at which the crime incident occurred */
+	private Calendar date = null;
+	
 	/** Date formats that may be encountered while parsing */
 	public static String[] dateFormats = {
 			"MM'/'dd'/'yyyy hh':'mm':'ss a",
@@ -71,6 +74,21 @@ public class Date extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "date";
+	}
+
+	@Override
+	public void setValue(Object value) {
+		if (value == null)
+			this.date = null;
+		else if (value instanceof Calendar)
+			this.date = (Calendar) value;
+		else
+			throw new IllegalArgumentException("Data was of an incorrect type for Date.");
+	}
+
+	@Override
+	public Calendar getValue() {
+		return this.date;
 	}
 
 }

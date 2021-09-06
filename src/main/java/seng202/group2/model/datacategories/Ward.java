@@ -9,6 +9,9 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class Ward extends DataCategory implements Importable {
+	
+	/** Election precinct where the crime incident occurred. */
+	private Short ward = null;
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
@@ -48,6 +51,21 @@ public class Ward extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "ward";
+	}
+
+	@Override
+	public void setValue(Object value) {
+		if (value == null)
+			this.ward = null;
+		else if (value instanceof Short)
+			this.ward = (Short) value;
+		else
+			throw new IllegalArgumentException("Data was of an incorrect type for Ward.");
+	}
+
+	@Override
+	public Object getValue() {
+		return this.ward;
 	}
 
 }

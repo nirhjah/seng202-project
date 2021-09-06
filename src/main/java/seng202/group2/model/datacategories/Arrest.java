@@ -9,6 +9,13 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class Arrest extends DataCategory implements Importable {
+	
+	/**
+	 * 1 if the crime incident resulted in an arrest being made
+	 * 0 if the crime incident did not result in an arrest being made
+	 * null if there is no information provided
+	 */
+	private Boolean arrest = null;
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
@@ -49,6 +56,21 @@ public class Arrest extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "arrest";
+	}
+
+	@Override
+	public void setValue(Object value) {
+		if (value == null)
+			this.arrest = null;
+		else if (value instanceof Boolean)
+			this.arrest = (Boolean) value;
+		else
+			throw new IllegalArgumentException("Data was of an incorrect type for Arrest.");
+	}
+
+	@Override
+	public Boolean getValue() {
+		return this.arrest;
 	}
 
 }
