@@ -10,6 +10,26 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class IUCRCode extends DataCategory implements Importable {
+	
+	/** The IUCR code */
+	public final String IUCR;
+	/** The primary description of the crime type this code corresponds to */
+	public final String PRIMARY_DESCRIPTION;
+	/** The secondary description of the crime type this code corresponds to */
+	public final String SECONDARY_DESCRIPTION;
+	/** 
+	 * If an IUCR code is an index code, then the crime type represented by this IUCR code
+	 * can be found under a NIBRS offense code, which are codes used by the FBI for collating
+	 * and processing crime data.
+	 */
+	public final Boolean INDEX;
+	
+	public IUCRCode(String iucr, String primaryDescription, String secondaryDescription, Boolean index) {
+		this.IUCR = iucr;
+		this.PRIMARY_DESCRIPTION = primaryDescription;
+		this.SECONDARY_DESCRIPTION = secondaryDescription;
+		this.INDEX = index;
+	}
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
@@ -18,14 +38,14 @@ public class IUCRCode extends DataCategory implements Importable {
 			
 		if (data == null)
 			record.setIucr(null);
-		else if (data instanceof seng202.group2.controller.IUCRCode)
-			record.setIucr((seng202.group2.controller.IUCRCode) data);
+		else if (data instanceof IUCRCode)
+			record.setIucr((IUCRCode) data);
 		else
 			throw new IllegalArgumentException("Data was of an incorrect type for IUCRCode.");
 	}
 
 	@Override
-	public seng202.group2.controller.IUCRCode getRecordValue(CrimeRecord record) {
+	public IUCRCode getRecordValue(CrimeRecord record) {
 		if (record == null)
 			throw new IllegalArgumentException("Cannot get attribute value of null record.");
 		
@@ -33,7 +53,7 @@ public class IUCRCode extends DataCategory implements Importable {
 	}
 
 	@Override
-	public seng202.group2.controller.IUCRCode parseString(String value) {
+	public IUCRCode parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
 		else if (value == "")
@@ -47,5 +67,4 @@ public class IUCRCode extends DataCategory implements Importable {
 	public String getSQL() {
 		return "IUCR";
 	}
-
 }
