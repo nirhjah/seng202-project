@@ -327,6 +327,7 @@ public class DBMS {
                 e.printStackTrace();
             }
         }
+        System.out.println();
 
         activeData.updateObservers();
     }

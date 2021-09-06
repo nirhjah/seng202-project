@@ -140,6 +140,7 @@ public class CSVImporter extends DataImporter {
 			crimeData.add(parseRecord(values));
 			System.out.print("\rImported " + ++count + " records so far.");
 		}
+		System.out.println();
 		
 		return crimeData;
 	}
