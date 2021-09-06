@@ -74,7 +74,7 @@ public class Longitude extends DataCategory implements Importable {
 	}
 
 	@Override
-	public Object getValue() {
+	public Float getValue() {
 		return this.longitude;
 	}
 
