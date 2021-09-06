@@ -1,7 +1,6 @@
 package seng202.group2.model.datacategories;
 
 import seng202.group2.model.CrimeRecord;
-import seng202.group2.controller.IUCRCodeDictionary;
 
 /**
  * Illinois Uniform Crime Reporting code.

@@ -2,9 +2,10 @@ package seng202.group2.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import seng202.group2.controller.IUCRCodeDictionary;
+
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
+import seng202.group2.model.datacategories.IUCRCodeDictionary;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

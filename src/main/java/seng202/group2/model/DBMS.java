@@ -1,12 +1,12 @@
 package seng202.group2.model;
 
-import seng202.group2.controller.IUCRCodeDictionary;
-
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import seng202.group2.model.datacategories.IUCRCodeDictionary;
 
 /**
  * DataBaseManagementSystem. This controls the SQLite database and connects the data model together.

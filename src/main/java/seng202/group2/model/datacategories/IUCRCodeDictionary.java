@@ -1,4 +1,4 @@
-package seng202.group2.controller;
+package seng202.group2.model.datacategories;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import com.opencsv.CSVReader;
+
+import seng202.group2.controller.IUCRCode;
 
 /**
  * A dictionary of Illinois Crime Reporting Codes and their meanings.
