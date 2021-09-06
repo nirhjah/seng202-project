@@ -64,7 +64,7 @@ public class Ward extends DataCategory implements Importable {
 	}
 
 	@Override
-	public Object getValue() {
+	public Short getValue() {
 		return this.ward;
 	}
 
