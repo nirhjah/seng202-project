@@ -317,9 +317,12 @@ public class DBMS {
      * @param records
      */
     public static void addRecords(ArrayList<CrimeRecord> records) {
+        int count = 0;
+        System.out.println("Adding crime records to local database.");
         for (CrimeRecord record : records) {
             try {
                 addRecord(record, false);
+                System.out.print("\rAdded " + ++count + " records to database");
             } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
             }

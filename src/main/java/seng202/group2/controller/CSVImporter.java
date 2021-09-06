@@ -130,11 +130,15 @@ public class CSVImporter extends DataImporter {
 			parseCategories();
 		
 		ArrayList<CrimeRecord> crimeData = new ArrayList<CrimeRecord>();
-		
+
+		int count = 0;
+		System.out.println("Importing all records.");
+
 		// Read all crime records into crimeData object
 		String[] values;
 		while ((values = fileReader.readNextSilently()) != null) {
 			crimeData.add(parseRecord(values));
+			System.out.print("\rImported " + ++count + " records so far.");
 		}
 		
 		return crimeData;
