@@ -13,7 +13,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import seng202.group2.controller.CSVImporter;
 import seng202.group2.controller.DataImporter;
-import seng202.group2.controller.IUCRCode;
+import seng202.group2.model.datacategories.IUCRCode;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
 

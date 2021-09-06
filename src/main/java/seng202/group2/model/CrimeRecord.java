@@ -346,7 +346,7 @@ public class CrimeRecord {
 	 * @return The latitudinal location where the crime incident occurred.
 	 */
 	public Float getLatitude() {
-		return latitude;
+		return latitude.getValue();
 	}
 	
 	/**
@@ -362,6 +362,6 @@ public class CrimeRecord {
 	 * @return The longitudinal location where the crime incident occurred.
 	 */
 	public Float getLongitude() {
-		return longitude;
+		return longitude.getValue();
 	}
 }
