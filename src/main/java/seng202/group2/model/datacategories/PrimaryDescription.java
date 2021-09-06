@@ -8,7 +8,7 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public abstract class PrimaryDescription extends DataCategory implements Importable {
+public class PrimaryDescription extends DataCategory implements Importable {
 	
 	/** The primary description of the crime type this code corresponds to */
 	private String primaryDescription = null;
