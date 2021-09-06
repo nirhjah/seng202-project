@@ -45,9 +45,9 @@ public class ImportController {
 			record.setDate(cal);
 
 			record.setBlock("Block" + i);
-			record.setIucr(new IUCRCode("430", "pDesc" + i, "sDesc" + i, false));
-//            record.setPrimaryDescription("pDesc" + i);
-//            record.setSecondaryDescription("sDesc" + i);
+			record.setIucr("110");
+            record.setPrimaryDescription("pDesc" + i);
+            record.setSecondaryDescription("sDesc" + i);
 			record.setLocationDescription("lDesc" + i);
 			record.setArrest(false);
 			record.setDomestic(false);
