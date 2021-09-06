@@ -1,7 +1,6 @@
 package seng202.group2.model;
 
-import seng202.group2.controller.IUCRCode;
-
+import seng202.group2.model.datacategories.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
@@ -150,6 +149,7 @@ public class CrimeRecord {
 	 * @return The date/time on which the crime incident occurred, in a string format.
 	 */
 	public String getDateString() {
+		Calendar date = this.date.getValue();
 		if (date == null) {
 			return "NONE";
 		}
@@ -239,7 +239,7 @@ public class CrimeRecord {
 	
 	/**
 	 * Sets the location description of the crime incident.
-	 * @param description A textual description of the location where the crime incident occurred
+	 * @param locationDescription A textual description of the location where the crime incident occurred
 	 */
 	public void setLocationDescription(String locationDescription) {
 		this.locationDescription.setValue(locationDescription);
@@ -330,7 +330,7 @@ public class CrimeRecord {
 	 * @return FBI crime code assigned to the crime incident.
 	 */
 	public String getFbiCode() {
-		return fbiCode;
+		return fbiCode.getValue();
 	}
 	
 	/**
@@ -338,11 +338,7 @@ public class CrimeRecord {
 	 * @param latitude The latitudinal location where the crime incident occurred.
 	 */
 	public void setLatitude(Float latitude) {
-		if (latitude != null)
-			if (!(-90.0f <= latitude && latitude <= 90.0f))
-				throw new IllegalArgumentException("Latitude out of bounds");
-		
-		this.latitude = latitude;
+		this.latitude.setValue(latitude);
 	}
 	
 	/**
@@ -358,11 +354,7 @@ public class CrimeRecord {
 	 * @param longitude The longitudinal location where the crime incident occurred.
 	 */
 	public void setLongitude(Float longitude) {
-		if (longitude != null)
-			if (!(-180.0f <= longitude && longitude <= 180.0f))
-				throw new IllegalArgumentException("Longitude out of bounds");
-		
-		this.longitude = longitude;
+		this.longitude.setValue(longitude);
 	}
 	
 	/**
