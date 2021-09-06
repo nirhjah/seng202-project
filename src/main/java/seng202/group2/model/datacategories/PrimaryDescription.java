@@ -59,7 +59,7 @@ public class PrimaryDescription extends DataCategory implements Importable {
 	}
 
 	@Override
-	public Object getValue() {
+	public String getValue() {
 		return this.primaryDescription;
 	}
 

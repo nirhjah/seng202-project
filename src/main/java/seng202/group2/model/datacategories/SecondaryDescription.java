@@ -60,7 +60,7 @@ public class SecondaryDescription extends DataCategory implements Importable {
 	}
 
 	@Override
-	public Object getValue() {
+	public String getValue() {
 		return this.secondaryDescription;
 	}
 
