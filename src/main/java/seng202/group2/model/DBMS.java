@@ -1,14 +1,10 @@
 package seng202.group2.model;
 
-import seng202.group2.model.datacategories.DataCategory;
-import java.lang.reflect.Method;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * DataBaseManagementSystem. This controls the SQLite database and connects the data model together.

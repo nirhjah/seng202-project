@@ -28,13 +28,19 @@ public class SQLInsertStatement {
             return;
         }
 
+        if (value == "true" || value == "false") {
+            value.toUpperCase();
+        } else {
+            value = "'" + value + "'";
+        }
+
         if (first) {
             intoString += category;
-            valuesString += "'" + value +"'";
+            valuesString += value;
             first = false;
         } else {
             intoString += ", " + category;
-            valuesString += ", '" + value +"'";
+            valuesString += ", " + value;
         }
     }
 
