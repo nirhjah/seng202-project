@@ -12,11 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * THIS IS A TEMPORARY MANUAL TESTING CLASS. Use this as you wish! I have left this here so that you can see some methods of testing.
- */
-
-public class Test {
-    private static final String DATE_FORMAT = "yyyy/MM/dd hh:mm:ss a";
+ *adasdasing DATE_FORMAT = "yyyy/MM/dd hh:mm:ss a";
 
     public static  void main(String[] args) throws SQLException, ClassNotFoundException, ParseException {
         ActiveData activeData = new ActiveData();
@@ -37,7 +33,7 @@ public class Test {
             record.setDate(cal);
 
             record.setBlock("Block" + num);
-            record.setIucr(IUCRCodeDictionary.getCode("110"));
+            record.setIucr(IUCRCodeDictionarya.getCode("110"));
             record.setLocationDescription("lDesc" + num);
             record.setArrest(false);
             record.setDomestic(false);
