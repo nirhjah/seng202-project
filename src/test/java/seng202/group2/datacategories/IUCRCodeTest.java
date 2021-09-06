@@ -39,7 +39,7 @@ class IUCRCodeTest {
 		seng202.group2.controller.IUCRCode iucr = new seng202.group2.controller.IUCRCode("820", "THEFT", "$500 AND UNDER", true);
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, iucr);
+		category.setRecordValue(record, iucr);
 		
 		// Check value set correctly
 		assertEquals(iucr, record.getIucr());
@@ -54,7 +54,7 @@ class IUCRCodeTest {
 		
 		// Try to set value of record attribute to incorrect data type
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(record, iucr);
+			category.setRecordValue(record, iucr);
 		});
 	}
 	
@@ -66,7 +66,7 @@ class IUCRCodeTest {
 		seng202.group2.controller.IUCRCode iucr = null;
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, iucr);
+		category.setRecordValue(record, iucr);
 		
 		// Check value set correctly
 		assertEquals(iucr, record.getBlock());
@@ -81,7 +81,7 @@ class IUCRCodeTest {
 		
 		// Try to set value of null records attribute using DataCategory method
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(null, iucr);
+			category.setRecordValue(null, iucr);
 		});
 	}
 	
@@ -97,9 +97,9 @@ class IUCRCodeTest {
 		record.setIucr(iucr);
 		
 		// Check value of record attribute gotten using DataCategory method is correct
-		assertEquals(category.getCategoryValue(record), iucr);
+		assertEquals(category.getRecordValue(record), iucr);
 		// Check return type of DataCategory method correct
-		assertTrue(category.getCategoryValue(record) instanceof seng202.group2.controller.IUCRCode);
+		assertTrue(category.getRecordValue(record) instanceof seng202.group2.controller.IUCRCode);
 	}
 	
 	/**
@@ -110,7 +110,7 @@ class IUCRCodeTest {
 	void testGetCategoryValue_NullRecord() {
 		// Check value of record attribute gotten using DataCategory method is correct
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.getCategoryValue(null);
+			category.getRecordValue(null);
 		});
 	}
 	

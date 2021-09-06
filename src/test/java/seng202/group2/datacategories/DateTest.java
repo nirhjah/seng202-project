@@ -34,7 +34,7 @@ class DateTest {
 		Calendar date = new GregorianCalendar(2020, 11, 23, 15, 5);
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, date);
+		category.setRecordValue(record, date);
 		
 		// Check value set correctly
 		assertEquals(date, record.getDate());
@@ -49,7 +49,7 @@ class DateTest {
 		
 		// Try to set value of record attribute to incorrect data type
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(record, date);
+			category.setRecordValue(record, date);
 		});
 	}
 	
@@ -61,7 +61,7 @@ class DateTest {
 		Calendar date = null;
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, date);
+		category.setRecordValue(record, date);
 		
 		// Check value set correctly
 		assertEquals(date, record.getDate());
@@ -76,7 +76,7 @@ class DateTest {
 		
 		// Try to set value of null records attribute using DataCategory method
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(null, date);
+			category.setRecordValue(null, date);
 		});
 	}
 	
@@ -92,9 +92,9 @@ class DateTest {
 		record.setDate(date);
 		
 		// Check value of record attribute gotten using DataCategory method is correct
-		assertEquals(date, category.getCategoryValue(record));
+		assertEquals(date, category.getRecordValue(record));
 		// Check return type of DataCategory method correct
-		assertTrue(category.getCategoryValue(record) instanceof Calendar);
+		assertTrue(category.getRecordValue(record) instanceof Calendar);
 	}
 	
 	/**
@@ -105,7 +105,7 @@ class DateTest {
 	void testGetCategoryValue_NullRecord() {
 		// Try to get value of null record
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.getCategoryValue(null);
+			category.getRecordValue(null);
 		});
 	}
 	

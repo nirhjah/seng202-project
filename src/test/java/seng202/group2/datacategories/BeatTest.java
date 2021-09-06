@@ -37,7 +37,7 @@ class BeatTest {
 		Short beat = 334;
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, beat);
+		category.setRecordValue(record, beat);
 		
 		// Check value set correctly
 		assertEquals(beat, record.getBeat());
@@ -52,7 +52,7 @@ class BeatTest {
 		
 		// Try to set value of record attribute to incorrect data type
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(record, beat);
+			category.setRecordValue(record, beat);
 		});
 	}
 	
@@ -64,7 +64,7 @@ class BeatTest {
 		Short beat = null;
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, beat);
+		category.setRecordValue(record, beat);
 		
 		// Check value set correctly
 		assertEquals(beat, record.getBeat());
@@ -79,7 +79,7 @@ class BeatTest {
 		
 		// Try to set value of null records attribute using DataCategory method
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(null, beat);
+			category.setRecordValue(null, beat);
 		});
 	}
 	
@@ -95,9 +95,9 @@ class BeatTest {
 		record.setBeat(beat);
 		
 		// Check value of record attribute gotten using DataCategory method is correct
-		assertEquals(beat, category.getCategoryValue(record));
+		assertEquals(beat, category.getRecordValue(record));
 		// Check return type of DataCategory method correct
-		assertTrue(category.getCategoryValue(record) instanceof Short);
+		assertTrue(category.getRecordValue(record) instanceof Short);
 	}
 	
 	/**
@@ -108,7 +108,7 @@ class BeatTest {
 	void testGetCategoryValue_NullRecord() {
 		// Check value of record attribute gotten using DataCategory method is correct
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.getCategoryValue(null);
+			category.getRecordValue(null);
 		});
 	}
 	

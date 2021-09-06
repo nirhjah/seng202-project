@@ -38,7 +38,7 @@ class ArrestTest {
 		Boolean arrest = false;
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, arrest);
+		category.setRecordValue(record, arrest);
 		
 		// Check value set correctly
 		assertEquals(arrest, record.getArrest());
@@ -53,7 +53,7 @@ class ArrestTest {
 		
 		// Try to set value of record attribute to incorrect data type
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(record, arrest);
+			category.setRecordValue(record, arrest);
 		});
 	}
 	
@@ -65,7 +65,7 @@ class ArrestTest {
 		Boolean arrest = null;
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, arrest);
+		category.setRecordValue(record, arrest);
 		
 		// Check value set correctly
 		assertEquals(arrest, record.getArrest());
@@ -80,7 +80,7 @@ class ArrestTest {
 		
 		// Try to set value of null records attribute using DataCategory method
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(null, arrest);
+			category.setRecordValue(null, arrest);
 		});
 	}
 	
@@ -96,9 +96,9 @@ class ArrestTest {
 		record.setArrest(arrest);
 		
 		// Check value of record attribute gotten using DataCategory method is correct
-		assertEquals(category.getCategoryValue(record), arrest);
+		assertEquals(category.getRecordValue(record), arrest);
 		// Check return type of DataCategory method correct
-		assertTrue(category.getCategoryValue(record) instanceof Boolean);
+		assertTrue(category.getRecordValue(record) instanceof Boolean);
 	}
 	
 	/**
@@ -109,7 +109,7 @@ class ArrestTest {
 	void testGetCategoryValue_NullRecord() {
 		// Check value of record attribute gotten using DataCategory method is correct
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.getCategoryValue(null);
+			category.getRecordValue(null);
 		});
 	}
 	

@@ -38,7 +38,7 @@ class LatitudeTest {
 		Float latitude = 41.748486f;
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, latitude);
+		category.setRecordValue(record, latitude);
 		
 		// Check value set correctly
 		assertEquals(latitude, record.getLatitude());
@@ -53,7 +53,7 @@ class LatitudeTest {
 		
 		// Try to set value of record attribute to incorrect data type
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(record, latitude);
+			category.setRecordValue(record, latitude);
 		});
 	}
 	
@@ -65,7 +65,7 @@ class LatitudeTest {
 		Float latitude = null;
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, latitude);
+		category.setRecordValue(record, latitude);
 		
 		// Check value set correctly
 		assertEquals(latitude, record.getLatitude());
@@ -80,7 +80,7 @@ class LatitudeTest {
 		
 		// Try to set value of null records attribute using DataCategory method
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(null, latitude);
+			category.setRecordValue(null, latitude);
 		});
 	}
 	
@@ -96,9 +96,9 @@ class LatitudeTest {
 		record.setLatitude(latitude);
 		
 		// Check value of record attribute gotten using DataCategory method is correct
-		assertEquals(latitude, category.getCategoryValue(record));
+		assertEquals(latitude, category.getRecordValue(record));
 		// Check return type of DataCategory method correct
-		assertTrue(category.getCategoryValue(record) instanceof Float);
+		assertTrue(category.getRecordValue(record) instanceof Float);
 	}
 	
 	/**
@@ -109,7 +109,7 @@ class LatitudeTest {
 	void testGetCategoryValue_NullRecord() {
 		// Check value of record attribute gotten using DataCategory method is correct
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.getCategoryValue(null);
+			category.getRecordValue(null);
 		});
 	}
 	

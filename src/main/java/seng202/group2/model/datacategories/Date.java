@@ -23,7 +23,7 @@ public class Date extends DataCategory implements Importable {
 	};
 
 	@Override
-	public void setCategoryValue(CrimeRecord record, Object data) {
+	public void setRecordValue(CrimeRecord record, Object data) {
 		if (record == null) 
 			throw new IllegalArgumentException("Cannot set attribute value of null record");
 		
@@ -36,7 +36,7 @@ public class Date extends DataCategory implements Importable {
 	}
 
 	@Override
-	public Calendar getCategoryValue(CrimeRecord record) {
+	public Calendar getRecordValue(CrimeRecord record) {
 		if (record == null)
 			throw new IllegalArgumentException("Cannot get attribute value of null record.");
 		

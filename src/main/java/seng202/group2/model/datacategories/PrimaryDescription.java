@@ -11,12 +11,12 @@ import seng202.group2.model.CrimeRecord;
 public class PrimaryDescription extends DataCategory {
 
 	@Override
-	public void setCategoryValue(CrimeRecord record, Object data) throws UnsupportedCategoryException {
+	public void setRecordValue(CrimeRecord record, Object data) throws UnsupportedCategoryException {
 		throw new UnsupportedCategoryException("Cannot set value of primary description");
 	}
 
 	@Override
-	public String getCategoryValue(CrimeRecord record) {
+	public String getRecordValue(CrimeRecord record) {
 		if (record == null)
 			throw new IllegalArgumentException("Cannot get attribute value of null record.");
 		

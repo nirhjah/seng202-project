@@ -41,7 +41,7 @@ class PrimaryDescriptionTest {
 		
 		// Try to set value of record attribute to incorrect data type
 		assertThrows(UnsupportedCategoryException.class, () -> {
-			category.setCategoryValue(record, description);
+			category.setRecordValue(record, description);
 		});
 	}
 	
@@ -57,9 +57,9 @@ class PrimaryDescriptionTest {
 		record.setIucr(iucr);
 		
 		// Check value of record attribute gotten using DataCategory method is correct
-		assertEquals(iucr.PRIMARY_DESCRIPTION, category.getCategoryValue(record));
+		assertEquals(iucr.PRIMARY_DESCRIPTION, category.getRecordValue(record));
 		// Check return type of DataCategory method correct
-		assertTrue(category.getCategoryValue(record) instanceof String);
+		assertTrue(category.getRecordValue(record) instanceof String);
 	}
 	
 	/**
@@ -70,7 +70,7 @@ class PrimaryDescriptionTest {
 	void testGetCategoryValue_NullRecord() {
 		// Check value of record attribute gotten using DataCategory method is correct
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.getCategoryValue(null);
+			category.getRecordValue(null);
 		});
 	}
 	

@@ -19,7 +19,7 @@ public abstract class DataCategory {
 	 * @param data The data to set the CrimeRecord's attribute value to.
 	 * @throws UnsupportedCategoryException 
 	 */
-	public abstract void setCategoryValue(CrimeRecord record, Object data) throws UnsupportedCategoryException;
+	public abstract void setRecordValue(CrimeRecord record, Object data) throws UnsupportedCategoryException;
 	
 	/**
 	 * Gets the value of the attribute of CrimeRecord record, which corresponds to this DataCategory
@@ -28,7 +28,7 @@ public abstract class DataCategory {
 	 * @return The value of the CrimeRecord's attribute.
 	 * @throws UnsupportedCategoryException 
 	 */
-	public abstract Object getCategoryValue(CrimeRecord record) throws UnsupportedCategoryException;
+	public abstract Object getRecordValue(CrimeRecord record) throws UnsupportedCategoryException;
 	
 	/**
 	 * Parses a string representing a value of data corresponding to this DataCategory

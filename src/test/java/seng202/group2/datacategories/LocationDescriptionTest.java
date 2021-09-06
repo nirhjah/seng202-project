@@ -38,7 +38,7 @@ class LocationDescriptionTest {
 		String location = "APARTMENT";
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, location);
+		category.setRecordValue(record, location);
 		
 		// Check value set correctly
 		assertEquals(location, record.getLocationDescription());
@@ -53,7 +53,7 @@ class LocationDescriptionTest {
 		
 		// Try to set value of record attribute to incorrect data type
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(record, location);
+			category.setRecordValue(record, location);
 		});
 	}
 	
@@ -65,7 +65,7 @@ class LocationDescriptionTest {
 		String location = null;
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, location);
+		category.setRecordValue(record, location);
 		
 		// Check value set correctly
 		assertEquals(location, record.getFbiCode());
@@ -80,7 +80,7 @@ class LocationDescriptionTest {
 		
 		// Try to set value of null records attribute using DataCategory method
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(null, location);
+			category.setRecordValue(null, location);
 		});
 	}
 	
@@ -96,9 +96,9 @@ class LocationDescriptionTest {
 		record.setLocationDescription(location);
 		
 		// Check value of record attribute gotten using DataCategory method is correct
-		assertEquals(location, category.getCategoryValue(record));
+		assertEquals(location, category.getRecordValue(record));
 		// Check return type of DataCategory method correct
-		assertTrue(category.getCategoryValue(record) instanceof String);
+		assertTrue(category.getRecordValue(record) instanceof String);
 	}
 	
 	/**
@@ -109,7 +109,7 @@ class LocationDescriptionTest {
 	void testGetCategoryValue_NullRecord() {
 		// Check value of record attribute gotten using DataCategory method is correct
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.getCategoryValue(null);
+			category.getRecordValue(null);
 		});
 	}
 	

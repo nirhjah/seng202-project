@@ -13,7 +13,7 @@ import seng202.group2.controller.IUCRCodeDictionary;
 public class IUCRCode extends DataCategory implements Importable {
 
 	@Override
-	public void setCategoryValue(CrimeRecord record, Object data) {
+	public void setRecordValue(CrimeRecord record, Object data) {
 		if (record == null)
 			throw new IllegalArgumentException("Cannot set attribute value of null record.");
 			
@@ -26,7 +26,7 @@ public class IUCRCode extends DataCategory implements Importable {
 	}
 
 	@Override
-	public seng202.group2.controller.IUCRCode getCategoryValue(CrimeRecord record) {
+	public seng202.group2.controller.IUCRCode getRecordValue(CrimeRecord record) {
 		if (record == null)
 			throw new IllegalArgumentException("Cannot get attribute value of null record.");
 		

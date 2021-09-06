@@ -110,7 +110,7 @@ public class CSVImporter extends DataImporter {
 			try {
 				// Try to parse the value corresponding to that DataCategory into the CrimeRecord
 				Object value = category.parseString(values[i]);
-				category.setCategoryValue(record, value);
+				category.setRecordValue(record, value);
 			} catch (IllegalArgumentException e) {
 				// An error occurred while trying to parse the value
 				System.out.println("Error parsing value: " + values[i] + " for category: " + category);

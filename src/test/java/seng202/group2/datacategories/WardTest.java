@@ -37,7 +37,7 @@ class WardTest {
 		Short ward = 7;
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, ward);
+		category.setRecordValue(record, ward);
 		
 		// Check value set correctly
 		assertEquals(ward, record.getWard());
@@ -52,7 +52,7 @@ class WardTest {
 		
 		// Try to set value of record attribute to incorrect data type
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(record, ward);
+			category.setRecordValue(record, ward);
 		});
 	}
 	
@@ -64,7 +64,7 @@ class WardTest {
 		Short ward = null;
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, ward);
+		category.setRecordValue(record, ward);
 		
 		// Check value set correctly
 		assertEquals(ward, record.getWard());
@@ -79,7 +79,7 @@ class WardTest {
 		
 		// Try to set value of null records attribute using DataCategory method
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(null, ward);
+			category.setRecordValue(null, ward);
 		});
 	}
 	
@@ -95,9 +95,9 @@ class WardTest {
 		record.setWard(ward);
 		
 		// Check value of record attribute gotten using DataCategory method is correct
-		assertEquals(ward, category.getCategoryValue(record));
+		assertEquals(ward, category.getRecordValue(record));
 		// Check return type of DataCategory method correct
-		assertTrue(category.getCategoryValue(record) instanceof Short);
+		assertTrue(category.getRecordValue(record) instanceof Short);
 	}
 	
 	/**
@@ -108,7 +108,7 @@ class WardTest {
 	void testGetCategoryValue_NullRecord() {
 		// Check value of record attribute gotten using DataCategory method is correct
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.getCategoryValue(null);
+			category.getRecordValue(null);
 		});
 	}
 	

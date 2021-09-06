@@ -38,7 +38,7 @@ class DomesticTest {
 		Boolean domestic = false;
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, domestic);
+		category.setRecordValue(record, domestic);
 		
 		// Check value set correctly
 		assertEquals(domestic, record.getDomestic());
@@ -53,7 +53,7 @@ class DomesticTest {
 		
 		// Try to set value of record attribute to incorrect data type
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(record, domestic);
+			category.setRecordValue(record, domestic);
 		});
 	}
 	
@@ -65,7 +65,7 @@ class DomesticTest {
 		Boolean domestic = null;
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, domestic);
+		category.setRecordValue(record, domestic);
 		
 		// Check value set correctly
 		assertEquals(domestic, record.getDomestic());
@@ -80,7 +80,7 @@ class DomesticTest {
 		
 		// Try to set value of null records attribute using DataCategory method
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(null, domestic);
+			category.setRecordValue(null, domestic);
 		});
 	}
 	
@@ -96,9 +96,9 @@ class DomesticTest {
 		record.setDomestic(domestic);
 		
 		// Check value of record attribute gotten using DataCategory method is correct
-		assertEquals(domestic, category.getCategoryValue(record));
+		assertEquals(domestic, category.getRecordValue(record));
 		// Check return type of DataCategory method correct
-		assertTrue(category.getCategoryValue(record) instanceof Boolean);
+		assertTrue(category.getRecordValue(record) instanceof Boolean);
 	}
 	
 	/**
@@ -109,7 +109,7 @@ class DomesticTest {
 	void testGetCategoryValue_NullRecord() {
 		// Check value of record attribute gotten using DataCategory method is correct
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.getCategoryValue(null);
+			category.getRecordValue(null);
 		});
 	}
 	

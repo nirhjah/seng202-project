@@ -38,7 +38,7 @@ class FBICodeTest {
 		String fbiCode = "08A";
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, fbiCode);
+		category.setRecordValue(record, fbiCode);
 		
 		// Check value set correctly
 		assertEquals(fbiCode, record.getFbiCode());
@@ -53,7 +53,7 @@ class FBICodeTest {
 		
 		// Try to set value of record attribute to incorrect data type
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(record, fbiCode);
+			category.setRecordValue(record, fbiCode);
 		});
 	}
 	
@@ -65,7 +65,7 @@ class FBICodeTest {
 		String fbiCode = null;
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, fbiCode);
+		category.setRecordValue(record, fbiCode);
 		
 		// Check value set correctly
 		assertEquals(fbiCode, record.getFbiCode());
@@ -80,7 +80,7 @@ class FBICodeTest {
 		
 		// Try to set value of null records attribute using DataCategory method
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(null, fbiCode);
+			category.setRecordValue(null, fbiCode);
 		});
 	}
 	
@@ -96,9 +96,9 @@ class FBICodeTest {
 		record.setFbiCode(fbiCode);
 		
 		// Check value of record attribute gotten using DataCategory method is correct
-		assertEquals(fbiCode, category.getCategoryValue(record));
+		assertEquals(fbiCode, category.getRecordValue(record));
 		// Check return type of DataCategory method correct
-		assertTrue(category.getCategoryValue(record) instanceof String);
+		assertTrue(category.getRecordValue(record) instanceof String);
 	}
 	
 	/**
@@ -109,7 +109,7 @@ class FBICodeTest {
 	void testGetCategoryValue_NullRecord() {
 		// Check value of record attribute gotten using DataCategory method is correct
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.getCategoryValue(null);
+			category.getRecordValue(null);
 		});
 	}
 	

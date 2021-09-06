@@ -38,7 +38,7 @@ class BlockTest {
 		String block = "073XX S SOUTH SHORE DR";
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, block);
+		category.setRecordValue(record, block);
 		
 		// Check value set correctly
 		assertEquals(block, record.getBlock());
@@ -53,7 +53,7 @@ class BlockTest {
 		
 		// Try to set value of record attribute to incorrect data type
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(record, block);
+			category.setRecordValue(record, block);
 		});
 	}
 	
@@ -65,7 +65,7 @@ class BlockTest {
 		String block = null;
 		
 		// Set value of record attribute using  DataCategory method
-		category.setCategoryValue(record, block);
+		category.setRecordValue(record, block);
 		
 		// Check value set correctly
 		assertEquals(block, record.getBlock());
@@ -80,7 +80,7 @@ class BlockTest {
 		
 		// Try to set value of null records attribute using DataCategory method
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.setCategoryValue(null, block);
+			category.setRecordValue(null, block);
 		});
 	}
 	
@@ -96,9 +96,9 @@ class BlockTest {
 		record.setBlock(block);
 		
 		// Check value of record attribute gotten using DataCategory method is correct
-		assertEquals(category.getCategoryValue(record), block);
+		assertEquals(category.getRecordValue(record), block);
 		// Check return type of DataCategory method correct
-		assertTrue(category.getCategoryValue(record) instanceof String);
+		assertTrue(category.getRecordValue(record) instanceof String);
 	}
 	
 	/**
@@ -109,7 +109,7 @@ class BlockTest {
 	void testGetCategoryValue_NullRecord() {
 		// Check value of record attribute gotten using DataCategory method is correct
 		assertThrows(IllegalArgumentException.class, () -> {
-			category.getCategoryValue(null);
+			category.getRecordValue(null);
 		});
 	}
 	
