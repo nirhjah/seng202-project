@@ -62,8 +62,13 @@ public class Latitude extends DataCategory implements Importable {
 	public void setValue(Object value) {
 		if (value == null)
 			this.latitude = null;
-		else if (value instanceof Float)
-			this.latitude = (Float) value;
+		else if (value instanceof Float) {
+			Float latitude = (Float) value;
+			if (!(-90.0f <= latitude && latitude <= 90.0f))
+				throw new IllegalArgumentException("Latitude out of bounds");
+			
+			this.latitude = latitude;
+		}
 		else
 			throw new IllegalArgumentException("Data was of an incorrect type for Latitude.");
 	}

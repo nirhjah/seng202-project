@@ -62,8 +62,13 @@ public class Longitude extends DataCategory implements Importable {
 	public void setValue(Object value) {
 		if (value == null)
 			this.longitude = null;
-		else if (value instanceof Float)
-			this.longitude = (Float) value;
+		else if (value instanceof Float) {
+			Float longitude = (Float) value;
+			if (!(-180.0f <= longitude && longitude <= 180.0f))
+				throw new IllegalArgumentException("Longitude out of bounds");
+			
+			this.longitude = longitude;
+		}
 		else
 			throw new IllegalArgumentException("Data was of an incorrect type for Longitude.");
 	}
