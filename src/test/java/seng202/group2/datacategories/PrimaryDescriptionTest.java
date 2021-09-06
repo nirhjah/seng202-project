@@ -6,8 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seng202.group2.model.CrimeRecord;
-import seng202.group2.controller.IUCRCode;
-import seng202.group2.model.datacategories.IUCRCodeDictionary;
 import seng202.group2.model.datacategories.PrimaryDescription;
 import seng202.group2.model.datacategories.UnsupportedCategoryException;
 
@@ -51,13 +49,13 @@ class PrimaryDescriptionTest {
 	 */
 	@Test
 	void testGetCategoryValue() {
-		IUCRCode iucr = IUCRCodeDictionary.getCode("820");
+		String description = "THEFT";
 		
 		// Set value of record attribute
-		record.setIucr(iucr);
+		record.setPrimaryDescription(description);
 		
 		// Check value of record attribute gotten using DataCategory method is correct
-		assertEquals(iucr.PRIMARY_DESCRIPTION, category.getRecordValue(record));
+		assertEquals(description, category.getRecordValue(record));
 		// Check return type of DataCategory method correct
 		assertTrue(category.getRecordValue(record) instanceof String);
 	}

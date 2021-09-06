@@ -36,7 +36,7 @@ class IUCRCodeTest {
 	 */
 	@Test
 	void testSetCategoryValue_ValidData() {
-		seng202.group2.controller.IUCRCode iucr = new seng202.group2.controller.IUCRCode("820", "THEFT", "$500 AND UNDER", true);
+		String iucr = "820";
 		
 		// Set value of record attribute using  DataCategory method
 		category.setRecordValue(record, iucr);
@@ -63,7 +63,7 @@ class IUCRCodeTest {
 	 */
 	@Test
 	void testSetCategoryValue_NullData() {
-		seng202.group2.controller.IUCRCode iucr = null;
+		String iucr = null;
 		
 		// Set value of record attribute using  DataCategory method
 		category.setRecordValue(record, iucr);
@@ -77,7 +77,7 @@ class IUCRCodeTest {
 	 */
 	@Test
 	void testSetCategoryValue_NullRecord() {
-		seng202.group2.controller.IUCRCode iucr = new seng202.group2.controller.IUCRCode("820", "THEFT", "$500 AND UNDER", true);
+		String iucr = "820";
 		
 		// Try to set value of null records attribute using DataCategory method
 		assertThrows(IllegalArgumentException.class, () -> {
@@ -91,7 +91,7 @@ class IUCRCodeTest {
 	 */
 	@Test
 	void testGetCategoryValue() {
-		seng202.group2.controller.IUCRCode iucr = new seng202.group2.controller.IUCRCode("820", "THEFT", "$500 AND UNDER", true);
+		String iucr = "820";
 		
 		// Set value of record attribute
 		record.setIucr(iucr);
@@ -99,7 +99,7 @@ class IUCRCodeTest {
 		// Check value of record attribute gotten using DataCategory method is correct
 		assertEquals(category.getRecordValue(record), iucr);
 		// Check return type of DataCategory method correct
-		assertTrue(category.getRecordValue(record) instanceof seng202.group2.controller.IUCRCode);
+		assertTrue(category.getRecordValue(record) instanceof String);
 	}
 	
 	/**
@@ -119,10 +119,9 @@ class IUCRCodeTest {
 	 */
 	@Test
 	void testParseString_Valid() {
-		String stringIucr = "820";
-		seng202.group2.controller.IUCRCode iucr = IUCRCodeDictionary.getCode(stringIucr);
+		String iucr = "820";
 		
-		assertEquals(iucr, category.parseString(stringIucr));
+		assertEquals(iucr, category.parseString(iucr));
 	}
 	
 	/**
