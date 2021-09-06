@@ -9,7 +9,7 @@ import java.util.ArrayList;
  *
  * TODO Add Junit tests.
  */
-public class ActiveData extends DataSource{
+public class ActiveData extends DataSource {
     /** List of filters */
     private ArrayList<Filter> filters = new ArrayList<>();
 

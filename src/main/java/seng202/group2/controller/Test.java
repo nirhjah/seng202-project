@@ -37,12 +37,12 @@ import java.util.Calendar;
             record.setLocationDescription("lDesc" + num);
             record.setArrest(false);
             record.setDomestic(false);
-            record.setWard((short) (int) Integer.valueOf(num));
-            record.setBeat((short) (int) Integer.valueOf(num));
+            record.setWard((short) Integer.parseInt(num));
+            record.setBeat((short) Integer.parseInt(num));
             record.setFbiCode("fbiCode" + num);
-            record.setLongitude((float)(int) Integer.valueOf(num));
-            record.setLatitude((float)(int) Integer.valueOf(num));
-            DBMS.addRecord(record);
+            record.setLongitude((float)Integer.parseInt(num));
+            record.setLatitude((float)Integer.parseInt(num));
+            DBMS.addRecord(record, false);
         }
 
         //Convert String from db to Calendar

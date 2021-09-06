@@ -1,12 +1,14 @@
 package seng202.group2.model;
 
+import seng202.group2.model.datacategories.DataCategory;
+import java.lang.reflect.Method;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import seng202.group2.model.datacategories.IUCRCodeDictionary;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * DataBaseManagementSystem. This controls the SQLite database and connects the data model together.
@@ -18,8 +20,8 @@ public class DBMS {
     private static ActiveData activeData = new ActiveData();
     private static int idCounter = -1;
     private static  boolean hasDataBase = false;
-    //String.format("%d/%02d/%02d %02d:%02d:%02d ", year, month, day, hour, minute, second) + ((a == 0)? "AM": "PM")
     private static final String DATE_FORMAT = "yyyy/MM/dd hh:mm:ss a";
+    //String.format("%d/%02d/%02d %02d:%02d:%02d ", year, month, day, hour, minute, second) + ((a == 0)? "AM": "PM")
 
     /**
      * Connect to the database
@@ -105,28 +107,77 @@ public class DBMS {
 
         //Set the data
         try {
-            crimeRecord.setID(record.getInt("id"));
-            crimeRecord.setCaseNum(record.getString("caseNum"));
+            ResultSetMetaData rsmd = record.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+            boolean isNull = false;
 
-            //Convert String from db to Calendar
-            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(sdf.parse(record.getString("date")));
-            crimeRecord.setDate(cal);
+            // The column count starts from 1
+            for (int i = 1; i <= columnCount; i++ ) {
+                String name = rsmd.getColumnName(i);
 
-            crimeRecord.setBlock(record.getString("block"));
-            crimeRecord.setIucr(record.getString("IUCR"));
-            crimeRecord.setPrimaryDescription(record.getString("primaryDescription"));
-            crimeRecord.setSecondaryDescription(record.getString("secondaryDescription"));
-            crimeRecord.setLocationDescription(record.getString("locationDescription"));
-            crimeRecord.setArrest(record.getBoolean("arrest"));
-            crimeRecord.setDomestic(record.getBoolean("domestic"));
-            crimeRecord.setBeat(record.getShort("beat"));
-            crimeRecord.setWard(record.getShort("ward"));
-            crimeRecord.setFbiCode(record.getString("fbiCode"));
-            crimeRecord.setLatitude(record.getFloat("latitude"));
-            crimeRecord.setLongitude(record.getFloat("longitude"));
+                //If the value is null, don't try to put it in.
+                try {
+                    String result = record.getString(name);
+                    if (result == null) {
+                        continue;
+                    }
+                } catch (NullPointerException e) {
+                    continue;
+                }
 
+                //Else insert it into the CrimeData object
+                switch (name) {
+                    case "id":
+                        crimeRecord.setID(record.getInt("id"));
+                        break;
+                    case "caseNum":
+                        crimeRecord.setCaseNum(record.getString("caseNum"));
+                        break;
+                    case "date":
+                        //Convert String from db to Calendar
+                        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(sdf.parse(record.getString("date")));
+                        crimeRecord.setDate(cal);
+                        break;
+                    case "block":
+                        crimeRecord.setBlock(record.getString("block"));
+                        break;
+                    case "IUCR":
+                        crimeRecord.setIucr(record.getString("IUCR"));
+                        break;
+                    case "primaryDescription":
+                        crimeRecord.setPrimaryDescription(record.getString("primaryDescription"));
+                        break;
+                    case "secondaryDescription":
+                        crimeRecord.setSecondaryDescription(record.getString("secondaryDescription"));
+                        break;
+                    case "locationDescription":
+                        crimeRecord.setLocationDescription(record.getString("locationDescription"));
+                        break;
+                    case "arrest":
+                        crimeRecord.setArrest(record.getBoolean("arrest"));
+                        break;
+                    case "domestic":
+                        crimeRecord.setDomestic(record.getBoolean("domestic"));
+                        break;
+                    case "beat":
+                        crimeRecord.setBeat(record.getShort("beat"));
+                        break;
+                    case "ward":
+                        crimeRecord.setWard(record.getShort("ward"));
+                        break;
+                    case "fbiCode":
+                        crimeRecord.setFbiCode(record.getString("fbiCode"));
+                        break;
+                    case "latitude":
+                        crimeRecord.setLatitude(record.getFloat("latitude"));
+                        break;
+                    case "longitude":
+                        crimeRecord.setLongitude(record.getFloat("longitude"));
+                        break;
+                }
+            }
         } catch (SQLException | ParseException e) {
             e.getStackTrace();
         }
@@ -191,13 +242,14 @@ public class DBMS {
     }
 
     /**
-     * Adds a record to the database.
+     * Adds a record to the database. Update the observers if desired
      *
      * @param record -- CrimeRecord to add. This CrimeRecord does not need an id assigned
+     * @param update -- If true, the observers will be updated
      * @throws SQLException
      * @throws ClassNotFoundException
      */
-    public static void addRecord(CrimeRecord record) throws SQLException, ClassNotFoundException {
+    public static void addRecord(CrimeRecord record, boolean update) throws SQLException, ClassNotFoundException {
         if (conn == null) {
             getConnection();
         }
@@ -212,35 +264,68 @@ public class DBMS {
 
 
         //Insert into database
-        PreparedStatement state = conn.prepareStatement("INSERT INTO records values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
-        state.setInt(1, idCounter);
-        state.setString(2, record.getCaseNum());
+        SQLInsertStatement state = new SQLInsertStatement("records");
+        state.setValue("id", Integer.toString(idCounter));
+        state.setValue("caseNum", record.getCaseNum());
 
         Calendar time = record.getDate();
-        int year = time.get(Calendar.YEAR);
-        int month = time.get(Calendar.MONTH) + 1; // Note: zero based!
-        int day = time.get(Calendar.DAY_OF_MONTH);
-        int hour = time.get(Calendar.HOUR_OF_DAY);
-        int minute = time.get(Calendar.MINUTE);
-        int second = time.get(Calendar.SECOND);
-        int a = time.get(Calendar.AM_PM);
-        state.setString(3, String.format("%d/%02d/%02d %02d:%02d:%02d ", year, month, day, hour, minute, second) + ((a == 0)? "AM": "PM"));
+        if (time != null) {
+            int year = time.get(Calendar.YEAR);
+            int month = time.get(Calendar.MONTH) + 1; // Note: zero based!
+            int day = time.get(Calendar.DAY_OF_MONTH);
+            int hour = time.get(Calendar.HOUR_OF_DAY);
+            int minute = time.get(Calendar.MINUTE);
+            int second = time.get(Calendar.SECOND);
+            int a = time.get(Calendar.AM_PM);
+            state.setValue("date", String.format("%d/%02d/%02d %02d:%02d:%02d ", year, month, day, hour, minute, second) + ((a == 0) ? "AM" : "PM"));
+        }
 
 
-        state.setString(4,record.getBlock());
-        state.setString(5, record.getIucr());
-        state.setString(6,record.getPrimaryDescription());
-        state.setString(7,record.getSecondaryDescription());
-        state.setString(8, record.getLocationDescription());
-        state.setBoolean(9, record.getArrest());
-        state.setBoolean(10, record.getDomestic());
-        state.setShort(11, record.getBeat());
-        state.setShort(12, record.getWard());
-        state.setString(13, record.getFbiCode());
-        state.setFloat(14, record.getLatitude());
-        state.setFloat(15, record.getLongitude());
-        state.execute();
+        state.setValue("block", record.getBlock());
+        try {
+            state.setValue("IUCR", record.getIucr());
+            state.setValue("primaryDescription", record.getPrimaryDescription());
+            state.setValue("secondaryDescription", record.getSecondaryDescription());
+        } catch (NullPointerException e) {
+            System.out.println("IUCR Error in addData");
+            state.setValue("IUCR", null);
+            state.setValue("primaryDescription", null);
+            state.setValue("secondaryDescription",null);
+
+        }
+        state.setValue("locationDescription", record.getLocationDescription());
+        state.setValue("arrest", String.valueOf(record.getArrest()));
+        state.setValue("domestic", String.valueOf(record.getDomestic()));
+        state.setValue("beat", String.valueOf(record.getBeat()));
+        state.setValue("ward", String.valueOf(record.getWard()));
+        state.setValue("fbiCode", record.getFbiCode());
+        state.setValue("latitude", String.valueOf(record.getLatitude()));
+        state.setValue("longitude", String.valueOf(record.getLongitude()));
+
+        Statement insert = conn.createStatement();
+        insert.execute(state.getStatement());
         idCounter++;
+
+        if (update) {
+            activeData.updateObservers();
+        }
+    }
+
+    /**
+     * Add an ArrayList of CrimeRecords to the database.
+     *
+     * @param records
+     */
+    public static void addRecords(ArrayList<CrimeRecord> records) {
+        for (CrimeRecord record : records) {
+            try {
+                addRecord(record, false);
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        activeData.updateObservers();
     }
 
     /**

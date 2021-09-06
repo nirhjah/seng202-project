@@ -22,6 +22,7 @@ public class Date extends DataCategory implements Importable {
 			"MM'/'dd'/'yyyy hh':'mm':'ss a",
 			"MM'/'dd'/'yyyy HH':'mm':'ss",
 			"MM'-'dd'-'yyyy HH':'mm':'ss",
+			"MM'/'dd'/'yyyy HH':'mm",
 			"yyyy'-'MM'-'dd'T'HH':'mm':'ss"
 	};
 

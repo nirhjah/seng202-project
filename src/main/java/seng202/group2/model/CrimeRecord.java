@@ -1,7 +1,8 @@
 package seng202.group2.model;
 
-import seng202.group2.model.datacategories.*;
+import seng202.group2.controller.IUCRCode;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 /**
@@ -41,10 +42,10 @@ public class CrimeRecord {
 	 * @see <a href="https://catalog.data.gov/dataset/chicago-police-department-illinois-uniform-crime-reporting-iucr-codes">DataSet</a>
 	 */
 	private IUCRCode iucr = new IUCRCode();
-	
+
 	/** A textual description of the type of the crime incident. */
 	private PrimaryDescription primaryDescription = new PrimaryDescription();
-	
+
 	/**
 	 * A textual description giving more details supplementing the categorization
 	 * of the crime type provided in the primary description.
@@ -145,13 +146,33 @@ public class CrimeRecord {
 	}
 	
 	/**
+	 * Gets the date/time on which the crime incident occurred in string format.
+	 * @return The date/time on which the crime incident occurred, in a string format.
+	 */
+	public String getDateString() {
+		if (date == null) {
+			return "NONE";
+		}
+
+		int year = date.get(Calendar.YEAR);
+		int month = date.get(Calendar.MONTH) + 1; // Note: zero based!
+		int day = date.get(Calendar.DAY_OF_MONTH);
+		int hour = date.get(Calendar.HOUR_OF_DAY);
+		int minute = date.get(Calendar.MINUTE);
+		int second = date.get(Calendar.SECOND);
+		int a = date.get(Calendar.AM_PM);
+
+		return String.format("%d/%02d/%02d %02d:%02d:%02d ", year, month, day, hour, minute, second) + ((a == 0)? "AM": "PM"); // + ((a == 0)? "AM": "PM")
+	}
+
+	/**
 	 * Gets the date/time on which the crime incident occurred.
 	 * @return The date/time on which the crime incident occurred.
 	 */
 	public Calendar getDate() {
 		return date.getValue();
 	}
-	
+
 	/**
 	 * Sets the block where the crime incident occurred.
 	 * @param block The address of the crime incident at a city block level.
@@ -183,7 +204,7 @@ public class CrimeRecord {
 	public String getIucr() {
 		return iucr.getValue();
 	}
-	
+
 	/**
 	 * Sets the primary description of the crime incident.
 	 * @param primaryDescription The primary description of the crime incident.
@@ -199,7 +220,7 @@ public class CrimeRecord {
 	public String getPrimaryDescription() {
 		return primaryDescription.getValue();
 	}
-	
+
 	/**
 	 * Sets the secondary description of the crime incident.
 	 * @param secondaryDescription The secondary description of the crime incident.
@@ -309,7 +330,7 @@ public class CrimeRecord {
 	 * @return FBI crime code assigned to the crime incident.
 	 */
 	public String getFbiCode() {
-		return fbiCode.getValue();
+		return fbiCode;
 	}
 	
 	/**
@@ -317,7 +338,11 @@ public class CrimeRecord {
 	 * @param latitude The latitudinal location where the crime incident occurred.
 	 */
 	public void setLatitude(Float latitude) {
-		this.latitude.setValue(latitude);
+		if (latitude != null)
+			if (!(-90.0f <= latitude && latitude <= 90.0f))
+				throw new IllegalArgumentException("Latitude out of bounds");
+		
+		this.latitude = latitude;
 	}
 	
 	/**
@@ -325,7 +350,7 @@ public class CrimeRecord {
 	 * @return The latitudinal location where the crime incident occurred.
 	 */
 	public Float getLatitude() {
-		return latitude.getValue();
+		return latitude;
 	}
 	
 	/**
@@ -333,7 +358,11 @@ public class CrimeRecord {
 	 * @param longitude The longitudinal location where the crime incident occurred.
 	 */
 	public void setLongitude(Float longitude) {
-		this.longitude.setValue(longitude);
+		if (longitude != null)
+			if (!(-180.0f <= longitude && longitude <= 180.0f))
+				throw new IllegalArgumentException("Longitude out of bounds");
+		
+		this.longitude = longitude;
 	}
 	
 	/**
@@ -341,6 +370,6 @@ public class CrimeRecord {
 	 * @return The longitudinal location where the crime incident occurred.
 	 */
 	public Float getLongitude() {
-		return longitude.getValue();
+		return longitude;
 	}
 }
