@@ -3,15 +3,18 @@ package seng202.group2.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Active data class manages the filters, allowing the views to display a subset of the database
  *
  * TODO Add Junit tests.
  */
-public class ActiveData extends DataSource {
-    /** List of filters */
+public class ActiveData extends DataSource{
+    //List of filters
     private ArrayList<Filter> filters = new ArrayList<>();
+    //Currently-active data. Originally set to empty
+    private ArrayList<CrimeRecord> activeRecords = new ArrayList<>();
 
     /**
      * Add a filter to the filter list
@@ -20,7 +23,6 @@ public class ActiveData extends DataSource {
      */
     public void addFilter(Filter filter) {
         filters.add(filter);
-
         updateObservers();
     }
 
@@ -38,18 +40,18 @@ public class ActiveData extends DataSource {
     }
 
     /**
-     * Get all records that match the filters as CrimeRecords.
+     * Get all records from the database that match the filters as CrimeRecords.
      *
-     * @return ArrayList\<CrimeRecord\> Of all records that match the filters
      * @throws SQLException
      * @throws ClassNotFoundException
      */
-    public ArrayList<CrimeRecord> getActiveRecords() throws SQLException, ClassNotFoundException {
+    public void updateActiveRecords() throws SQLException, ClassNotFoundException, InterruptedException {
         //Generate Query string with filters
         String whereQuery = "";
         String sortQuery = "SELECT id FROM records";
         boolean first = true;
 
+        //Create SQL string
         for (Filter filter: filters){
             //If the filter is of type sort, you need to add to start instead of end
             if ((filter.getType()).equals(FilterType.SORT)) {
@@ -78,7 +80,6 @@ public class ActiveData extends DataSource {
         }
 
         //Get list of IDs
-        //System.out.println(sortQuery + whereQuery + ";");
         ResultSet results = DBMS.customQuery(sortQuery + whereQuery + ";");
         ArrayList<Integer> IDs = new ArrayList<>();
 
@@ -87,7 +88,24 @@ public class ActiveData extends DataSource {
             IDs.add(results.getInt("id"));
         }
 
-        //Get CrimeRecords
-        return DBMS.getRecords(IDs);
+        activeRecords = DBMS.getRecords(IDs);
+    }
+
+    /**
+     * Get currently active records
+     *
+     * @return ArrayList<CrimeRecords> of active records
+     */
+    public ArrayList<CrimeRecord> getActiveRecords() {
+        return activeRecords;
+    }
+
+    /**
+     * Get currently active records from a range of indices.
+     *
+     * @return ArrayList<CrimeRecords> of active records between start and end
+     */
+    public ArrayList<CrimeRecord> getActiveRecords(int start, int end) {
+        return new ArrayList<>(activeRecords.subList(start, Math.min(end, activeRecords.size())));
     }
 }

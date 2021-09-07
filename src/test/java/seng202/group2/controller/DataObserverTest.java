@@ -78,12 +78,8 @@ public class DataObserverTest {
             e.printStackTrace();
         }
 
-        try {
-            //Update data
-            observer.updateModel(DBMS.getActiveData().getActiveRecords());
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        //Update data
+        observer.updateModel(DBMS.getActiveData().getActiveRecords());
 
         ArrayList<CrimeRecord> results = observer.getTestRecords();
         int num = 1;

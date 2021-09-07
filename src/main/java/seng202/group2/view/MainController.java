@@ -36,11 +36,12 @@ import seng202.group2.model.DBMS;
  */
 public class MainController extends DataObserver implements Initializable {
 	/** The variable used to retrieve user input into the search text field. */
-	private final int windowSize = 100;
+	private int windowSizeInt = 200;
 	private int recordCount = 0;
 	private int currentMin = 0;
-	private int currentMax = 0;
+	private int currentMax = windowSizeInt;
 
+	@FXML private TextField windowSize;
 	@FXML private TextField searchTextField;
 	@FXML private Text recordsShown;
 
@@ -62,16 +63,35 @@ public class MainController extends DataObserver implements Initializable {
 	@FXML private TableColumn<CrimeRecord, Short> latitudeColumn;
 	@FXML private TableColumn<CrimeRecord, Short> longitudeColumn;
 
-	public void recordsScrollNext() {
-		currentMax += windowSize;
-		currentMin += windowSize;
+	private void recordsUpdate() {
+		ArrayList<CrimeRecord> activeRecords = new ArrayList<>(DBMS.getActiveData().getActiveRecords(currentMin, currentMax));
+
+		//Change the text
 		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
+
+
+		//Update table
+		tableView.getItems().clear();
+		for (CrimeRecord record: activeRecords)
+			tableView.getItems().add(record);
+	}
+
+	public void updateWindowSize() {
+		windowSizeInt = Integer.parseInt(windowSize.getText());
+		currentMax = currentMin + windowSizeInt;
+		recordsUpdate();
+	}
+
+	public void recordsScrollNext() {
+		currentMax = Math.min(currentMax + windowSizeInt, recordCount);
+		currentMin = Math.min(currentMin + windowSizeInt, recordCount - windowSizeInt);
+		recordsUpdate();
 	}
 
 	public void recordsScrollPrev() {
-		currentMax -= windowSize;
-		currentMin -= windowSize;
-		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
+		currentMin = Math.max(currentMin - windowSizeInt, 0);
+		currentMax = Math.max(currentMax - windowSizeInt, Math.min(recordCount, windowSizeInt));
+		recordsUpdate();
 	}
 
 
@@ -163,6 +183,7 @@ public class MainController extends DataObserver implements Initializable {
 		DBMS.getActiveData().addObserver(this);
 
 		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
+		windowSize.setText(Integer.toString(windowSizeInt));
 
 		idColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Integer>("ID"));
 		caseNumColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("caseNum"));
@@ -184,13 +205,15 @@ public class MainController extends DataObserver implements Initializable {
 	@Override
 	public void updateModel(ArrayList<CrimeRecord> activeRecords)
 	{
+		activeRecords = new ArrayList<>(activeRecords.subList(0, Math.min(windowSizeInt, activeRecords.size())));
+
 		//Change the number of records
-		recordCount = activeRecords.size();
+		recordCount = DBMS.getActiveData().getActiveRecords().size();
 		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
 
 
 		//Update table
-		tableView.getItems().removeAll();
+		tableView.getItems().clear();
 		for (CrimeRecord record: activeRecords)
 			tableView.getItems().add(record);
 	}
