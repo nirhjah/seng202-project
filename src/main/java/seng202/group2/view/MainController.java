@@ -14,6 +14,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.model.CrimeRecord;
@@ -30,15 +31,20 @@ import seng202.group2.model.DBMS;
  * MainController implements {@link Initializable} for setting up TableColumn values
  *
  * @author Sam Clark
- * TODO populate the Table View
  * TODO connect each button to their associated method.
  * TODO Implement data searching.
  */
 public class MainController extends DataObserver implements Initializable {
 	/** The variable used to retrieve user input into the search text field. */
+	private final int windowSize = 100;
+	private int recordCount = 0;
+	private int currentMin = 0;
+	private int currentMax = 0;
+
 	@FXML private TextField searchTextField;
+	@FXML private Text recordsShown;
 
-
+	//Table
 	@FXML private TableView<CrimeRecord> tableView;
 	@FXML private TableColumn<CrimeRecord, Integer> idColumn;
 	@FXML private TableColumn<CrimeRecord, String> caseNumColumn;
@@ -55,6 +61,19 @@ public class MainController extends DataObserver implements Initializable {
 	@FXML private TableColumn<CrimeRecord, Short> fbiCodeColumn;
 	@FXML private TableColumn<CrimeRecord, Short> latitudeColumn;
 	@FXML private TableColumn<CrimeRecord, Short> longitudeColumn;
+
+	public void recordsScrollNext() {
+		currentMax += windowSize;
+		currentMin += windowSize;
+		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
+	}
+
+	public void recordsScrollPrev() {
+		currentMax -= windowSize;
+		currentMin -= windowSize;
+		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
+	}
+
 
 	/**
 	 * showImportWindow method opens the import window and brings it to the front.
@@ -143,6 +162,8 @@ public class MainController extends DataObserver implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		DBMS.getActiveData().addObserver(this);
 
+		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
+
 		idColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Integer>("ID"));
 		caseNumColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("caseNum"));
 		dateColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("dateString"));
@@ -163,8 +184,12 @@ public class MainController extends DataObserver implements Initializable {
 	@Override
 	public void updateModel(ArrayList<CrimeRecord> activeRecords)
 	{
-		System.out.println("Attempted update");
+		//Change the number of records
+		recordCount = activeRecords.size();
+		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
 
+
+		//Update table
 		tableView.getItems().removeAll();
 		for (CrimeRecord record: activeRecords)
 			tableView.getItems().add(record);
