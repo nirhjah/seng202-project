@@ -36,13 +36,14 @@ import seng202.group2.model.DBMS;
  */
 public class MainController extends DataObserver implements Initializable {
 	/** The variable used to retrieve user input into the search text field. */
+	@FXML private TextField searchTextField;
+
+	//Variables used to control page(window) size
 	private int windowSizeInt = 200;
 	private int recordCount = 0;
 	private int currentMin = 0;
 	private int currentMax = windowSizeInt;
-
 	@FXML private TextField windowSize;
-	@FXML private TextField searchTextField;
 	@FXML private Text recordsShown;
 
 	//Table
@@ -63,6 +64,9 @@ public class MainController extends DataObserver implements Initializable {
 	@FXML private TableColumn<CrimeRecord, Short> latitudeColumn;
 	@FXML private TableColumn<CrimeRecord, Short> longitudeColumn;
 
+	/**
+	 * Update the current page of records. This displays a subset of the active data.
+	 */
 	private void recordsUpdate() {
 		ArrayList<CrimeRecord> activeRecords = new ArrayList<>(DBMS.getActiveData().getActiveRecords(currentMin, currentMax));
 
@@ -76,18 +80,27 @@ public class MainController extends DataObserver implements Initializable {
 			tableView.getItems().add(record);
 	}
 
+	/**
+	 * Update window size when a new size is entered into windowSize textField.
+	 */
 	public void updateWindowSize() {
 		windowSizeInt = Integer.parseInt(windowSize.getText());
 		currentMax = currentMin + windowSizeInt;
 		recordsUpdate();
 	}
 
+	/**
+	 * Cycle to the next set of data
+	 */
 	public void recordsScrollNext() {
 		currentMax = Math.min(currentMax + windowSizeInt, recordCount);
 		currentMin = Math.min(currentMin + windowSizeInt, recordCount - windowSizeInt);
 		recordsUpdate();
 	}
 
+	/**
+	 * Cycle to the previous set of data
+	 */
 	public void recordsScrollPrev() {
 		currentMin = Math.max(currentMin - windowSizeInt, 0);
 		currentMax = Math.max(currentMax - windowSizeInt, Math.min(recordCount, windowSizeInt));
@@ -178,6 +191,9 @@ public class MainController extends DataObserver implements Initializable {
 		}
 	}
 
+	/**
+	 * Initialize the window.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		DBMS.getActiveData().addObserver(this);
@@ -202,6 +218,11 @@ public class MainController extends DataObserver implements Initializable {
 		longitudeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("longitude"));
 	}
 
+	/**
+	 * Update the model when the observer is called.
+	 *
+	 * @param activeRecords -- ActiveData.getActiveRecords() - List of records to update the model with
+	 */
 	@Override
 	public void updateModel(ArrayList<CrimeRecord> activeRecords)
 	{
