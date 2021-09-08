@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -102,7 +103,21 @@ public class MainController extends DataObserver implements Initializable {
 	 * TODO This method is not yet implemented. Temporarily it is calling {@link MainController#showNotImplementedYet()}
 	 */
 	public void showGraphWindow() {
-		showNotImplementedYet();
+		//showNotImplementedYet();
+		try {
+			Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("graph.fxml"));
+			Stage stage = new Stage();
+			// This will cause the login window to always be in front of the main window
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setResizable(false);
+			stage.setTitle("Graph Window");
+			stage.setScene(new Scene(root, 400, 200));
+	
+			stage.show();
+		} catch (IOException e) {
+			// This is where you would enter the error handling code, for now just print the stacktrace
+			e.printStackTrace();
+		}
 	}
 
 	/**
