@@ -33,7 +33,7 @@ public class DBMSTest {
      * @throws ClassNotFoundException
      * @throws ParseException
      */
-    void addRecords(int max) throws SQLException, ClassNotFoundException, ParseException {
+    void addRecords(int max) throws SQLException, ClassNotFoundException, ParseException, InterruptedException {
         for (int i=1; i <= max; i++) {
             String num = Integer.toString(i);
             CrimeRecord record = new CrimeRecord();
@@ -59,6 +59,8 @@ public class DBMSTest {
             record.setLatitude((float)(int) Integer.parseInt(num));
             DBMS.addRecord(record, false);
         }
+
+        DBMS.getActiveData().updateActiveRecords();
     }
 
 
@@ -74,12 +76,12 @@ public class DBMSTest {
      * @throws ClassNotFoundException
      */
     @Test
-    void addRecordTest() throws SQLException, ClassNotFoundException, ParseException {
-        int oldSize = DBMS.getDBSize();
+    void addRecordTest() throws SQLException, ClassNotFoundException, ParseException, InterruptedException {
+        int oldSize = DBMS.getRecordsSize();
 
         addRecords(1);
 
-        assertEquals((oldSize + 1), DBMS.getDBSize());
+        assertEquals((oldSize + 1), DBMS.getRecordsSize());
     }
 
     /**
@@ -89,7 +91,7 @@ public class DBMSTest {
      * @throws ClassNotFoundException
      */
     @Test
-    void getRecordTest() throws SQLException, ClassNotFoundException, ParseException {
+    void getRecordTest() throws SQLException, ClassNotFoundException, ParseException, InterruptedException {
         DBMS.clearDB();
         addRecords(5);
 
@@ -104,11 +106,11 @@ public class DBMSTest {
      * @throws ClassNotFoundException
      */
     @Test
-    void getRecordsTest() throws SQLException, ClassNotFoundException, ParseException {
+    void getRecordsTest() throws SQLException, ClassNotFoundException, ParseException, InterruptedException {
         addRecords(5);
 
         ArrayList<Integer> ids = new ArrayList<>(Arrays.asList(1, 2));
-        ArrayList<CrimeRecord> records = DBMS.getRecords(ids);
+        ArrayList<CrimeRecord> records = DBMS.getRecords(0, -1);
         assertEquals("TEST1", records.get(0).getCaseNum());
         assertEquals("TEST2", records.get(1).getCaseNum());
     }
@@ -120,7 +122,7 @@ public class DBMSTest {
      * @throws ClassNotFoundException
      */
     @Test
-    void getAllRecordsTest() throws SQLException, ClassNotFoundException, ParseException {
+    void getAllRecordsTest() throws SQLException, ClassNotFoundException, ParseException, InterruptedException {
         addRecords(5);
 
         ResultSet results = DBMS.getAllRecords();
@@ -139,15 +141,15 @@ public class DBMSTest {
      * @throws ClassNotFoundException
      */
     @Test
-    void deleteRecordTest() throws SQLException, ClassNotFoundException, ParseException {
+    void deleteRecordTest() throws SQLException, ClassNotFoundException, ParseException, InterruptedException {
         addRecords(5);
 
-        int oldSize = DBMS.getDBSize();
+        int oldSize = DBMS.getRecordsSize();
 
         DBMS.deleteRecord(2);
         CrimeRecord res = DBMS.getRecord(2);
 
-        assertEquals((oldSize - 1), DBMS.getDBSize());
+        assertEquals((oldSize - 1), DBMS.getRecordsSize());
         assertNull(res.getCaseNum());
     }
 }

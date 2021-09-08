@@ -56,11 +56,8 @@ public class DataSourceTest {
      */
     @BeforeEach
     void addObserver() {
-        try {
-            DBMS.clearDB();
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        DBMS.clearDB();
+
         observer = new ObserverTestClass();
         DBMS.getActiveData().addObserver(observer);
     }

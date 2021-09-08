@@ -39,7 +39,7 @@ public class MainController extends DataObserver implements Initializable {
 	@FXML private TextField searchTextField;
 
 	//Variables used to control page(window) size
-	private int windowSizeInt = 200;
+	private int windowSizeInt = 1000;
 	private int recordCount = 0;
 	private int currentMin = 0;
 	private int currentMax = windowSizeInt;
@@ -68,7 +68,7 @@ public class MainController extends DataObserver implements Initializable {
 	 * Update the current page of records. This displays a subset of the active data.
 	 */
 	private void recordsUpdate() {
-		ArrayList<CrimeRecord> activeRecords = new ArrayList<>(DBMS.getActiveData().getActiveRecords(currentMin, currentMax));
+		ArrayList<CrimeRecord> activeRecords = new ArrayList<>(DBMS.getActiveData().getActiveRecords(currentMin, windowSizeInt));
 
 		//Change the text
 		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
@@ -219,18 +219,15 @@ public class MainController extends DataObserver implements Initializable {
 	}
 
 	/**
-	 * Update the model when the observer is called.
-	 *
-	 * @param activeRecords -- ActiveData.getActiveRecords() - List of records to update the model with
+	 * Update the model when the observer is called. This will reset the window to show rows 0 - limit
 	 */
 	@Override
-	public void updateModel(ArrayList<CrimeRecord> activeRecords)
-	{
-		activeRecords = new ArrayList<>(activeRecords.subList(0, Math.min(windowSizeInt, activeRecords.size())));
+	public void updateModel() {
+		ArrayList<CrimeRecord> activeRecords = DBMS.getActiveData().getActiveRecords(0, windowSizeInt);
 
 		//Change the number of records
 		recordCount = DBMS.getActiveData().getActiveRecords().size();
-		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
+		recordsShown.setText(0 + "-" + windowSizeInt + "/" + recordCount);
 
 
 		//Update table

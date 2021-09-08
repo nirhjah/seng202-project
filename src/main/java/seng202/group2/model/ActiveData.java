@@ -3,7 +3,6 @@ package seng202.group2.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Active data class manages the filters, allowing the views to display a subset of the database
@@ -13,8 +12,6 @@ import java.util.concurrent.TimeUnit;
 public class ActiveData extends DataSource{
     //List of filters
     private ArrayList<Filter> filters = new ArrayList<>();
-    //Currently-active data. Originally set to empty
-    private ArrayList<CrimeRecord> activeRecords = new ArrayList<>();
 
     /**
      * Add a filter to the filter list
@@ -40,12 +37,9 @@ public class ActiveData extends DataSource{
     }
 
     /**
-     * Get all records from the database that match the filters as CrimeRecords.
-     *
-     * @throws SQLException
-     * @throws ClassNotFoundException
+     * Updates the ActiveRecords database in DBMS. This updates using all current filters.
      */
-    public void updateActiveRecords() throws SQLException, ClassNotFoundException, InterruptedException {
+    public void updateActiveRecords() {
         //Generate Query string with filters
         String whereQuery = "";
         String sortQuery = "SELECT id FROM records";
@@ -81,31 +75,39 @@ public class ActiveData extends DataSource{
 
         //Get list of IDs
         ResultSet results = DBMS.customQuery(sortQuery + whereQuery + ";");
-        ArrayList<Integer> IDs = new ArrayList<>();
 
         //Format to ArrayList
-        while (results.next()) {
-            IDs.add(results.getInt("id"));
-        }
+        ArrayList<Integer> IDs = new ArrayList<>();
+        try {
+            while (results.next()) {
+                IDs.add(results.getInt("id"));
+            }
 
-        activeRecords = DBMS.getRecords(IDs);
+            //Update ActiveRecords database
+            DBMS.updateActiveDatabase(IDs);
+        } catch (SQLException e) {
+            System.out.println("Failed to add results to ArrayList. DBMS:updateActiveRecords:86");
+        }
     }
 
     /**
-     * Get currently active records
+     * Get all currently active records.
      *
-     * @return ArrayList<CrimeRecords> of active records
+     * @return ArrayList<CrimeRecords> of active records.
      */
     public ArrayList<CrimeRecord> getActiveRecords() {
-        return activeRecords;
+        return DBMS.getActiveRecords(0, -1);
     }
 
     /**
      * Get currently active records from a range of indices.
+     * From (min) to (min+limit).
      *
-     * @return ArrayList<CrimeRecords> of active records between start and end
+     * @param start -- The Smallest row index to get from database (EXCLUSIVE)
+     * @param limit -- The range of values to get (INCLUSIVE)
+     * @return ArrayList<CrimeRecords> of active records between start and end.
      */
-    public ArrayList<CrimeRecord> getActiveRecords(int start, int end) {
-        return new ArrayList<>(activeRecords.subList(start, Math.min(end, activeRecords.size())));
+    public ArrayList<CrimeRecord> getActiveRecords(int start, int limit) {
+        return DBMS.getActiveRecords(start, limit);
     }
 }
