@@ -3,6 +3,8 @@ package seng202.group2.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -10,11 +12,13 @@ import java.util.concurrent.TimeUnit;
  *
  * TODO Add Junit tests.
  */
-public class ActiveData extends DataSource{
+public class ActiveData extends DataSource {
     //List of filters
     private ArrayList<Filter> filters = new ArrayList<>();
     //Currently-active data. Originally set to empty
     private ArrayList<CrimeRecord> activeRecords = new ArrayList<>();
+    /** List of record ids selected by the user. */
+    private HashSet<Integer> selectedRecords = new HashSet<>();
 
     /**
      * Add a filter to the filter list
@@ -107,5 +111,59 @@ public class ActiveData extends DataSource{
      */
     public ArrayList<CrimeRecord> getActiveRecords(int start, int end) {
         return new ArrayList<>(activeRecords.subList(start, Math.min(end, activeRecords.size())));
+    }
+
+    /**
+     * Selects a record if it is not selected, otherwise deselects a record if it is selected.
+     * @param id The id of the CrimeRecord to (de)select.
+     */
+    public void toggleSelectRecord(Integer id) {
+        if (selectedRecords.contains(id))
+            deselectRecord(id);
+        else
+            selectRecord(id);
+    }
+
+    /**
+     * Adds a crime record to the set of selected crime records.
+     * @param id The id of the CrimeRecord to select.
+     */
+    public void selectRecord(Integer id) {
+        selectedRecords.add(id);
+        updateObservers();
+    }
+
+    /**
+     * Removes a crime record from the set of selected crime records.
+     * @param id The id of the CrimeRecord to deselect.
+     */
+    public void deselectRecord(Integer id) {
+        selectedRecords.remove(id);
+        updateObservers();
+    }
+
+    /**
+     * Removes all crime records from the set of selected crime records.
+     */
+    public void clearSelection() {
+        selectedRecords = new HashSet<>();
+        updateObservers();
+    }
+
+    /**
+     * Returns the set of selected crime records.
+     * @return The set of selected crime record ids.
+     */
+    public HashSet<Integer> getSelectedRecords() {
+        return selectedRecords;
+    }
+
+    /**
+     * Checks if a crime record is selected.
+     * @param id The id of the CrimeRecord the selection of which is to be determined.
+     * @return True if the CrimeRecord is selected, false if not.
+     */
+    public boolean isSelected(Integer id) {
+        return selectedRecords.contains(id);
     }
 }
