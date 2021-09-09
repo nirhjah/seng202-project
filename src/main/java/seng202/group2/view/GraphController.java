@@ -2,6 +2,8 @@ package seng202.group2.view;
 
 import java.util.ArrayList;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import seng202.group2.controller.DataObserver;
@@ -21,13 +23,6 @@ public class GraphController {
 	@FXML 
 	private ComboBox<GraphType> selectGraph;
 
-	/**
-	 * Initialize method which automatically runs on stage startup - populates combobox with Enum values
-	 */
-	public void initialize() {
-		selectGraph.getItems().setAll(GraphType.values());
-		System.out.println(getGraphType()); //testing
-	}
 	
 	/**
 	 * Creates the graph based on the graph type, categories and records
@@ -62,7 +57,7 @@ public class GraphController {
 	 * TODO need to fix this as it is returning null
 	 */
 	public void setGraphType(GraphType type) {
-		this.type = selectGraph.getSelectionModel().getSelectedItem(); 
+		this.type = selectGraph.getSelectionModel().getSelectedItem();
 
 	}
 	
@@ -72,5 +67,26 @@ public class GraphController {
 	public GraphType getGraphType() {
 		return type;
 	}
+	
+	
+	
+	/**
+	 * Initialize method which automatically runs on stage startup - populates combobox with Enum values
+	 */
+	public void initialize() {
+		selectGraph.getItems().setAll(GraphType.values());
+		selectGraph.getSelectionModel().select(0);
+		setGraphType(type);
+		
+		selectGraph.getSelectionModel().selectedItemProperty().addListener(
+		         (ObservableValue<? extends GraphType> observable_value, GraphType old_type, GraphType new_type) -> {
+		            setGraphType(new_type);
+		    		System.out.println("Selected graph type: " + getGraphType()); 
+
+		      });
+
+		
+	}
+	
 
 }
