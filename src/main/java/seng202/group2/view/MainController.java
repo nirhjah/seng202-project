@@ -3,6 +3,7 @@ package seng202.group2.view;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -224,7 +225,7 @@ public class MainController extends DataObserver implements Initializable {
 	 * @param activeRecords -- ActiveData.getActiveRecords() - List of records to update the model with
 	 */
 	@Override
-	public void updateModel(ArrayList<CrimeRecord> activeRecords)
+	public void updateModel(ArrayList<CrimeRecord> activeRecords, HashSet<Integer> selectedRecords)
 	{
 		activeRecords = new ArrayList<>(activeRecords.subList(0, Math.min(windowSizeInt, activeRecords.size())));
 

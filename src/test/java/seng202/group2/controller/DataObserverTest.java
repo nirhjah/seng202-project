@@ -2,6 +2,7 @@ package seng202.group2.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
 import java.sql.SQLException;
@@ -79,7 +80,8 @@ public class DataObserverTest {
         }
 
         //Update data
-        observer.updateModel(DBMS.getActiveData().getActiveRecords());
+        ActiveData activeData = DBMS.getActiveData();
+        observer.updateModel(activeData.getActiveRecords(), activeData.getSelectedRecords());
 
         ArrayList<CrimeRecord> results = observer.getTestRecords();
         int num = 1;
