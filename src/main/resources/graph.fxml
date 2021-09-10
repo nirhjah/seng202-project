@@ -14,6 +14,8 @@
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="30.22222837805748" minHeight="0.0" prefHeight="30.22222837805748" vgrow="SOMETIMES" />
@@ -24,7 +26,9 @@
                   <Insets />
                </GridPane.margin>
             </ComboBox>
-            <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Export" GridPane.columnIndex="1" />
+            <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Export" GridPane.columnIndex="3" />
+            <ComboBox prefWidth="150.0" promptText="X Axis" GridPane.columnIndex="1" fx:id="xCategory" />
+            <ComboBox fx:id="yCategory" prefWidth="150.0" promptText="Y Axis" GridPane.columnIndex="2" />
          </children>
       </GridPane>
    </top>
