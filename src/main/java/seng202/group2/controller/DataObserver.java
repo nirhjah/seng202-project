@@ -24,4 +24,6 @@ public abstract class DataObserver {
      *
      */
     public abstract void activeDataUpdate();
+
+    public abstract void selectedRecordsUpdate();
 }

@@ -43,4 +43,13 @@ public abstract class DataSource {
             observer.activeDataUpdate();
         }
     }
+
+    public void updateSelectionObservers() {
+        //Update all observers
+        for (DataObserver observer: observers) {
+            observer.selectedRecordsUpdate();
+        }
+        System.out.println("Updating selection observers");
+        System.out.println(DBMS.getActiveData().getSelectedRecords());
+    }
 }

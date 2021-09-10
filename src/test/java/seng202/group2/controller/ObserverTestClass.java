@@ -19,6 +19,11 @@ public class ObserverTestClass extends DataObserver {
         testRecords = DBMS.getActiveData().getActiveRecords();
     }
 
+    @Override
+    public void selectedRecordsUpdate() {
+        return;
+    }
+
     /**
      * Get testRecords
      */
