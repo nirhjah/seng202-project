@@ -10,11 +10,8 @@ import java.sql.SQLException;
 public class ApplicationEnvironment {
 
 	public static void main(String[] args) throws IOException {
-		try {
-			DBMS.clearDB();
-		} catch (SQLException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		DBMS.clearDB();
+
 		CamsApplication.main(args);
 	}
 

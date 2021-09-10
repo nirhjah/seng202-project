@@ -1,7 +1,8 @@
 package seng202.group2.controller;
 import seng202.group2.model.CrimeRecord;
+import seng202.group2.model.DBMS;
+
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * Assisting class for Observer test classes
@@ -12,11 +13,10 @@ public class ObserverTestClass extends DataObserver {
 
     /**
      * Get the records
-     * @param records
      */
     @Override
-    public void updateModel(ArrayList<CrimeRecord> records, HashSet<Integer> selectedRecords) {
-        testRecords = records;
+    public void updateModel() {
+        testRecords = DBMS.getActiveData().getActiveRecords();
     }
 
     /**

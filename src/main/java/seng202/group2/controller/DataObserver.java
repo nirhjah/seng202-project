@@ -22,7 +22,6 @@ public abstract class DataObserver {
      * Update the views data model. This may be a list if records presented in a table, map or graph.
      * You should not need to manually call this function, aside from testing.
      *
-     * @param activeRecords -- ActiveData.getActiveRecords() - List of records to update the model with
      */
-    public abstract void updateModel(ArrayList<CrimeRecord> activeRecords, HashSet<Integer> selectedRecords);
+    public abstract void updateModel();
 }

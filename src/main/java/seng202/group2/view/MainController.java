@@ -1,23 +1,19 @@
 package seng202.group2.view;
 
-import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.ResourceBundle;
 
-import javafx.application.Platform;
-import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -25,11 +21,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import seng202.group2.controller.CSVImporter;
-import seng202.group2.controller.DataImporter;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
+import seng202.group2.model.Filter;
+import seng202.group2.model.FilterType;
 
 /**
  * MainController is the GUI controller for the main Cams window.
@@ -49,7 +45,7 @@ public class MainController extends DataObserver implements Initializable {
 	@FXML private TextField searchTextField;
 
 	//Variables used to control page(window) size
-	private int windowSizeInt = 200;
+	private int windowSizeInt = 1000;
 	private int recordCount = 0;
 	private int currentMin = 0;
 	private int currentMax = windowSizeInt;
@@ -78,7 +74,7 @@ public class MainController extends DataObserver implements Initializable {
 	 * Update the current page of records. This displays a subset of the active data.
 	 */
 	private void recordsUpdate() {
-		ArrayList<CrimeRecord> activeRecords = new ArrayList<>(DBMS.getActiveData().getActiveRecords(currentMin, currentMax));
+		ArrayList<CrimeRecord> activeRecords = new ArrayList<>(DBMS.getActiveData().getActiveRecords(currentMin, windowSizeInt));
 
 		//Change the text
 		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
@@ -199,6 +195,8 @@ public class MainController extends DataObserver implements Initializable {
 			// This is where you would enter the error handling code, for now just print the stacktrace
 			e.printStackTrace();
 		}
+
+		DBMS.getActiveData().addFilter(FilterType.EQ.createFilter("id", "10"));
 	}
 
 	/**
@@ -259,18 +257,15 @@ public class MainController extends DataObserver implements Initializable {
 	}
 
 	/**
-	 * Update the model when the observer is called.
-	 *
-	 * @param activeRecords -- ActiveData.getActiveRecords() - List of records to update the model with
+	 * Update the model when the observer is called. This will reset the window to show rows 0 - limit
 	 */
 	@Override
-	public void updateModel(ArrayList<CrimeRecord> activeRecords, HashSet<Integer> selectedRecords)
-	{
-		activeRecords = new ArrayList<>(activeRecords.subList(0, Math.min(windowSizeInt, activeRecords.size())));
+	public void updateModel() {
+		ArrayList<CrimeRecord> activeRecords = DBMS.getActiveData().getActiveRecords(0, windowSizeInt);
 
 		//Change the number of records
 		recordCount = DBMS.getActiveData().getActiveRecords().size();
-		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
+		recordsShown.setText(0 + "-" + windowSizeInt + "/" + recordCount);
 
 		//Update table
 		tableView.getItems().clear();

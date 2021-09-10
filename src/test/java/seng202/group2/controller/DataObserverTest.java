@@ -58,11 +58,8 @@ public class DataObserverTest {
      */
     @BeforeEach
     void addObserver() {
-        try {
-            DBMS.clearDB();
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        DBMS.clearDB();
+
         observer = new ObserverTestClass();
         DBMS.getActiveData().addObserver(observer);
     }
@@ -80,8 +77,7 @@ public class DataObserverTest {
         }
 
         //Update data
-        ActiveData activeData = DBMS.getActiveData();
-        observer.updateModel(activeData.getActiveRecords(), activeData.getSelectedRecords());
+        observer.updateModel();
 
         ArrayList<CrimeRecord> results = observer.getTestRecords();
         int num = 1;
