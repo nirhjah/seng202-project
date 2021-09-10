@@ -27,7 +27,7 @@ public class ActiveData extends DataSource {
         filters.addLast(filter);
 
         if (update) {
-            updateObservers();
+            updateActiveData();
         }
     }
 
@@ -39,7 +39,7 @@ public class ActiveData extends DataSource {
     public void addFilter(Filter filter) {
         filters.addLast(filter);
 
-        updateObservers();
+        updateActiveData();
     }
 
     /**
@@ -51,7 +51,7 @@ public class ActiveData extends DataSource {
         if (filters.contains(filter)) {
             filters.remove(filter);
 
-            updateObservers();
+            updateActiveData();
         }
     }
 
@@ -66,7 +66,7 @@ public class ActiveData extends DataSource {
             filters.remove(filter);
 
             if (update)
-                updateObservers();
+                updateActiveData();
         }
     }
 
@@ -77,7 +77,7 @@ public class ActiveData extends DataSource {
     public void clearFilters(boolean update) {
         filters = new LinkedList<>();
         if (update)
-            updateObservers();
+            updateActiveData();
     }
 
     /**
@@ -177,7 +177,7 @@ public class ActiveData extends DataSource {
      */
     public void selectRecord(Integer id) {
         selectedRecords.add(id);
-        updateObservers();
+        updateActiveData();
     }
 
     /**
@@ -186,7 +186,7 @@ public class ActiveData extends DataSource {
      */
     public void deselectRecord(Integer id) {
         selectedRecords.remove(id);
-        updateObservers();
+        updateActiveData();
     }
 
     /**
@@ -194,7 +194,7 @@ public class ActiveData extends DataSource {
      */
     public void clearSelection() {
         selectedRecords = new HashSet<>();
-        updateObservers();
+        updateActiveData();
     }
 
     /**

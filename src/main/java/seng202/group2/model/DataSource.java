@@ -32,7 +32,7 @@ public abstract class DataSource {
     /**
      * Update all observers that the data has changed
      */
-    public void updateObservers() {
+    public void updateActiveData() {
         ActiveData activeData = DBMS.getActiveData();
 
         //Update active data

@@ -448,7 +448,7 @@ public class DBMS {
         System.out.println();
 
         activeData.updateActiveRecords();
-        activeData.updateObservers();
+        activeData.updateActiveData();
     }
 
     /**
