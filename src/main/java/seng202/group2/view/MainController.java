@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -20,6 +21,8 @@ import javafx.stage.Stage;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
+import seng202.group2.model.Filter;
+import seng202.group2.model.FilterType;
 
 /**
  * MainController is the GUI controller for the main Cams window.
@@ -39,7 +42,7 @@ public class MainController extends DataObserver implements Initializable {
 	@FXML private TextField searchTextField;
 
 	//Variables used to control page(window) size
-	private int windowSizeInt = 200;
+	private int windowSizeInt = 1000;
 	private int recordCount = 0;
 	private int currentMin = 0;
 	private int currentMax = windowSizeInt;
@@ -68,7 +71,7 @@ public class MainController extends DataObserver implements Initializable {
 	 * Update the current page of records. This displays a subset of the active data.
 	 */
 	private void recordsUpdate() {
-		ArrayList<CrimeRecord> activeRecords = new ArrayList<>(DBMS.getActiveData().getActiveRecords(currentMin, currentMax));
+		ArrayList<CrimeRecord> activeRecords = new ArrayList<>(DBMS.getActiveData().getActiveRecords(currentMin, windowSizeInt));
 
 		//Change the text
 		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
@@ -189,6 +192,8 @@ public class MainController extends DataObserver implements Initializable {
 			// This is where you would enter the error handling code, for now just print the stacktrace
 			e.printStackTrace();
 		}
+
+		DBMS.getActiveData().addFilter(FilterType.EQ.createFilter("id", "10"));
 	}
 
 	/**
@@ -216,21 +221,19 @@ public class MainController extends DataObserver implements Initializable {
 		fbiCodeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("fbiCode"));
 		latitudeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("latitude"));
 		longitudeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("longitude"));
+		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 	}
 
 	/**
-	 * Update the model when the observer is called.
-	 *
-	 * @param activeRecords -- ActiveData.getActiveRecords() - List of records to update the model with
+	 * Update the model when the observer is called. This will reset the window to show rows 0 - limit
 	 */
 	@Override
-	public void updateModel(ArrayList<CrimeRecord> activeRecords)
-	{
-		activeRecords = new ArrayList<>(activeRecords.subList(0, Math.min(windowSizeInt, activeRecords.size())));
+	public void updateModel() {
+		ArrayList<CrimeRecord> activeRecords = DBMS.getActiveData().getActiveRecords(0, windowSizeInt);
 
 		//Change the number of records
 		recordCount = DBMS.getActiveData().getActiveRecords().size();
-		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
+		recordsShown.setText(0 + "-" + windowSizeInt + "/" + recordCount);
 
 
 		//Update table

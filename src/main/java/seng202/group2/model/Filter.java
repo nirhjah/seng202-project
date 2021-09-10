@@ -15,7 +15,7 @@ public class Filter {
      * @param pattern SQL String representing the filter
      * @param type Type of filter
      */
-    Filter(String pattern, FilterType type) {
+    public Filter(String pattern, FilterType type) {
         this.SQLText = pattern;
         this.type = type;
     }
