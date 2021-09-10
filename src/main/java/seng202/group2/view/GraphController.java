@@ -4,8 +4,19 @@ import java.util.ArrayList;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.ScatterChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.CrimeRecord;
 
@@ -22,11 +33,16 @@ public class GraphController {
 	
 	@FXML 
 	private ComboBox<GraphType> selectGraph;
+	
+	@FXML
+	private BorderPane borderPane;
+	
 
 	
+
 	/**
 	 * Creates the graph based on the graph type, categories and records
-	 * TODO need to add records and categories (setCategories method)  as well as create the graphs
+	 * TODO need to add records and categories (setCategories method)  
 	 * @param type the type of the graph to be used
 	 */
 	public void createGraph(GraphType type) { 
@@ -34,13 +50,33 @@ public class GraphController {
 		switch(type) {
 		case BAR:
 			//create bar
-			
+			CategoryAxis xAxis = new CategoryAxis();
+	        NumberAxis yAxis = new NumberAxis();
+	        BarChart<String,Number> barChart = new BarChart<String,Number>(xAxis,yAxis);
+	        barChart.setTitle("Bar Graph");
+	        xAxis.setLabel("X axis");       
+	        yAxis.setLabel("Y axis");
+	        borderPane.setCenter(barChart);
 			break;
+				
 		case SCATTER:
 			//create scatter
+			NumberAxis xAxis2 = new NumberAxis();
+	        NumberAxis yAxis2 = new NumberAxis();        
+	        ScatterChart<Number,Number> scatterGraph = new ScatterChart<Number,Number>(xAxis2,yAxis2);
+	        xAxis2.setLabel("X axis");                
+	        yAxis2.setLabel("Y axis");
+	        scatterGraph.setTitle("Scatter Graph");
+	        borderPane.setCenter(scatterGraph);
 			break;
+			
 		case LINE:
-			//create line
+			NumberAxis xAxis3 = new NumberAxis();
+		    NumberAxis yAxis3 = new NumberAxis();
+		    xAxis3.setLabel("X Axis");
+		    LineChart<Number,Number> lineChart = new LineChart<Number,Number>(xAxis3,yAxis3);
+		    lineChart.setTitle("Line Chart");
+		    borderPane.setCenter(lineChart);
 			break;
 		}
 		
@@ -63,27 +99,45 @@ public class GraphController {
 	
 	
 	
-	
 	public GraphType getGraphType() {
 		return type;
 	}
 	
 	
 	
+	
+	/**
+	 * Listener for when selected graph type is changed
+	 */
+	public void comboBoxListener() {
+		selectGraph.getSelectionModel().selectedItemProperty().addListener(
+		         (ObservableValue<? extends GraphType> observable_value, GraphType old_type, GraphType new_type) -> {
+		 			borderPane.setCenter(null); //clears whatever graph is in the pane in order to add a new one
+
+		            setGraphType(new_type);
+		            
+		    		System.out.println("Selected graph type: " + getGraphType()); 
+		    		createGraph(new_type);
+		    		
+		    		
+
+		      });
+	}
+	
 	/**
 	 * Initialize method which automatically runs on stage startup - populates combobox with Enum values
 	 */
 	public void initialize() {
+		
+	
+		
 		selectGraph.getItems().setAll(GraphType.values());
 		selectGraph.getSelectionModel().select(0);
 		setGraphType(type);
+		createGraph(type);
 		
-		selectGraph.getSelectionModel().selectedItemProperty().addListener(
-		         (ObservableValue<? extends GraphType> observable_value, GraphType old_type, GraphType new_type) -> {
-		            setGraphType(new_type);
-		    		System.out.println("Selected graph type: " + getGraphType()); 
+		comboBoxListener();
 
-		      });
 
 		
 	}

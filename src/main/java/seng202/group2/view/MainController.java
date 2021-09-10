@@ -111,7 +111,7 @@ public class MainController extends DataObserver implements Initializable {
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.setResizable(false);
 			stage.setTitle("Graph Window");
-			stage.setScene(new Scene(root, 400, 200));
+			stage.setScene(new Scene(root, 800, 600));
 	
 			stage.show();
 		} catch (IOException e) {

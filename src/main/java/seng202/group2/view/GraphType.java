@@ -1,10 +1,22 @@
 package seng202.group2.view;
 
+
 public enum GraphType {
     
 	 SCATTER("Scatter"),
+		 	
+	
+	 
+	 
+	 
+	 
      BAR("Bar"),
+			
+     
+     
      LINE("Line");
+		
+	
 
      private String type;
 
@@ -15,8 +27,14 @@ public enum GraphType {
      public String toString() {
          return type;
      }
+     
+
+     
+
 
 }
+
+
 
 
 
