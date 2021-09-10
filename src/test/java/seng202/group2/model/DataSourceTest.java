@@ -60,6 +60,7 @@ public class DataSourceTest {
 
         observer = new ObserverTestClass();
         DBMS.getActiveData().addObserver(observer);
+        DBMS.getActiveData().clearFilters(false);
     }
 
     /**

@@ -130,7 +130,7 @@ public class DBMS {
         } catch (SQLException e) {
             System.out.println("Could not run custom query. Query shown below. DBMS:customQuery:131");
             System.out.println(query);
-            //e.printStackTrace();
+            e.printStackTrace();
             return null;
         }
     }
