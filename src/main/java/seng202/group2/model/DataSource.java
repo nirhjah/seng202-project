@@ -1,7 +1,7 @@
 package seng202.group2.model;
 
 import seng202.group2.controller.DataObserver;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 
 /**
@@ -40,7 +40,7 @@ public abstract class DataSource {
 
         //Update all observers
         for (DataObserver observer: observers) {
-            observer.updateModel();
+            observer.activeDataUpdate();
         }
     }
 }

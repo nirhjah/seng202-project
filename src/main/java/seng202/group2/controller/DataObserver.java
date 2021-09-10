@@ -23,5 +23,5 @@ public abstract class DataObserver {
      * You should not need to manually call this function, aside from testing.
      *
      */
-    public abstract void updateModel();
+    public abstract void activeDataUpdate();
 }

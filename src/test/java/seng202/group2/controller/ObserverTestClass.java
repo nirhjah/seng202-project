@@ -15,7 +15,7 @@ public class ObserverTestClass extends DataObserver {
      * Get the records
      */
     @Override
-    public void updateModel() {
+    public void activeDataUpdate() {
         testRecords = DBMS.getActiveData().getActiveRecords();
     }
 
