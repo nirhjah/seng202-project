@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,6 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
@@ -229,7 +232,12 @@ public class MainController extends DataObserver implements Initializable {
 
 		idColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Integer>("ID"));
 		caseNumColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("caseNum"));
-		dateColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("dateString"));
+		dateColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<CrimeRecord, String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(TableColumn.CellDataFeatures<CrimeRecord, String> param) {
+				return new ReadOnlyObjectWrapper<>(param.getValue().getDateCategory().getValueString());
+			}
+		});
 		blockColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("block"));
 		iucrColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("iucr"));
 		primaryDescriptionColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("primaryDescription"));
