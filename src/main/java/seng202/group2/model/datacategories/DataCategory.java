@@ -115,9 +115,8 @@ public abstract class DataCategory {
 	 *
 	 * @param record The CrimeRecord instance whose attribute value is to be set.
 	 * @param data The data to set the CrimeRecord's attribute value to.
-	 * @throws UnsupportedCategoryException 
 	 */
-	public abstract void setRecordValue(CrimeRecord record, Object data) throws UnsupportedCategoryException;
+	public abstract void setRecordValue(CrimeRecord record, Object data);
 	
 	/**
 	 * Gets the value of the attribute of CrimeRecord record, which corresponds to this DataCategory
@@ -125,7 +124,6 @@ public abstract class DataCategory {
 	 *
 	 * @param record The CrimeRecord instance whose attribute value is to be retrieved.
 	 * @return The value of the CrimeRecord's attribute.
-	 * @throws UnsupportedCategoryException 
 	 */
 	public abstract Object getRecordValue(CrimeRecord record) throws UnsupportedCategoryException;
 
@@ -147,9 +145,8 @@ public abstract class DataCategory {
 	 *
 	 * @param value A value string representing a value of data corresponding to this DataCategory.
 	 * @return The value represented by the value string parsed into the type used to store data corresponding to this DataCategory.
-	 * @throws UnsupportedCategoryException 
 	 */
-	public abstract Object parseString(String value) throws UnsupportedCategoryException;
+	public abstract Object parseString(String value);
 
 
 	/************************************************************************************************************
