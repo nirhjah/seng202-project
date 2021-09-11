@@ -94,20 +94,20 @@ public class CrimeRecord {
 	public String toString() {
 		
 		return "Crime record: " + ID + "\n" +
-				"Case Number: " + caseNum + "\n" +
-				"Date: " + date + "\n" +
-				"Block: " + block + "\n" +
-				"IUCR: " + iucr + "\n" +
-				"Primary Description: " + primaryDescription + "\n" +
-				"Secondary Description: " + secondaryDescription + "\n" +
-				"Location Description: " + locationDescription + "\n" +
-				"Arrest: " + arrest + "\n" +
-				"Domestic: " + domestic + "\n" +
-				"Beat: " + beat + "\n" +
-				"Ward: " + ward + "\n" +
-				"FBI Code: " + fbiCode + "\n" +
-				"Latitude: " + latitude + "\n" +
-				"Longitude: " + longitude + "\n";
+				"Case Number: " + caseNum.getValue() + "\n" +
+				"Date: " + date.getValue() + "\n" +
+				"Block: " + block.getValue() + "\n" +
+				"IUCR: " + iucr.getValue() + "\n" +
+				"Primary Description: " + primaryDescription.getValue() + "\n" +
+				"Secondary Description: " + secondaryDescription.getValue() + "\n" +
+				"Location Description: " + locationDescription.getValue() + "\n" +
+				"Arrest: " + arrest.getValue() + "\n" +
+				"Domestic: " + domestic.getValue() + "\n" +
+				"Beat: " + beat.getValue() + "\n" +
+				"Ward: " + ward.getValue() + "\n" +
+				"FBI Code: " + fbiCode.getValue() + "\n" +
+				"Latitude: " + latitude.getValue() + "\n" +
+				"Longitude: " + longitude.getValue() + "\n";
 	}
 
 	//Getters/Setters:
