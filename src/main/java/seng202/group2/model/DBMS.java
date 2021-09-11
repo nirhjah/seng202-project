@@ -1,5 +1,7 @@
 package seng202.group2.model;
 
+import seng202.group2.model.datacategories.DataCategory;
+
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,7 +15,7 @@ import java.util.Calendar;
 public class DBMS {
 
     private static ActiveData activeData = new ActiveData();               //Active data class
-    private static final String DATE_FORMAT = "yyyy/MM/dd hh:mm:ss a";     //Date format
+    private static final String DATE_FORMAT = "MM'/'dd'/'yyyy hh':'mm':'ss a";     //Date format
     private static  boolean hasDataBase = false;                           //Database is created
     private static Connection conn;                                        //Database connection
     private static int idCounter = -1;                                     //Current item ID
@@ -221,7 +223,6 @@ public class DBMS {
             e.getStackTrace();
         }
 
-
         return crimeRecord;
     }
 
@@ -377,45 +378,15 @@ public class DBMS {
         }
 
 
-        //Insert into database
+        // Generate insert statement for the CrimeRecord instance
         SQLInsertStatement state = new SQLInsertStatement("Records");
-        state.setValue("id", Integer.toString(idCounter));
-        state.setValue("caseNum", record.getCaseNum());
-
-        //Convert date
-        Calendar time = record.getDate();
-        if (time != null) {
-            int year = time.get(Calendar.YEAR);
-            int month = time.get(Calendar.MONTH) + 1; // Note: zero based!
-            int day = time.get(Calendar.DAY_OF_MONTH);
-            int hour = time.get(Calendar.HOUR_OF_DAY);
-            int minute = time.get(Calendar.MINUTE);
-            int second = time.get(Calendar.SECOND);
-            int a = time.get(Calendar.AM_PM);
-            state.setValue("date", String.format("%d/%02d/%02d %02d:%02d:%02d ", year, month, day, hour, minute, second) + ((a == 0) ? "AM" : "PM"));
+        for (DataCategory category : DataCategory.getCategories()) {
+            try {
+                state.setValue(category.getSQL(), category.getRecordCategory(record).getValueString());
+            } catch (NullPointerException e) {
+                state.setValue(category.getSQL(), null);
+            }
         }
-
-        state.setValue("block", record.getBlock());
-
-        //Set IUCR to data, or null
-        try {
-            state.setValue("IUCR", record.getIucr());
-            state.setValue("primaryDescription", record.getPrimaryDescription());
-            state.setValue("secondaryDescription", record.getSecondaryDescription());
-        } catch (NullPointerException e) {
-            System.out.println("IUCR Error in addData");
-            state.setValue("IUCR", null);
-            state.setValue("primaryDescription", null);
-            state.setValue("secondaryDescription",null);
-        }
-        state.setValue("locationDescription", record.getLocationDescription());
-        state.setValue("arrest", String.valueOf(record.getArrest()));
-        state.setValue("domestic", String.valueOf(record.getDomestic()));
-        state.setValue("beat", String.valueOf(record.getBeat()));
-        state.setValue("ward", String.valueOf(record.getWard()));
-        state.setValue("fbiCode", record.getFbiCode());
-        state.setValue("latitude", String.valueOf(record.getLatitude()));
-        state.setValue("longitude", String.valueOf(record.getLongitude()));
 
         try {
             //Insert into the database
@@ -430,7 +401,7 @@ public class DBMS {
                 activeData.updateActiveRecords();
             }
         } catch (SQLException e) {
-            System.out.println("Could not insert record into Records table. DBMS:addRecord:436");
+            System.out.println("Could not insert record into Records table. DBMS:addRecord:411");
         }
     }
 
@@ -467,7 +438,7 @@ public class DBMS {
             deleteStatement.execute("DELETE FROM ActiveRecords;");
 
         } catch (SQLException e) {
-            System.out.println("Could not clear ActiveRecords. DBMS:updateActiveDatabase:473");
+            System.out.println("Could not clear ActiveRecords. DBMS:updateActiveDatabase:448");
         }
 
         //Copy data in blocks to reduce string size
@@ -497,7 +468,7 @@ public class DBMS {
                 Statement getActive = conn.createStatement();
                 getActive.execute("INSERT INTO ActiveRecords SELECT * FROM Records " + conditions);
             } catch (SQLException e) {
-                System.out.println("Could not copy block to ActiveRecords. DBMS:updateActiveDatabase:508");
+                System.out.println("Could not copy block to ActiveRecords. DBMS:updateActiveDatabase:478");
             }
 
             //Update block count
@@ -524,7 +495,7 @@ public class DBMS {
             Statement state2 = conn.createStatement();
             state2.execute("DELETE FROM ActiveRecords WHERE id =" + id);
         } catch (SQLException e) {
-            System.out.println("Could not delete record with ID: " + id + " from database. DBMS:deleteRecord:535");
+            System.out.println("Could not delete record with ID: " + id + " from database. DBMS:deleteRecord:505");
         }
     }
 
@@ -543,7 +514,7 @@ public class DBMS {
             Statement state2 = conn.createStatement();
             state2.execute("DELETE FROM ActiveRecords;");
         } catch (SQLException e) {
-            System.out.println("Could not delete all records from database. DBMS:clearDB:554");
+            System.out.println("Could not delete all records from database. DBMS:clearDB:524");
         }
 
         //Reset counter
@@ -567,7 +538,7 @@ public class DBMS {
             res.next();
             return res.getInt("total");
         } catch (SQLException e) {
-            System.out.println("Failed to get size of Record table. DBMS:getRecordsSize:578");
+            System.out.println("Failed to get size of Record table. DBMS:getRecordsSize:548");
         }
 
         return -1;
@@ -590,7 +561,7 @@ public class DBMS {
             res.next();
             return res.getInt("total");
         } catch (SQLException e) {
-            System.out.println("Failed to get size of ActiveRecord table. DBMS:getActiveRecordsSize:578");
+            System.out.println("Failed to get size of ActiveRecord table. DBMS:getActiveRecordsSize:571");
         }
 
         return -1;
