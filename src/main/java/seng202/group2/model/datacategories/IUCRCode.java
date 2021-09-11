@@ -10,9 +10,15 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class IUCRCode extends DataCategory implements Importable {
-	
+
+	private static final IUCRCode instance = new IUCRCode();
+
 	/** The IUCR code */
 	private String iucrCode = null;
+
+	public static IUCRCode getInstance() {
+		return instance;
+	}
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {

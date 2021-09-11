@@ -9,9 +9,15 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class PrimaryDescription extends DataCategory implements Importable {
-	
+
+	private static final PrimaryDescription instance = new PrimaryDescription();
+
 	/** The primary description of the crime type this code corresponds to */
 	private String primaryDescription = null;
+
+	public static PrimaryDescription getInstance() {
+		return instance;
+	}
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) throws UnsupportedCategoryException {

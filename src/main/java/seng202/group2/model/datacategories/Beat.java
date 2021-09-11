@@ -10,12 +10,18 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class Beat extends DataCategory implements Importable {
+
+	private static final Beat instance = new Beat();
 	
 	/**
 	 * Police district where the crime incident occurred.
 	 * (Area of the city broken down for patrol and statistical purposes)
 	 */
 	private Short beat = null;
+
+	public static Beat getInstance() {
+		return instance;
+	}
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {

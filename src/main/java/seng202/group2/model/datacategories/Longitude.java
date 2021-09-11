@@ -9,9 +9,15 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class Longitude extends DataCategory implements Importable {
-	
+
+	private static final Longitude instance = new Longitude();
+
 	/** The longitudinal location where the crime incident occurred. */
 	private Float longitude = null;
+
+	public static Longitude getInstance() {
+		return instance;
+	}
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
