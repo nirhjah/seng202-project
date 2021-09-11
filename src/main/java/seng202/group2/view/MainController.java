@@ -22,7 +22,6 @@ import seng202.group2.model.CrimeRecord;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
 import seng202.group2.model.FilterType;
-import seng202.group2.model.datacategories.DataCategory;
 
 /**
  * MainController is the GUI controller for the main Cams window.
@@ -224,8 +223,6 @@ public class MainController extends DataObserver implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		DBMS.getActiveData().addObserver(this);
-
-		System.out.println(DataCategory.getCategories());
 
 		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
 		windowSize.setText(Integer.toString(windowSizeInt));
