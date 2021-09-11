@@ -74,43 +74,26 @@ public abstract class DataCategory {
 	 * @return SQL String
 	 */
 	public abstract String getSQL();
+
+	/**
+	 * Returns true if the DataCategory is known to be represented by the given identifier string, false otherwise.
+	 * @param identifier The string used to represent a DataCategory.
+	 * @return true if the DataCategory is known to be represented by the given identifier string, false otherwise.
+	 */
+	public abstract boolean matchesString(String identifier);
 	
-	public static DataCategory getCategoryFromString(String categoryString) throws UnsupportedCategoryException {
-		if (categoryString == null)
+	public static DataCategory getCategoryFromString(String identifier) throws UnsupportedCategoryException {
+		if (identifier == null)
 			throw new IllegalArgumentException("No category string specified.");
 
-		switch (categoryString.replaceAll("\\s", "")) {
-			case "CASE#":
-				return new CaseNumber();
-			case "DATEOFOCCURRENCE":
-				return new Date();
-			case "BLOCK":
-				return new Block();
-			case "IUCR":
-				return new IUCRCode();
-			case "PRIMARYDESCRIPTION":
-				return new PrimaryDescription();
-			case "SECONDARYDESCRIPTION":
-				return new SecondaryDescription();
-			case "LOCATIONDESCRIPTION":
-				return new LocationDescription();
-			case "ARREST":
-				return new Arrest();
-			case "DOMESTIC":
-				return new Domestic();
-			case "BEAT":
-				return new Beat();
-			case "WARD":
-				return new Ward();
-			case "FBICD":
-				return new FBICode();
-			case "LATITUDE":
-				return new Latitude();
-			case "LONGITUDE":
-				return new Longitude();
-			default:
-				throw new UnsupportedCategoryException("The string \"" + categoryString + "\" could not be resolved to a DataCategory class.");
+		String noWhitespaceIdentifier = identifier.replaceAll("\\s", "");
+
+		for (DataCategory category : getCategories()) {
+			if (category.matchesString(noWhitespaceIdentifier))
+				return category;
 		}
+
+		throw new UnsupportedCategoryException("The string \"" + identifier + "\" could not be resolved to a DataCategory class.");
 	}
 	
 	/**

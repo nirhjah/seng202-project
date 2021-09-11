@@ -2,6 +2,10 @@ package seng202.group2.model.datacategories;
 
 import seng202.group2.model.CrimeRecord;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * True if the crime incident resulted in an arrest being made.
  * 
@@ -9,8 +13,6 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class Arrest extends DataCategory implements Importable {
-
-	private static final Arrest instance = new Arrest();
 	
 	/**
 	 * 1 if the crime incident resulted in an arrest being made
@@ -19,6 +21,10 @@ public class Arrest extends DataCategory implements Importable {
 	 */
 	private Boolean arrest = null;
 
+	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
+			"ARREST"
+	));
+	private static final Arrest instance = new Arrest();
 	public static Arrest getInstance() {
 		return instance;
 	}
@@ -62,6 +68,11 @@ public class Arrest extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "arrest";
+	}
+
+	@Override
+	public boolean matchesString(String identifier) {
+		return identifierStrings.contains(identifier);
 	}
 
 	@Override

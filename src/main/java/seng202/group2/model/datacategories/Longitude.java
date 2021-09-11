@@ -2,6 +2,10 @@ package seng202.group2.model.datacategories;
 
 import seng202.group2.model.CrimeRecord;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * The longitudinal location where the crime incident occurred.
  * 
@@ -10,11 +14,13 @@ import seng202.group2.model.CrimeRecord;
  */
 public class Longitude extends DataCategory implements Importable {
 
-	private static final Longitude instance = new Longitude();
-
 	/** The longitudinal location where the crime incident occurred. */
 	private Float longitude = null;
 
+	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
+			"LONGITUDE"
+	));
+	private static final Longitude instance = new Longitude();
 	public static Longitude getInstance() {
 		return instance;
 	}
@@ -62,6 +68,11 @@ public class Longitude extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "longitude";
+	}
+
+	@Override
+	public boolean matchesString(String identifier) {
+		return identifierStrings.contains(identifier);
 	}
 
 	@Override

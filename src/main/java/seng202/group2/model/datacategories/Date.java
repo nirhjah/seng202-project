@@ -2,7 +2,10 @@ package seng202.group2.model.datacategories;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import seng202.group2.model.CrimeRecord;
 
@@ -13,8 +16,6 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class Date extends DataCategory implements Importable {
-
-	private static final Date instance = new Date();
 	
 	/** The date and time at which the crime incident occurred */
 	private Calendar date = null;
@@ -28,6 +29,10 @@ public class Date extends DataCategory implements Importable {
 			"yyyy'-'MM'-'dd'T'HH':'mm':'ss"
 	};
 
+	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
+			"DATEOFOCCURRENCE"
+	));
+	private static final Date instance = new Date();
 	public static Date getInstance() {
 		return instance;
 	}
@@ -81,6 +86,11 @@ public class Date extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "date";
+	}
+
+	@Override
+	public boolean matchesString(String identifier) {
+		return identifierStrings.contains(identifier);
 	}
 
 	@Override

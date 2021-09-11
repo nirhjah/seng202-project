@@ -2,6 +2,10 @@ package seng202.group2.model.datacategories;
 
 import seng202.group2.model.CrimeRecord;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Election precinct where the crime incident occurred.
  * 
@@ -10,11 +14,13 @@ import seng202.group2.model.CrimeRecord;
  */
 public class Ward extends DataCategory implements Importable {
 
-	private static final Ward instance = new Ward();
-
 	/** Election precinct where the crime incident occurred. */
 	private Short ward = null;
 
+	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
+			"WARD"
+	));
+	private static final Ward instance = new Ward();
 	public static Ward getInstance() {
 		return instance;
 	}
@@ -57,6 +63,11 @@ public class Ward extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "ward";
+	}
+
+	@Override
+	public boolean matchesString(String identifier) {
+		return identifierStrings.contains(identifier);
 	}
 
 	@Override

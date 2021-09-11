@@ -1,6 +1,11 @@
 package seng202.group2.model.datacategories;
 
 import seng202.group2.model.CrimeRecord;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * FBI crime code assigned to the crime incident.
  * Used to categorize crime incidents by the type of crime that occurred.
@@ -10,8 +15,6 @@ import seng202.group2.model.CrimeRecord;
  */
 public class FBICode extends DataCategory implements Importable {
 
-	private static final FBICode instance = new FBICode();
-	
 	/**
 	 * FBI crime code assigned to the crime incident.
 	 * Used to categorize crime incidents by the type of crime that occurred. 
@@ -19,6 +22,10 @@ public class FBICode extends DataCategory implements Importable {
 	 */
 	private String fbiCode = null;
 
+	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
+			"FBICD"
+	));
+	private static final FBICode instance = new FBICode();
 	public static FBICode getInstance() {
 		return instance;
 	}
@@ -58,6 +65,11 @@ public class FBICode extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "fbiCode";
+	}
+
+	@Override
+	public boolean matchesString(String identifier) {
+		return identifierStrings.contains(identifier);
 	}
 
 	@Override

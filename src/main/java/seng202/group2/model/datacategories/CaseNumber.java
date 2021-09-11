@@ -2,6 +2,10 @@ package seng202.group2.model.datacategories;
 
 import seng202.group2.model.CrimeRecord;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * The case number associated with the crime record in the police database.
  * 
@@ -10,11 +14,13 @@ import seng202.group2.model.CrimeRecord;
  */
 public class CaseNumber extends DataCategory implements Importable {
 
-	private static final CaseNumber instance = new CaseNumber();
-	
 	/** The case number associated with the crime record in the police database */
 	private String caseNum = null;
 
+	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
+			"CASE#"
+	));
+	private static final CaseNumber instance = new CaseNumber();
 	public static CaseNumber getInstance() {
 		return instance;
 	}
@@ -52,6 +58,11 @@ public class CaseNumber extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "caseNum";
+	}
+
+	@Override
+	public boolean matchesString(String identifier) {
+		return identifierStrings.contains(identifier);
 	}
 
 	@Override

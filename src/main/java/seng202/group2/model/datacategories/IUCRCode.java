@@ -2,6 +2,10 @@ package seng202.group2.model.datacategories;
 
 import seng202.group2.model.CrimeRecord;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Illinois Uniform Crime Reporting code.
  * Four digit code used to classify the criminal incident
@@ -11,11 +15,13 @@ import seng202.group2.model.CrimeRecord;
  */
 public class IUCRCode extends DataCategory implements Importable {
 
-	private static final IUCRCode instance = new IUCRCode();
-
 	/** The IUCR code */
 	private String iucrCode = null;
 
+	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
+			"IUCR"
+	));
+	private static final IUCRCode instance = new IUCRCode();
 	public static IUCRCode getInstance() {
 		return instance;
 	}
@@ -55,6 +61,11 @@ public class IUCRCode extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "IUCR";
+	}
+
+	@Override
+	public boolean matchesString(String identifier) {
+		return identifierStrings.contains(identifier);
 	}
 
 	@Override

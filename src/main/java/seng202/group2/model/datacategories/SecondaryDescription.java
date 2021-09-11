@@ -2,6 +2,10 @@ package seng202.group2.model.datacategories;
 
 import seng202.group2.model.CrimeRecord;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * A textual description giving more details supplementing the categorization
  * of the crime type provided in the primary description.
@@ -11,11 +15,13 @@ import seng202.group2.model.CrimeRecord;
  */
 public class SecondaryDescription extends DataCategory implements Importable {
 
-	private static final SecondaryDescription instance = new SecondaryDescription();
-
 	/** The secondary description of the crime type this code corresponds to */
 	private String secondaryDescription = null;
 
+	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
+			"SECONDARYDESCRIPTION"
+	));
+	private static final SecondaryDescription instance = new SecondaryDescription();
 	public static SecondaryDescription getInstance() {
 		return instance;
 	}
@@ -53,6 +59,11 @@ public class SecondaryDescription extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "secondaryDescription";
+	}
+
+	@Override
+	public boolean matchesString(String identifier) {
+		return identifierStrings.contains(identifier);
 	}
 
 	@Override
