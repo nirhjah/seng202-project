@@ -11,7 +11,7 @@ import java.util.Set;
  * This class facilitates the selection of the various categories within a CrimeRecord,
  * providing the methods setCategoryValue and getCategoryValue for setting and getting the value
  * of an attribute of a CrimeRecord instance through the corresponding DataCategory.
- * 
+ *
  * @author Connor Dunlop
  *
  */
@@ -108,7 +108,7 @@ public abstract class DataCategory {
 	 * 																											*
 	 * 																											*
 	 ************************************************************************************************************/
-	
+
 	/**
 	 * Sets the attribute of CrimeRecord record, which corresponds to this DataCategory
 	 * enumerator to the value stored in data. Type casting is handled within the method.
@@ -117,7 +117,7 @@ public abstract class DataCategory {
 	 * @param data The data to set the CrimeRecord's attribute value to.
 	 */
 	public abstract void setRecordValue(CrimeRecord record, Object data);
-	
+
 	/**
 	 * Gets the value of the attribute of CrimeRecord record, which corresponds to this DataCategory
 	 * enumerator. Type casting is handled within the method.
@@ -125,7 +125,7 @@ public abstract class DataCategory {
 	 * @param record The CrimeRecord instance whose attribute value is to be retrieved.
 	 * @return The value of the CrimeRecord's attribute.
 	 */
-	public abstract Object getRecordValue(CrimeRecord record) throws UnsupportedCategoryException;
+	public abstract Object getRecordValue(CrimeRecord record);
 
 	/**
 	 * Sets the value of the data stored within this DataCategory.
@@ -138,7 +138,7 @@ public abstract class DataCategory {
 	 * @return The value of the data stored in this category.
 	 */
 	public abstract Object getValue();
-	
+
 	/**
 	 * Parses a string representing a value of data corresponding to this DataCategory
 	 * into whatever type is used by a CrimeRecord to store data corresponding to this DataCategory.
@@ -156,7 +156,7 @@ public abstract class DataCategory {
 	 * 																											*
 	 * 																											*
 	 ************************************************************************************************************/
-	
+
 	/**
 	 * Returns the SQL string format of the category
 	 *
