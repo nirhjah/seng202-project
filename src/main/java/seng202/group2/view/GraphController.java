@@ -1,8 +1,6 @@
 package seng202.group2.view;
 
-import java.util.ArrayList;
 
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,13 +10,10 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import seng202.group2.controller.DataObserver;
-import seng202.group2.model.CrimeRecord;
+import seng202.group2.model.datacategories.DataCategory;
+import seng202.group2.model.datacategories.UnsupportedCategoryException;
 
 
 /**
@@ -30,62 +25,50 @@ import seng202.group2.model.CrimeRecord;
 public class GraphController {
 	
 	private GraphType type;
+	private DataCategory xAxisCategory;
+	private DataCategory yAxisCategory;
+	@FXML private ComboBox<GraphType> selectGraph;
+	@FXML private BorderPane borderPane;
+	@FXML private ComboBox<String> xCategory;
+	@FXML private ComboBox<String> yCategory;
 	
-	@FXML 
-	private ComboBox<GraphType> selectGraph;
-	
-	@FXML
-	private BorderPane borderPane;
-	
-
-	
-
 	/**
 	 * Creates the graph based on the graph type, categories and records
-	 * TODO need to add records and categories (setCategories method)  
+	 * TODO need to add records
 	 * @param type the type of the graph to be used
 	 */
 	public void createGraph(GraphType type) { 
-		
 		switch(type) {
 		case BAR:
-			//create bar
 			CategoryAxis xAxis = new CategoryAxis();
 	        NumberAxis yAxis = new NumberAxis();
 	        BarChart<String,Number> barChart = new BarChart<String,Number>(xAxis,yAxis);
 	        barChart.setTitle("Bar Graph");
-	        xAxis.setLabel("X axis");       
-	        yAxis.setLabel("Y axis");
+	        xAxis.setLabel(getXCategory().getSQL());       
+	        yAxis.setLabel(getYCategory().getSQL());
 	        borderPane.setCenter(barChart);
 			break;
 				
 		case SCATTER:
-			//create scatter
 			NumberAxis xAxis2 = new NumberAxis();
 	        NumberAxis yAxis2 = new NumberAxis();        
 	        ScatterChart<Number,Number> scatterGraph = new ScatterChart<Number,Number>(xAxis2,yAxis2);
-	        xAxis2.setLabel("X axis");                
-	        yAxis2.setLabel("Y axis");
-	        scatterGraph.setTitle("Scatter Graph");
+	        xAxis2.setLabel(getXCategory().getSQL());                
+	        yAxis2.setLabel(getYCategory().getSQL());
+	        scatterGraph.setTitle(getYCategory().getSQL() + " vs " + getXCategory().getSQL());
 	        borderPane.setCenter(scatterGraph);
 			break;
 			
 		case LINE:
 			NumberAxis xAxis3 = new NumberAxis();
 		    NumberAxis yAxis3 = new NumberAxis();
-		    xAxis3.setLabel("X Axis");
+		    xAxis3.setLabel(getXCategory().getSQL());
 		    LineChart<Number,Number> lineChart = new LineChart<Number,Number>(xAxis3,yAxis3);
 		    lineChart.setTitle("Line Chart");
 		    borderPane.setCenter(lineChart);
 			break;
 		}
-		
-		
-		
 	}
-	
-	
-	
 	
 	/**
 	 * Sets the type of graph to use to display data
@@ -97,50 +80,125 @@ public class GraphController {
 
 	}
 	
-	
-	
+	/**
+	 * Get the current graph type
+	 * @return the graph type
+	 */
 	public GraphType getGraphType() {
 		return type;
 	}
 	
 	
-	
-	
 	/**
 	 * Listener for when selected graph type is changed
 	 */
-	public void comboBoxListener() {
+	public void selectGraphListener() {
 		selectGraph.getSelectionModel().selectedItemProperty().addListener(
 		         (ObservableValue<? extends GraphType> observable_value, GraphType old_type, GraphType new_type) -> {
-		 			borderPane.setCenter(null); //clears whatever graph is in the pane in order to add a new one
-
+		 			borderPane.setCenter(null); //clears whatever graph is in the pane in order to add a new graph
 		            setGraphType(new_type);
-		            
-		    		System.out.println("Selected graph type: " + getGraphType()); 
+		    		System.out.println("Selected graph type: " + getGraphType()); //testing purposes
 		    		createGraph(new_type);
-		    		
-		    		
-
 		      });
 	}
 	
 	/**
-	 * Initialize method which automatically runs on stage startup - populates combobox with Enum values
+	 * Setting the x category
+	 * @param xAxisCategory the x category from the combobox
 	 */
-	public void initialize() {
-		
-	
-		
-		selectGraph.getItems().setAll(GraphType.values());
-		selectGraph.getSelectionModel().select(0);
-		setGraphType(type);
-		createGraph(type);
-		
-		comboBoxListener();
-
-
-		
+	public void setXAxisCategory(DataCategory xAxisCategory) {
+		this.xAxisCategory = xAxisCategory;
 	}
 	
+	/**
+	 * Setting the y category
+	 * @param yAxisCategory the y category from the combobox
+	 */
+	public void setYAxisCategory(DataCategory yAxisCategory) {
+		this.yAxisCategory = yAxisCategory;
+	}
+	
+	public DataCategory getXCategory() {
+		return xAxisCategory;
+	}
+	
+	public DataCategory getYCategory() {
+		return yAxisCategory;
+	}
+	
+	
+	/**
+	 * Listener for when selected x category is changed
+	 * @return xAxisCategory - the DataCategory for the xAxis
+	 */
+	public DataCategory selectXCategoryListener() {
+		
+		xCategory.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+			   try {
+				DataCategory xAxisCategory = DataCategory.getCategoryFromString(newValue);
+				setXAxisCategory(xAxisCategory);
+				createGraph(type);
+			} catch (UnsupportedCategoryException e) {
+				e.printStackTrace();
+			}
+			}); 
+		return xAxisCategory;   
+	}
+	/**
+	 * Listener for when selected y category is changed
+	 * @return yAxisCategory - the DataCategory for the yAxis
+	 */
+	public DataCategory selectYCategoryListener() {
+		
+		yCategory.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+				try {
+					DataCategory yAxisCategory = DataCategory.getCategoryFromString(newValue);
+					setYAxisCategory(yAxisCategory);
+					createGraph(type);
+				} catch (UnsupportedCategoryException e) {
+					e.printStackTrace();
+				}
+			}); 
+		return yAxisCategory;   	
+	}
 
+	
+	/**
+	 * Initialize method
+	 */
+	public void initialize() {
+			
+		
+		ObservableList<String> categories = 
+			    FXCollections.observableArrayList(
+			        "CASE#",
+			        "DATEOFOCCURRENCE",
+			        "BLOCK",
+			        "IUCR",
+			        "PRIMARYDESCRIPTION",
+			        "SECONDARYDESCRIPTION",
+			        "LOCATIONDESCRIPTION",
+			        "ARREST",
+			        "DOMESTIC",
+			        "BEAT",
+			        "WARD",
+			        "FBICD",
+			        "LATITUDE",
+			        "LONGITUDE"
+			    );
+		
+		xCategory.getItems().setAll(categories);
+		yCategory.getItems().setAll(categories);
+		selectGraph.getItems().setAll(GraphType.values());
+		//selectGraph.getSelectionModel().select(0);
+		selectXCategoryListener();
+		selectYCategoryListener();
+		
+		//createGraph(type);
+		
+		selectGraphListener();
+		setGraphType(type);
+
+	}
+	
 }
