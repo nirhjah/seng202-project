@@ -18,32 +18,19 @@ import java.util.Set;
 public abstract class DataCategory {
 
 	/**
-	 * A set of instances of all DataCategory subtypes found using reflection.
-	 * This set is populated when this class is first accessed during runtime,
-	 * through the static block below.
-	 */
-	private static Set<DataCategory> dataCategories = new HashSet<>();
-
-	/**
-	 * Gets the set of static DataCategory instances of DataCategory subtypes.
-	 *
-	 * @return A set of the instances stored by each DataCategory subtype found using reflection.
-	 */
-	public static final Set<DataCategory> getCategories() {
-		return dataCategories;
-	}
-
-	/**
 	 * Searches for DataCategory subtypes in the datacategories package using reflection.
-	 * Populates dataCategories with the static instances stored by each DataCategory subtype,
+	 * Returns a set populated with the static instances stored by each DataCategory subtype,
 	 * using the getInstance method of each DataCategory to retrieve the stored instance.
+	 *
+	 * @return A set of instance of DataCategory subtypes found using reflection.
 	 */
-	static {
+	private static Set<DataCategory> lookupCategories() {
 		System.out.println("Scanning for DataCategory subtypes.");
 
 		Reflections reflections = new Reflections("seng202.group2.model.datacategories");
 		Set<Class<? extends DataCategory>> dataCategoryClasses = reflections.getSubTypesOf(DataCategory.class);
 
+		Set<DataCategory> dataCategories = new HashSet<>();
 		for (Class<? extends DataCategory> dataCategoryClass : dataCategoryClasses) {
 			try {
 				DataCategory categoryInstance = (DataCategory) dataCategoryClass.getMethod("getInstance").invoke(null);
@@ -63,6 +50,23 @@ public abstract class DataCategory {
 		}
 
 		System.out.println("Found DataCategory subtypes: " + dataCategories);
+		return dataCategories;
+	}
+
+	/**
+	 * A set of instances of all DataCategory subtypes found using reflection.
+	 * This set is populated when this class is first accessed during runtime,
+	 * using the static method declared above, lookupCategories.
+	 */
+	private static final Set<DataCategory> dataCategories = lookupCategories();
+
+	/**
+	 * Gets the set of static DataCategory instances of DataCategory subtypes.
+	 *
+	 * @return A set of the instances stored by each DataCategory subtype found using reflection.
+	 */
+	public static final Set<DataCategory> getCategories() {
+		return dataCategories;
 	}
 	
 	/**
