@@ -79,4 +79,8 @@ public class Domestic extends DataCategory implements Importable {
 		return this.domestic;
 	}
 
+	@Override
+	public String toString() {
+		return "Domestic";
+	}
 }

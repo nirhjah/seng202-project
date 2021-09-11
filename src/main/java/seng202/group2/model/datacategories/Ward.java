@@ -74,4 +74,8 @@ public class Ward extends DataCategory implements Importable {
 		return this.ward;
 	}
 
+	@Override
+	public String toString() {
+		return "Ward";
+	}
 }

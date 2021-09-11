@@ -84,4 +84,8 @@ public class Latitude extends DataCategory implements Importable {
 		return this.latitude;
 	}
 
+	@Override
+	public String toString() {
+		return "Latitude";
+	}
 }

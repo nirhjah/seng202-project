@@ -73,4 +73,8 @@ public class Block extends DataCategory implements Importable {
 		return this.block;
 	}
 
+	@Override
+	public String toString() {
+		return "Block";
+	}
 }

@@ -69,4 +69,8 @@ public class LocationDescription extends DataCategory implements Importable {
 		return this.locationDescription;
 	}
 
+	@Override
+	public String toString() {
+		return "Location Description";
+	}
 }

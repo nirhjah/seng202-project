@@ -70,4 +70,8 @@ public class SecondaryDescription extends DataCategory implements Importable {
 		return this.secondaryDescription;
 	}
 
+	@Override
+	public String toString() {
+		return "Secondary Description";
+	}
 }

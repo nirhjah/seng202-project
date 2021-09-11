@@ -98,4 +98,8 @@ public class Date extends DataCategory implements Importable {
 		return this.date;
 	}
 
+	@Override
+	public String toString() {
+		return "Date";
+	}
 }

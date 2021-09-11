@@ -78,4 +78,8 @@ public class Beat extends DataCategory implements Importable {
 		return this.beat;
 	}
 
+	@Override
+	public String toString() {
+		return "Beat";
+	}
 }

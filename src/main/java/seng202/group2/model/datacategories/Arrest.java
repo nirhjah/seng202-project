@@ -79,4 +79,8 @@ public class Arrest extends DataCategory implements Importable {
 		return this.arrest;
 	}
 
+	@Override
+	public String toString() {
+		return "Arrest";
+	}
 }

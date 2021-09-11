@@ -75,4 +75,8 @@ public class FBICode extends DataCategory implements Importable {
 		return this.fbiCode;
 	}
 
+	@Override
+	public String toString() {
+		return "FBI Code";
+	}
 }

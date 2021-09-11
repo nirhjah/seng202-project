@@ -71,4 +71,9 @@ public class IUCRCode extends DataCategory implements Importable {
 	public String getValue() {
 		return this.iucrCode;
 	}
+
+	@Override
+	public String toString() {
+		return "IUCR Code";
+	}
 }

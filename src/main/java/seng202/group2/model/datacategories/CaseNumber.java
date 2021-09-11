@@ -69,4 +69,8 @@ public class CaseNumber extends DataCategory implements Importable {
 		return this.caseNum;
 	}
 
+	@Override
+	public String toString() {
+		return "Case Number";
+	}
 }
