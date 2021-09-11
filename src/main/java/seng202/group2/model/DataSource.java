@@ -35,20 +35,12 @@ public abstract class DataSource {
     public void updateObservers() {
         ArrayList<CrimeRecord> activeData;
 
-        //Get active data
-        try {
-            activeData = DBMS.getActiveData().getActiveRecords();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
+        //Update active data
+        DBMS.getActiveData().updateActiveRecords();
 
         //Update all observers
         for (DataObserver observer: observers) {
-            observer.updateModel(activeData);
+            observer.updateModel();
         }
     }
 }
