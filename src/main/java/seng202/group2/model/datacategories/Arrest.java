@@ -51,6 +51,11 @@ public class Arrest extends DataCategory implements Importable {
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getArrestCategory();
+	}
+
+	@Override
 	public Boolean parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -68,6 +73,11 @@ public class Arrest extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "arrest";
+	}
+
+	@Override
+	public String getValueString() {
+		return arrest.toString();
 	}
 
 	@Override

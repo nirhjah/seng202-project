@@ -47,6 +47,11 @@ public class LocationDescription extends DataCategory implements Importable {
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getLocationDescriptionCategory();
+	}
+
+	@Override
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -58,6 +63,11 @@ public class LocationDescription extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "locationDescription";
+	}
+
+	@Override
+	public String getValueString() {
+		return locationDescription.toString();
 	}
 
 	@Override

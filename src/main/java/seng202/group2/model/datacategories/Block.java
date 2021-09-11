@@ -4,6 +4,7 @@ import seng202.group2.model.CrimeRecord;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -14,8 +15,6 @@ import java.util.Set;
  *
  */
 public class Block extends DataCategory implements Importable {
-
-
 	
 	/**
 	 * The address of the crime incident at a city block level.
@@ -53,6 +52,11 @@ public class Block extends DataCategory implements Importable {
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getBlockCategory();
+	}
+
+	@Override
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -64,6 +68,11 @@ public class Block extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "block";
+	}
+
+	@Override
+	public String getValueString() {
+		return block.toString();
 	}
 
 	@Override

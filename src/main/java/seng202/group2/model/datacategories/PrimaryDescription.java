@@ -26,7 +26,7 @@ public class PrimaryDescription extends DataCategory implements Importable {
 	}
 
 	@Override
-	public void setRecordValue(CrimeRecord record, Object data) throws UnsupportedCategoryException {
+	public void setRecordValue(CrimeRecord record, Object data) {
 		if (record == null)
 			throw new IllegalArgumentException("Cannot set attribute value of null record.");
 			
@@ -47,6 +47,11 @@ public class PrimaryDescription extends DataCategory implements Importable {
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getPrimaryDescriptionCategory();
+	}
+
+	@Override
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -58,6 +63,11 @@ public class PrimaryDescription extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "primaryDescription";
+	}
+
+	@Override
+	public String getValueString() {
+		return primaryDescription.toString();
 	}
 
 	@Override

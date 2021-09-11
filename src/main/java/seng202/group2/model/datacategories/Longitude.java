@@ -47,6 +47,11 @@ public class Longitude extends DataCategory implements Importable {
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getLongitudeCategory();
+	}
+
+	@Override
 	public Float parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -68,6 +73,11 @@ public class Longitude extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "longitude";
+	}
+
+	@Override
+	public String getValueString() {
+		return longitude.toString();
 	}
 
 	@Override

@@ -47,6 +47,11 @@ public class Ward extends DataCategory implements Importable {
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getWardCategory();
+	}
+
+	@Override
 	public Short parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -63,6 +68,11 @@ public class Ward extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "ward";
+	}
+
+	@Override
+	public String getValueString() {
+		return ward.toString();
 	}
 
 	@Override

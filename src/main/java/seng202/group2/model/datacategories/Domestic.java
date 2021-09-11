@@ -51,6 +51,11 @@ public class Domestic extends DataCategory implements Importable {
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getDomesticCategory();
+	}
+
+	@Override
 	public Boolean parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -68,6 +73,11 @@ public class Domestic extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "domestic";
+	}
+
+	@Override
+	public String getValueString() {
+		return domestic.toString();
 	}
 
 	@Override

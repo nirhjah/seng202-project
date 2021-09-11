@@ -52,6 +52,11 @@ public class FBICode extends DataCategory implements Importable {
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getFbiCodeCategory();
+	}
+
+	@Override
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -65,6 +70,11 @@ public class FBICode extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "fbiCode";
+	}
+
+	@Override
+	public String getValueString() {
+		return fbiCode.toString();
 	}
 
 	@Override

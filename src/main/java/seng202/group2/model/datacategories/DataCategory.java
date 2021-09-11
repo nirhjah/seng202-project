@@ -128,6 +128,14 @@ public abstract class DataCategory {
 	public abstract Object getRecordValue(CrimeRecord record);
 
 	/**
+	 * Gets the DataCategory of this subtype stored by the specified CrimeRecord.
+	 *
+	 * @param record The CrimeRecord instance whose DataCategory subtype instance is to be retrieved.
+	 * @return The DataCategory subtype instance.
+	 */
+	public abstract DataCategory getRecordCategory(CrimeRecord record);
+
+	/**
 	 * Sets the value of the data stored within this DataCategory.
 	 * @param value The value of data to be stored in this category.
 	 */
@@ -163,6 +171,13 @@ public abstract class DataCategory {
 	 * @return SQL String
 	 */
 	public abstract String getSQL();
+
+	/**
+	 * Returns the value currently stored by the DataCategory in String format.
+	 *
+	 * @return The value currently stored by the DataCategory in String format.
+	 */
+	public abstract String getValueString();
 
 	/**
 	 * Returns true if the DataCategory is known to be represented by the given identifier string, false otherwise.

@@ -59,6 +59,11 @@ public class Date extends DataCategory implements Importable {
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getDateCategory();
+	}
+
+	@Override
 	public Calendar parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -86,6 +91,13 @@ public class Date extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "date";
+	}
+
+	@Override
+	public String getValueString() {
+		java.util.Date date = this.date.getTime();
+		String strDate = (new SimpleDateFormat(dateFormats[0])).format(date);
+		return strDate;
 	}
 
 	@Override

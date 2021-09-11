@@ -51,6 +51,11 @@ public class Beat extends DataCategory implements Importable {
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getBeatCategory();
+	}
+
+	@Override
 	public Short parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -67,6 +72,11 @@ public class Beat extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "beat";
+	}
+
+	@Override
+	public String getValueString() {
+		return beat.toString();
 	}
 
 	@Override

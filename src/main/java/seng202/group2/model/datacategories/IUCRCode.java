@@ -48,6 +48,11 @@ public class IUCRCode extends DataCategory implements Importable {
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getIucrCategory();
+	}
+
+	@Override
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -61,6 +66,11 @@ public class IUCRCode extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "IUCR";
+	}
+
+	@Override
+	public String getValueString() {
+		return iucrCode.toString();
 	}
 
 	@Override

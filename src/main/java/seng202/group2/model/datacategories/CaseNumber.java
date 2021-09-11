@@ -47,6 +47,11 @@ public class CaseNumber extends DataCategory implements Importable {
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getCaseNumCategory();
+	}
+
+	@Override
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -58,6 +63,11 @@ public class CaseNumber extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "caseNum";
+	}
+
+	@Override
+	public String getValueString() {
+		return caseNum.toString();
 	}
 
 	@Override
