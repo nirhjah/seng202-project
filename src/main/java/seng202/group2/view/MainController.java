@@ -148,7 +148,21 @@ public class MainController extends DataObserver implements Initializable {
 	 * TODO This method is not yet implemented. Temporarily it is calling {@link MainController#showNotImplementedYet()}
 	 */
 	public void showMapWindow() {
-		showNotImplementedYet();
+		try {
+			Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("map.fxml"));
+			Stage stage = new Stage();
+			// This will cause the login window to always be in front of the main window
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setResizable(false);
+			stage.setTitle("Map Window");
+			stage.setScene(new Scene(root, 900, 600));
+			stage.show();
+		} catch (IOException e) {
+			// This is where you would enter the error handling code, for now just print the stacktrace
+			e.printStackTrace();
+		}
+
+		DBMS.getActiveData().addFilter(FilterType.EQ.createFilter("id", "10"));
 	}
 
 	/**
