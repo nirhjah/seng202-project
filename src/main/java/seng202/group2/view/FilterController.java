@@ -8,31 +8,61 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
+import seng202.group2.model.ActiveData;
 import seng202.group2.model.DBMS;
 import seng202.group2.model.Filter;
 import seng202.group2.model.FilterType;
 import seng202.group2.model.datacategories.DataCategory;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+/**
+ * FilterController is the controller class for the crime filters GUI.
+ *
+ * This class uses the 'filter.fxml' FXML file for laying it out.
+ * The GUI for this class allows a user-friendly way to get an SQL query to filter the crime data in
+ * ActiveData. This class allows the user to add filters, remove a specific pre-applied filter and
+ * remove all pre-applied filters at once.
+ *
+ * @author Sam Clark
+ */
 public class FilterController implements Initializable {
 
     /** The JavaFX ComboBox that allows the user to select the category for filtering*/
     @FXML private ComboBox<DataCategory> categoryComboBox;
+
+    /** The JavaFX ComboBox that allows the user to select a filter type i.e, the comparator (eg "<" or "=")*/
     @FXML private ComboBox<String> comparatorsComboBox;
+
+    /** The JavaFX TextField that the users enters a value for a filter (eg in id < 40, this gets the 40)*/
     @FXML private TextField filterValueTextField;
+
+    /**
+     * The JavaFX ListView which displays to the user the currently active filters.
+     * This ListView is initialised with a CellFactory to show the SQLText attribute of the filters.
+     * The items of this list are the {@link FilterController#listedFilters} Observable list.
+     */
     @FXML private ListView<Filter> filterListView;
 
+    /** A HashMap mapping a String representation of each comparator to its {@link FilterType} (eg ">" : GT)*/
     private HashMap<String, FilterType> comparators;
+
+    /** A JavaFX ObservableList that stores the filters that are to be displayed in the {@link FilterController#filterListView}*/
     private static ObservableList<Filter> listedFilters = FXCollections.observableArrayList();
 
     /**
-     * Adds a filter to the filters list in the ActiveData, this method should also show the filter in the listview
-     * of filters.
+     * Adds a filter to the filters list in the ActiveData, and displays it in the filters ListView
+     *
+     * This method takes the user input from the {@link FilterController#categoryComboBox},  {@link FilterController#comparatorsComboBox}
+     * and {@link FilterController#filterValueTextField} and produces a SQL filter. That filter is then added to the ActiveData's
+     * filters; to filter the ActiveData, and the listedFilters; to display in the Filters UI window.
+     * 
+     * @see ActiveData#addFilter(Filter) Filter(seng202.group2.model.Filter)
+     * TODO: Check if filter is valid, and add check for repetition.
      */
     @FXML
     private void addFilterFromInputs()
@@ -45,6 +75,13 @@ public class FilterController implements Initializable {
         listedFilters.add(newFilter);
     }
 
+    /**
+     * Removes the selected filter from the ActiveData's filter Arraylist and listView showing the current filters.
+     * This method is called when the 'remove' button is clicked on the JavaFX UI.
+     * If no filter is selected, nothing happens.
+     * 
+     * @see ActiveData#removeFilter(seng202.group2.model.Filter)
+     */
     public void removeSelectedFilter()
     {
         Filter toRemove = filterListView.getSelectionModel().getSelectedItem();
@@ -52,6 +89,12 @@ public class FilterController implements Initializable {
         listedFilters.remove(toRemove);
     }
 
+    /**
+     * Removes all filter from the ActiveData's filter Arraylist and listView.
+     * This method is called when the 'remove all' button is clicked on the JavaFX UI.
+     *
+     * @see ActiveData#clearFilters(boolean) Filter(seng202.group2.model.Filter)
+     */
     public void removeAllFilters()
     {
         DBMS.getActiveData().clearFilters(true);
@@ -59,7 +102,13 @@ public class FilterController implements Initializable {
     }
 
     /**
-     * Initialize method which automatically runs on stage startup - populates combobox with values
+     * Initialize method to prepare the UI values each time a filter window is opened.
+     *
+     * This method prepares the Filter Window in the UI. It does the following preparations:
+     *  - initialises the {@link FilterController#comparators} HashMap so that the user's comparator can be selected.
+     *  - Sets the cell value of categories in the {@link FilterController#categoryComboBox} ot the toString() representation.
+     *  - Sets the cell value of the filters ListView to the Filter's SQLText Attribute.
+     *  - Sets the items of the used ComboBoxes and the ListView, to the relevant datasets.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
