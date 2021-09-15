@@ -3,6 +3,9 @@ package seng202.group2.model;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import seng202.group2.model.datacategories.Beat;
+import seng202.group2.model.datacategories.Ward;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,7 +64,7 @@ public class FilterTest {
      */
     @Test
     void equalitySingleTest() {
-        activeData.addFilter(FilterType.EQ.createFilter("beat", "5"));
+        activeData.addFilter(FilterType.EQ.createFilter(new Beat(), "5"));
 
         ArrayList<CrimeRecord> records = activeData.getActiveRecords();
 
@@ -74,8 +77,8 @@ public class FilterTest {
      */
     @Test
     void equalityMultipleTest() {
-        activeData.addFilter(FilterType.EQ.createFilter("beat", "5"));
-        activeData.addFilter(FilterType.EQ.createFilter("beat", "6"));
+        activeData.addFilter(FilterType.EQ.createFilter(new Beat(), "5"));
+        activeData.addFilter(FilterType.EQ.createFilter(new Beat(), "6"));
 
         ArrayList<CrimeRecord> records = activeData.getActiveRecords();
 
@@ -89,7 +92,7 @@ public class FilterTest {
      */
     @Test
     void gtSingleTest() {
-        activeData.addFilter(FilterType.GT.createFilter("beat", "4"));
+        activeData.addFilter(FilterType.GT.createFilter(new Beat(), "4"));
 
         ArrayList<CrimeRecord> records = activeData.getActiveRecords();
 
@@ -103,8 +106,8 @@ public class FilterTest {
      */
     @Test
     void gtMultipleTest() {
-        activeData.addFilter(FilterType.GT.createFilter("beat", "5"));
-        activeData.addFilter(FilterType.GT.createFilter("beat", "4"));
+        activeData.addFilter(FilterType.GT.createFilter(new Beat(), "5"));
+        activeData.addFilter(FilterType.GT.createFilter(new Beat(), "4"));
 
         ArrayList<CrimeRecord> records = activeData.getActiveRecords();
 
@@ -118,7 +121,7 @@ public class FilterTest {
      */
     @Test
     void ltSingleTest() {
-        activeData.addFilter(FilterType.LT.createFilter("beat", "5"));
+        activeData.addFilter(FilterType.LT.createFilter(new Beat(), "5"));
 
         ArrayList<CrimeRecord> records = activeData.getActiveRecords();
 
@@ -132,8 +135,8 @@ public class FilterTest {
      */
     @Test
     void ltMultipleTest() {
-        activeData.addFilter(FilterType.LT.createFilter("beat", "5"));
-        activeData.addFilter(FilterType.LT.createFilter("beat", "4"));
+        activeData.addFilter(FilterType.LT.createFilter(new Beat(), "5"));
+        activeData.addFilter(FilterType.LT.createFilter(new Beat(), "4"));
 
         ArrayList<CrimeRecord> records = activeData.getActiveRecords();
 
@@ -147,7 +150,7 @@ public class FilterTest {
      */
     @Test
     void sortSingleTest() {
-        activeData.addFilter(FilterType.SORT.createFilter("beat", "DESC"));
+        activeData.addFilter(FilterType.SORT.createFilter(new Beat(), "DESC"));
 
         ArrayList<CrimeRecord> records = activeData.getActiveRecords();
 
@@ -161,8 +164,8 @@ public class FilterTest {
     @Test
     void sortMultipleTest() {
         //Should prioritise the first one
-        activeData.addFilter(FilterType.SORT.createFilter("beat", "DESC"));
-        activeData.addFilter(FilterType.SORT.createFilter("ward", "ASC"));
+        activeData.addFilter(FilterType.SORT.createFilter(new Beat(), "DESC"));
+        activeData.addFilter(FilterType.SORT.createFilter(new Ward(), "ASC"));
 
         ArrayList<CrimeRecord> records = activeData.getActiveRecords();
 
@@ -176,10 +179,10 @@ public class FilterTest {
     @Test
     void eqGTComboTest() {
         //Should prioritise the first one
-        Filter gt = FilterType.GT.createFilter("ward", "6");
+        Filter gt = FilterType.GT.createFilter(new Ward(), "6");
 
         activeData.addFilter(gt);
-        activeData.addFilter(FilterType.EQ.createFilter("beat", "5"));
+        activeData.addFilter(FilterType.EQ.createFilter(new Beat(), "5"));
 
         ArrayList<CrimeRecord> records = activeData.getActiveRecords();
 
@@ -197,12 +200,12 @@ public class FilterTest {
      */
     @Test
     void fullComboTest() {
-        activeData.addFilter(FilterType.GT.createFilter("beat", "5"));
-        activeData.addFilter(FilterType.EQ.createFilter("beat", "5"));
-        activeData.addFilter(FilterType.EQ.createFilter("beat", "6"));
-        activeData.addFilter(FilterType.EQ.createFilter("beat", "7"));
-        activeData.addFilter(FilterType.EQ.createFilter("beat", "8"));
-        activeData.addFilter(FilterType.SORT.createFilter("beat", "DESC"));
+        activeData.addFilter(FilterType.GT.createFilter(new Beat(), "5"));
+        activeData.addFilter(FilterType.EQ.createFilter(new Beat(), "5"));
+        activeData.addFilter(FilterType.EQ.createFilter(new Beat(), "6"));
+        activeData.addFilter(FilterType.EQ.createFilter(new Beat(), "7"));
+        activeData.addFilter(FilterType.EQ.createFilter(new Beat(), "8"));
+        activeData.addFilter(FilterType.SORT.createFilter(new Beat(), "DESC"));
 
         ArrayList<CrimeRecord> records = activeData.getActiveRecords();
 
