@@ -1,6 +1,11 @@
 package seng202.group2.model.datacategories;
 
+import org.reflections.Reflections;
 import seng202.group2.model.CrimeRecord;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This class facilitates the selection of the various categories within a CrimeRecord,
@@ -11,6 +16,30 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public abstract class DataCategory {
+
+	public static final Set<DataCategory> getCategories() {
+		return dataCategories;
+	}
+
+	private static Set<DataCategory> dataCategories = new HashSet<>();
+
+	static {
+		Reflections reflections = new Reflections("seng202.group2");
+		Set<Class<? extends DataCategory>> dataCategoryClasses = reflections.getSubTypesOf(DataCategory.class);
+
+		for (Class<? extends DataCategory> dataCategoryClass : dataCategoryClasses) {
+			try {
+				DataCategory categoryInstance = (DataCategory) dataCategoryClass.getMethod("getInstance").invoke(null);
+				dataCategories.add(categoryInstance);
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	/**
 	 * Sets the attribute of CrimeRecord record, which corresponds to this DataCategory

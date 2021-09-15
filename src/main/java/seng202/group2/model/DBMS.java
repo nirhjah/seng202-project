@@ -131,7 +131,7 @@ public class DBMS {
             System.out.println("Could not run custom query. Query shown below. DBMS:customQuery:131");
             System.out.println(query);
             e.printStackTrace();
-            return null;
+            throw (new IllegalArgumentException("Invalid sql query"));
         }
     }
 
