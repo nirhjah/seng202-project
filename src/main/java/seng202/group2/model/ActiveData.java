@@ -78,45 +78,67 @@ public class ActiveData extends DataSource{
     }
 
     /**
+     * Generate conditions string based on Filters
+     * @return String representing the filters in SQL
+     */
+    private String generateFilterString() {
+        String query = " WHERE ";
+        String equality = "(";
+        boolean hasComparison = false;
+        boolean hasEquality = false;
+        boolean isCondition = false;
+
+        //Go through all filters
+        for (Filter filter: filters){
+            if ((filter.getType()).equals(FilterType.SORT)) {
+                //If the filter is of type sort, you have to skip it, the sort is used only on retrieval
+
+                continue;
+            } else if ((filter.getType()).equals(FilterType.EQ)) {
+                //If the filter is of type EQ, you have to chain then together seperatly using OR
+
+                if (hasEquality)
+                    equality += " OR ";
+
+                equality += filter.getSQLText();
+                hasEquality = true;
+            } else {
+                //Chain together using AND
+
+                if (hasComparison)
+                    query += " AND ";
+
+                query += filter.getSQLText();
+                hasComparison = true;
+            }
+
+            isCondition = true;
+        }
+        equality += ")";
+
+        //Need an AND if we are using both <|> and =
+        if (hasComparison && hasEquality)
+            equality = " AND " + equality;
+
+        //Add equality checks to the end
+        if (hasEquality)
+            query += equality;
+
+        //Erase if there are no filters
+        if (!isCondition)
+            query = "";
+
+        //System.out.println(query);
+
+        return query;
+    }
+
+    /**
      * Updates the ActiveRecords database in DBMS. This updates using all current filters.
      */
     public void updateActiveRecords() {
-        //Generate Query string with filters
-        String whereQuery = "";
-        String sortQuery = "";
-        boolean firstSort = true;
-        boolean firstCondition = true;
-
-        //Create SQL string
-        for (Filter filter: filters){
-            //If the filter is of type sort, you need to add to start instead of end
-            if ((filter.getType()).equals(FilterType.SORT)) {
-                if (!firstSort) {
-                    sortQuery += ", ";
-                } else {
-                    sortQuery += " ORDER BY ";
-                }
-
-                sortQuery += filter.getSQLText();
-                firstSort = false;
-            } else {
-                if (!firstCondition) {
-                    whereQuery += " AND ";
-                } else {
-                    whereQuery += " WHERE ";
-                }
-
-                whereQuery += filter.getSQLText();
-                firstCondition = false;
-            }
-        }
-
-        if (firstSort) {
-            sortQuery += " ORDER BY id";
-        }
-
         //Get list of IDs
-        ResultSet results = DBMS.customQuery("SELECT id FROM Records" + whereQuery + sortQuery  + ";");
+        ResultSet results = DBMS.customQuery("SELECT id FROM Records" + generateFilterString() + ";");
 
         //Format to ArrayList
         ArrayList<Integer> IDs = new ArrayList<>();
@@ -133,12 +155,34 @@ public class ActiveData extends DataSource{
     }
 
     /**
+     * Generates an order string using Filters to enable SQL sorting.
+     */
+    private String generateOrderString() {
+        String orderString = "";
+        boolean firstSort = true;
+
+        for (Filter filter : filters) {
+            if (filter.getType() == FilterType.SORT) {
+                if (!firstSort) {
+                    orderString += ", ";
+                } else {
+                    orderString += " ORDER BY ";
+                    firstSort = false;
+                }
+
+                orderString += filter.getSQLText();
+            }
+        }
+        return orderString;
+    }
+
+    /**
      * Get all currently active records.
      *
      * @return ArrayList<CrimeRecords> of active records.
      */
     public ArrayList<CrimeRecord> getActiveRecords() {
-        return DBMS.getActiveRecords(0, -1);
+        return DBMS.getActiveRecords(0, -1, generateOrderString());
     }
 
     /**
@@ -150,7 +194,7 @@ public class ActiveData extends DataSource{
      * @return ArrayList<CrimeRecords> of active records between start and end.
      */
     public ArrayList<CrimeRecord> getActiveRecords(int start, int limit) {
-        return DBMS.getActiveRecords(start, limit);
+        return DBMS.getActiveRecords(start, limit, generateOrderString());
     }
 
     public ArrayList<Filter> getFilters() {

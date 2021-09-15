@@ -118,8 +118,9 @@ public class FilterController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         comparators = new HashMap<String, FilterType>();
-        comparators.put(">", FilterType.GT);
-        comparators.put("=", FilterType.EQ);
+        for (FilterType type : FilterType.values()) {
+            comparators.put(type.toString(), type);
+        }
 
         // Set Combobox for categories to show the toString() representation.
         categoryComboBox.setCellFactory(new Callback<ListView<DataCategory>, ListCell<DataCategory>>() {
