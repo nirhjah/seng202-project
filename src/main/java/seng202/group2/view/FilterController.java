@@ -70,9 +70,13 @@ public class FilterController implements Initializable {
         FilterType type = comparators.get(comparatorsComboBox.getSelectionModel().getSelectedItem());
         DataCategory category = categoryComboBox.getSelectionModel().getSelectedItem();
         String filterValue = filterValueTextField.getText();
-        Filter newFilter = type.createFilter(category.getSQL(), filterValue);
-        DBMS.getActiveData().addFilter(newFilter);
-        listedFilters.add(newFilter);
+        try {
+            Filter newFilter = type.createFilter(category.getSQL(), filterValue);
+            DBMS.getActiveData().addFilter(newFilter);
+            listedFilters.add(newFilter);
+        } catch (IllegalArgumentException exception) {
+            System.out.println(exception.getMessage());
+        }
     }
 
     /**

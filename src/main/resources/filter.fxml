@@ -43,9 +43,15 @@
             <Font size="18.0" />
          </font>
       </Text>
-      <ComboBox fx:id="categoryComboBox" prefWidth="150.0" GridPane.rowIndex="2" />
-      <ComboBox fx:id="comparatorsComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <TextField fx:id="filterValueTextField" promptText="Value" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-      <Button mnemonicParsing="false" onAction="#addFilterFromInputs" text="Add Filter" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+      <ComboBox fx:id="categoryComboBox" prefWidth="220.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+      <ComboBox fx:id="comparatorsComboBox" prefWidth="70.0" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets left="10.0" />
+         </GridPane.margin></ComboBox>
+      <TextField fx:id="filterValueTextField" promptText="Value" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin></TextField>
+      <Button mnemonicParsing="false" onAction="#addFilterFromInputs" text="Add Filter" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
    </children>
 </GridPane>
