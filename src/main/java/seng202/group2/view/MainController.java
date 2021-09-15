@@ -214,7 +214,6 @@ public class MainController extends DataObserver implements Initializable {
 			e.printStackTrace();
 		}
 
-		DBMS.getActiveData().addFilter(FilterType.EQ.createFilter("id", "10"));
 	}
 
 	/**
