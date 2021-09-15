@@ -36,7 +36,7 @@ public class FilterController implements Initializable {
     @FXML private ComboBox<DataCategory> categoryComboBox;
 
     /** The JavaFX ComboBox that allows the user to select a filter type i.e, the comparator (eg "<" or "=")*/
-    @FXML private ComboBox<String> comparatorsComboBox;
+    @FXML private ComboBox<FilterType> comparatorsComboBox;
 
     /** The JavaFX TextField that the users enters a value for a filter (eg in id < 40, this gets the 40)*/
     @FXML private TextField filterValueTextField;
@@ -47,9 +47,6 @@ public class FilterController implements Initializable {
      * The items of this list are the {@link FilterController#listedFilters} Observable list.
      */
     @FXML private ListView<Filter> filterListView;
-
-    /** A HashMap mapping a String representation of each comparator to its {@link FilterType} (eg ">" : GT)*/
-    private HashMap<String, FilterType> comparators;
 
     /** A JavaFX ObservableList that stores the filters that are to be displayed in the {@link FilterController#filterListView}*/
     private static ObservableList<Filter> listedFilters = FXCollections.observableArrayList();
@@ -62,16 +59,15 @@ public class FilterController implements Initializable {
      * filters; to filter the ActiveData, and the listedFilters; to display in the Filters UI window.
      * 
      * @see ActiveData#addFilter(Filter) Filter(seng202.group2.model.Filter)
-     * TODO: Check if filter is valid, and add check for repetition.
      */
     @FXML
     private void addFilterFromInputs()
     {
-        FilterType type = comparators.get(comparatorsComboBox.getSelectionModel().getSelectedItem());
+        FilterType type = comparatorsComboBox.getSelectionModel().getSelectedItem();
         DataCategory category = categoryComboBox.getSelectionModel().getSelectedItem();
         String filterValue = filterValueTextField.getText();
         try {
-            Filter newFilter = type.createFilter(category.getSQL(), filterValue);
+            Filter newFilter = type.createFilter(category, filterValue);
             DBMS.getActiveData().addFilter(newFilter);
             listedFilters.add(newFilter);
         } catch (IllegalArgumentException exception) {
@@ -109,18 +105,27 @@ public class FilterController implements Initializable {
      * Initialize method to prepare the UI values each time a filter window is opened.
      *
      * This method prepares the Filter Window in the UI. It does the following preparations:
-     *  - initialises the {@link FilterController#comparators} HashMap so that the user's comparator can be selected.
-     *  - Sets the cell value of categories in the {@link FilterController#categoryComboBox} ot the toString() representation.
+     *  - Sets the cell value of categories in the {@link FilterController#categoryComboBox} to the toString() representation.
+     *  - Sets the cell value of categories in the {@link FilterController#categoryComboBox} to the toString() representation.
      *  - Sets the cell value of the filters ListView to the Filter's SQLText Attribute.
      *  - Sets the items of the used ComboBoxes and the ListView, to the relevant datasets.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        comparators = new HashMap<String, FilterType>();
-        for (FilterType type : FilterType.values()) {
-            comparators.put(type.toString(), type);
-        }
+        // Set Combobox for comparators to show the toString() representation.
+        comparatorsComboBox.setCellFactory(new Callback<ListView<FilterType>, ListCell<FilterType>>() {
+            @Override
+            public ListCell<FilterType> call(ListView<FilterType> param) {
+                return new ListCell<FilterType>() {
+                    @Override
+                    protected void updateItem(FilterType item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setText(item == null ? "Error: null" : item.toString());
+                    }
+                };
+            }
+        });
 
         // Set Combobox for categories to show the toString() representation.
         categoryComboBox.setCellFactory(new Callback<ListView<DataCategory>, ListCell<DataCategory>>() {
@@ -135,10 +140,6 @@ public class FilterController implements Initializable {
                 };
             }
         });
-        categoryComboBox.getItems().setAll(DataCategory.getCategories());
-        comparatorsComboBox.getItems().setAll(comparators.keySet());
-        categoryComboBox.getSelectionModel().select(0);
-        comparatorsComboBox.getSelectionModel().select(0);
 
         // Makes the cells in the listView show their filter.SQLText string.
         filterListView.setCellFactory(new Callback<ListView<Filter>, ListCell<Filter>>() {
@@ -149,10 +150,15 @@ public class FilterController implements Initializable {
                     protected void updateItem(Filter item, boolean empty) {
                         super.updateItem(item, empty);
                         setText(item == null ? "" : item.getSQLText());
-                    }
-                };
+            }
+        };
             }
         });
+
+        categoryComboBox.getItems().setAll(DataCategory.getCategories());
+        comparatorsComboBox.getItems().setAll(FilterType.values());
+        categoryComboBox.getSelectionModel().select(0);
+        comparatorsComboBox.getSelectionModel().select(0);
         filterListView.setItems(listedFilters);
     }
 }
