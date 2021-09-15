@@ -9,15 +9,9 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class CaseNumber extends DataCategory implements Importable {
-
-	private static final CaseNumber instance = new CaseNumber();
 	
 	/** The case number associated with the crime record in the police database */
 	private String caseNum = null;
-
-	public static CaseNumber getInstance() {
-		return instance;
-	}
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
@@ -69,8 +63,4 @@ public class CaseNumber extends DataCategory implements Importable {
 		return this.caseNum;
 	}
 
-	@Override
-	public String toString() {
-		return "Case Number";
-	}
 }

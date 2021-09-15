@@ -9,15 +9,9 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class Latitude extends DataCategory implements Importable {
-
-	private static final Latitude instance = new Latitude();
-
+	
 	/** The latitudinal location where the crime incident occurred. */
 	private Float latitude = null;
-
-	public static Latitude getInstance() {
-		return instance;
-	}
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
@@ -84,8 +78,4 @@ public class Latitude extends DataCategory implements Importable {
 		return this.latitude;
 	}
 
-	@Override
-	public String toString() {
-		return "Latitude";
-	}
 }

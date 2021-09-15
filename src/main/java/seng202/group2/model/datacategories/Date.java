@@ -13,8 +13,6 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class Date extends DataCategory implements Importable {
-
-	private static final Date instance = new Date();
 	
 	/** The date and time at which the crime incident occurred */
 	private Calendar date = null;
@@ -27,10 +25,6 @@ public class Date extends DataCategory implements Importable {
 			"MM'/'dd'/'yyyy HH':'mm",
 			"yyyy'-'MM'-'dd'T'HH':'mm':'ss"
 	};
-
-	public static Date getInstance() {
-		return instance;
-	}
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
@@ -98,8 +92,4 @@ public class Date extends DataCategory implements Importable {
 		return this.date;
 	}
 
-	@Override
-	public String toString() {
-		return "Date";
-	}
 }

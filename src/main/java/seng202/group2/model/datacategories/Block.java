@@ -10,18 +10,12 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class Block extends DataCategory implements Importable {
-
-	private static final Block instance = new Block();
 	
 	/**
 	 * The address of the crime incident at a city block level.
 	 * Zip code with last two digits anonymized followed by street name.
 	 */
 	private String block = null;
-
-	public static Block getInstance() {
-		return instance;
-	}
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
@@ -73,8 +67,4 @@ public class Block extends DataCategory implements Importable {
 		return this.block;
 	}
 
-	@Override
-	public String toString() {
-		return "Block";
-	}
 }

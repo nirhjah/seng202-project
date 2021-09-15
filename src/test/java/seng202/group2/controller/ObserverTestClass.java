@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Assisting class for Observer test classes
  */
-public class ObserverTestClass extends DataObserver {
+public class ObserverTestClass extends DataObserver{
     /** Records are stored here so that test methods can access at any time */
     private ArrayList<CrimeRecord> testRecords;
 
@@ -15,13 +15,8 @@ public class ObserverTestClass extends DataObserver {
      * Get the records
      */
     @Override
-    public void activeDataUpdate() {
+    public void updateModel() {
         testRecords = DBMS.getActiveData().getActiveRecords();
-    }
-
-    @Override
-    public void selectedRecordsUpdate() {
-        return;
     }
 
     /**

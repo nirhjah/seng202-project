@@ -9,8 +9,6 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class Arrest extends DataCategory implements Importable {
-
-	private static final Arrest instance = new Arrest();
 	
 	/**
 	 * 1 if the crime incident resulted in an arrest being made
@@ -18,10 +16,6 @@ public class Arrest extends DataCategory implements Importable {
 	 * null if there is no information provided
 	 */
 	private Boolean arrest = null;
-
-	public static Arrest getInstance() {
-		return instance;
-	}
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
@@ -79,8 +73,4 @@ public class Arrest extends DataCategory implements Importable {
 		return this.arrest;
 	}
 
-	@Override
-	public String toString() {
-		return "Arrest";
-	}
 }

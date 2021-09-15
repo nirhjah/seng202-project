@@ -9,15 +9,9 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class LocationDescription extends DataCategory implements Importable {
-
-	private static final LocationDescription instance = new LocationDescription();
-
+	
 	/** A textual description of the location where the crime incident occurred */
 	private String locationDescription = null;
-
-	public static LocationDescription getInstance() {
-		return instance;
-	}
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
@@ -69,8 +63,4 @@ public class LocationDescription extends DataCategory implements Importable {
 		return this.locationDescription;
 	}
 
-	@Override
-	public String toString() {
-		return "Location Description";
-	}
 }

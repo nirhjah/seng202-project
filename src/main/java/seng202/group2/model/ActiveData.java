@@ -3,7 +3,6 @@ package seng202.group2.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 
 /**
@@ -11,11 +10,9 @@ import java.util.LinkedList;
  *
  * TODO Add Junit tests.
  */
-public class ActiveData extends DataSource {
+public class ActiveData extends DataSource{
     //List of filters
     private LinkedList<Filter> filters = new LinkedList<>();
-    /** List of record ids selected by the user. */
-    private HashSet<Integer> selectedRecords = new HashSet<>();
 
     /**
      * Add a filter to the filter list
@@ -27,7 +24,7 @@ public class ActiveData extends DataSource {
         filters.addLast(filter);
 
         if (update) {
-            updateActiveData();
+            updateObservers();
         }
     }
 
@@ -39,7 +36,7 @@ public class ActiveData extends DataSource {
     public void addFilter(Filter filter) {
         filters.addLast(filter);
 
-        updateActiveData();
+        updateObservers();
     }
 
     /**
@@ -51,7 +48,7 @@ public class ActiveData extends DataSource {
         if (filters.contains(filter)) {
             filters.remove(filter);
 
-            updateActiveData();
+            updateObservers();
         }
     }
 
@@ -66,7 +63,7 @@ public class ActiveData extends DataSource {
             filters.remove(filter);
 
             if (update)
-                updateActiveData();
+                updateObservers();
         }
     }
 
@@ -77,7 +74,7 @@ public class ActiveData extends DataSource {
     public void clearFilters(boolean update) {
         filters = new LinkedList<>();
         if (update)
-            updateActiveData();
+            updateObservers();
     }
 
     /**

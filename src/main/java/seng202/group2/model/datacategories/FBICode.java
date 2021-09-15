@@ -9,8 +9,6 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class FBICode extends DataCategory implements Importable {
-
-	private static final FBICode instance = new FBICode();
 	
 	/**
 	 * FBI crime code assigned to the crime incident.
@@ -18,10 +16,6 @@ public class FBICode extends DataCategory implements Importable {
 	 * @see <a href="https://ucr.fbi.gov/nibrs/2011/resources/nibrs-offense-codes/view">Offense Codes</a>
 	 */
 	private String fbiCode = null;
-
-	public static FBICode getInstance() {
-		return instance;
-	}
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
@@ -75,8 +69,4 @@ public class FBICode extends DataCategory implements Importable {
 		return this.fbiCode;
 	}
 
-	@Override
-	public String toString() {
-		return "FBI Code";
-	}
 }

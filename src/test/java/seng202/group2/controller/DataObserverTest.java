@@ -76,7 +76,7 @@ public class DataObserverTest {
         }
 
         //Update data
-        observer.activeDataUpdate();
+        observer.updateModel();
 
         ArrayList<CrimeRecord> results = observer.getTestRecords();
         int num = 1;

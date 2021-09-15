@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
+import seng202.group2.model.Filter;
 import seng202.group2.model.FilterType;
 
 /**
@@ -166,28 +167,6 @@ public class MainController extends DataObserver implements Initializable {
 	 */
 	public void showAddRecordWindow() {
 		showNotImplementedYet();
-	}
-
-	/**
-	 * showFilterWindow method opens the filter window and brings it to the front.
-	 *
-	 * The filter window uses the 'filter.fxml' FXML file and the FilterController Class
-	 * @see FilterController
-	 */
-	public void showFilterWindow() {
-		try {
-			Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("filter.fxml"));
-			Stage stage = new Stage();
-			// This will cause the login window to always be in front of the main window
-			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.setResizable(false);
-			stage.setTitle("Filters");
-			stage.setScene(new Scene(root, 600, 400));
-			stage.show();
-		} catch (IOException e) {
-			// This is where you would enter the error handling code, for now just print the stacktrace
-			e.printStackTrace();
-		}
 	}
 
 	/**
