@@ -137,6 +137,12 @@ public class ActiveData extends DataSource{
      * Updates the ActiveRecords database in DBMS. This updates using all current filters.
      */
     public void updateActiveRecords() {
+        //Dont update if there are no filters
+        if (filters.size() <= 0) {
+            return;
+        }
+
+
         //Get list of IDs
         ResultSet results = DBMS.customQuery("SELECT id FROM Records" + generateFilterString() + ";");
 

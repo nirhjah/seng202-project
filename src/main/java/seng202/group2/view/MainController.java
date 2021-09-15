@@ -253,7 +253,7 @@ public class MainController extends DataObserver implements Initializable {
 		ArrayList<CrimeRecord> activeRecords = DBMS.getActiveData().getActiveRecords(0, windowSizeInt);
 
 		//Change the number of records
-		recordCount = DBMS.getActiveData().getActiveRecords().size();
+		recordCount = DBMS.getActiveRecordsSize();
 		recordsShown.setText(0 + "-" + windowSizeInt + "/" + recordCount);
 
 

@@ -290,7 +290,13 @@ public class DBMS {
         try {
             //Select records from Records
             Statement state = conn.createStatement();
-            results = state.executeQuery("SELECT * FROM ActiveRecords " + order + " LIMIT " + limit + " OFFSET " + min);
+
+            if (activeData.getFilters().size() > 0) {
+                results = state.executeQuery("SELECT * FROM ActiveRecords " + order + " LIMIT " + limit + " OFFSET " + min);
+            } else {
+                results = state.executeQuery("SELECT * FROM Records " + order + " LIMIT " + limit + " OFFSET " + min);
+            }
+
 
             //Generate and add the records to the records ArrayList
             while (results.next()) {

@@ -197,7 +197,7 @@ public class FilterTest {
      */
     @Test
     void fullComboTest() {
-        activeData.addFilter(FilterType.GT.createFilter("ward", "5"));
+        activeData.addFilter(FilterType.GT.createFilter("beat", "5"));
         activeData.addFilter(FilterType.EQ.createFilter("beat", "5"));
         activeData.addFilter(FilterType.EQ.createFilter("beat", "6"));
         activeData.addFilter(FilterType.EQ.createFilter("beat", "7"));
