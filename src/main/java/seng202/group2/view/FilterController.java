@@ -113,20 +113,6 @@ public class FilterController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // Set Combobox for comparators to show the toString() representation.
-        comparatorsComboBox.setCellFactory(new Callback<ListView<FilterType>, ListCell<FilterType>>() {
-            @Override
-            public ListCell<FilterType> call(ListView<FilterType> param) {
-                return new ListCell<FilterType>() {
-                    @Override
-                    protected void updateItem(FilterType item, boolean empty) {
-                        super.updateItem(item, empty);
-                        setText(item == null ? "Error: null" : item.toString());
-                    }
-                };
-            }
-        });
-
         // Set Combobox for categories to show the toString() representation.
         categoryComboBox.setCellFactory(new Callback<ListView<DataCategory>, ListCell<DataCategory>>() {
             @Override
@@ -140,6 +126,28 @@ public class FilterController implements Initializable {
                 };
             }
         });
+        // Add all categories to category combo box and select the first
+        categoryComboBox.getItems().setAll(DataCategory.getCategories());
+        categoryComboBox.getSelectionModel().select(0);
+
+
+        // Set Combobox for comparators to show the toString() representation.
+        comparatorsComboBox.setCellFactory(new Callback<ListView<FilterType>, ListCell<FilterType>>() {
+            @Override
+            public ListCell<FilterType> call(ListView<FilterType> param) {
+                return new ListCell<FilterType>() {
+                    @Override
+                    protected void updateItem(FilterType item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setText(item == null ? "Error: null" : item.toString());
+                    }
+                };
+            }
+        });
+        // Add all filter types to comparator combo box and select the first
+        comparatorsComboBox.getItems().setAll(FilterType.values());
+        comparatorsComboBox.getSelectionModel().select(0);
+
 
         // Makes the cells in the listView show their filter.SQLText string.
         filterListView.setCellFactory(new Callback<ListView<Filter>, ListCell<Filter>>() {
@@ -150,15 +158,11 @@ public class FilterController implements Initializable {
                     protected void updateItem(Filter item, boolean empty) {
                         super.updateItem(item, empty);
                         setText(item == null ? "" : item.getSQLText());
-            }
-        };
+                    }
+                };
             }
         });
-
-        categoryComboBox.getItems().setAll(DataCategory.getCategories());
-        comparatorsComboBox.getItems().setAll(FilterType.values());
-        categoryComboBox.getSelectionModel().select(0);
-        comparatorsComboBox.getSelectionModel().select(0);
+        // Add all currently applied filters to applied filter list
         filterListView.setItems(listedFilters);
     }
 }
