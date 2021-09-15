@@ -1,21 +1,22 @@
 package seng202.group2.model;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import seng202.group2.model.datacategories.Beat;
+import seng202.group2.model.datacategories.Latitude;
 import seng202.group2.model.datacategories.Ward;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FilterTest {
     private static final String DATE_FORMAT = "yyyy/MM/dd hh:mm:ss a";
     private static final ActiveData activeData = DBMS.getActiveData();
+
+    private static final int numRecords = 50;
 
     /**
      * Add a 50 records to the database
@@ -23,7 +24,7 @@ public class FilterTest {
     @BeforeAll
     static void addRecords() throws ParseException {
         DBMS.clearDB();
-        for (int i=1; i <= 50; i++) {
+        for (int i=1; i <= numRecords; i++) {
             String num = Integer.toString(i);
             CrimeRecord record = new CrimeRecord();
             record.setCaseNum("TEST" + num);
@@ -77,9 +78,9 @@ public class FilterTest {
         activeData.addFilter(FilterType.EQ.createFilter(Beat.getInstance(), "5"));
 
         ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        assertEquals(1, records.size());
 
         assertEquals((short) 5, records.get(0).getBeat());
-        assertEquals(1, records.size());
     }
 
     /**
@@ -87,14 +88,19 @@ public class FilterTest {
      */
     @Test
     void equalityMultipleTest() {
-        activeData.addFilter(FilterType.EQ.createFilter(Beat.getInstance(), "5"));
-        activeData.addFilter(FilterType.EQ.createFilter(Beat.getInstance(), "6"));
+        HashSet<Short> expectedBeats = new HashSet<Short>(Arrays.asList(
+                (short) 5,
+                (short) 6
+        ));
+
+        for (Short expectedBeat : expectedBeats)
+            activeData.addFilter(FilterType.EQ.createFilter(Beat.getInstance(), expectedBeat.toString()));
 
         ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        assertEquals(expectedBeats.size(), records.size());
 
-        assertEquals((short) 5, records.get(0).getBeat());
-        assertEquals((short) 6, records.get(1).getBeat());
-        assertEquals(2, records.size());
+        for (CrimeRecord record : records)
+            assertTrue(expectedBeats.contains(record.getBeat()));
     }
 
     /**
@@ -102,13 +108,19 @@ public class FilterTest {
      */
     @Test
     void gtSingleTest() {
-        activeData.addFilter(FilterType.GT.createFilter(Beat.getInstance(), "4"));
+        Short gtValue = (short) 4;
+
+        HashSet<Short> expectedBeats = new HashSet<Short>();
+        for (int i = gtValue+1; i <= numRecords; i++)
+            expectedBeats.add((short) i);
+
+        activeData.addFilter(FilterType.GT.createFilter(Beat.getInstance(), gtValue.toString()));
 
         ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        assertEquals(numRecords - gtValue, records.size());
 
-        assertEquals((short) 5, records.get(0).getBeat());
-        assertEquals((short) 6, records.get(1).getBeat());
-        assertEquals(46, records.size());
+        for (CrimeRecord record : records)
+            assertTrue(expectedBeats.contains(record.getBeat()));
     }
 
     /**
@@ -116,14 +128,21 @@ public class FilterTest {
      */
     @Test
     void gtMultipleTest() {
-        activeData.addFilter(FilterType.GT.createFilter(Beat.getInstance(), "5"));
-        activeData.addFilter(FilterType.GT.createFilter(Beat.getInstance(), "4"));
+        Short gtValueSmall = (short) 4;
+        Short gtValue = (short) (gtValueSmall + 1);
+
+        HashSet<Short> expectedBeats = new HashSet<Short>();
+        for (int i = gtValue+1; i <= numRecords; i++)
+            expectedBeats.add((short) i);
+
+        activeData.addFilter(FilterType.GT.createFilter(Beat.getInstance(), gtValueSmall.toString()));
+        activeData.addFilter(FilterType.GT.createFilter(Beat.getInstance(), gtValue.toString()));
 
         ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        assertEquals(numRecords - gtValue, records.size());
 
-        assertEquals((short) 6, records.get(0).getBeat());
-        assertEquals((short) 7, records.get(1).getBeat());
-        assertEquals(45, records.size());
+        for (CrimeRecord record : records)
+            assertTrue(expectedBeats.contains(record.getBeat()));
     }
 
     /**
@@ -131,13 +150,19 @@ public class FilterTest {
      */
     @Test
     void ltSingleTest() {
-        activeData.addFilter(FilterType.LT.createFilter(Beat.getInstance(), "5"));
+        Short ltValue = (short) 5;
+
+        HashSet<Short> expectedBeats = new HashSet<Short>();
+        for (int i = 1; i <= ltValue && i <= numRecords; i++)
+            expectedBeats.add((short) i);
+
+        activeData.addFilter(FilterType.LT.createFilter(Beat.getInstance(), ltValue.toString()));
 
         ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        assertEquals(ltValue - 1, records.size());
 
-        assertEquals((short) 1, records.get(0).getBeat());
-        assertEquals((short) 4, records.get(3).getBeat());
-        assertEquals(4, records.size());
+        for (CrimeRecord record : records)
+            assertTrue(expectedBeats.contains(record.getBeat()));
     }
 
     /**
@@ -145,14 +170,21 @@ public class FilterTest {
      */
     @Test
     void ltMultipleTest() {
-        activeData.addFilter(FilterType.LT.createFilter(Beat.getInstance(), "5"));
-        activeData.addFilter(FilterType.LT.createFilter(Beat.getInstance(), "4"));
+        Short ltValueBig = (short) 5;
+        Short ltValue = (short) (ltValueBig - 1);
+
+        HashSet<Short> expectedBeats = new HashSet<Short>();
+        for (int i = 1; i <= ltValue && i <= numRecords; i++)
+            expectedBeats.add((short) i);
+
+        activeData.addFilter(FilterType.LT.createFilter(Beat.getInstance(), ltValueBig.toString()));
+        activeData.addFilter(FilterType.LT.createFilter(Beat.getInstance(), ltValue.toString()));
 
         ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        assertEquals(ltValue - 1, records.size());
 
-        assertEquals((short) 1, records.get(0).getBeat());
-        assertEquals((short) 2, records.get(1).getBeat());
-        assertEquals(3, records.size());
+        for (CrimeRecord record : records)
+            assertTrue(expectedBeats.contains(record.getBeat()));
     }
 
     /**
@@ -162,10 +194,15 @@ public class FilterTest {
     void sortSingleTest() {
         activeData.addFilter(FilterType.SORT.createFilter(Beat.getInstance(), "DESC"));
 
-        ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        ArrayList<Short> expectedBeats = new ArrayList<>();
+        for (short i = numRecords; 0 < i; i--)
+            expectedBeats.add(i);
 
-        assertEquals((short) 50, records.get(0).getBeat());
-        assertEquals((short) 1, records.get(49).getBeat());
+        ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        assertEquals(numRecords, records.size());
+
+        for (int i = 0; i < numRecords; i++)
+            assertTrue(expectedBeats.get(i) == records.get(i).getBeat());
     }
 
     /**
@@ -177,10 +214,15 @@ public class FilterTest {
         activeData.addFilter(FilterType.SORT.createFilter(Beat.getInstance(), "DESC"));
         activeData.addFilter(FilterType.SORT.createFilter(Ward.getInstance(), "ASC"));
 
-        ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        ArrayList<Short> expectedBeats = new ArrayList<>();
+        for (short i = numRecords; 0 < i; i--)
+            expectedBeats.add(i);
 
-        assertEquals((short) 50, records.get(0).getBeat());
-        assertEquals((short) 1, records.get(49).getBeat());
+        ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        assertEquals(numRecords, records.size());
+
+        for (int i = 0; i < numRecords; i++)
+            assertTrue(expectedBeats.get(i) == records.get(i).getBeat());
     }
 
     /**
@@ -189,20 +231,22 @@ public class FilterTest {
     @Test
     void eqGTComboTest() {
         //Should prioritise the first one
-        Filter gt = FilterType.GT.createFilter(Ward.getInstance(), "6");
+        activeData.addFilter(FilterType.GT.createFilter(Ward.getInstance(), "6"));
+        activeData.addFilter(FilterType.EQ.createFilter(Beat.getInstance(), "9"));
 
-        activeData.addFilter(gt);
-        activeData.addFilter(FilterType.EQ.createFilter(Beat.getInstance(), "5"));
+        Filter ltFilter = FilterType.LT.createFilter(Latitude.getInstance(), "7.6");
+        activeData.addFilter(ltFilter);
 
+        // No records should match these filters
         ArrayList<CrimeRecord> records = activeData.getActiveRecords();
-
         assertEquals(0, records.size());
 
-        activeData.removeFilter(gt);
+        // Remove one filter so some match
+        activeData.removeFilter(ltFilter);
         records = activeData.getActiveRecords();
-
-        assertEquals((short) 5, records.get(0).getBeat());
         assertEquals(1, records.size());
+
+        assertEquals((short) 9, records.get(0).getBeat());
     }
 
     /**
@@ -210,6 +254,12 @@ public class FilterTest {
      */
     @Test
     void fullComboTest() {
+        ArrayList<Short> expectedBeats = new ArrayList<Short>(Arrays.asList(
+                (short) 8,
+                (short) 7,
+                (short) 6
+        ));
+
         activeData.addFilter(FilterType.GT.createFilter(Beat.getInstance(), "5"));
         activeData.addFilter(FilterType.EQ.createFilter(Beat.getInstance(), "5"));
         activeData.addFilter(FilterType.EQ.createFilter(Beat.getInstance(), "6"));
@@ -218,9 +268,9 @@ public class FilterTest {
         activeData.addFilter(FilterType.SORT.createFilter(Beat.getInstance(), "DESC"));
 
         ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        assertEquals(expectedBeats.size(), records.size());
 
-        assertEquals((short) 8, records.get(0).getBeat());
-        assertEquals((short) 6, records.get(2).getBeat());
-        assertEquals(3, records.size());
+        for (int i = 0; i < expectedBeats.size(); i++)
+            assertEquals(expectedBeats.get(i), records.get(i).getBeat());
     }
 }
