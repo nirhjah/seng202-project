@@ -542,6 +542,7 @@ public class DBMS {
 
         try {
             Statement state = conn.createStatement();
+
             ResultSet res = state.executeQuery("SELECT COUNT(DISTINCT id) as total FROM Records;");
 
             res.next();
@@ -564,6 +565,9 @@ public class DBMS {
         }
 
         try {
+            if ((activeData.getFilters().size() <= 0))
+                return getRecordsSize();
+
             Statement state = conn.createStatement();
             ResultSet res = state.executeQuery("SELECT COUNT(DISTINCT id) as total FROM ActiveRecords;");
 
