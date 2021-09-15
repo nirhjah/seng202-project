@@ -5,7 +5,7 @@ import seng202.group2.controller.DataObserver;
 
 /**
  * Map Controller
- * @author 
+ * @author Yiyang Yu
  *
  */
 
