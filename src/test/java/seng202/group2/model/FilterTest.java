@@ -1,5 +1,6 @@
 package seng202.group2.model;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,6 +50,15 @@ public class FilterTest {
         }
 
         //DBMS.getActiveData().updateActiveRecords();
+    }
+
+    /**
+     * Clean up database after tests.
+     */
+    @AfterAll
+    static void clearRecords() {
+        DBMS.clearDB();
+        activeData.clearFilters(true);
     }
 
     /**
