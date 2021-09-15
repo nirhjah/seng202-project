@@ -2,6 +2,7 @@ package seng202.group2.controller;
 
 import seng202.group2.model.CrimeRecord;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Provides updateModel method for child classes.
@@ -22,5 +23,7 @@ public abstract class DataObserver {
      * You should not need to manually call this function, aside from testing.
      *
      */
-    public abstract void updateModel();
+    public abstract void activeDataUpdate();
+
+    public abstract void selectedRecordsUpdate();
 }

@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,16 +14,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import seng202.group2.model.CrimeRecord;
+import seng202.group2.model.*;
 import seng202.group2.controller.DataObserver;
-import seng202.group2.model.DBMS;
-import seng202.group2.model.Filter;
-import seng202.group2.model.FilterType;
 
 /**
  * MainController is the GUI controller for the main Cams window.
@@ -220,7 +220,32 @@ public class MainController extends DataObserver implements Initializable {
 		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
 		windowSize.setText(Integer.toString(windowSizeInt));
 
+		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
 		idColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Integer>("ID"));
+		// Format a row in the table based on the value in its ID cell
+		idColumn.setCellFactory(column -> {
+			TableCell<CrimeRecord, Integer> cell = new TableCell<>() {
+				@Override
+				public void updateItem(Integer id, boolean empty) {
+					super.updateItem(id, empty);
+
+					// If the id is not null set the cell text to the id
+					setText(id == null ? "" : id.toString());
+
+					// Add a listener to the table row which (de)selects the record when clicked
+					getTableRow().setOnMouseClicked(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent event) {
+							if (id != null)
+								DBMS.getActiveData().toggleSelectRecord(id);
+						}
+					});
+				}
+			};
+			return cell;
+		});
+
 		caseNumColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("caseNum"));
 		dateColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("dateString"));
 		blockColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("block"));
@@ -235,24 +260,36 @@ public class MainController extends DataObserver implements Initializable {
 		fbiCodeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("fbiCode"));
 		latitudeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("latitude"));
 		longitudeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("longitude"));
-		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 	}
 
 	/**
 	 * Update the model when the observer is called. This will reset the window to show rows 0 - limit
 	 */
 	@Override
-	public void updateModel() {
-		ArrayList<CrimeRecord> activeRecords = DBMS.getActiveData().getActiveRecords(0, windowSizeInt);
+	public void activeDataUpdate() {
+		ActiveData activeData = DBMS.getActiveData();
+		ArrayList<CrimeRecord> activeRecords = activeData.getActiveRecords(0, windowSizeInt);
 
 		//Change the number of records
-		recordCount = DBMS.getActiveData().getActiveRecords().size();
+		recordCount = activeRecords.size();
 		recordsShown.setText(0 + "-" + windowSizeInt + "/" + recordCount);
-
 
 		//Update table
 		tableView.getItems().clear();
 		for (CrimeRecord record: activeRecords)
 			tableView.getItems().add(record);
+
+		selectedRecordsUpdate();
+	}
+
+	@Override
+	public void selectedRecordsUpdate() {
+		tableView.getSelectionModel().clearSelection();
+
+		ActiveData activeData = DBMS.getActiveData();
+		for (CrimeRecord record: tableView.getItems()) {
+			if (activeData.isSelected(record.getID()))
+				tableView.getSelectionModel().select(record);
+		}
 	}
 }
