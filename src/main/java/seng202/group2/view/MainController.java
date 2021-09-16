@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,7 +20,6 @@ import javafx.stage.Stage;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
-import seng202.group2.model.FilterType;
 
 /**
  * MainController is the GUI controller for the main Cams window.
@@ -73,7 +71,7 @@ public class MainController extends DataObserver implements Initializable {
 		ArrayList<CrimeRecord> activeRecords = new ArrayList<>(DBMS.getActiveData().getActiveRecords(currentMin, windowSizeInt));
 
 		//Change the text
-		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
+		recordsShown.setText(Math.max(currentMin, 0) + "-" + Math.min(currentMax, recordCount) + "/" + recordCount);
 
 
 		//Update table
@@ -253,7 +251,7 @@ public class MainController extends DataObserver implements Initializable {
 
 		//Change the number of records
 		recordCount = DBMS.getActiveRecordsSize();
-		recordsShown.setText(0 + "-" + windowSizeInt + "/" + recordCount);
+		recordsShown.setText(0 + "-" + Math.min(windowSizeInt, recordCount) + "/" + recordCount);
 
 
 		//Update table
