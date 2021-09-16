@@ -40,6 +40,12 @@
   		<artifactId>opencsv</artifactId>
   		<version>5.5.1</version>
 	</dependency>
+
+    <dependency>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
+      <version>0.9.12</version>
+    </dependency>
 	
     <dependency>
         <groupId>org.junit.jupiter</groupId>
@@ -53,12 +59,13 @@
       <artifactId>sqlite-jdbc</artifactId>
       <version>3.36.0.2</version>
     </dependency>
-      <dependency>
-          <groupId>org.jetbrains</groupId>
-          <artifactId>annotations</artifactId>
-          <version>RELEASE</version>
-          <scope>compile</scope>
-      </dependency>
+
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>RELEASE</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <!-- Java version setup -->
@@ -86,7 +93,7 @@
           <transformers>
             <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
               <manifestEntries>
-                <Main-Class>sseng202.group2.controller.ApplicationEnvironment</Main-Class>
+                <Main-Class>seng202.group2.controller.ApplicationEnvironment</Main-Class>
                 <X-Compile-Source-JDK>14</X-Compile-Source-JDK>
                 <X-Compile-Target-JDK>14</X-Compile-Target-JDK>
               </manifestEntries>

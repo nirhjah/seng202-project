@@ -10,9 +10,15 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class SecondaryDescription extends DataCategory implements Importable {
-	
+
+	private static final SecondaryDescription instance = new SecondaryDescription();
+
 	/** The secondary description of the crime type this code corresponds to */
 	private String secondaryDescription = null;
+
+	public static SecondaryDescription getInstance() {
+		return instance;
+	}
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) throws UnsupportedCategoryException {
@@ -64,4 +70,8 @@ public class SecondaryDescription extends DataCategory implements Importable {
 		return this.secondaryDescription;
 	}
 
+	@Override
+	public String toString() {
+		return "Secondary Description";
+	}
 }
