@@ -12,7 +12,7 @@ import java.util.LinkedList;
  */
 public class ActiveData extends DataSource{
     //List of filters
-    private ArrayList<Filter> filters = new ArrayList<>();
+    private LinkedList<Filter> filters = new LinkedList<>();
 
     /**
      * Add a filter to the filter list
@@ -21,7 +21,7 @@ public class ActiveData extends DataSource{
      * @param update Update the observers
      */
     public void addFilter(Filter filter, boolean update) {
-        filters.add(filter);
+        filters.addLast(filter);
 
         if (update) {
             updateObservers();
@@ -34,7 +34,7 @@ public class ActiveData extends DataSource{
      * @param filter Filter object to add
      */
     public void addFilter(Filter filter) {
-        filters.add(filter);
+        filters.addLast(filter);
 
         updateObservers();
     }
@@ -72,7 +72,7 @@ public class ActiveData extends DataSource{
      * @param update Update the observers
      */
     public void clearFilters(boolean update) {
-        filters = new ArrayList<>();
+        filters = new LinkedList<>();
         if (update)
             updateObservers();
     }
@@ -203,7 +203,7 @@ public class ActiveData extends DataSource{
         return DBMS.getActiveRecords(start, limit, generateOrderString());
     }
 
-    public ArrayList<Filter> getFilters() {
+    public LinkedList<Filter> getFilters() {
         return filters;
     }
 }

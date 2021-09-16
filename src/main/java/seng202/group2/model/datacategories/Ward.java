@@ -9,15 +9,9 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class Ward extends DataCategory implements Importable {
-
-	private static final Ward instance = new Ward();
-
+	
 	/** Election precinct where the crime incident occurred. */
 	private Short ward = null;
-
-	public static Ward getInstance() {
-		return instance;
-	}
 
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
@@ -74,8 +68,4 @@ public class Ward extends DataCategory implements Importable {
 		return this.ward;
 	}
 
-	@Override
-	public String toString() {
-		return "Ward";
-	}
 }
