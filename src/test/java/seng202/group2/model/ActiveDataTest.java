@@ -3,6 +3,7 @@ package seng202.group2.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seng202.group2.model.datacategories.Beat;
+import seng202.group2.model.datacategories.ID;
 import seng202.group2.model.datacategories.Ward;
 
 import java.text.ParseException;
@@ -130,6 +131,9 @@ public class ActiveDataTest {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        Filter filter = FilterType.GT.createFilter(new ID(), "0");
+        activeData.addFilter(filter, false);
+
         activeData.updateActiveRecords();
         assertEquals(DBMS.getRecordsSize(), DBMS.getActiveRecordsSize());
 
