@@ -1,5 +1,6 @@
 package seng202.group2.view;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import seng202.group2.controller.CSVImporter;
+import seng202.group2.controller.DataImporter;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
@@ -240,6 +243,17 @@ public class MainController extends DataObserver implements Initializable {
 		latitudeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("latitude"));
 		longitudeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("longitude"));
 		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+		//Import test files
+		File file = new File("testfiles/10k.csv");
+
+		try {
+			DataImporter importer = new CSVImporter(file);
+			DBMS.addRecords(importer.importAllRecords());
+			importer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
