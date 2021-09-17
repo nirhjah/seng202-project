@@ -47,7 +47,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.web.WebView?>
 
 <VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
   <children>
@@ -109,7 +108,6 @@
             <AnchorPane id="Content" fx:id="mapPane" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="430.0">
               <children>
                 <Label alignment="CENTER" font="$x1" layoutX="14.0" layoutY="14.0" style="&#10;" text="Map View" textAlignment="CENTER" textFill="$x2" wrapText="false" />
-                        <WebView fx:id="webView" layoutX="115.0" layoutY="173.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.rightAnchor="115.0" />
               </children>
             </AnchorPane>
           </content>
