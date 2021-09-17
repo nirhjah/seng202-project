@@ -130,7 +130,11 @@ public class DBMS {
         } catch (SQLException e) {
             System.out.println("Could not run custom query. Query shown below. DBMS:customQuery:131");
             System.out.println(query);
-            e.printStackTrace();
+            // There should be a better way to do this line. Or in fact it should be dealt with before here.
+            // This line removes the last filter applied, so that if an added filter is invalid then it is removed from
+            // the filters list
+            // TODO make this integrated elsewhere.
+            activeData.removeFilter(activeData.getFilters().get(activeData.getFilters().size() - 1));
             throw (new IllegalArgumentException("Invalid sql query"));
         }
     }
