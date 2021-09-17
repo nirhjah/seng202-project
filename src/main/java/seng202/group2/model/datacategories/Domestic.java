@@ -83,4 +83,9 @@ public class Domestic extends DataCategory implements Importable {
 	public String toString() {
 		return "Domestic";
 	}
+
+	@Override
+	public boolean isString() {
+		return false;
+	}
 }

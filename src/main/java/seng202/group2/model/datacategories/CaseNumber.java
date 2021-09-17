@@ -73,4 +73,9 @@ public class CaseNumber extends DataCategory implements Importable {
 	public String toString() {
 		return "Case Number";
 	}
+
+	@Override
+	public boolean isString() {
+		return true;
+	}
 }

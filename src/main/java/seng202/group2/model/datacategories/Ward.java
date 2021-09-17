@@ -78,4 +78,9 @@ public class Ward extends DataCategory implements Importable {
 	public String toString() {
 		return "Ward";
 	}
+
+	@Override
+	public boolean isString() {
+		return false;
+	}
 }

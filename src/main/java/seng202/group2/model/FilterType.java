@@ -6,6 +6,9 @@ public enum FilterType {
     /** Category match */
     EQ {
         public Filter createFilter(DataCategory category, String pattern) {
+            if (category.isString()) {
+                pattern = "'" + pattern + "'";
+            }
             return new Filter(category.getSQL() + " = " + pattern + "", FilterType.EQ);
         }
         public String toString() {
@@ -14,6 +17,9 @@ public enum FilterType {
     },
     GT {
         public Filter createFilter(DataCategory category, String pattern) {
+            if (category.isString()) {
+                pattern = "'" + pattern + "'";
+            }
             return new Filter(category.getSQL() + " > " + pattern + "", FilterType.GT);
         }
         public String toString() {
@@ -22,6 +28,9 @@ public enum FilterType {
     },
     LT {
         public Filter createFilter(DataCategory category, String pattern) {
+            if (category.isString()) {
+                pattern = "'" + pattern + "'";
+            }
             return new Filter(category.getSQL() + " < " + pattern + "", FilterType.LT);
         }
         public String toString() {

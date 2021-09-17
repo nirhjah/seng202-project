@@ -77,4 +77,9 @@ public class Block extends DataCategory implements Importable {
 	public String toString() {
 		return "Block";
 	}
+
+	@Override
+	public boolean isString() {
+		return true;
+	}
 }

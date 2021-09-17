@@ -102,4 +102,9 @@ public class Date extends DataCategory implements Importable {
 	public String toString() {
 		return "Date";
 	}
+
+	@Override
+	public boolean isString() {
+		return true;
+	}
 }

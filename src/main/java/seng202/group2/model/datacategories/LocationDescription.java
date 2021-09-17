@@ -73,4 +73,9 @@ public class LocationDescription extends DataCategory implements Importable {
 	public String toString() {
 		return "Location Description";
 	}
+
+	@Override
+	public boolean isString() {
+		return true;
+	}
 }

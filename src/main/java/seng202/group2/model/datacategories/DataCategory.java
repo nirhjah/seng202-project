@@ -74,6 +74,13 @@ public abstract class DataCategory {
 	 * @return SQL String
 	 */
 	public abstract String getSQL();
+
+	/**
+	 * Returns true if the value of the object is a string
+	 *
+	 * @return
+	 */
+	public abstract boolean isString();
 	
 	public static DataCategory getCategoryFromString(String categoryString) throws UnsupportedCategoryException {
 		if (categoryString == null)

@@ -76,4 +76,9 @@ public class IUCRCode extends DataCategory implements Importable {
 	public String toString() {
 		return "IUCR Code";
 	}
+
+	@Override
+	public boolean isString() {
+		return true;
+	}
 }

@@ -73,4 +73,9 @@ public class PrimaryDescription extends DataCategory implements Importable {
 	public String toString() {
 		return "Primary Description";
 	}
+
+	@Override
+	public boolean isString() {
+		return true;
+	}
 }

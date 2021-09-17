@@ -73,4 +73,9 @@ public class ID extends DataCategory implements Importable {
     public String toString() {
         return "ID";
     }
+
+    @Override
+    public boolean isString() {
+        return false;
+    }
 }

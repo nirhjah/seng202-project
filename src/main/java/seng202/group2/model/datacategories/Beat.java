@@ -82,4 +82,9 @@ public class Beat extends DataCategory implements Importable {
 	public String toString() {
 		return "Beat";
 	}
+
+	@Override
+	public boolean isString() {
+		return false;
+	}
 }
