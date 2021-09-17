@@ -81,7 +81,7 @@ public class FBICode extends DataCategory implements Importable {
 	}
 
 	@Override
-	public boolean isString() {
-		return true;
+	public Class<? extends Object> getValueType() {
+		return String.class;
 	}
 }
