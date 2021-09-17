@@ -177,7 +177,6 @@ public class ActiveData extends DataSource {
      */
     public void selectRecord(Integer id) {
         selectedRecords.add(id);
-        updateSelectionObservers();
     }
 
     /**
@@ -186,7 +185,6 @@ public class ActiveData extends DataSource {
      */
     public void deselectRecord(Integer id) {
         selectedRecords.remove(id);
-        updateSelectionObservers();
     }
 
     /**
@@ -194,7 +192,6 @@ public class ActiveData extends DataSource {
      */
     public void clearSelection() {
         selectedRecords = new HashSet<>();
-        updateSelectionObservers();
     }
 
     /**

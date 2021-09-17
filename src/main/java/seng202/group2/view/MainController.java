@@ -196,6 +196,20 @@ public class MainController extends DataObserver implements Initializable {
 		DBMS.getActiveData().addFilter(FilterType.EQ.createFilter("id", "10"));
 	}
 
+	public void updateSelection() {
+		ActiveData activeData = DBMS.getActiveData();
+
+		for (CrimeRecord item : tableView.getItems()) {
+			activeData.deselectRecord(item.getID());
+		}
+
+		for (CrimeRecord selectedItem : tableView.getSelectionModel().getSelectedItems()) {
+			activeData.selectRecord(selectedItem.getID());
+		}
+
+		activeData.updateSelectionObservers();
+	}
+
 	/**
 	 * Initialize the window.
 	 */
@@ -210,27 +224,29 @@ public class MainController extends DataObserver implements Initializable {
 
 		idColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Integer>("ID"));
 		// Format a row in the table based on the value in its ID cell
-		idColumn.setCellFactory(column -> {
-			TableCell<CrimeRecord, Integer> cell = new TableCell<>() {
-				@Override
-				public void updateItem(Integer id, boolean empty) {
-					super.updateItem(id, empty);
+//		idColumn.setCellFactory(column -> {
+//			TableCell<CrimeRecord, Integer> cell = new TableCell<>() {
+//				@Override
+//				public void updateItem(Integer id, boolean empty) {
+//					super.updateItem(id, empty);
+//
+//					// If the id is not null set the cell text to the id
+//					setText(id == null ? "" : id.toString());
+//
+//					// Add a listener to the table row which (de)selects the record when clicked
+//					getTableRow().setOnMouseClicked(new EventHandler<MouseEvent>() {
+//						@Override
+//						public void handle(MouseEvent event) {
+//							if (id != null)
+//								DBMS.getActiveData().toggleSelectRecord(id);
+//						}
+//					});
+//				}
+//			};
+//			return cell;
+//		});
 
-					// If the id is not null set the cell text to the id
-					setText(id == null ? "" : id.toString());
-
-					// Add a listener to the table row which (de)selects the record when clicked
-					getTableRow().setOnMouseClicked(new EventHandler<MouseEvent>() {
-						@Override
-						public void handle(MouseEvent event) {
-							if (id != null)
-								DBMS.getActiveData().toggleSelectRecord(id);
-						}
-					});
-				}
-			};
-			return cell;
-		});
+		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 		caseNumColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("caseNum"));
 		dateColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("dateString"));
