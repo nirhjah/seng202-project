@@ -3,6 +3,7 @@ package seng202.group2.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Active data class manages the filters, allowing the views to display a subset of the database

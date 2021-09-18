@@ -409,7 +409,7 @@ public class DBMS {
 
             //Update observers
             if (update) {
-                activeData.updateActiveRecords();
+                activeData.updateActiveData();
             }
         } catch (SQLException e) {
             System.out.println("Could not insert record into Records table. DBMS:addRecord:436");
@@ -430,7 +430,7 @@ public class DBMS {
         System.out.println();
 
         activeData.updateActiveRecords();
-        activeData.updateObservers();
+        activeData.updateActiveData();
     }
 
     /**
