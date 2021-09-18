@@ -4,12 +4,14 @@ import seng202.group2.model.CrimeRecord;
 
 /**
  * True if the crime incident was classified as domestic.
- * 
+ *
  * @author Connor Dunlop
  *
  */
 public class Domestic extends DataCategory implements Importable {
-	
+
+	private static final Domestic instance = new Domestic();
+
 	/**
 	 * 1 if the crime incident was classified as domestic
 	 * 0 if the crime incident was not classified as domestic
@@ -17,11 +19,15 @@ public class Domestic extends DataCategory implements Importable {
 	 */
 	private Boolean domestic = null;
 
+	public static Domestic getInstance() {
+		return instance;
+	}
+
 	@Override
 	public void setRecordValue(CrimeRecord record, Object data) {
 		if (record == null)
 			throw new IllegalArgumentException("Cannot set attribute value of null record.");
-		
+
 		if (data == null)
 			record.setDomestic(null);
 		else if (data instanceof Boolean)
@@ -34,7 +40,7 @@ public class Domestic extends DataCategory implements Importable {
 	public Boolean getRecordValue(CrimeRecord record) {
 		if (record == null)
 			throw new IllegalArgumentException("Cannot get attribute value of null record.");
-		
+
 		return record.getDomestic();
 	}
 
@@ -42,7 +48,7 @@ public class Domestic extends DataCategory implements Importable {
 	public Boolean parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
-		
+
 		if (value == "")
 			return null;
 		else if (value.equals("Y") || value.equals("TRUE"))
@@ -73,4 +79,13 @@ public class Domestic extends DataCategory implements Importable {
 		return this.domestic;
 	}
 
+	@Override
+	public String toString() {
+		return "Domestic";
+	}
+
+	@Override
+	public boolean isString() {
+		return false;
+	}
 }

@@ -37,20 +37,18 @@ public class ImportController {
 	 * importFileFromField takes the giving filepath and passes it the importer.
 	 *
 	 * This method is called when the 'import' button is clicked. It takes the filepath from
-	 * {@link ImportController#importPathTextField} and passes it to TODO add importer info
-	 * to import the crime data into the database.
+	 * {@link ImportController#importPathTextField} and imports it with {@link DataImporter}
+	 * into the database.
 	 *
-	 * TODO use this with connors import method.
 	 */
 	public void importFileFromField()
 	{
 		Stage stage = (Stage) importPathTextField.getScene().getWindow();
-
 		File file = new File(importPathTextField.getText());
+
 		try {
 			DataImporter importer = new CSVImporter(file);
 			DBMS.addRecords(importer.importAllRecords());
-
 			importer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
