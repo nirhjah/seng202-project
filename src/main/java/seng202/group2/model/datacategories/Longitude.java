@@ -109,4 +109,9 @@ public class Longitude extends DataCategory implements Importable {
 	public String toString() {
 		return "Longitude";
 	}
+
+	@Override
+	public Class<? extends Object> getValueType() {
+		return Float.class;
+	}
 }

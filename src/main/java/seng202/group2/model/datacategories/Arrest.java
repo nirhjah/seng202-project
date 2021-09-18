@@ -104,4 +104,9 @@ public class Arrest extends DataCategory implements Importable {
 	public String toString() {
 		return "Arrest";
 	}
+
+	@Override
+	public Class<? extends Object> getValueType() {
+		return Boolean.class;
+	}
 }

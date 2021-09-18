@@ -186,4 +186,10 @@ public abstract class DataCategory {
 	 * @return true if the DataCategory is known to be represented by the given identifier string, false otherwise.
 	 */
 	public abstract boolean matchesString(String identifier);
+
+	/**
+	 * Returns the Class object of the type used to store a piece of data within a DataCategory instance.
+	 * @return The Class object of the type used to store a piece of data within a DataCategory instance.
+	 */
+	public abstract Class<? extends Object> getValueType();
 }

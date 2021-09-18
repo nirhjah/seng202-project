@@ -19,9 +19,8 @@ public class CrimeRecord {
 
 	/** The ID of the crime record as stored in the HashMap in CrimeData
 	 * NOTE: This is not final as the CrimeData must assign it an ID
-	 * TODO Discuss if this is what we are wanting.
 	 */
-	private int ID;
+	private ID ID = new ID();
 	
 	/** The case number associated with the crime record in the police database */
 	private CaseNumber caseNum = new CaseNumber();
@@ -113,11 +112,11 @@ public class CrimeRecord {
 	//Getters/Setters:
 
 	public int getID() {
-		return ID;
+		return this.ID.getValue();
 	}
 
 	public void setID(int ID) {
-		this.ID = ID;
+		this.ID.setValue(ID);
 	}
 
 	/**

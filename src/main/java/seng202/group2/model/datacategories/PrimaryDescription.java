@@ -94,4 +94,9 @@ public class PrimaryDescription extends DataCategory implements Importable {
 	public String toString() {
 		return "Primary Description";
 	}
+
+	@Override
+	public Class<? extends Object> getValueType() {
+		return String.class;
+	}
 }

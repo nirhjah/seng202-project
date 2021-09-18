@@ -14,7 +14,7 @@ import java.util.Calendar;
  */
 public class DBMS {
 
-    private static ActiveData activeData = new ActiveData();               //Active data class
+    private static final ActiveData activeData = new ActiveData();               //Active data class
     private static final String DATE_FORMAT = "MM'/'dd'/'yyyy hh':'mm':'ss a";     //Date format
     private static  boolean hasDataBase = false;                           //Database is created
     private static Connection conn;                                        //Database connection
@@ -132,8 +132,12 @@ public class DBMS {
         } catch (SQLException e) {
             System.out.println("Could not run custom query. Query shown below. DBMS:customQuery:131");
             System.out.println(query);
-            e.printStackTrace();
-            return null;
+            // There should be a better way to do this line. Or in fact it should be dealt with before here.
+            // This line removes the last filter applied, so that if an added filter is invalid then it is removed from
+            // the filters list
+            // TODO make this integrated elsewhere.
+            activeData.removeFilter(activeData.getFilters().get(activeData.getFilters().size() - 1));
+            throw (new IllegalArgumentException("Invalid sql query"));
         }
     }
 
@@ -168,55 +172,27 @@ public class DBMS {
 
                 //Else insert it into the CrimeData object
                 switch (name) {
-                    case "id":
-                        crimeRecord.setID(record.getInt("id"));
-                        break;
-                    case "caseNum":
-                        crimeRecord.setCaseNum(record.getString("caseNum"));
-                        break;
-                    case "date":
+                    case "id" -> crimeRecord.setID(record.getInt("id"));
+                    case "caseNum" -> crimeRecord.setCaseNum(record.getString("caseNum"));
+                    case "date" -> {
                         //Convert String from db to Calendar
                         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
                         Calendar cal = Calendar.getInstance();
                         cal.setTime(sdf.parse(record.getString("date")));
                         crimeRecord.setDate(cal);
-                        break;
-                    case "block":
-                        crimeRecord.setBlock(record.getString("block"));
-                        break;
-                    case "IUCR":
-                        crimeRecord.setIucr(record.getString("IUCR"));
-                        break;
-                    case "primaryDescription":
-                        crimeRecord.setPrimaryDescription(record.getString("primaryDescription"));
-                        break;
-                    case "secondaryDescription":
-                        crimeRecord.setSecondaryDescription(record.getString("secondaryDescription"));
-                        break;
-                    case "locationDescription":
-                        crimeRecord.setLocationDescription(record.getString("locationDescription"));
-                        break;
-                    case "arrest":
-                        crimeRecord.setArrest(record.getBoolean("arrest"));
-                        break;
-                    case "domestic":
-                        crimeRecord.setDomestic(record.getBoolean("domestic"));
-                        break;
-                    case "beat":
-                        crimeRecord.setBeat(record.getShort("beat"));
-                        break;
-                    case "ward":
-                        crimeRecord.setWard(record.getShort("ward"));
-                        break;
-                    case "fbiCode":
-                        crimeRecord.setFbiCode(record.getString("fbiCode"));
-                        break;
-                    case "latitude":
-                        crimeRecord.setLatitude(record.getFloat("latitude"));
-                        break;
-                    case "longitude":
-                        crimeRecord.setLongitude(record.getFloat("longitude"));
-                        break;
+                    }
+                    case "block" -> crimeRecord.setBlock(record.getString("block"));
+                    case "IUCR" -> crimeRecord.setIucr(record.getString("IUCR"));
+                    case "primaryDescription" -> crimeRecord.setPrimaryDescription(record.getString("primaryDescription"));
+                    case "secondaryDescription" -> crimeRecord.setSecondaryDescription(record.getString("secondaryDescription"));
+                    case "locationDescription" -> crimeRecord.setLocationDescription(record.getString("locationDescription"));
+                    case "arrest" -> crimeRecord.setArrest(record.getBoolean("arrest"));
+                    case "domestic" -> crimeRecord.setDomestic(record.getBoolean("domestic"));
+                    case "beat" -> crimeRecord.setBeat(record.getShort("beat"));
+                    case "ward" -> crimeRecord.setWard(record.getShort("ward"));
+                    case "fbiCode" -> crimeRecord.setFbiCode(record.getString("fbiCode"));
+                    case "latitude" -> crimeRecord.setLatitude(record.getFloat("latitude"));
+                    case "longitude" -> crimeRecord.setLongitude(record.getFloat("longitude"));
                 }
             }
         } catch (SQLException | ParseException e) {
@@ -308,7 +284,7 @@ public class DBMS {
      *
      * @return ArrayList of CrimeRecords.
      */
-    public static ArrayList<CrimeRecord> getActiveRecords(int min, int limit) {
+    public static ArrayList<CrimeRecord> getActiveRecords(int min, int limit, String order) {
         ArrayList<CrimeRecord> records = new ArrayList<>();
         ResultSet results;
 
@@ -319,7 +295,13 @@ public class DBMS {
         try {
             //Select records from Records
             Statement state = conn.createStatement();
-            results = state.executeQuery("SELECT * FROM ActiveRecords LIMIT " + limit + " OFFSET " + min);
+
+            if (activeData.getFilters().size() > 0) {
+                results = state.executeQuery("SELECT * FROM ActiveRecords " + order + " LIMIT " + limit + " OFFSET " + min);
+            } else {
+                results = state.executeQuery("SELECT * FROM Records " + order + " LIMIT " + limit + " OFFSET " + min);
+            }
+
 
             //Generate and add the records to the records ArrayList
             while (results.next()) {
@@ -468,7 +450,7 @@ public class DBMS {
                 Statement getActive = conn.createStatement();
                 getActive.execute("INSERT INTO ActiveRecords SELECT * FROM Records " + conditions);
             } catch (SQLException e) {
-                System.out.println("Could not copy block to ActiveRecords. DBMS:updateActiveDatabase:478");
+                System.out.println("Could not copy block to ActiveRecords. DBMS:updateActiveDatabase:508\n");
             }
 
             //Update block count
@@ -477,6 +459,8 @@ public class DBMS {
 
             System.out.print("\rAdded " + start + " records to activeRecords database.");
         }
+        System.out.println("");
+
     }
 
     /**
@@ -555,6 +539,9 @@ public class DBMS {
         }
 
         try {
+            if ((activeData.getFilters().size() <= 0))
+                return getRecordsSize();
+
             Statement state = conn.createStatement();
             ResultSet res = state.executeQuery("SELECT COUNT(DISTINCT id) as total FROM ActiveRecords;");
 

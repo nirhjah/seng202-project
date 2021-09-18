@@ -99,4 +99,9 @@ public class Ward extends DataCategory implements Importable {
 	public String toString() {
 		return "Ward";
 	}
+
+	@Override
+	public Class<? extends Object> getValueType() {
+		return Short.class;
+	}
 }

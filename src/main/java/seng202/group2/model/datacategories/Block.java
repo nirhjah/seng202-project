@@ -99,4 +99,9 @@ public class Block extends DataCategory implements Importable {
 	public String toString() {
 		return "Block";
 	}
+
+	@Override
+	public Class<? extends Object> getValueType() {
+		return String.class;
+	}
 }

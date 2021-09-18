@@ -101,4 +101,9 @@ public class FBICode extends DataCategory implements Importable {
 	public String toString() {
 		return "FBI Code";
 	}
+
+	@Override
+	public Class<? extends Object> getValueType() {
+		return String.class;
+	}
 }

@@ -95,4 +95,9 @@ public class SecondaryDescription extends DataCategory implements Importable {
 	public String toString() {
 		return "Secondary Description";
 	}
+
+	@Override
+	public Class<? extends Object> getValueType() {
+		return String.class;
+	}
 }

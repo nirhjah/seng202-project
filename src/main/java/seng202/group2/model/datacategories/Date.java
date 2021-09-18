@@ -124,4 +124,9 @@ public class Date extends DataCategory implements Importable {
 	public String toString() {
 		return "Date";
 	}
+
+	@Override
+	public Class<? extends Object> getValueType() {
+		return Calendar.class;
+	}
 }
