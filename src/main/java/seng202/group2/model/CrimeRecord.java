@@ -119,6 +119,10 @@ public class CrimeRecord {
 		this.ID.setValue(ID);
 	}
 
+	public ID getIDCategory() {
+		return this.ID;
+	}
+
 	/**
 	 * Sets the caseNum
 	 * @param caseNum The case number associated with the crime record in the police database
