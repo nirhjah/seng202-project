@@ -27,10 +27,9 @@ public abstract class DataCategory {
 
 	/**
 	 * A set of instances of all DataCategory subtypes found using reflection.
-	 * This set is populated when this class is first accessed during runtime,
-	 * using the static method declared below, lookupCategories.
+	 * This set is populated when the method getCategories is first called.
 	 */
-	private static final Set<DataCategory> dataCategories = lookupCategories();
+	private static Set<DataCategory> dataCategories = null;
 
 	/**
 	 * Gets the set of static DataCategory instances of DataCategory subtypes.
@@ -38,6 +37,8 @@ public abstract class DataCategory {
 	 * @return A set of the instances stored by each DataCategory subtype found using reflection.
 	 */
 	public static final Set<DataCategory> getCategories() {
+		if (dataCategories == null)
+			lookupCategories();
 		return dataCategories;
 	}
 
@@ -54,10 +55,12 @@ public abstract class DataCategory {
 		Reflections reflections = new Reflections("seng202.group2.model.datacategories");
 		Set<Class<? extends DataCategory>> dataCategoryClasses = reflections.getSubTypesOf(DataCategory.class);
 
-		Set<DataCategory> dataCategories = new HashSet<>();
+		dataCategories = new HashSet<>();
 		for (Class<? extends DataCategory> dataCategoryClass : dataCategoryClasses) {
 			try {
 				DataCategory categoryInstance = (DataCategory) dataCategoryClass.getMethod("getInstance").invoke(null);
+				if (categoryInstance == null)
+					throw new NullPointerException("Static instance of DataCategory " + dataCategoryClass + " was not initialised.");
 				dataCategories.add(categoryInstance);
 			} catch (IllegalAccessException e) {
 				System.out.println("Could not get instance of DataCategory " + dataCategoryClass);
