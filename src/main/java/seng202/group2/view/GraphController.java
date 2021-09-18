@@ -1,6 +1,8 @@
 package seng202.group2.view;
 
 
+import java.util.ArrayList;
+
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,8 +12,12 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
+import seng202.group2.controller.DataObserver;
+import seng202.group2.model.CrimeRecord;
+import seng202.group2.model.DBMS;
 import seng202.group2.model.datacategories.DataCategory;
 import seng202.group2.model.datacategories.UnsupportedCategoryException;
 
@@ -22,7 +28,10 @@ import seng202.group2.model.datacategories.UnsupportedCategoryException;
  *
  */
 
-public class GraphController {
+public class GraphController{
+	
+	ArrayList<CrimeRecord> activeRecords = DBMS.getActiveData().getActiveRecords();
+
 	
 	private GraphType type;
 	private DataCategory xAxisCategory;
@@ -31,10 +40,11 @@ public class GraphController {
 	@FXML private BorderPane borderPane;
 	@FXML private ComboBox<String> xCategory;
 	@FXML private ComboBox<String> yCategory;
+    XYChart.Series series1 = new XYChart.Series();
+
 	
 	/**
 	 * Creates the graph based on the graph type, categories and records
-	 * TODO need to add records
 	 * @param type the type of the graph to be used
 	 */
 	public void createGraph(GraphType type) { 
@@ -46,25 +56,50 @@ public class GraphController {
 	        barChart.setTitle("Bar Graph");
 	        xAxis.setLabel(getXCategory().getSQL());       
 	        yAxis.setLabel(getYCategory().getSQL());
+	        
+	        plotRecords();
+
+	        series1.setName("Data"); 
+		
+	        barChart.getData().addAll(series1);
+
+	        
+	        
 	        borderPane.setCenter(barChart);
 			break;
 				
 		case SCATTER:
 			NumberAxis xAxis2 = new NumberAxis();
-	        NumberAxis yAxis2 = new NumberAxis();        
+	        NumberAxis yAxis2 = new NumberAxis();  
+
 	        ScatterChart<Number,Number> scatterGraph = new ScatterChart<Number,Number>(xAxis2,yAxis2);
 	        xAxis2.setLabel(getXCategory().getSQL());                
 	        yAxis2.setLabel(getYCategory().getSQL());
-	        scatterGraph.setTitle(getYCategory().getSQL() + " vs " + getXCategory().getSQL());
+	        scatterGraph.setTitle(getYCategory().getSQL() + " vs " + getXCategory().getSQL()); //toString
+	        plotRecords();
+
+	        series1.setName("Data"); 
+	        
+
+	        scatterGraph.getData().addAll(series1);
+
+
+
 	        borderPane.setCenter(scatterGraph);
 			break;
 			
 		case LINE:
 			NumberAxis xAxis3 = new NumberAxis();
 		    NumberAxis yAxis3 = new NumberAxis();
+
 		    xAxis3.setLabel(getXCategory().getSQL());
 		    LineChart<Number,Number> lineChart = new LineChart<Number,Number>(xAxis3,yAxis3);
 		    lineChart.setTitle("Line Chart");
+		    
+	        series1.setName("Data"); 
+	        lineChart.getData().addAll(series1);
+
+
 		    borderPane.setCenter(lineChart);
 			break;
 		}
@@ -118,10 +153,18 @@ public class GraphController {
 		this.yAxisCategory = yAxisCategory;
 	}
 	
+	/**
+	 * Get the y category 
+	 * @return y category
+	 */
 	public DataCategory getXCategory() {
 		return xAxisCategory;
 	}
 	
+	/**
+	 * Get the x category
+	 * @return x category
+	 */
 	public DataCategory getYCategory() {
 		return yAxisCategory;
 	}
@@ -170,35 +213,51 @@ public class GraphController {
 			
 		
 		ObservableList<String> categories = 
-			    FXCollections.observableArrayList(
-			        "CASE#",
+			    FXCollections.observableArrayList(      
 			        "DATEOFOCCURRENCE",
-			        "BLOCK",
-			        "IUCR",
 			        "PRIMARYDESCRIPTION",
-			        "SECONDARYDESCRIPTION",
-			        "LOCATIONDESCRIPTION",
-			        "ARREST",
-			        "DOMESTIC",
 			        "BEAT",
-			        "WARD",
-			        "FBICD",
-			        "LATITUDE",
-			        "LONGITUDE"
+			        "WARD"
+			        
 			    );
 		
 		xCategory.getItems().setAll(categories);
 		yCategory.getItems().setAll(categories);
 		selectGraph.getItems().setAll(GraphType.values());
-		//selectGraph.getSelectionModel().select(0);
 		selectXCategoryListener();
 		selectYCategoryListener();
-		
-		//createGraph(type);
 		
 		selectGraphListener();
 		setGraphType(type);
 
 	}
 	
-}
+	
+	/**
+	 * Loops through active records to grab each record's record value from the xcategory and ycategory and adds those to series1 
+	 */
+	public void plotRecords() {
+		 
+		ArrayList<CrimeRecord> activeRecords = DBMS.getActiveData().getActiveRecords();
+		
+		
+		series1.getData().clear();
+		System.out.println("cleared"); //testing
+
+		
+		for (CrimeRecord record: activeRecords) {
+			
+				try {
+					series1.getData().add(new XYChart.Data(getXCategory().getRecordValue(record), getYCategory().getRecordValue(record)));
+				} catch (UnsupportedCategoryException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+
+		
+
+		
+	}
+	
+}}

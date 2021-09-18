@@ -154,18 +154,18 @@ public class MainController extends DataObserver implements Initializable {
 	/**
 	 * This showGraphWindow method opens the graph window and brings it to the front.
 	 *
-	 * TODO This method is not yet implemented. Temporarily it is calling {@link MainController#showNotImplementedYet()}
+	 * The graph window uses the 'graph.fxml' FXML file and the GraphController Class
+	 * @see GraphController
 	 */
 	public void showGraphWindow() {
-		//showNotImplementedYet();
 		try {
 			Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("graph.fxml"));
 			Stage stage = new Stage();
-			// This will cause the login window to always be in front of the main window
+			// This will cause the graph window to always be in front of the main window
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.setResizable(false);
 			stage.setTitle("Graph Window");
-			stage.setScene(new Scene(root, 800, 600));
+			stage.setScene(new Scene(root, 1280, 720));
 	
 			stage.show();
 		} catch (IOException e) {
