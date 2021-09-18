@@ -1,6 +1,7 @@
 package seng202.group2.model;
 
 import seng202.group2.model.datacategories.DataCategory;
+import seng202.group2.model.datacategories.ID;
 
 import java.sql.*;
 import java.text.ParseException;
@@ -369,21 +370,19 @@ public class DBMS {
                 state.setValue(category.getSQL(), null);
             }
         }
+        state.setValue(ID.getInstance().getSQL(), Integer.toString(idCounter++));
 
         try {
             //Insert into the database
             Statement insert = conn.createStatement();
             insert.execute(state.getStatement());
 
-            //Increment ID
-            idCounter++;
-
             //Update observers
             if (update) {
                 activeData.updateActiveRecords();
             }
         } catch (SQLException e) {
-            System.out.println("Could not insert record into Records table. DBMS:addRecord:411");
+            System.out.println("Could not insert record into Records table: " + e.toString());
         }
     }
 
