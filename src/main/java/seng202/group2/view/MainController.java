@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,10 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -196,17 +193,24 @@ public class MainController extends DataObserver implements Initializable {
 		DBMS.getActiveData().addFilter(FilterType.EQ.createFilter("id", "10"));
 	}
 
+	/**
+	 * Called when a click event occurs on the tableView.
+	 * Updates the set of selected records in ActiveData using the selection out of currently tabulated records.
+	 */
 	public void updateSelection() {
 		ActiveData activeData = DBMS.getActiveData();
 
+		// Deselect all currently tabulated records
 		for (CrimeRecord item : tableView.getItems()) {
 			activeData.deselectRecord(item.getID());
 		}
 
+		// Select all records currently selected in the table.
 		for (CrimeRecord selectedItem : tableView.getSelectionModel().getSelectedItems()) {
 			activeData.selectRecord(selectedItem.getID());
 		}
 
+		// Tell all observers of ActiveData that the selection has been updated.
 		activeData.updateSelectionObservers();
 	}
 
@@ -223,31 +227,6 @@ public class MainController extends DataObserver implements Initializable {
 		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 		idColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Integer>("ID"));
-		// Format a row in the table based on the value in its ID cell
-//		idColumn.setCellFactory(column -> {
-//			TableCell<CrimeRecord, Integer> cell = new TableCell<>() {
-//				@Override
-//				public void updateItem(Integer id, boolean empty) {
-//					super.updateItem(id, empty);
-//
-//					// If the id is not null set the cell text to the id
-//					setText(id == null ? "" : id.toString());
-//
-//					// Add a listener to the table row which (de)selects the record when clicked
-//					getTableRow().setOnMouseClicked(new EventHandler<MouseEvent>() {
-//						@Override
-//						public void handle(MouseEvent event) {
-//							if (id != null)
-//								DBMS.getActiveData().toggleSelectRecord(id);
-//						}
-//					});
-//				}
-//			};
-//			return cell;
-//		});
-
-		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
 		caseNumColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("caseNum"));
 		dateColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("dateString"));
 		blockColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("block"));
