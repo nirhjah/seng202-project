@@ -30,7 +30,11 @@ public class MapController implements Initializable {
    // webView.getEngine().load("http://google.com");
 
     public void initialize(URL location, ResourceBundle resources) {
-        webView.getEngine().load("http://google.com");
+        //webView.getEngine().load("http://google.com");
+
+        webView.getEngine().load(CamsApplication.class.getClassLoader().getResource("map.html").toExternalForm());
+
+                //ModuleLayer.Controller.class.getResource("map.html").toExternalForm());
 
     }
 
