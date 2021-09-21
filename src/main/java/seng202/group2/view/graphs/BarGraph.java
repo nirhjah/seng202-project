@@ -70,12 +70,4 @@ public class BarGraph extends Graph {
         barChart.getData().addAll(dataSeries);
     }
 
-
-
-
-/*
-    //  plotRecords();
-	        dataseries.setName("Data");
-	        barChart.getData().addAll(dataseries);
-	        */
 }
