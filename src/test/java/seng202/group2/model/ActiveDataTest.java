@@ -2,6 +2,10 @@ package seng202.group2.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import seng202.group2.model.datacategories.Beat;
+import seng202.group2.model.datacategories.ID;
+import seng202.group2.model.datacategories.Ward;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,7 +21,6 @@ public class ActiveDataTest {
      * Add a given number of crime records to the database, each crime records data is labeled by its ID, starting at 1
      *
      * @param max Number of records to add
-     * @throws ParseException
      */
     void addRecords(int max) throws ParseException {
         for (int i=1; i <= max; i++) {
@@ -46,7 +49,7 @@ public class ActiveDataTest {
             DBMS.addRecord(record, false);
         }
 
-        //DBMS.getActiveData().updateActiveRecords();
+        DBMS.getActiveData().updateActiveRecords();
     }
 
     @BeforeEach
@@ -57,10 +60,10 @@ public class ActiveDataTest {
     @Test
     void clearFilterTest() {
         //Create filters
-        Filter filter = FilterType.GT.createFilter("id", "1");
-        Filter filter2 = FilterType.EQ.createFilter("id", "5");
-        Filter filter3 = FilterType.LT.createFilter("id", "10");
-        Filter filter4 = FilterType.SORT.createFilter("id", "ASC");
+        Filter filter = FilterType.GT.createFilter( new Ward(), "1");
+        Filter filter2 = FilterType.EQ.createFilter(new Ward(), "5");
+        Filter filter3 = FilterType.LT.createFilter(new Beat(), "10");
+        Filter filter4 = FilterType.SORT.createFilter(new Beat(), "ASC");
 
         //Add filters
         activeData.addFilter(filter, false);
@@ -78,10 +81,10 @@ public class ActiveDataTest {
     @Test
     void addFilterTest() {
         //Create filters
-        Filter filter = FilterType.GT.createFilter("id", "1");
-        Filter filter2 = FilterType.EQ.createFilter("id", "5");
-        Filter filter3 = FilterType.LT.createFilter("id", "10");
-        Filter filter4 = FilterType.SORT.createFilter("id", "ASC");
+        Filter filter = FilterType.GT.createFilter( new Ward(), "1");
+        Filter filter2 = FilterType.EQ.createFilter(new Ward(), "5");
+        Filter filter3 = FilterType.LT.createFilter(new Beat(), "10");
+        Filter filter4 = FilterType.SORT.createFilter(new Beat(), "ASC");
 
         //Add filters
         activeData.addFilter(filter, false);
@@ -99,10 +102,10 @@ public class ActiveDataTest {
     @Test
     void removeFilterTest() {
         //Create filters
-        Filter filter = FilterType.GT.createFilter("id", "1");
-        Filter filter2 = FilterType.EQ.createFilter("id", "5");
-        Filter filter3 = FilterType.LT.createFilter("id", "10");
-        Filter filter4 = FilterType.SORT.createFilter("id", "ASC");
+        Filter filter = FilterType.GT.createFilter( new Ward(), "1");
+        Filter filter2 = FilterType.EQ.createFilter(new Ward(), "5");
+        Filter filter3 = FilterType.LT.createFilter(new Beat(), "10");
+        Filter filter4 = FilterType.SORT.createFilter(new Beat(), "ASC");
 
         //Add filters
         activeData.addFilter(filter, false);
@@ -110,12 +113,8 @@ public class ActiveDataTest {
         activeData.addFilter(filter3, false);
         activeData.addFilter(filter4, false);
 
-        System.out.println(activeData.getFilters());
-        //remove filters
-        System.out.println(filter);
+        //remove filter
         activeData.removeFilter(filter, false);
-        System.out.println(activeData.getFilters());
-
 
         //Check
         assertEquals(filter2, activeData.getFilters().get(0));
@@ -126,13 +125,35 @@ public class ActiveDataTest {
     @Test
     void getActiveRecordsTest() {
         //Add records
+        DBMS.clearDB();
         try {
             addRecords(10);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        Filter filter = FilterType.GT.createFilter(new ID(), "0");
+        activeData.addFilter(filter, false);
+
         activeData.updateActiveRecords();
         assertEquals(DBMS.getRecordsSize(), DBMS.getActiveRecordsSize());
+
+    }
+
+    @Test
+    void getActiveRecordsWithFilterTest() {
+        //Add records
+        DBMS.clearDB();
+        try {
+            addRecords(10);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        // Add a sort filter which has no effect on database Size but makes the filter length  more than zero.
+        activeData.addFilter(FilterType.SORT.createFilter(new Beat(), "ASC"));
+        activeData.updateActiveRecords();
+        assertEquals(DBMS.getRecordsSize(), DBMS.getActiveRecordsSize());
+
     }
 
     @Test
@@ -152,10 +173,10 @@ public class ActiveDataTest {
     @Test
     void getFiltersTest() {
         //Create filters
-        Filter filter = FilterType.GT.createFilter("id", "1");
-        Filter filter2 = FilterType.EQ.createFilter("id", "5");
-        Filter filter3 = FilterType.LT.createFilter("id", "10");
-        Filter filter4 = FilterType.SORT.createFilter("id", "ASC");
+        Filter filter = FilterType.GT.createFilter( new Ward(), "1");
+        Filter filter2 = FilterType.EQ.createFilter(new Ward(), "5");
+        Filter filter3 = FilterType.LT.createFilter(new Beat(), "10");
+        Filter filter4 = FilterType.SORT.createFilter(new Beat(), "ASC");
 
         //Add filters
         activeData.addFilter(filter, false);

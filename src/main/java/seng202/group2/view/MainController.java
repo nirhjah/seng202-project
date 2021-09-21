@@ -1,10 +1,10 @@
 package seng202.group2.view;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,11 +18,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import seng202.group2.controller.CSVImporter;
+import seng202.group2.controller.DataImporter;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
-import seng202.group2.model.Filter;
-import seng202.group2.model.FilterType;
 
 /**
  * MainController is the GUI controller for the main Cams window.
@@ -74,7 +74,7 @@ public class MainController extends DataObserver implements Initializable {
 		ArrayList<CrimeRecord> activeRecords = new ArrayList<>(DBMS.getActiveData().getActiveRecords(currentMin, windowSizeInt));
 
 		//Change the text
-		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
+		recordsShown.setText(Math.max(currentMin, 0) + "-" + Math.min(currentMax, recordCount) + "/" + recordCount);
 
 
 		//Update table
@@ -184,6 +184,28 @@ public class MainController extends DataObserver implements Initializable {
 	}
 
 	/**
+	 * showFilterWindow method opens the filter window and brings it to the front.
+	 *
+	 * The filter window uses the 'filter.fxml' FXML file and the FilterController Class
+	 * @see FilterController
+	 */
+	public void showFilterWindow() {
+		try {
+			Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("filter.fxml"));
+			Stage stage = new Stage();
+			// This will cause the login window to always be in front of the main window
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setResizable(false);
+			stage.setTitle("Filters");
+			stage.setScene(new Scene(root, 600, 400));
+			stage.show();
+		} catch (IOException e) {
+			// This is where you would enter the error handling code, for now just print the stacktrace
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * This showNotImplementedYet method opens the unimplemented window and brings it to the front.
 	 *
 	 * The unimplemented window tells the user graphically that a feature they have interacted with is not implemented yet.
@@ -206,8 +228,6 @@ public class MainController extends DataObserver implements Initializable {
 			// This is where you would enter the error handling code, for now just print the stacktrace
 			e.printStackTrace();
 		}
-
-		DBMS.getActiveData().addFilter(FilterType.EQ.createFilter("id", "10"));
 	}
 
 	/**
@@ -236,6 +256,17 @@ public class MainController extends DataObserver implements Initializable {
 		latitudeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("latitude"));
 		longitudeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("longitude"));
 		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+		//Import test files
+		File file = new File("testfiles/10k.csv");
+
+		try {
+			DataImporter importer = new CSVImporter(file);
+			DBMS.addRecords(importer.importAllRecords());
+			importer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -246,8 +277,8 @@ public class MainController extends DataObserver implements Initializable {
 		ArrayList<CrimeRecord> activeRecords = DBMS.getActiveData().getActiveRecords(0, windowSizeInt);
 
 		//Change the number of records
-		recordCount = DBMS.getActiveData().getActiveRecords().size();
-		recordsShown.setText(0 + "-" + windowSizeInt + "/" + recordCount);
+		recordCount = DBMS.getActiveRecordsSize();
+		recordsShown.setText(0 + "-" + Math.min(windowSizeInt, recordCount) + "/" + recordCount);
 
 
 		//Update table
