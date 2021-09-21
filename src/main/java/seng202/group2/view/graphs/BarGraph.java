@@ -30,6 +30,7 @@ public class BarGraph extends Graph {
 
     BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
 
+    @Override
     public void initialize(BorderPane borderPane) {
         barChart.setTitle("Bar Graph");
         borderPane.setCenter(barChart);
@@ -57,7 +58,7 @@ public class BarGraph extends Graph {
         for (CrimeRecord record : records) {
             try {
                 dataSeries.getData().add(new XYChart.Data(
-                        xCat.getRecordValue(record),
+                        xCat.getRecordValue(record).toString(),
                         yCat.getRecordValue(record)
                 ));
             } catch (Exception e) {
