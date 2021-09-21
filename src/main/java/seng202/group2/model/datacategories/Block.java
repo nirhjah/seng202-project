@@ -9,7 +9,7 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class Block extends DataCategory implements Importable {
+public class Block extends DataCategory implements Importable, Categorical {
 
 	private static final Block instance = new Block();
 	

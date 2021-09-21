@@ -8,7 +8,7 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class FBICode extends DataCategory implements Importable {
+public class FBICode extends DataCategory implements Importable, Categorical {
 
 	private static final FBICode instance = new FBICode();
 	

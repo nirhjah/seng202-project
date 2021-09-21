@@ -8,7 +8,7 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class Domestic extends DataCategory implements Importable {
+public class Domestic extends DataCategory implements Importable, Categorical {
 
 	private static final Domestic instance = new Domestic();
 

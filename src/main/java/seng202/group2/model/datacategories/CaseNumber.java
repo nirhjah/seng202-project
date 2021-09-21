@@ -8,7 +8,7 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class CaseNumber extends DataCategory implements Importable {
+public class CaseNumber extends DataCategory implements Importable, Categorical {
 
 	private static final CaseNumber instance = new CaseNumber();
 	

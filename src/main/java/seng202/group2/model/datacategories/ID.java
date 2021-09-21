@@ -8,7 +8,7 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class ID extends DataCategory implements Importable {
+public class ID extends DataCategory implements Importable, Numerical, Categorical {
 
     private static final ID instance = new ID();
 

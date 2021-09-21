@@ -9,7 +9,7 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class IUCRCode extends DataCategory implements Importable {
+public class IUCRCode extends DataCategory implements Importable, Categorical {
 
 	private static final IUCRCode instance = new IUCRCode();
 

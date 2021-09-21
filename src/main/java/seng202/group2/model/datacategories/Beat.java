@@ -9,7 +9,7 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class Beat extends DataCategory implements Importable {
+public class Beat extends DataCategory implements Importable, Numerical, Categorical {
 
 	private static final Beat instance = new Beat();
 	

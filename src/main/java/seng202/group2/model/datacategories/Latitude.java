@@ -8,7 +8,7 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class Latitude extends DataCategory implements Importable {
+public class Latitude extends DataCategory implements Importable, Numerical {
 
 	private static final Latitude instance = new Latitude();
 

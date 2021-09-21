@@ -8,7 +8,7 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class PrimaryDescription extends DataCategory implements Importable {
+public class PrimaryDescription extends DataCategory implements Importable, Categorical {
 
 	private static final PrimaryDescription instance = new PrimaryDescription();
 

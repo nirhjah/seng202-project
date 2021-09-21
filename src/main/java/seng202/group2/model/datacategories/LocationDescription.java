@@ -8,7 +8,7 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class LocationDescription extends DataCategory implements Importable {
+public class LocationDescription extends DataCategory implements Importable, Categorical {
 
 	private static final LocationDescription instance = new LocationDescription();
 

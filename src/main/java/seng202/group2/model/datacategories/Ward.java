@@ -8,7 +8,7 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class Ward extends DataCategory implements Importable {
+public class Ward extends DataCategory implements Importable, Numerical, Categorical {
 
 	private static final Ward instance = new Ward();
 
