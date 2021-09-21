@@ -21,13 +21,64 @@
 <body>
 <div id="map"></div>
 
+<script>
+    let map;
+
+    function initMap() {
+        const myLatLng = { lat: -25.363, lng: 131.044 };
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 4,
+            center: myLatLng,
+        });
+    }
+
+    /** An array of types google.maps.Marker, storing all markers to be displayed on the map. */
+    let markers = [];
+
+    /**
+     * Creates a new google.maps.Marker object for the given recordId, sets its position, and displays it on the map.
+     * @param recordId  The id of the CrimeRecord to which the added marker corresponds.
+     * @param latitude  The latitudinal location at which the crime took place.
+     * @param longitude The longitudinal location at which the crime took place.
+     */
+    function addMarker(recordId, latitude, longitude) {
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(latitude, longitude),
+            crimeId: recordId
+        });
+        marker.setMap(map);
+
+        markers.push(marker);
+    }
+
+    /**
+     * Removes a marker corresponding to a specific CrimeRecord from the map.
+     * @param recordId  The id of the CrimeRecord whose marker is to be removed.
+     */
+    function removeMarker(recordId) {
+        for (let i = 0; i < markers.length; i++) {
+            if (markers[i].recordId == recordId) {
+                markers[i].setMap(null);
+                delete markers[i];
+                markers.splice(i, 1);
+            }
+        }
+    }
+
+    /**
+     * Removes all markers from the map.
+     */
+    function clearMarkers() {
+        for (let i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+            delete markers[i];
+        }
+        markers = [];
+    }
+</script>
 
 <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-
-<script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAka2EHrmJfR-AU7CkIJFzplWzG2Z-x_qo&callback=initMap&libraries=&v=weekly"
-        async
-></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAka2EHrmJfR-AU7CkIJFzplWzG2Z-x_qo&callback=initMap&libraries=&v=weekly" async></script>
 
 </body>
 </html>
