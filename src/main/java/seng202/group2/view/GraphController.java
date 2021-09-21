@@ -40,7 +40,7 @@ public class GraphController{
 	@FXML private BorderPane borderPane;
 	@FXML private ComboBox<String> xCategory;
 	@FXML private ComboBox<String> yCategory;
-    XYChart.Series series1 = new XYChart.Series();
+    XYChart.Series dataseries = new XYChart.Series();
 
 	
 	/**
@@ -57,11 +57,11 @@ public class GraphController{
 	        xAxis.setLabel(getXCategory().getSQL());       
 	        yAxis.setLabel(getYCategory().getSQL());
 	        
-	        plotRecords();
+	      //  plotRecords();
 
-	        series1.setName("Data"); 
+	        dataseries.setName("Data"); 
 		
-	        barChart.getData().addAll(series1);
+	        barChart.getData().addAll(dataseries);
 
 	        
 	        
@@ -72,16 +72,17 @@ public class GraphController{
 			NumberAxis xAxis2 = new NumberAxis();
 	        NumberAxis yAxis2 = new NumberAxis();  
 
+	        	        
 	        ScatterChart<Number,Number> scatterGraph = new ScatterChart<Number,Number>(xAxis2,yAxis2);
 	        xAxis2.setLabel(getXCategory().getSQL());                
 	        yAxis2.setLabel(getYCategory().getSQL());
 	        scatterGraph.setTitle(getYCategory().getSQL() + " vs " + getXCategory().getSQL()); //toString
 	        plotRecords();
 
-	        series1.setName("Data"); 
+	        dataseries.setName("Data"); 
 	        
 
-	        scatterGraph.getData().addAll(series1);
+	        scatterGraph.getData().addAll(dataseries);
 
 
 
@@ -96,8 +97,8 @@ public class GraphController{
 		    LineChart<Number,Number> lineChart = new LineChart<Number,Number>(xAxis3,yAxis3);
 		    lineChart.setTitle("Line Chart");
 		    
-	        series1.setName("Data"); 
-	        lineChart.getData().addAll(series1);
+	        dataseries.setName("Data"); 
+	        lineChart.getData().addAll(dataseries);
 
 
 		    borderPane.setCenter(lineChart);
@@ -234,21 +235,21 @@ public class GraphController{
 	
 	
 	/**
-	 * Loops through active records to grab each record's record value from the xcategory and ycategory and adds those to series1 
+	 * Loops through active records to grab each record's record value from the xcategory and ycategory and adds those to dataseries 
 	 */
 	public void plotRecords() {
 		 
 		ArrayList<CrimeRecord> activeRecords = DBMS.getActiveData().getActiveRecords();
 		
 		
-		series1.getData().clear();
+		dataseries.getData().clear();
 		System.out.println("cleared"); //testing
 
 		
 		for (CrimeRecord record: activeRecords) {
 			
 				try {
-					series1.getData().add(new XYChart.Data(getXCategory().getRecordValue(record), getYCategory().getRecordValue(record)));
+					dataseries.getData().add(new XYChart.Data(getXCategory().getRecordValue(record), getYCategory().getRecordValue(record)));
 				} catch (UnsupportedCategoryException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
