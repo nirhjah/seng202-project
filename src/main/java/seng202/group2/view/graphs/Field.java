@@ -1,11 +1,13 @@
 package seng202.group2.view.graphs;
 
+import seng202.group2.model.datacategories.DataCategory;
+
 /**
  * @author Connor Dunlop
  */
 public class Field<DataClassification> {
     public final String name;
-    private DataClassification dataCategory = null;
+    private DataCategory dataCategory = null;
 
     private final Class<DataClassification> classification;
 
@@ -22,11 +24,14 @@ public class Field<DataClassification> {
         return classification;
     }
 
-    public void setDataCategory(DataClassification dataCategory) {
-        this.dataCategory = dataCategory;
+    public void setDataCategory(DataCategory dataCategory) {
+        if (classification.isInstance(dataCategory))
+            this.dataCategory = dataCategory;
+        else
+            throw new IllegalArgumentException(dataCategory.toString() + " is not of the correct classification for field " + name);
     }
 
-    public DataClassification getDataCategory() {
+    public DataCategory getDataCategory() {
         return this.dataCategory;
     }
 }
