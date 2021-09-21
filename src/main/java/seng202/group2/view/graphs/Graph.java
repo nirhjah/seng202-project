@@ -1,10 +1,11 @@
 package seng202.group2.view.graphs;
 
+import javafx.scene.layout.BorderPane;
 import org.reflections.Reflections;
-import seng202.group2.model.datacategories.DataCategory;
 import seng202.group2.model.datacategories.DataClassification;
 
-import java.util.Map;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
 /**
@@ -36,15 +37,43 @@ public abstract class Graph {
      *
      * @return A set of the Class objects of each Graph subtype.
      */
-    private static Set<Class<? extends Graph>> lookupGraphTypes() {
+    private static void lookupGraphTypes() {
         System.out.println("Scanning for Graph subtypes.");
 
         Reflections reflections = new Reflections("seng202.group2.view.graphs");
-        Set<Class<? extends Graph>> graphClasses = reflections.getSubTypesOf(Graph.class);
+        graphTypes = reflections.getSubTypesOf(Graph.class);
 
-        System.out.println("Found Graph subtypes: " + graphClasses);
-        return graphClasses;
+        System.out.println("Found Graph subtypes: " + graphTypes);
     }
+
+    /**
+     * Returns a new instance of the given graph type.
+     * TODO Throw an error instead of returning null when a new instance cannot be made.
+     *
+     * @param graphType The Class object of a particular graph type.
+     * @return A new instance of the given graph type.
+     */
+    public static Graph newGraph(Class<? extends Graph> graphType) {
+        try {
+            Constructor<?> graphConstructor = graphType.getConstructor();
+            return (Graph) graphConstructor.newInstance();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Sets up the graph and sets it as the center of the provided pane.
+     * @param borderPane The pane to add the graph to.
+     */
+    public abstract void initialize(BorderPane borderPane);
 
     /**
      * Gets a set of Field objects specifying the graph's supported fields.
