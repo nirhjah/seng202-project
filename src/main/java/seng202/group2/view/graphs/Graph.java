@@ -1,9 +1,16 @@
 package seng202.group2.view.graphs;
 
 import org.reflections.Reflections;
+import seng202.group2.model.datacategories.DataCategory;
+import seng202.group2.model.datacategories.DataClassification;
 
+import java.util.Map;
 import java.util.Set;
 
+/**
+ *
+ * @author Connor Dunlop
+ */
 public abstract class Graph {
 
     /**
@@ -39,4 +46,14 @@ public abstract class Graph {
         return graphClasses;
     }
 
+    /**
+     * Gets a set of Field objects specifying the graph's supported fields.
+     * @return The graph's supported fields.
+     */
+    public abstract Set<Field<? extends DataClassification>> getFields();
+
+    /**
+     * Generates the graph using the stored settings.
+     */
+    public abstract void plotGraph();
 }
