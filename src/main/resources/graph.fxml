@@ -26,7 +26,7 @@
                         <Insets />
                     </GridPane.margin>
                 </ComboBox>
-                <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Export" GridPane.columnIndex="3" />
+                <Button fx:id="plotButton" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#plotGraph" text="Plot" GridPane.columnIndex="3" />
                 <ComboBox prefWidth="150.0" promptText="X Axis" GridPane.columnIndex="1" fx:id="xCategory" />
                 <ComboBox fx:id="yCategory" prefWidth="150.0" promptText="Y Axis" GridPane.columnIndex="2" />
             </children>
