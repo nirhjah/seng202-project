@@ -55,9 +55,8 @@ public abstract class DataCategory {
 	 * enumerator. Type casting is handled within the method.
 	 * @param record The CrimeRecord instance whose attribute value is to be retrieved.
 	 * @return The value of the CrimeRecord's attribute.
-	 * @throws UnsupportedCategoryException 
 	 */
-	public abstract Object getRecordValue(CrimeRecord record) throws UnsupportedCategoryException;
+	public abstract Object getRecordValue(CrimeRecord record);
 	
 	/**
 	 * Parses a string representing a value of data corresponding to this DataCategory
