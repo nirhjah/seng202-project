@@ -89,6 +89,6 @@ public class GraphController extends DataObserver {
 
 	@Override
 	public void updateModel() {
-
+		plotGraph();
 	}
 }
