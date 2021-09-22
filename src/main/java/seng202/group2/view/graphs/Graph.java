@@ -48,25 +48,18 @@ public abstract class Graph {
 
     /**
      * Returns a new instance of the given graph type.
-     * TODO Throw an error instead of returning null when a new instance cannot be made.
      *
      * @param graphType The Class object of a particular graph type.
      * @return A new instance of the given graph type.
+     * @throws InstantiationException If an instance of the given graph type could not be created.
      */
-    public static Graph newGraph(Class<? extends Graph> graphType) {
+    public static Graph newGraph(Class<? extends Graph> graphType) throws InstantiationException {
         try {
             Constructor<?> graphConstructor = graphType.getConstructor();
             return (Graph) graphConstructor.newInstance();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
+            throw new InstantiationException("The graph type " + graphType + " could not be instantiated using a constructor of the form GraphType()");
         }
-        return null;
     }
 
     /**
