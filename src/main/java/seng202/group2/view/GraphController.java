@@ -63,7 +63,14 @@ public class GraphController extends DataObserver {
 
 	@FXML public void plotGraph() {
 		// Make a new graph of the correct type
-		Graph graph = Graph.newGraph(graphTypes.get(selectGraph.getSelectionModel().getSelectedItem()));
+		Graph graph = null;
+		try {
+			graph = Graph.newGraph(graphTypes.get(selectGraph.getSelectionModel().getSelectedItem()));
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+			return;
+		}
+
 		// Initialize it
 		graph.initialize(borderPane);
 
