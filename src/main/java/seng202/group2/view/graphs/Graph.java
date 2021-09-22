@@ -9,6 +9,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
 /**
+ * A superclass specifying all methods which a Graph type must implement in order to interface with control classes.
+ * Some utility methods are provided for getting a set of the Class objects of all Graph subtypes within this package,
+ * using reflection.
  *
  * @author Connor Dunlop
  */
