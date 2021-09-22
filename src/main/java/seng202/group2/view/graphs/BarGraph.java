@@ -18,11 +18,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * A Graph class that generates a Bar chart, plotting either two DataCategory subtypes against each other,
+ * or a single DataCategory subtype against the count of crime records which take on each value for that DataCategory.
+ * Selecting between these two behaviours is done using the internal enumeration Mode.
  *
  * @author Connor Dunlop
  */
 public class BarGraph extends Graph {
 
+    /**
+     * Used to select a mode for the BarGraph to use.
+     * DEFAULT - plot one DataCategory against another.
+     * RECORD_COUNT - plot one DataCategory against the count of records which take each value of that DataCategory.
+     */
     public enum Mode {
         DEFAULT,
         RECORD_COUNT
@@ -33,6 +41,7 @@ public class BarGraph extends Graph {
 
     private Field<Categorical> xField = Field.newField("X Axis", Categorical.class);
     private Field<Numerical> yField = Field.newField("Y Axis", Numerical.class);
+    /** Used to specify whether to plot DataCategory types against each other, or a DataCategory against record count. */
     private Mode mode = Mode.RECORD_COUNT;
 
     BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
@@ -59,12 +68,14 @@ public class BarGraph extends Graph {
         if (!isReady())
             throw new NullPointerException("One or more required fields have not been set.");
 
+        // Set Axis labels as required
         xAxis.setLabel(xField.getDataCategory().toString());
         if (mode != Mode.RECORD_COUNT)
             yAxis.setLabel(xField.getDataCategory().toString());
         else
             yAxis.setLabel("Number of Records");
 
+        // Get data to plot
         XYChart.Series<String, Number> dataSeries;
         switch (mode) {
             case RECORD_COUNT:
@@ -76,17 +87,24 @@ public class BarGraph extends Graph {
                 dataSeries = serializeRecordValues();
         }
 
+        // Plot data
         barChart.getData().clear();
         barChart.getData().addAll(dataSeries);
     }
 
+    /**
+     * Checks if each required field has been set, and the graph is ready to plot data.
+     * @return True if all required fields are set, false otherwise.
+     */
     private boolean isReady() {
         switch (mode) {
+            // If counting records, only the x field is required
             case RECORD_COUNT:
                 if (xField.getDataCategory() != null)
                     return true;
                 return false;
 
+            // If plotting two DataCategory subtypes against each other, then both x and y fields are required
             case DEFAULT:
             default:
                 if (xField.getDataCategory() != null && yField.getDataCategory() != null)
@@ -95,12 +113,18 @@ public class BarGraph extends Graph {
         }
     }
 
+    /**
+     * Constructs an XYChart.Series populated with values taken from the active crime records, using the values from
+     * the categories the x and y fields are bound to.
+     * @return An XYChart.Series populated with values from two DataCategory subtypes, taken from the active crime records.
+     */
     private XYChart.Series<String, Number> serializeRecordValues() {
         DataCategory xCat = (DataCategory) xField.getDataCategory();
         DataCategory yCat = (DataCategory) yField.getDataCategory();
 
         ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();
 
+        // Construct a series with the data from each category
         XYChart.Series<String, Number> dataSeries = new XYChart.Series<>();
         for (CrimeRecord record : records) {
             dataSeries.getData().add(new XYChart.Data<String, Number>(
@@ -112,9 +136,15 @@ public class BarGraph extends Graph {
         return dataSeries;
     }
 
+    /**
+     * Constructs an XYChart.Series populated with values taken from the category xField is bound to, and the counts of
+     * how many crime records in ActiveData currently take on each value.
+     * @return An XYChart.Series populated with the counts of crime records which take on each value from a DataCategory subtype.
+     */
     private XYChart.Series<String, Number> getValueCounts() {
         DataCategory xCat = (DataCategory) xField.getDataCategory();
 
+        // For each value of xCat crime records take on, count the number of crime records which have that value
         ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();
         HashMap<String, Integer> valueCounts = new HashMap<>();
         for (CrimeRecord record : records) {
@@ -125,6 +155,7 @@ public class BarGraph extends Graph {
                 valueCounts.put(recordValue, 1);
         }
 
+        // Construct a series from the record counts for each value
         XYChart.Series<String, Number> dataSeries = new XYChart.Series<>();
         for (String value : valueCounts.keySet()) {
             dataSeries.getData().add(new XYChart.Data<String, Number>(
@@ -136,6 +167,10 @@ public class BarGraph extends Graph {
         return dataSeries;
     }
 
+    /**
+     * Sets the graph's mode.
+     * @param mode The mode of the graph.
+     */
     public void setMode(Mode mode) {
         this.mode = mode;
     }
