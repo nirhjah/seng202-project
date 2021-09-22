@@ -12,10 +12,7 @@ import seng202.group2.model.datacategories.DataCategory;
 import seng202.group2.model.datacategories.DataClassification;
 import seng202.group2.model.datacategories.Numerical;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A Graph class that generates a Bar chart, plotting either two DataCategory subtypes against each other,
@@ -133,6 +130,11 @@ public class BarGraph extends Graph {
             ));
         }
 
+        // Sort series into ascending order of category values (this is a string sort)
+        dataSeries.getData().sort((i, j) -> {
+            return i.getXValue().compareTo(j.getXValue());
+        });
+
         return dataSeries;
     }
 
@@ -163,6 +165,11 @@ public class BarGraph extends Graph {
                     valueCounts.get(value)
             ));
         }
+
+        // Sort series into ascending order of category values (this is a string sort)
+        dataSeries.getData().sort((i, j) -> {
+            return i.getXValue().compareTo(j.getXValue());
+        });
 
         return dataSeries;
     }
