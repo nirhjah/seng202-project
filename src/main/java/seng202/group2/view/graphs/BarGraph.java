@@ -13,6 +13,7 @@ import seng202.group2.model.datacategories.DataClassification;
 import seng202.group2.model.datacategories.Numerical;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,11 +23,17 @@ import java.util.Set;
  */
 public class BarGraph extends Graph {
 
+    public enum Mode {
+        DEFAULT,
+        RECORD_COUNT
+    }
+
     private CategoryAxis xAxis = new CategoryAxis();
     private NumberAxis yAxis = new NumberAxis();
 
     private Field<Categorical> xField = Field.newField("X Axis", Categorical.class);
     private Field<Numerical> yField = Field.newField("Y Axis", Numerical.class);
+    private Mode mode = Mode.RECORD_COUNT;
 
     BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
 
@@ -40,34 +47,97 @@ public class BarGraph extends Graph {
     public Set<Field<? extends DataClassification>> getFields() {
         HashSet<Field<? extends DataClassification>> fields = new HashSet<>();
         fields.add(xField);
-        fields.add(yField);
+
+        if (mode == Mode.DEFAULT)
+            fields.add(yField);
+
         return fields;
     }
 
     @Override
     public void plotGraph() {
-        DataCategory xCat = (DataCategory) xField.getDataCategory();
-        DataCategory yCat = (DataCategory) yField.getDataCategory();
+        if (!isReady())
+            throw new NullPointerException("One or more required fields have not been set.");
 
-        xAxis.setLabel(xCat.toString());
-        yAxis.setLabel(yCat.toString());
+        xAxis.setLabel(xField.getDataCategory().toString());
+        if (mode != Mode.RECORD_COUNT)
+            yAxis.setLabel(xField.getDataCategory().toString());
+        else
+            yAxis.setLabel("Number of Records");
 
-        ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();
+        XYChart.Series<String, Number> dataSeries;
+        switch (mode) {
+            case RECORD_COUNT:
+                dataSeries = getValueCounts();
+                break;
 
-        XYChart.Series dataSeries = new XYChart.Series();
-        for (CrimeRecord record : records) {
-            try {
-                dataSeries.getData().add(new XYChart.Data(
-                        xCat.getRecordValue(record).toString(),
-                        yCat.getRecordValue(record)
-                ));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            case DEFAULT:
+            default:
+                dataSeries = serializeRecordValues();
         }
 
         barChart.getData().clear();
         barChart.getData().addAll(dataSeries);
+    }
+
+    private boolean isReady() {
+        switch (mode) {
+            case RECORD_COUNT:
+                if (xField.getDataCategory() != null)
+                    return true;
+                return false;
+
+            case DEFAULT:
+            default:
+                if (xField.getDataCategory() != null && yField.getDataCategory() != null)
+                    return true;
+                return false;
+        }
+    }
+
+    private XYChart.Series<String, Number> serializeRecordValues() {
+        DataCategory xCat = (DataCategory) xField.getDataCategory();
+        DataCategory yCat = (DataCategory) yField.getDataCategory();
+
+        ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();
+
+        XYChart.Series<String, Number> dataSeries = new XYChart.Series<>();
+        for (CrimeRecord record : records) {
+            dataSeries.getData().add(new XYChart.Data<String, Number>(
+                    xCat.getRecordValue(record).toString(),
+                    (Number) yCat.getRecordValue(record)
+            ));
+        }
+
+        return dataSeries;
+    }
+
+    private XYChart.Series<String, Number> getValueCounts() {
+        DataCategory xCat = (DataCategory) xField.getDataCategory();
+
+        ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();
+        HashMap<String, Integer> valueCounts = new HashMap<>();
+        for (CrimeRecord record : records) {
+            String recordValue = xCat.getRecordValue(record).toString();
+            if (valueCounts.containsKey(recordValue))
+                valueCounts.put(recordValue, valueCounts.get(recordValue) + 1);
+            else
+                valueCounts.put(recordValue, 1);
+        }
+
+        XYChart.Series<String, Number> dataSeries = new XYChart.Series<>();
+        for (String value : valueCounts.keySet()) {
+            dataSeries.getData().add(new XYChart.Data<String, Number>(
+                    value,
+                    valueCounts.get(value)
+            ));
+        }
+
+        return dataSeries;
+    }
+
+    public void setMode(Mode mode) {
+        this.mode = mode;
     }
 
 }
