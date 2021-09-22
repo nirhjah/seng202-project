@@ -114,14 +114,14 @@ public class MapController extends DataObserver implements Initializable {
     /**
 	 * This showExportWindow method opens the export window and brings it to the front.
 	 *
-	 * TODO This method is not yet implemented. Temporarily it is calling {@link MainController#showNotImplementedYet()}
+	 * TODO Find a way to make selection area based on the window
 	 */
 	public void showExportWindow() {
 		//Find the edges of the window
-		double x = 0;
-		double y = 0;
-		double width = 500;
-		double height = 500;
+		double x = 350;
+		double y = 100;
+		double width = 900;
+		double height = 600;
 		
 		//Set the bounds of the area to select
 		Rectangle2D bounds = new Rectangle2D(x, y, width, height);
@@ -149,7 +149,12 @@ public class MapController extends DataObserver implements Initializable {
 			}
 			
 			//Write to the file
-			ImageIO.write(SwingFXUtils.fromFXImage(exportVisual, null), "png", file);
+			try {
+				ImageIO.write(SwingFXUtils.fromFXImage(exportVisual, null), "png", save);
+			} catch(IOException e) {
+				// This is where you would enter the error handling code, for now just print the stacktrace
+				e.printStackTrace();
+			}
 		}
 	}
 }
