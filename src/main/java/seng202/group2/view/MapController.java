@@ -3,18 +3,32 @@ package seng202.group2.view;
 
 import com.sun.javafx.webkit.WebConsoleListener;
 import javafx.concurrent.Worker;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.WritableImage;
+import javafx.scene.robot.Robot;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
 
 /**
  * Map Controller is the controller class for the Map GUI
@@ -25,6 +39,7 @@ import java.util.ResourceBundle;
  *
  *  @author Yiyang Yu
  *  @author Connor Dunlop
+ *  @author George Hampton
  */
 
 public class MapController extends DataObserver implements Initializable {
@@ -95,4 +110,46 @@ public class MapController extends DataObserver implements Initializable {
                 "clearMarkers();"
         );
     }
+    
+    /**
+	 * This showExportWindow method opens the export window and brings it to the front.
+	 *
+	 * TODO This method is not yet implemented. Temporarily it is calling {@link MainController#showNotImplementedYet()}
+	 */
+	public void showExportWindow() {
+		//Find the edges of the window
+		double x = 0;
+		double y = 0;
+		double width = 500;
+		double height = 500;
+		
+		//Set the bounds of the area to select
+		Rectangle2D bounds = new Rectangle2D(x, y, width, height);
+		
+		//Select the given area and create an image
+		javafx.scene.robot.Robot robot = new Robot();
+		WritableImage exportVisual = robot.getScreenCapture(null, bounds);
+		
+		//Save the image
+		//Create a save dialog
+		FileChooser saveChooser = new FileChooser();
+		saveChooser.setTitle("Save Image");
+		FileChooser.ExtensionFilter saveTypes = new FileChooser.ExtensionFilter("image files (*.png)", "*.png");
+		saveChooser.getExtensionFilters().add(saveTypes);
+		
+		Stage stage = new Stage();
+		File save = saveChooser.showSaveDialog(stage);
+		
+		//Check filename is not null and save file
+		if(save != null) {
+			String saveName = save.getName();
+			//check whether user put ".png" on the filename
+			if(!saveName.toUpperCase().endsWith(".PNG")) {
+				save = new File(save.getAbsolutePath() + ".png");
+			}
+			
+			//Write to the file
+			ImageIO.write(SwingFXUtils.fromFXImage(exportVisual, null), "png", file);
+		}
+	}
 }
