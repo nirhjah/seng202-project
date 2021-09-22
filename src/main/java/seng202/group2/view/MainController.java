@@ -161,9 +161,6 @@ public class MainController extends DataObserver implements Initializable {
 		try {
 			Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("graph.fxml"));
 			Stage stage = new Stage();
-			// This will cause the graph window to always be in front of the main window
-			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.setResizable(false);
 			stage.setTitle("Graph Window");
 			stage.setScene(new Scene(root, 1280, 720));
 	
