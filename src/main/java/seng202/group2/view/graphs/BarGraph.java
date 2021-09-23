@@ -4,12 +4,14 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
 import seng202.group2.model.datacategories.Categorical;
 import seng202.group2.model.datacategories.DataCategory;
-import seng202.group2.model.datacategories.DataClassification;
 import seng202.group2.model.datacategories.Numerical;
 
 import java.util.*;
@@ -23,6 +25,10 @@ import java.util.*;
  */
 public class BarGraph extends Graph {
 
+    /*************************************************************************************************************
+     *                                   Graph Settings and Options.                                             *
+     *************************************************************************************************************/
+
     /**
      * Used to select a mode for the BarGraph to use.
      * DEFAULT - plot one DataCategory against another.
@@ -33,42 +39,91 @@ public class BarGraph extends Graph {
         RECORD_COUNT
     }
 
-    protected CategoryAxis xAxis = new CategoryAxis();
-    protected NumberAxis yAxis = new NumberAxis();
-
-    protected Field<Categorical> xField = Field.newField("X Axis", Categorical.class);
-    protected Field<Numerical> yField = Field.newField("Y Axis", Numerical.class);
     /** Used to specify whether to plot DataCategory types against each other, or a DataCategory against record count. */
     private Mode mode = Mode.RECORD_COUNT;
 
+    // Mode option
+    protected HBox countBox = new HBox();
+    protected CheckBox recordCountToggle = new CheckBox();
+    protected Label recordCountLabel = new Label("Record Count");
+
+    // X Axis Options
+    protected Label xSelectorLabel = new Label("X Axis");
+    protected ComboBox<DataCategory> xAxisSelector = new ComboBox<>();
+    protected Categorical xCategory = null;
+
+    // Y Axis Options
+    protected Label ySelectorLabel = new Label("Y Axis");
+    protected ComboBox<DataCategory> yAxisSelector = new ComboBox<>();
+    protected Numerical yCategory = null;
+
+
+    /*************************************************************************************************************
+     *                                   Graph and Option Initialization.                                        *
+     *************************************************************************************************************/
+
+    @Override
+    public void initialize(BorderPane graphPane, VBox optionList) {
+        barChart.setTitle("Bar Graph");
+        graphPane.setCenter(barChart);
+
+        xAxisSelector.getItems().addAll(DataCategory.getCategories(Categorical.class));
+        xAxisSelector.getItems().sort((i, j) -> {
+            return i.toString().compareTo(j.toString());
+        });
+        yAxisSelector.getItems().addAll(DataCategory.getCategories(Numerical.class));
+        yAxisSelector.getItems().sort((i, j) -> {
+            return i.toString().compareTo(j.toString());
+        });
+
+        recordCountToggle.selectedProperty().setValue((mode == Mode.RECORD_COUNT));
+        recordCountToggle.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (recordCountToggle.isSelected())
+                mode = Mode.RECORD_COUNT;
+            else
+                mode = Mode.DEFAULT;
+
+            populateOptions(optionList);
+        });
+        countBox.getChildren().addAll(recordCountLabel, recordCountToggle);
+
+        populateOptions(optionList);
+    }
+
+    private void populateOptions(VBox optionList) {
+        optionList.getChildren().clear();
+        optionList.getChildren().addAll(xSelectorLabel, xAxisSelector);
+        if (mode == Mode.DEFAULT)
+            optionList.getChildren().addAll(ySelectorLabel, yAxisSelector);
+        optionList.getChildren().addAll(countBox);
+    }
+
+    private void retrieveOptions() {
+        xCategory = (Categorical) xAxisSelector.getSelectionModel().getSelectedItem();
+        if (mode == Mode.DEFAULT)
+            yCategory = (Numerical) yAxisSelector.getSelectionModel().getSelectedItem();
+    }
+
+
+    /*************************************************************************************************************
+     *                                              Graph Plotting.                                              *
+     *************************************************************************************************************/
+
+    CategoryAxis xAxis = new CategoryAxis();
+    NumberAxis yAxis = new NumberAxis();
     BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
 
     @Override
-    public void initialize(BorderPane borderPane) {
-        barChart.setTitle("Bar Graph");
-        borderPane.setCenter(barChart);
-    }
-
-    @Override
-    public Set<Field<? extends DataClassification>> getFields() {
-        HashSet<Field<? extends DataClassification>> fields = new HashSet<>();
-        fields.add(xField);
-
-        if (mode == Mode.DEFAULT)
-            fields.add(yField);
-
-        return fields;
-    }
-
-    @Override
     public void plotGraph() {
+        retrieveOptions();
+
         if (!isReady())
             throw new NullPointerException("One or more required fields have not been set.");
 
         // Set Axis labels as required
-        xAxis.setLabel(xField.getDataCategory().toString());
+        xAxis.setLabel(xAxisSelector.getSelectionModel().getSelectedItem().toString());
         if (mode != Mode.RECORD_COUNT)
-            yAxis.setLabel(xField.getDataCategory().toString());
+            yAxis.setLabel(yAxisSelector.getSelectionModel().getSelectedItem().toString());
         else
             yAxis.setLabel("Number of Records");
 
@@ -97,14 +152,14 @@ public class BarGraph extends Graph {
         switch (mode) {
             // If counting records, only the x field is required
             case RECORD_COUNT:
-                if (xField.getDataCategory() != null)
+                if (xCategory != null)
                     return true;
                 return false;
 
             // If plotting two DataCategory subtypes against each other, then both x and y fields are required
             case DEFAULT:
             default:
-                if (xField.getDataCategory() != null && yField.getDataCategory() != null)
+                if (xCategory != null && yCategory != null)
                     return true;
                 return false;
         }
@@ -116,8 +171,8 @@ public class BarGraph extends Graph {
      * @return An XYChart.Series populated with values from two DataCategory subtypes, taken from the active crime records.
      */
     private XYChart.Series<String, Number> serializeRecordValues() {
-        DataCategory xCat = (DataCategory) xField.getDataCategory();
-        DataCategory yCat = (DataCategory) yField.getDataCategory();
+        DataCategory xCat = (DataCategory) xCategory;
+        DataCategory yCat = (DataCategory) yCategory;
 
         ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();
 
@@ -144,7 +199,7 @@ public class BarGraph extends Graph {
      * @return An XYChart.Series populated with the counts of crime records which take on each value from a DataCategory subtype.
      */
     private XYChart.Series<String, Number> getValueCounts() {
-        DataCategory xCat = (DataCategory) xField.getDataCategory();
+        DataCategory xCat = (DataCategory) xCategory;
 
         // For each value of xCat crime records take on, count the number of crime records which have that value
         ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();
