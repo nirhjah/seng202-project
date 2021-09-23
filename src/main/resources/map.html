@@ -24,12 +24,18 @@
 <script>
     let map;
 
+    /**
+    * Creates the google.maps.Map to be rendered on the html map div element with optional Map options.
+    * Map options activated are zoom, centre, and mapTypeControl.
+    */
     function initMap() {
         const myLatLng = { lat: 41.763, lng: -87.644 };
-        map = new google.maps.Map(document.getElementById("map"), {
+        var myMapOptions = {
             zoom: 14,
             center: myLatLng,
-        });
+            mapTypeControl: false,
+        }
+        map = new google.maps.Map(document.getElementById("map"), myMapOptions);
     }
 
     /** An array of types google.maps.Marker, storing all markers to be displayed on the map. */
