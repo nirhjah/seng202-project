@@ -33,11 +33,11 @@ public class BarGraph extends Graph {
         RECORD_COUNT
     }
 
-    private CategoryAxis xAxis = new CategoryAxis();
-    private NumberAxis yAxis = new NumberAxis();
+    protected CategoryAxis xAxis = new CategoryAxis();
+    protected NumberAxis yAxis = new NumberAxis();
 
-    private Field<Categorical> xField = Field.newField("X Axis", Categorical.class);
-    private Field<Numerical> yField = Field.newField("Y Axis", Numerical.class);
+    protected Field<Categorical> xField = Field.newField("X Axis", Categorical.class);
+    protected Field<Numerical> yField = Field.newField("Y Axis", Numerical.class);
     /** Used to specify whether to plot DataCategory types against each other, or a DataCategory against record count. */
     private Mode mode = Mode.RECORD_COUNT;
 
