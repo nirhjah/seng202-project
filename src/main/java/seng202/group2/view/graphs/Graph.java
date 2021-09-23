@@ -1,6 +1,9 @@
 package seng202.group2.view.graphs;
 
+import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import org.reflections.Reflections;
 import seng202.group2.model.datacategories.DataClassification;
 
@@ -67,15 +70,9 @@ public abstract class Graph {
 
     /**
      * Sets up the graph and sets it as the center of the provided pane.
-     * @param borderPane The pane to add the graph to.
+     * @param graphPane The pane to add the graph to.
      */
-    public abstract void initialize(BorderPane borderPane);
-
-    /**
-     * Gets a set of Field objects specifying the graph's supported fields.
-     * @return The graph's supported fields.
-     */
-    public abstract Set<Field<? extends DataClassification>> getFields();
+    public abstract void initialize(BorderPane graphPane, VBox optionList);
 
     /**
      * Generates the graph using the stored settings.
