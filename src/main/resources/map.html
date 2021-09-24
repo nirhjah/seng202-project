@@ -29,7 +29,6 @@
 
     /**
     * Creates the google.maps.Map to be rendered on the html map div element with optional Map options.
-    * Map options activated are zoom, centre, and mapTypeControl.
     */
     function initMap() {
         const myLatLng = { lat: 41.763, lng: -87.644 };
@@ -91,7 +90,9 @@
     }
 
     /**
-    * Sets the boundary of the map to contain all the markers to be seen
+    * Sets the boundary of the map to contain all the markers to be seen.
+    * The map centered and the zoom is adjusted based on the markers and their positions.
+    * The best possible view of Google Map is then shown to the user
     */
     function setBounds() {
 
@@ -107,7 +108,6 @@
         }
         map.setCenter(bounds.getCenter());
         map.fitBounds(bounds);
-        alert(bounds);
     }
 </script>
 

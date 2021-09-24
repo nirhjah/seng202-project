@@ -66,6 +66,10 @@ public class MapController extends DataObserver implements Initializable {
         });
     }
 
+    /**
+     * This method updates the map by getting the current valid activeData to be seen as markers on the map.
+     * Valid activeData are ones with longitude and latitude fields present to be mapped.
+     */
     @Override
     public void updateModel() {
         ActiveData activeData = DBMS.getActiveData();
@@ -78,8 +82,9 @@ public class MapController extends DataObserver implements Initializable {
                 addMarker(record);
             }
         }
-        setBounds();
 
+        // Adjust the boundary of the map based on the activeData and their marker positions
+        setBounds();
     }
 
     /**
@@ -113,7 +118,7 @@ public class MapController extends DataObserver implements Initializable {
     }
 
     /**
-     * Updates the boundary of the map
+     * Sets the boundary of the map to display all markers in view
      */
     public void setBounds() {
         webEngine.executeScript(
