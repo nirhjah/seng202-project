@@ -12,7 +12,7 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class Date extends DataCategory implements Importable, Numerical, Categorical {
+public class Date extends DataCategory implements Importable, Categorical {
 
 	private static final Date instance = new Date();
 	
