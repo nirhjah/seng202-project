@@ -47,6 +47,8 @@ public class MapController extends DataObserver implements Initializable {
     /** WebView hold the visualization of a map.html. */
     @FXML private WebView webView;
     private WebEngine webEngine;
+    
+    /** The stage that the map window is created on*/
     private Stage stage;
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -115,10 +117,12 @@ public class MapController extends DataObserver implements Initializable {
     /**
 	 * This showExportWindow method opens the export window and brings it to the front.
 	 * It allows the user to export the current map window as a visual.
-	 * TODO Find a way to make selection area based on the window
 	 */
 	public void showExportWindow() {
-		//Find the edges of the window. These are rounded to give the equivalent of integer values.
+		/*Currently this section assumes that the stage exists (i.e. to click the export button
+		 * the window must be opened.
+		 *Find the edges of the window. These are rounded to give the equivalent of integer values.
+		 */
 		double x = Math.floor(stage.getX());
 		double y = Math.floor(stage.getY());
 		double width = Math.floor(stage.getWidth());
@@ -126,7 +130,6 @@ public class MapController extends DataObserver implements Initializable {
 		
 		//Set the bounds of the area to select.
 		Rectangle2D bounds = new Rectangle2D(x + 5, y + 90, width - 70, height - 120);
-		System.out.println(bounds);
 		
 		//Select the given area and create an image
 		javafx.scene.robot.Robot robot = new Robot();
