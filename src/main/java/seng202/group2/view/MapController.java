@@ -47,6 +47,7 @@ public class MapController extends DataObserver implements Initializable {
     /** WebView hold the visualization of a map.html. */
     @FXML private WebView webView;
     private WebEngine webEngine;
+    private Stage stage;
 
     public void initialize(URL location, ResourceBundle resources) {
         DBMS.getActiveData().addObserver(this);
@@ -113,18 +114,19 @@ public class MapController extends DataObserver implements Initializable {
     
     /**
 	 * This showExportWindow method opens the export window and brings it to the front.
-	 *
+	 * It allows the user to export the current map window as a visual.
 	 * TODO Find a way to make selection area based on the window
 	 */
 	public void showExportWindow() {
-		//Find the edges of the window
-		double x = 350;
-		double y = 100;
-		double width = 900;
-		double height = 600;
+		//Find the edges of the window. These are rounded to give the equivalent of integer values.
+		double x = Math.floor(stage.getX());
+		double y = Math.floor(stage.getY());
+		double width = Math.floor(stage.getWidth());
+		double height = Math.floor(stage.getHeight());
 		
-		//Set the bounds of the area to select
-		Rectangle2D bounds = new Rectangle2D(x, y, width, height);
+		//Set the bounds of the area to select.
+		Rectangle2D bounds = new Rectangle2D(x + 5, y + 90, width - 70, height - 120);
+		System.out.println(bounds);
 		
 		//Select the given area and create an image
 		javafx.scene.robot.Robot robot = new Robot();
@@ -156,5 +158,13 @@ public class MapController extends DataObserver implements Initializable {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * Stores the stage that the map is drawn on.
+	 * @param stage The stage this map is drawn on.
+	 */
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
 }

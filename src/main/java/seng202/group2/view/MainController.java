@@ -150,11 +150,15 @@ public class MainController extends DataObserver implements Initializable {
 	 */
 	public void showMapWindow() {
 		try {
-			Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("map.fxml"));
+			FXMLLoader loader = new FXMLLoader(CamsApplication.class.getClassLoader().getResource("map.fxml"));
+			Parent root = loader.load();
 			Stage stage = new Stage();
 			stage.setTitle("Map Window");
 			stage.setScene(new Scene(root, 900, 600));
 			stage.show();
+			//Access the map controller to send it the window
+			MapController controller = loader.getController();
+			controller.setStage(stage);
 		} catch (IOException e) {
 			// This is where you would enter the error handling code, for now just print the stacktrace
 			e.printStackTrace();
