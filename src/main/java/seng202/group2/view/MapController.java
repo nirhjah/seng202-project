@@ -64,6 +64,8 @@ public class MapController extends DataObserver implements Initializable {
                 addMarker(record);
             }
         }
+        setBounds();
+
     }
 
     /**
@@ -93,6 +95,15 @@ public class MapController extends DataObserver implements Initializable {
     public void clearMarkers() {
         webEngine.executeScript(
                 "clearMarkers();"
+        );
+    }
+
+    /**
+     * Updates the boundary of the map
+     */
+    public void setBounds() {
+        webEngine.executeScript(
+                "setBounds();"
         );
     }
 }

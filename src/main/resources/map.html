@@ -24,6 +24,9 @@
 <script>
     let map;
 
+    /** An array of types google.maps.Marker, storing all markers to be displayed on the map. */
+    let markers = [];
+
     /**
     * Creates the google.maps.Map to be rendered on the html map div element with optional Map options.
     * Map options activated are zoom, centre, and mapTypeControl.
@@ -31,15 +34,12 @@
     function initMap() {
         const myLatLng = { lat: 41.763, lng: -87.644 };
         var myMapOptions = {
-            zoom: 14,
-            center: myLatLng,
+            zoom: 1,
+            center: new google.maps.LatLng(myLatLng),
             mapTypeControl: false,
         }
         map = new google.maps.Map(document.getElementById("map"), myMapOptions);
     }
-
-    /** An array of types google.maps.Marker, storing all markers to be displayed on the map. */
-    let markers = [];
 
     /**
      * Creates a new google.maps.Marker object for the given recordId, sets its position, and displays it on the map.
@@ -80,6 +80,19 @@
             delete markers[i];
         }
         markers = [];
+    }
+
+    /**
+    * Sets the boundary of the map to contain all the markers to be seen
+    */
+    function setBounds() {
+        var bounds = new google.maps.LatLngBounds();
+
+        for (let i = 0; i < markers.length; i++) {
+            bounds.extend(markers[i].position)
+        }
+        map.setCenter(bounds.getCenter());
+        map.fitBounds(bounds);
     }
 </script>
 
