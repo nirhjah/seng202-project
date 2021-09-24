@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import netscape.javascript.JSObject;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
@@ -61,30 +62,12 @@ public class MapController extends DataObserver implements Initializable {
         // Wait until javascript in map.html has loaded before trying to call functions from there
         webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
-                updateModel();
+                activeDataUpdate();
             }
         });
-    }
 
-    /**
-     * This method updates the map by getting the current valid activeData to be seen as markers on the map.
-     * Valid activeData are ones with longitude and latitude fields present to be mapped.
-     */
-    @Override
-    public void updateModel() {
-        ActiveData activeData = DBMS.getActiveData();
-        ArrayList<CrimeRecord> activeRecords = activeData.getActiveRecords();
-
-        // Remove all markers from the map, then add markers for all active records
-        clearMarkers();
-        for (CrimeRecord record : activeRecords) {
-            if (record.getLatitude() != null && record.getLongitude() != null) {
-                addMarker(record);
-            }
-        }
-
-        // Adjust the boundary of the map based on the activeData and their marker positions
-        setBounds();
+        JSObject win = (JSObject) webEngine.executeScript("window");
+        win.setMember("app", this);
     }
 
     /**
@@ -92,10 +75,20 @@ public class MapController extends DataObserver implements Initializable {
      * The marker is placed at the latitude and longitude stored by the CrimeRecord, where the crime occurred.
      * @param record The record for which to add a map marker.
      */
-    public void addMarker(CrimeRecord record) {
+    public void addMarker(CrimeRecord record, String color) {
         webEngine.executeScript(
-                "addMarker(" + record.getID() + "," + record.getLatitude() + "," + record.getLongitude() + ");"
+                "addMarker(" + record.getID() + "," + record.getLatitude() + "," + record.getLongitude() + ",'" + color + "');"
         );
+    }
+
+    public void selectRecord(int id) {
+        DBMS.getActiveData().selectRecord(id);
+        DBMS.getActiveData().updateSelectionObservers();
+    }
+
+    public void deselectRecord(int id) {
+        DBMS.getActiveData().deselectRecord(id);
+        DBMS.getActiveData().updateSelectionObservers();
     }
 
     /**
@@ -124,5 +117,47 @@ public class MapController extends DataObserver implements Initializable {
         webEngine.executeScript(
                 "setBounds();"
         );
+    }
+
+    @Override
+    public void activeDataUpdate() {
+        ActiveData activeData = DBMS.getActiveData();
+        ArrayList<CrimeRecord> activeRecords = activeData.getActiveRecords();
+
+        // Remove all markers from the map, then add markers for all active records
+        clearMarkers();
+        for (CrimeRecord record : activeRecords) {
+            if (record.getLatitude() != 0.0 && record.getLongitude() != 0.0) {
+                if (!DBMS.getActiveData().isSelected(record.getID()))
+                    addMarker(record, "red");
+            }
+        }
+
+        //Add selected markers
+        for (Integer selectedRecord : activeData.getSelectedRecords()) {
+            CrimeRecord record = DBMS.getRecord(selectedRecord);
+            if (record != null)
+                if (record.getLatitude() != 0.0 && record.getLongitude() != 0.0) {
+                    addMarker(record, "blue");
+                }
+        }
+
+        // Adjust the boundary of the map based on the activeData and their marker positions
+        setBounds();
+    }
+
+    @Override
+    public void selectedRecordsUpdate() {
+        //Deselect all markers
+        webEngine.executeScript(
+                "deselectAllMarkers();"
+        );
+
+        //Select markers
+        for (Integer selectedRecord : DBMS.getActiveData().getSelectedRecords()) {
+            webEngine.executeScript(
+                    "selectMarker(" + selectedRecord + ");"
+            );
+        }
     }
 }

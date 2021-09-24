@@ -80,7 +80,7 @@ public class Ward extends DataCategory implements Importable {
 	}
 
 	@Override
-	public boolean isString() {
-		return false;
+	public Class<? extends Object> getValueType() {
+		return Short.class;
 	}
 }

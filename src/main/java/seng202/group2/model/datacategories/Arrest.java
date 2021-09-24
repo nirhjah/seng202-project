@@ -85,7 +85,7 @@ public class Arrest extends DataCategory implements Importable {
 	}
 
 	@Override
-	public boolean isString() {
-		return false;
+	public Class<? extends Object> getValueType() {
+		return Boolean.class;
 	}
 }

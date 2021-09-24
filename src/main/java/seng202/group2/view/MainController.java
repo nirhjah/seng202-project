@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,6 +21,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.controller.CSVImporter;
 import seng202.group2.controller.DataImporter;
+import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
@@ -230,6 +232,27 @@ public class MainController extends DataObserver implements Initializable {
 	}
 
 	/**
+	 * Called when a click event occurs on the tableView.
+	 * Updates the set of selected records in ActiveData using the selection out of currently tabulated records.
+	 */
+	public void updateSelection() {
+		ActiveData activeData = DBMS.getActiveData();
+
+		// Deselect all currently tabulated records
+		for (CrimeRecord item : tableView.getItems()) {
+			activeData.deselectRecord(item.getID());
+		}
+
+		// Select all records currently selected in the table.
+		for (CrimeRecord selectedItem : tableView.getSelectionModel().getSelectedItems()) {
+			activeData.selectRecord(selectedItem.getID());
+		}
+
+		// Tell all observers of ActiveData that the selection has been updated.
+		activeData.updateSelectionObservers();
+	}
+
+	/**
 	 * Initialize the window.
 	 */
 	@Override
@@ -257,7 +280,7 @@ public class MainController extends DataObserver implements Initializable {
 		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 		//Import test files
-		File file = new File("testfiles/10k.csv");
+		File file = new File("testfiles/5k.csv");
 
 		try {
 			DataImporter importer = new CSVImporter(file);
@@ -272,8 +295,9 @@ public class MainController extends DataObserver implements Initializable {
 	 * Update the model when the observer is called. This will reset the window to show rows 0 - limit
 	 */
 	@Override
-	public void updateModel() {
-		ArrayList<CrimeRecord> activeRecords = DBMS.getActiveData().getActiveRecords(0, windowSizeInt);
+	public void activeDataUpdate() {
+		ActiveData activeData = DBMS.getActiveData();
+		ArrayList<CrimeRecord> activeRecords = activeData.getActiveRecords(0, windowSizeInt);
 
 		//Change the number of records
 		recordCount = DBMS.getActiveRecordsSize();
@@ -284,5 +308,18 @@ public class MainController extends DataObserver implements Initializable {
 		tableView.getItems().clear();
 		for (CrimeRecord record: activeRecords)
 			tableView.getItems().add(record);
+
+		selectedRecordsUpdate();
+	}
+
+	@Override
+	public void selectedRecordsUpdate() {
+		tableView.getSelectionModel().clearSelection();
+
+		ActiveData activeData = DBMS.getActiveData();
+		for (CrimeRecord record: tableView.getItems()) {
+			if (activeData.isSelected(record.getID()))
+				tableView.getSelectionModel().select(record);
+		}
 	}
 }

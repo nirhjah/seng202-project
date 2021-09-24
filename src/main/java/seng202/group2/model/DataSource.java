@@ -32,15 +32,24 @@ public abstract class DataSource {
     /**
      * Update all observers that the data has changed
      */
-    public void updateObservers() {
-        ArrayList<CrimeRecord> activeData;
+    public void updateActiveData() {
+        ActiveData activeData = DBMS.getActiveData();
 
         //Update active data
-        DBMS.getActiveData().updateActiveRecords();
+        activeData.updateActiveRecords();
 
         //Update all observers
         for (DataObserver observer: observers) {
-            observer.updateModel();
+            observer.activeDataUpdate();
         }
+    }
+
+    public void updateSelectionObservers() {
+        //Update all observers
+        for (DataObserver observer: observers) {
+            observer.selectedRecordsUpdate();
+        }
+        //System.out.println("Updating selection observers");
+        //System.out.println(DBMS.getActiveData().getSelectedRecords());
     }
 }

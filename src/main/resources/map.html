@@ -2,10 +2,7 @@
 <html>
 
 <head>
-    <title>Simple Map</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <link rel="stylesheet" type="text/css" href="./style.css" />
-    <script src="./index.js"></script>
+    <title>Map</title>
     <style>
         html, body {
             height: 100%;
@@ -26,7 +23,7 @@
 
     /** An array of types google.maps.Marker, storing all markers to be displayed on the map. */
     let markers = [];
-    let locations = [];
+    var infoWindow = null;
 
     /**
     * Creates the google.maps.Map to be rendered on the html map div element with optional Map options.
@@ -39,12 +36,6 @@
             mapTypeControl: false,
         }
         map = new google.maps.Map(document.getElementById("map"), myMapOptions);
-
-  // Add a marker clusterer to manage the markers.
-  new MarkerClusterer(map, markers, {
-    imagePath:
-      "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
-  });
     }
 
     /**
@@ -53,24 +44,28 @@
      * @param latitude  The latitudinal location at which the crime took place.
      * @param longitude The longitudinal location at which the crime took place.
      */
-    function addMarker(recordId, latitude, longitude) {
-
-        var infoWindow = new google.maps.InfoWindow();
+    function addMarker(recordId, latitude, longitude, color) {
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(latitude, longitude),
-            crimeId: recordId
+            crimeId: recordId,
+            selected: (color == "blue"),
+            icon: {
+                url: "http://maps.google.com/mapfiles/ms/icons/" + color + "-dot.png"
+            }
         });
 
         google.maps.event.addListener(marker, "click", function(e) {
-            infoWindow.setContent("<div style = 'width:200px;min-height:40px'>" + marker.position + "</div>");
-            infoWindow.open(map, marker);
+            toggleMarkerSelected(marker);
         });
 
         marker.setMap(map);
 
         markers.push(marker);
+    }
 
-        locations.push(marker.position);
+    function reloadMarker(marker) {
+        marker.setMap(null);
+        marker.setMap(map);
     }
 
     /**
@@ -78,12 +73,66 @@
      * @param recordId  The id of the CrimeRecord whose marker is to be removed.
      */
     function removeMarker(recordId) {
+        let marker = findMarker(recordId);
+
+        marker.setMap(null);
+        delete marker;
+    }
+
+    function findMarker(id) {
         for (let i = 0; i < markers.length; i++) {
-            if (markers[i].recordId == recordId) {
-                markers[i].setMap(null);
-                delete markers[i];
-                markers.splice(i, 1);
+            if (markers[i].crimeId == id) {
+                return markers[i];
             }
+        }
+
+        return null
+    }
+
+    function deselectAllMarkers() {
+        //Remove currently selected
+        for (let i=0; i < markers.length; i++) {
+            if (markers[i].selected) {
+                markers[i].selected = false;
+                markers[i].setIcon({url: "http://maps.google.com/mapfiles/ms/icons/" + "red" + "-dot.png"});
+            }
+        }
+    }
+
+    function deselectMarker(id) {
+        let marker = findMarker(id);
+        console.log(marker + " " + id);
+
+        if (marker != null) {
+            marker.selected = false;
+            marker.setIcon({url: "http://maps.google.com/mapfiles/ms/icons/" + "red" + "-dot.png"});
+            //reloadMarker(marker);
+        }
+    }
+
+    function selectMarker(id) {
+        let marker = findMarker(id);
+        console.log(marker + " " + id);
+
+        if (marker != null) {
+            marker.selected = true;
+            marker.setIcon({url: "http://maps.google.com/mapfiles/ms/icons/" + "blue" + "-dot.png"});
+            //reloadMarker(marker);
+        }
+    }
+
+    function toggleMarkerSelected(marker) {
+        if (marker.selected) {
+            //deselectMarker(marker);
+            if (infoWindow != null) infoWindow.close();
+            app.deselectRecord(marker.crimeId);
+        } else {
+            //selectMarker(marker);
+            if (infoWindow != null) infoWindow.close();
+            infoWindow = new google.maps.InfoWindow();
+            infoWindow.setContent("<div style ='width:200px; min-height:40px'>" + marker.position + "</div>");
+            infoWindow.open(map, marker);
+            app.selectRecord(marker.crimeId);
         }
     }
 
