@@ -13,7 +13,7 @@ public class ID extends DataCategory implements Importable {
     private static final ID instance = new ID();
 
     /** The ID associated with the crime record in the police database */
-    private int ID = -1;
+    private Integer ID = -1;
 
     public static ID getInstance() {
         return instance;
@@ -75,7 +75,7 @@ public class ID extends DataCategory implements Importable {
     }
 
     @Override
-    public boolean isString() {
-        return false;
+    public Class<? extends Object> getValueType() {
+        return Integer.class;
     }
 }

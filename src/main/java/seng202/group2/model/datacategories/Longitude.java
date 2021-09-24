@@ -90,7 +90,7 @@ public class Longitude extends DataCategory implements Importable {
 	}
 
 	@Override
-	public boolean isString() {
-		return false;
+	public Class<? extends Object> getValueType() {
+		return Float.class;
 	}
 }
