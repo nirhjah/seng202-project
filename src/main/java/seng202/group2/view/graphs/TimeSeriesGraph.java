@@ -64,7 +64,7 @@ public class TimeSeriesGraph extends LineGraph {
 
             @Override
             public Number getIntervalValue(Calendar date) {
-                return date.get(Calendar.MONTH);
+                return date.get(Calendar.MONTH) + 1;
             }
         },
 
