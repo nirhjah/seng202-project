@@ -1,8 +1,6 @@
 package seng202.group2.view.graphs;
 
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import seng202.group2.model.CrimeRecord;
@@ -28,7 +26,8 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
 
     @Override
     public void initialize(BorderPane graphPane, VBox optionList) {
-        lineChart.setTitle("Line Chart");
+        lineChart.setTitle("Number of Crimes over Time");
+        lineChart.animatedProperty().setValue(false);
         graphPane.setCenter(lineChart);
 
         intervalTypeSelector.getItems().addAll(TimeSeriesGraph.IntervalType.values());
@@ -63,6 +62,7 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
             throw new NullPointerException("One or more required fields have not been set.");
 
         xAxis.setLabel(intervalType.toString());
+        xAxis.setForceZeroInRange(false);
 
         // For each value the interval may take on, count the number of crime records which have that value
         ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();
