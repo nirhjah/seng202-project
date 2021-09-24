@@ -280,7 +280,7 @@ public class MainController extends DataObserver implements Initializable {
 		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 		//Import test files
-		File file = new File("testfiles/10k.csv");
+		File file = new File("testfiles/5k.csv");
 
 		try {
 			DataImporter importer = new CSVImporter(file);
