@@ -29,10 +29,24 @@ import java.util.ResourceBundle;
 
 public class MapController extends DataObserver implements Initializable {
 
-    /** WebView hold the visualization of a map.html. */
+    /** JavaFX's WebView Element hold the visualization of a map.html. */
     @FXML private WebView webView;
+
+    /** WebEngine is a non-visual object to support web page managements
+     *  and enable two-way communication between a Java application and JavaScript
+     *  */
     private WebEngine webEngine;
 
+    /**
+     * Initialize the map window
+     *
+     * This method prepares the Map Window in the UI. It does the following preparations:
+     *  - Add an observer to the activeData, which will be displayed as markers on the map.
+     *  - Use webEngine to provide access to the document object model of the web page map.html
+     *
+     * @param location
+     * @param resources
+     */
     public void initialize(URL location, ResourceBundle resources) {
         DBMS.getActiveData().addObserver(this);
 

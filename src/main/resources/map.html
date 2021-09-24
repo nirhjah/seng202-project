@@ -48,10 +48,18 @@
      * @param longitude The longitudinal location at which the crime took place.
      */
     function addMarker(recordId, latitude, longitude) {
+
+        var infoWindow = new google.maps.InfoWindow();
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(latitude, longitude),
             crimeId: recordId
         });
+
+        google.maps.event.addListener(marker, "click", function(e) {
+            infoWindow.setContent("<div style = 'width:200px;min-height:40px'>" + marker.position + "</div>");
+            infoWindow.open(map, marker);
+        });
+
         marker.setMap(map);
 
         markers.push(marker);
@@ -86,13 +94,20 @@
     * Sets the boundary of the map to contain all the markers to be seen
     */
     function setBounds() {
+
         var bounds = new google.maps.LatLngBounds();
 
         for (let i = 0; i < markers.length; i++) {
-            bounds.extend(markers[i].position)
+            if (markers[i].position.toString() == "(0, 0)") {
+                markers.splice(i, 1);
+                i--;
+            } else {
+                bounds.extend(markers[i].position)
+            }
         }
         map.setCenter(bounds.getCenter());
         map.fitBounds(bounds);
+        alert(bounds);
     }
 </script>
 
