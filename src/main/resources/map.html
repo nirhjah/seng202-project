@@ -26,6 +26,7 @@
 
     /** An array of types google.maps.Marker, storing all markers to be displayed on the map. */
     let markers = [];
+    let locations = [];
 
     /**
     * Creates the google.maps.Map to be rendered on the html map div element with optional Map options.
@@ -38,6 +39,12 @@
             mapTypeControl: false,
         }
         map = new google.maps.Map(document.getElementById("map"), myMapOptions);
+
+  // Add a marker clusterer to manage the markers.
+  new MarkerClusterer(map, markers, {
+    imagePath:
+      "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
+  });
     }
 
     /**
@@ -62,6 +69,8 @@
         marker.setMap(map);
 
         markers.push(marker);
+
+        locations.push(marker.position);
     }
 
     /**
