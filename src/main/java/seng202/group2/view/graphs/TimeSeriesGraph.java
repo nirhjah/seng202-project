@@ -1,7 +1,5 @@
 package seng202.group2.view.graphs;
 
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -21,7 +19,7 @@ public class TimeSeriesGraph extends LineGraph {
      *                                   Graph Settings and Options.                                             *
      *************************************************************************************************************/
 
-    private enum IntervalType {
+    protected enum IntervalType {
         CONTINUOUS {
             @Override
             public String toString() {
@@ -123,10 +121,6 @@ public class TimeSeriesGraph extends LineGraph {
     /*************************************************************************************************************
      *                                   Graph Plotting.                                                         *
      *************************************************************************************************************/
-
-    NumberAxis xAxis = new NumberAxis();
-    NumberAxis yAxis = new NumberAxis();
-    LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
 
     @Override
     public void plotGraph() {
