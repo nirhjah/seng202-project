@@ -94,7 +94,7 @@ public class MapController extends DataObserver implements Initializable {
      */
     public void addMarker(CrimeRecord record) {
         webEngine.executeScript(
-                "addMarker(" + record.getID() + "," + record.getLatitude() + "," + record.getLongitude() + ");"
+                "addMarker('" + record.getID() + "'," + record.getLatitude() + "," + record.getLongitude() + ");"
         );
     }
 
