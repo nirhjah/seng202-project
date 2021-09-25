@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,7 +24,6 @@ import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
-import seng202.group2.model.FilterType;
 
 /**
  * MainController is the GUI controller for the main Cams window.
@@ -45,10 +43,10 @@ public class MainController extends DataObserver implements Initializable {
 	@FXML private TextField searchTextField;
 
 	//Variables used to control page(window) size
-	private int windowSizeInt = 1000;
-	private int recordCount = 0;
-	private int currentMin = 0;
-	private int currentMax = windowSizeInt;
+	private int windowSizeInt = DBMS.getActiveData().windowSizeInt;
+	private int recordCount = DBMS.getActiveData().recordCount;
+	private int currentMin = DBMS.getActiveData().currentMin;
+	private int currentMax = DBMS.getActiveData().currentMax;
 	@FXML private TextField windowSize;
 	@FXML private Text recordsShown;
 
@@ -71,28 +69,12 @@ public class MainController extends DataObserver implements Initializable {
 	@FXML private TableColumn<CrimeRecord, Short> longitudeColumn;
 
 	/**
-	 * Update the current page of records. This displays a subset of the active data.
-	 */
-	private void recordsUpdate() {
-		ArrayList<CrimeRecord> activeRecords = new ArrayList<>(DBMS.getActiveData().getActiveRecords(currentMin, windowSizeInt));
-
-		//Change the text
-		recordsShown.setText(Math.max(currentMin, 0) + "-" + Math.min(currentMax, recordCount) + "/" + recordCount);
-
-
-		//Update table
-		tableView.getItems().clear();
-		for (CrimeRecord record: activeRecords)
-			tableView.getItems().add(record);
-	}
-
-	/**
 	 * Update window size when a new size is entered into windowSize textField.
 	 */
 	public void updateWindowSize() {
 		windowSizeInt = Integer.parseInt(windowSize.getText());
 		currentMax = currentMin + windowSizeInt;
-		recordsUpdate();
+		DBMS.getActiveData().updateFrame(currentMin, currentMax, windowSizeInt);
 	}
 
 	/**
@@ -101,7 +83,7 @@ public class MainController extends DataObserver implements Initializable {
 	public void recordsScrollNext() {
 		currentMax = Math.min(currentMax + windowSizeInt, recordCount);
 		currentMin = Math.min(currentMin + windowSizeInt, recordCount - windowSizeInt);
-		recordsUpdate();
+		DBMS.getActiveData().updateFrame(currentMin, currentMax, windowSizeInt);
 	}
 
 	/**
@@ -110,7 +92,7 @@ public class MainController extends DataObserver implements Initializable {
 	public void recordsScrollPrev() {
 		currentMin = Math.max(currentMin - windowSizeInt, 0);
 		currentMax = Math.max(currentMax - windowSizeInt, Math.min(recordCount, windowSizeInt));
-		recordsUpdate();
+		DBMS.getActiveData().updateFrame(currentMin, currentMax, windowSizeInt);
 	}
 
 
@@ -320,6 +302,28 @@ public class MainController extends DataObserver implements Initializable {
 		for (CrimeRecord record: tableView.getItems()) {
 			if (activeData.isSelected(record.getID()))
 				tableView.getSelectionModel().select(record);
+		}
+	}
+
+	/**
+	 * Update the window frame size
+	 */
+	public void frameUpdate() {
+		//Get records in frame range
+		ArrayList<CrimeRecord> activeRecords = new ArrayList<>(DBMS.getActiveData().getActiveRecords(currentMin, windowSizeInt));
+
+		//Change the text
+		recordsShown.setText(Math.max(currentMin, 0) + "-" + Math.min(currentMax, recordCount) + "/" + recordCount);
+
+		//Update table
+		tableView.getItems().clear();
+		for (CrimeRecord record: activeRecords) {
+			tableView.getItems().add(record);
+
+			//Select record if required
+			if (DBMS.getActiveData().isSelected(record.getID())) {
+				tableView.getSelectionModel().select(record);
+			}
 		}
 	}
 }

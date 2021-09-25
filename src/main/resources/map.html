@@ -47,11 +47,11 @@
     function addMarker(recordId, latitude, longitude, color) {
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(latitude, longitude),
-            animation: null,
-            zIndex: 1,
+            animation: (color == "blue") ? google.maps.Animation.BOUNCE : null,
+            selected: (color == "blue"),
+            zIndex: (color == "blue") ? 2 : 1,
             crimeId: recordId,
             optimized: true,
-            selected: (color == "blue"),
             icon: {
                 url: "http://maps.google.com/mapfiles/ms/icons/" + color + "-dot.png"
             }
@@ -66,11 +66,6 @@
         markers.push(marker);
     }
 
-    function reloadMarker(marker) {
-        marker.setMap(null);
-        marker.setMap(map);
-    }
-
     /**
      * Removes a marker corresponding to a specific CrimeRecord from the map.
      * @param recordId  The id of the CrimeRecord whose marker is to be removed.
@@ -82,7 +77,15 @@
         delete marker;
     }
 
+    /**
+     * Find a marker in the marker array by ID
+     * Null if not found
+     *
+     * @param id ID of record to find
+     * @returns {null|Marker} Marker with given ID, or null if not found
+     */
     function findMarker(id) {
+        //Find marker
         for (let i = 0; i < markers.length; i++) {
             if (markers[i].crimeId == id) {
                 return markers[i];
@@ -92,8 +95,10 @@
         return null
     }
 
+    /**
+     * Deselect all markers
+     */
     function deselectAllMarkers() {
-        //Remove currently selected
         for (let i=0; i < markers.length; i++) {
             if (markers[i].selected) {
                 markers[i].setZIndex(1);
@@ -104,8 +109,16 @@
         }
     }
 
+    /**
+     * Deselect marker by ID
+     *
+     * @param id ID of marker to deselect
+     */
     function deselectMarker(id) {
+        //Find marker
         let marker = findMarker(id);
+
+        //Deselect if not null
         if (marker != null) {
             marker.setZIndex(1);
             marker.setAnimation(null);
@@ -114,9 +127,16 @@
         }
     }
 
+    /**
+     * Select marker by ID
+     *
+     * @param id ID of marker to select
+     */
     function selectMarker(id) {
+        //Find marker
         let marker = findMarker(id);
 
+        //Select if not null
         if (marker != null) {
             marker.setZIndex(2);
             marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -125,11 +145,20 @@
         }
     }
 
+    /**
+     * Toggle selection of marker on click, toggle info window
+     *
+     * @param marker Marker to toggle
+     */
     function toggleMarkerSelected(marker) {
         if (marker.selected) {
+            //Close info window
             if (infoWindow != null) infoWindow.close();
+
+            //Update active data selection
             app.deselectRecord(marker.crimeId);
         } else {
+            //Open info window
             const contentString = '<div id="content">' +
                                 '<div id="siteNotice">' + '</div>' +
                                 '<h1 id="firstHeading" class="firstHeading">Crime ID: ' + marker.crimeId + '</h1>' +
@@ -140,6 +169,8 @@
             infoWindow = new google.maps.InfoWindow();
             infoWindow.setContent(contentString); //"<div style ='width:200px; min-height:40px'>" + marker.position + "</div>");
             infoWindow.open(map, marker);
+
+            //Update active data selection
             app.selectRecord(marker.crimeId);
         }
     }

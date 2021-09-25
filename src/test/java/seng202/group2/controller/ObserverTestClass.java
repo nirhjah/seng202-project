@@ -3,6 +3,7 @@ import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Assisting class for Observer test classes
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 public class ObserverTestClass extends DataObserver {
     /** Records are stored here so that test methods can access at any time */
     private ArrayList<CrimeRecord> testRecords;
+    private HashSet<Integer> selectedRecords;
 
     /**
      * Get the records
@@ -21,6 +23,11 @@ public class ObserverTestClass extends DataObserver {
 
     @Override
     public void selectedRecordsUpdate() {
+        selectedRecords = DBMS.getActiveData().getSelectedRecords();
+    }
+
+    @Override
+    public void frameUpdate() {
         return;
     }
 
@@ -29,5 +36,12 @@ public class ObserverTestClass extends DataObserver {
      */
     public ArrayList<CrimeRecord> getTestRecords() {
         return  testRecords;
+    }
+
+    /**
+     * Get testRecords
+     */
+    public HashSet<Integer> getSelectedRecords() {
+        return  selectedRecords;
     }
 }

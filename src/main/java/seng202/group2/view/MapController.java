@@ -44,9 +44,6 @@ public class MapController extends DataObserver implements Initializable {
      * This method prepares the Map Window in the UI. It does the following preparations:
      *  - Add an observer to the activeData, which will be displayed as markers on the map.
      *  - Use webEngine to provide access to the document object model of the web page map.html
-     *
-     * @param location
-     * @param resources
      */
     public void initialize(URL location, ResourceBundle resources) {
         DBMS.getActiveData().addObserver(this);
@@ -66,6 +63,7 @@ public class MapController extends DataObserver implements Initializable {
             }
         });
 
+        //Connect javascript to this Java class so that it can call methods
         JSObject win = (JSObject) webEngine.executeScript("window");
         win.setMember("app", this);
     }
@@ -81,11 +79,21 @@ public class MapController extends DataObserver implements Initializable {
         );
     }
 
+    /**
+     * Select a record by ID
+     *
+     * @param id - ID of record to select
+     */
     public void selectRecord(int id) {
         DBMS.getActiveData().selectRecord(id);
         DBMS.getActiveData().updateSelectionObservers();
     }
 
+    /**
+     * Deselect a record by ID
+     *
+     * @param id - ID of record to deselect
+     */
     public void deselectRecord(int id) {
         DBMS.getActiveData().deselectRecord(id);
         DBMS.getActiveData().updateSelectionObservers();
@@ -122,11 +130,14 @@ public class MapController extends DataObserver implements Initializable {
     @Override
     public void activeDataUpdate() {
         ActiveData activeData = DBMS.getActiveData();
-        ArrayList<CrimeRecord> activeRecords = activeData.getActiveRecords();
 
-        // Remove all markers from the map, then add markers for all active records
+        //Get active data from frame
+        ArrayList<CrimeRecord> activeRecords = activeData.getActiveRecords(activeData.currentMin, activeData.windowSizeInt);
+
+        // Remove all markers from the map, then add markers for all currently not selected active records
         clearMarkers();
         for (CrimeRecord record : activeRecords) {
+            //Prevent null location records
             if (record.getLatitude() != 0.0 && record.getLongitude() != 0.0) {
                 if (!DBMS.getActiveData().isSelected(record.getID()))
                     addMarker(record, "red");
@@ -137,6 +148,7 @@ public class MapController extends DataObserver implements Initializable {
         for (Integer selectedRecord : activeData.getSelectedRecords()) {
             CrimeRecord record = DBMS.getRecord(selectedRecord);
             if (record != null)
+                //Prevent null location records
                 if (record.getLatitude() != 0.0 && record.getLongitude() != 0.0) {
                     addMarker(record, "blue");
                 }
@@ -146,6 +158,9 @@ public class MapController extends DataObserver implements Initializable {
         setBounds();
     }
 
+    /**
+     * Update selected markers
+     */
     @Override
     public void selectedRecordsUpdate() {
         //Deselect all markers
@@ -159,5 +174,13 @@ public class MapController extends DataObserver implements Initializable {
                     "selectMarker(" + selectedRecord + ");"
             );
         }
+    }
+
+    /**
+     * Update markers when the frame changes
+     */
+    @Override
+    public void frameUpdate() {
+        activeDataUpdate();
     }
 }
