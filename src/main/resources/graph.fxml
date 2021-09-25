@@ -26,14 +26,16 @@
                 <RowConstraints minHeight="20.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="20.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="0.0" prefHeight="10000.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="20.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="0.0" prefHeight="32.80000305175781" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="215.1999969482422" minHeight="20.0" prefHeight="215.1999969482422" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Button mnemonicParsing="false" onAction="#hideControlMenu" prefWidth="10000.0" text="Hide Menu" />
-                  <Label text="Chart Type" GridPane.rowIndex="1" />
-                  <ComboBox fx:id="graphTypeSelector" onAction="#selectGraphType" prefWidth="10000.0" GridPane.rowIndex="2" />
-                  <ScrollPane hbarPolicy="NEVER" GridPane.rowIndex="3">
+                  <Button mnemonicParsing="false" onAction="#showExportWindow" prefHeight="26.0" prefWidth="208.0" text="Export" GridPane.rowIndex="1" />
+                  <Label text="Chart Type" GridPane.rowIndex="2" />
+                  <ComboBox fx:id="graphTypeSelector" onAction="#selectGraphType" prefWidth="10000.0" GridPane.rowIndex="3" />
+                  <ScrollPane hbarPolicy="NEVER" GridPane.rowIndex="4">
                      <content>
                         <AnchorPane maxWidth="200.0" prefHeight="260.0" prefWidth="200.0">
                            <children>
@@ -42,7 +44,7 @@
                         </AnchorPane>
                      </content>
                   </ScrollPane>
-                  <Button fx:id="plotButton" mnemonicParsing="false" onAction="#plotGraph" prefWidth="10000.0" text="Plot Graph" GridPane.rowIndex="4" />
+                  <Button fx:id="plotButton" mnemonicParsing="false" onAction="#plotGraph" prefWidth="10000.0" text="Plot Graph" GridPane.rowIndex="5" />
                </children>
                <BorderPane.margin>
                   <Insets />

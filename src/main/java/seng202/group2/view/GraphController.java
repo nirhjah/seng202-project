@@ -67,6 +67,17 @@ public class GraphController extends DataObserver {
 	@FXML public void plotGraph() {
 		graph.plotGraph();
 	}
+	
+	@FXML public void showExportWindow() {
+		//Make sure the full graph is displayed
+		hideControlMenu();
+		
+		//Get window size
+		
+		//Take screen capture
+		
+		//Save the image
+	}
 
 	@Override
 	public void updateModel() {
