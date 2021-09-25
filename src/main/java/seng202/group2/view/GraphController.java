@@ -67,7 +67,17 @@ public class GraphController extends DataObserver {
 	}
 
 	@Override
-	public void updateModel() {
+	public void activeDataUpdate() {
 		plotGraph();
+	}
+
+	@Override
+	public void selectedRecordsUpdate() {
+		return;
+	}
+
+	@Override
+	public void frameUpdate() {
+		return;
 	}
 }
