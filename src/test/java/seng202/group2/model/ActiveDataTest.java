@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ActiveDataTest {
     //Date format for creating calendar
@@ -185,5 +186,94 @@ public class ActiveDataTest {
         activeData.addFilter(filter4, false);
 
         assertEquals(4, activeData.getFilters().size());
+    }
+
+    @Test
+    void selectRecordTest() {
+        try {
+            addRecords(30);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        activeData.selectRecord(5);
+        assertTrue(activeData.getSelectedRecords().contains(5));
+
+        activeData.selectRecord(1);
+        assertTrue(activeData.getSelectedRecords().contains(1));
+
+        activeData.selectRecord(30);
+        assertTrue(activeData.getSelectedRecords().contains(30));
+    }
+
+    @Test
+    void deselectRecordTest() {
+        try {
+            addRecords(30);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        activeData.selectRecord(5);
+        activeData.selectRecord(1);
+        activeData.selectRecord(30);
+
+        activeData.deselectRecord(5);
+        assertTrue(!activeData.getSelectedRecords().contains(5));
+    }
+
+    @Test
+    void toggleSelectRecordTest() {
+        try {
+            addRecords(30);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        activeData.selectRecord(5);
+        activeData.selectRecord(1);
+        activeData.selectRecord(30);
+
+        activeData.toggleSelectRecord(5);
+        assertTrue(!activeData.getSelectedRecords().contains(5));
+
+        activeData.toggleSelectRecord(5);
+        assertTrue(activeData.getSelectedRecords().contains(5));
+    }
+
+    @Test
+    void clearSelectionTest() {
+        try {
+            addRecords(30);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        activeData.selectRecord(5);
+        activeData.selectRecord(1);
+        activeData.selectRecord(30);
+
+        activeData.clearSelection();
+
+        assertTrue(!activeData.getSelectedRecords().contains(5));
+        assertTrue(!activeData.getSelectedRecords().contains(1));
+        assertTrue(!activeData.getSelectedRecords().contains(30));
+    }
+
+    @Test
+    void isSelectedTest() {
+        try {
+            addRecords(30);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        activeData.selectRecord(5);
+        activeData.selectRecord(1);
+        activeData.selectRecord(30);
+
+        assertTrue(activeData.isSelected(5));
+        assertTrue(!activeData.isSelected(6));
+
     }
 }

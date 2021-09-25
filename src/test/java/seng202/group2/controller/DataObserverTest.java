@@ -9,6 +9,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
+
+import static junit.framework.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -58,6 +61,8 @@ public class DataObserverTest {
     @BeforeEach
     void addObserver() {
         DBMS.clearDB();
+        DBMS.getActiveData().clearFilters(false);
+        DBMS.getActiveData().clearSelection();
 
         observer = new ObserverTestClass();
         DBMS.getActiveData().addObserver(observer);
@@ -82,9 +87,34 @@ public class DataObserverTest {
         int num = 1;
 
         for (CrimeRecord result : results) {
-            //System.out.println(result.getCaseNum() + ", " + result.getID());
             assertEquals(num, result.getID());
             num++;
+        }
+    }
+
+    /**
+     * Test the data selection update
+     */
+    @Test
+    void selectedRecordsUpdateTest() {
+        try {
+            addRecords(10);
+        } catch (SQLException | ClassNotFoundException | ParseException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<Integer> recordsToSelect = new ArrayList<>();
+        recordsToSelect.add(1);
+        recordsToSelect.add(6);
+        recordsToSelect.add(4);
+
+        //Update data
+        observer.selectedRecordsUpdate();
+
+        HashSet<Integer> results = observer.getSelectedRecords();
+
+        for (Integer result : results) {
+            assertTrue(recordsToSelect.contains(result));
         }
     }
 }

@@ -6,15 +6,19 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- * Active data class manages the filters, allowing the views to display a subset of the database
- *
- * TODO Add Junit tests.
+ * Active data class manages the filters, frame size and selected data, allowing the views to display a subset of the database
  */
 public class ActiveData extends DataSource {
     //List of filters
     private ArrayList<Filter> filters = new ArrayList<>();
-    /** List of record ids selected by the user. */
+    //List of record ids selected by the user
     private HashSet<Integer> selectedRecords = new HashSet<>();
+
+    //Frame variables
+    public int windowSizeInt = 1000;
+    public int recordCount = 0;
+    public int currentMin = 0;
+    public int currentMax = windowSizeInt;
 
     /**
      * Add a filter to the filter list
@@ -81,7 +85,8 @@ public class ActiveData extends DataSource {
 
     /**
      * Generate conditions string based on Filters
-     * @return String representing the filters in SQL
+     *
+     * @return {String} representing the filters in SQL
      */
     private String generateFilterString() {
         String query = " WHERE ";
