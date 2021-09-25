@@ -58,6 +58,7 @@ public class ScatterGraph extends Graph {
         xAxisSelector.setItems(categories);
         yAxisSelector.setItems(categories);
 
+        clearOptions();
         addOptions(xAxisSelector, yAxisSelector);
     }
 
