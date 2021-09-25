@@ -27,20 +27,8 @@ public class BarGraph extends Graph {
      *                                   Graph Settings and Options.                                             *
      *************************************************************************************************************/
 
-    /**
-     * Used to select a mode for the BarGraph to use.
-     * DEFAULT - plot one DataCategory against another.
-     * RECORD_COUNT - plot one DataCategory against the count of records which take each value of that DataCategory.
-     */
-    public enum Mode {
-        DEFAULT,
-        RECORD_COUNT
-    }
-
-    /** Used to specify whether to plot DataCategory types against each other, or a DataCategory against record count. */
-    private Mode mode = Mode.RECORD_COUNT;
-
-    // Mode option
+    // Record Count enabled? option
+    // True if in record counting mode, false otherwise
     protected BooleanGraphOption recordCountToggle = new BooleanGraphOption("Record Count");
 
     // X Axis Options
@@ -75,10 +63,6 @@ public class BarGraph extends Graph {
 
         recordCountToggle.setState(true);
         recordCountToggle.addChangeListener(() -> {
-            if (recordCountToggle.getState())
-                mode = Mode.RECORD_COUNT;
-            else
-                mode = Mode.DEFAULT;
             populateOptions();
         });
 
@@ -88,7 +72,7 @@ public class BarGraph extends Graph {
     private void populateOptions() {
         clearOptions();
         addOption(xAxisSelector);
-        if (mode == Mode.DEFAULT)
+        if (!recordCountToggle.getState())
             addOption(yAxisSelector);
         addOption(recordCountToggle);
     }
@@ -104,39 +88,29 @@ public class BarGraph extends Graph {
 
     @Override
     public void plotGraph() {
-        // Check mode
-        if (recordCountToggle.getState())
-            mode = Mode.RECORD_COUNT;
-        else
-            mode = Mode.DEFAULT;
-
         // Get selected categories
         DataCategory xCategory = xAxisSelector.getSelectedItem();
         DataCategory yCategory = null;
-        if (mode == Mode.DEFAULT)
+        if (!recordCountToggle.getState())
             yCategory = yAxisSelector.getSelectedItem();
 
-        if (xCategory == null || (mode == Mode.DEFAULT && yCategory == null))
+        // Check all required fields have been set
+        if (xCategory == null || (!recordCountToggle.getState() && yCategory == null))
             throw new NullPointerException("One or more required fields have not been set.");
 
         // Set Axis labels as required
         xAxis.setLabel(xCategory.toString());
-        if (mode != Mode.RECORD_COUNT)
+        if (!recordCountToggle.getState())
             yAxis.setLabel(yCategory.toString());
         else
             yAxis.setLabel("Number of Records");
 
         // Get data to plot
         XYChart.Series<String, Number> dataSeries;
-        switch (mode) {
-            case RECORD_COUNT:
-                dataSeries = getValueCounts();
-                break;
-
-            case DEFAULT:
-            default:
-                dataSeries = serializeRecordValues();
-        }
+        if (recordCountToggle.getState())
+            dataSeries = getValueCounts();
+        else
+            dataSeries = serializeRecordValues();
 
         // Plot data
         barChart.getData().clear();
@@ -205,14 +179,6 @@ public class BarGraph extends Graph {
         });
 
         return dataSeries;
-    }
-
-    /**
-     * Sets the graph's mode.
-     * @param mode The mode of the graph.
-     */
-    public void setMode(Mode mode) {
-        this.mode = mode;
     }
 
 }
