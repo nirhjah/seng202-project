@@ -63,7 +63,7 @@
    <center>
       <ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
          <content>
-            <TableView fx:id="tableView" depthTest="ENABLE" minHeight="-Infinity" minWidth="563.0" prefHeight="315.0" prefWidth="588.0">
+            <TableView fx:id="tableView" depthTest="ENABLE" minHeight="-Infinity" minWidth="563.0" onMouseClicked="#updateSelection" prefHeight="315.0" prefWidth="588.0">
               <columns>
                 <TableColumn fx:id="idColumn" prefWidth="50.0" text="ID" />
                 <TableColumn fx:id="caseNumColumn" prefWidth="70.0" text="Case Num" />

@@ -1,7 +1,6 @@
 package seng202.group2.model;
 
 import seng202.group2.controller.DataObserver;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -32,15 +31,46 @@ public abstract class DataSource {
     /**
      * Update all observers that the data has changed
      */
-    public void updateObservers() {
-        ArrayList<CrimeRecord> activeData;
+    public void updateActiveData() {
+        ActiveData activeData = DBMS.getActiveData();
 
         //Update active data
-        DBMS.getActiveData().updateActiveRecords();
+        activeData.updateActiveRecords();
 
         //Update all observers
         for (DataObserver observer: observers) {
-            observer.updateModel();
+            observer.activeDataUpdate();
+        }
+    }
+
+    /**
+     * Update all observers that the selection data has changed
+     */
+    public void updateSelectionObservers() {
+        //Update all observers
+        for (DataObserver observer: observers) {
+            observer.selectedRecordsUpdate();
+        }
+        //System.out.println("Updating selection observers");
+        //System.out.println(DBMS.getActiveData().getSelectedRecords());
+    }
+
+    /**
+     * Update active data frame variables and update all observers of the change
+     *
+     * @param min - Minimum database index to show
+     * @param max - Maximum database index to show
+     * @param size - Frame size
+     */
+    public void updateFrame(int min, int max, int size) {
+        //Set variables
+        DBMS.getActiveData().currentMax = max;
+        DBMS.getActiveData().currentMin = min;
+        DBMS.getActiveData().windowSizeInt = size;
+
+        //Update all observers
+        for (DataObserver observer: observers) {
+            observer.frameUpdate();
         }
     }
 }

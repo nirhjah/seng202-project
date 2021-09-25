@@ -3,16 +3,22 @@ package seng202.group2.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.HashSet;
 
 /**
- * Active data class manages the filters, allowing the views to display a subset of the database
- *
- * TODO Add Junit tests.
+ * Active data class manages the filters, frame size and selected data, allowing the views to display a subset of the database
  */
-public class ActiveData extends DataSource{
+public class ActiveData extends DataSource {
     //List of filters
     private ArrayList<Filter> filters = new ArrayList<>();
+    //List of record ids selected by the user
+    private HashSet<Integer> selectedRecords = new HashSet<>();
+
+    //Frame variables
+    public int windowSizeInt = 1000;
+    public int recordCount = 0;
+    public int currentMin = 0;
+    public int currentMax = windowSizeInt;
 
     /**
      * Add a filter to the filter list
@@ -24,7 +30,7 @@ public class ActiveData extends DataSource{
         filters.add(filter);
 
         if (update) {
-            updateObservers();
+            updateActiveData();
         }
     }
 
@@ -36,7 +42,7 @@ public class ActiveData extends DataSource{
     public void addFilter(Filter filter) {
         filters.add(filter);
 
-        updateObservers();
+        updateActiveData();
     }
 
     /**
@@ -48,7 +54,7 @@ public class ActiveData extends DataSource{
         if (filters.contains(filter)) {
             filters.remove(filter);
 
-            updateObservers();
+            updateActiveData();
         }
     }
 
@@ -63,7 +69,7 @@ public class ActiveData extends DataSource{
             filters.remove(filter);
 
             if (update)
-                updateObservers();
+                updateActiveData();
         }
     }
 
@@ -74,12 +80,13 @@ public class ActiveData extends DataSource{
     public void clearFilters(boolean update) {
         filters = new ArrayList<>();
         if (update)
-            updateObservers();
+            updateActiveData();
     }
 
     /**
      * Generate conditions string based on Filters
-     * @return String representing the filters in SQL
+     *
+     * @return {String} representing the filters in SQL
      */
     private String generateFilterString() {
         String query = " WHERE ";
@@ -141,7 +148,6 @@ public class ActiveData extends DataSource{
         if (filters.size() <= 0) {
             return;
         }
-
 
         //Get list of IDs
         ResultSet results = DBMS.customQuery("SELECT id FROM Records" + generateFilterString() + ";");
@@ -205,5 +211,56 @@ public class ActiveData extends DataSource{
 
     public ArrayList<Filter> getFilters() {
         return filters;
+    }
+
+    /**
+     * Selects a record if it is not selected, otherwise deselects a record if it is selected.
+     * @param id The id of the CrimeRecord to (de)select.
+     */
+    public void toggleSelectRecord(Integer id) {
+        if (selectedRecords.contains(id))
+            deselectRecord(id);
+        else
+            selectRecord(id);
+    }
+
+    /**
+     * Adds a crime record to the set of selected crime records.
+     * @param id The id of the CrimeRecord to select.
+     */
+    public void selectRecord(Integer id) {
+        selectedRecords.add(id);
+    }
+
+    /**
+     * Removes a crime record from the set of selected crime records.
+     * @param id The id of the CrimeRecord to deselect.
+     */
+    public void deselectRecord(Integer id) {
+        selectedRecords.remove(id);
+    }
+
+    /**
+     * Removes all crime records from the set of selected crime records.
+     */
+    public void clearSelection() {
+        selectedRecords = new HashSet<>();
+    }
+
+    /**
+     * Returns the set of selected crime records.
+     * @return The set of selected crime record ids.
+     */
+    public HashSet<Integer> getSelectedRecords() {
+        return selectedRecords;
+    }
+
+    /**
+     * Checks if a crime record is selected.
+     * @param id The id of the CrimeRecord the selection of which is to be determined.
+     * @return True if the CrimeRecord is selected, false if not.
+     */
+    public boolean isSelected(Integer id) {
+        return selectedRecords.contains(id);
     }
 }

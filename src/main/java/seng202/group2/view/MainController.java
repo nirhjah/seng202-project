@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,6 +23,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.controller.CSVImporter;
 import seng202.group2.controller.DataImporter;
+import javafx.util.Callback;
+import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
@@ -42,10 +47,10 @@ public class MainController extends DataObserver implements Initializable {
 	@FXML private TextField searchTextField;
 
 	//Variables used to control page(window) size
-	private int windowSizeInt = 1000;
-	private int recordCount = 0;
-	private int currentMin = 0;
-	private int currentMax = windowSizeInt;
+	private int windowSizeInt = DBMS.getActiveData().windowSizeInt;
+	private int recordCount = DBMS.getActiveData().recordCount;
+	private int currentMin = DBMS.getActiveData().currentMin;
+	private int currentMax = DBMS.getActiveData().currentMax;
 	@FXML private TextField windowSize;
 	@FXML private Text recordsShown;
 
@@ -68,28 +73,12 @@ public class MainController extends DataObserver implements Initializable {
 	@FXML private TableColumn<CrimeRecord, Short> longitudeColumn;
 
 	/**
-	 * Update the current page of records. This displays a subset of the active data.
-	 */
-	private void recordsUpdate() {
-		ArrayList<CrimeRecord> activeRecords = new ArrayList<>(DBMS.getActiveData().getActiveRecords(currentMin, windowSizeInt));
-
-		//Change the text
-		recordsShown.setText(Math.max(currentMin, 0) + "-" + Math.min(currentMax, recordCount) + "/" + recordCount);
-
-
-		//Update table
-		tableView.getItems().clear();
-		for (CrimeRecord record: activeRecords)
-			tableView.getItems().add(record);
-	}
-
-	/**
 	 * Update window size when a new size is entered into windowSize textField.
 	 */
 	public void updateWindowSize() {
 		windowSizeInt = Integer.parseInt(windowSize.getText());
 		currentMax = currentMin + windowSizeInt;
-		recordsUpdate();
+		DBMS.getActiveData().updateFrame(currentMin, currentMax, windowSizeInt);
 	}
 
 	/**
@@ -98,7 +87,7 @@ public class MainController extends DataObserver implements Initializable {
 	public void recordsScrollNext() {
 		currentMax = Math.min(currentMax + windowSizeInt, recordCount);
 		currentMin = Math.min(currentMin + windowSizeInt, recordCount - windowSizeInt);
-		recordsUpdate();
+		DBMS.getActiveData().updateFrame(currentMin, currentMax, windowSizeInt);
 	}
 
 	/**
@@ -107,7 +96,7 @@ public class MainController extends DataObserver implements Initializable {
 	public void recordsScrollPrev() {
 		currentMin = Math.max(currentMin - windowSizeInt, 0);
 		currentMax = Math.max(currentMax - windowSizeInt, Math.min(recordCount, windowSizeInt));
-		recordsUpdate();
+		DBMS.getActiveData().updateFrame(currentMin, currentMax, windowSizeInt);
 	}
 
 
@@ -148,7 +137,18 @@ public class MainController extends DataObserver implements Initializable {
 	 * TODO This method is not yet implemented. Temporarily it is calling {@link MainController#showNotImplementedYet()}
 	 */
 	public void showMapWindow() {
-		showNotImplementedYet();
+		try {
+			Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("map.fxml"));
+			Stage stage = new Stage();
+			stage.setTitle("Map Window");
+			stage.setScene(new Scene(root, 900, 600));
+			stage.show();
+		} catch (IOException e) {
+			// This is where you would enter the error handling code, for now just print the stacktrace
+			e.printStackTrace();
+		}
+
+		//DBMS.getActiveData().addFilter(FilterType.EQ.createFilter("id", "10"));
 	}
 
 	/**
@@ -237,6 +237,27 @@ public class MainController extends DataObserver implements Initializable {
 	}
 
 	/**
+	 * Called when a click event occurs on the tableView.
+	 * Updates the set of selected records in ActiveData using the selection out of currently tabulated records.
+	 */
+	public void updateSelection() {
+		ActiveData activeData = DBMS.getActiveData();
+
+		// Deselect all currently tabulated records
+		for (CrimeRecord item : tableView.getItems()) {
+			activeData.deselectRecord(item.getID());
+		}
+
+		// Select all records currently selected in the table.
+		for (CrimeRecord selectedItem : tableView.getSelectionModel().getSelectedItems()) {
+			activeData.selectRecord(selectedItem.getID());
+		}
+
+		// Tell all observers of ActiveData that the selection has been updated.
+		activeData.updateSelectionObservers();
+	}
+
+	/**
 	 * Initialize the window.
 	 */
 	@Override
@@ -248,7 +269,12 @@ public class MainController extends DataObserver implements Initializable {
 
 		idColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Integer>("ID"));
 		caseNumColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("caseNum"));
-		dateColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("dateString"));
+		dateColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<CrimeRecord, String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(TableColumn.CellDataFeatures<CrimeRecord, String> param) {
+				return new ReadOnlyObjectWrapper<>(param.getValue().getDateCategory().getValueString());
+			}
+		});
 		blockColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("block"));
 		iucrColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("iucr"));
 		primaryDescriptionColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("primaryDescription"));
@@ -264,7 +290,7 @@ public class MainController extends DataObserver implements Initializable {
 		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 		//Import test files
-		File file = new File("testfiles/10k.csv");
+		File file = new File("testfiles/5k.csv");
 
 		try {
 			DataImporter importer = new CSVImporter(file);
@@ -279,8 +305,9 @@ public class MainController extends DataObserver implements Initializable {
 	 * Update the model when the observer is called. This will reset the window to show rows 0 - limit
 	 */
 	@Override
-	public void updateModel() {
-		ArrayList<CrimeRecord> activeRecords = DBMS.getActiveData().getActiveRecords(0, windowSizeInt);
+	public void activeDataUpdate() {
+		ActiveData activeData = DBMS.getActiveData();
+		ArrayList<CrimeRecord> activeRecords = activeData.getActiveRecords(0, windowSizeInt);
 
 		//Change the number of records
 		recordCount = DBMS.getActiveRecordsSize();
@@ -291,5 +318,40 @@ public class MainController extends DataObserver implements Initializable {
 		tableView.getItems().clear();
 		for (CrimeRecord record: activeRecords)
 			tableView.getItems().add(record);
+
+		selectedRecordsUpdate();
+	}
+
+	@Override
+	public void selectedRecordsUpdate() {
+		tableView.getSelectionModel().clearSelection();
+
+		ActiveData activeData = DBMS.getActiveData();
+		for (CrimeRecord record: tableView.getItems()) {
+			if (activeData.isSelected(record.getID()))
+				tableView.getSelectionModel().select(record);
+		}
+	}
+
+	/**
+	 * Update the window frame size
+	 */
+	public void frameUpdate() {
+		//Get records in frame range
+		ArrayList<CrimeRecord> activeRecords = new ArrayList<>(DBMS.getActiveData().getActiveRecords(currentMin, windowSizeInt));
+
+		//Change the text
+		recordsShown.setText(Math.max(currentMin, 0) + "-" + Math.min(currentMax, recordCount) + "/" + recordCount);
+
+		//Update table
+		tableView.getItems().clear();
+		for (CrimeRecord record: activeRecords) {
+			tableView.getItems().add(record);
+
+			//Select record if required
+			if (DBMS.getActiveData().isSelected(record.getID())) {
+				tableView.getSelectionModel().select(record);
+			}
+		}
 	}
 }

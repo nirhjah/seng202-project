@@ -114,9 +114,6 @@ public class CSVImporter extends DataImporter {
 			} catch (IllegalArgumentException e) {
 				// An error occurred while trying to parse the value
 				System.out.println("Error parsing value: " + values[i] + " for category: " + category);
-			} catch (UnsupportedCategoryException e) {
-				// Cannot set category value of 
-				System.out.println("Tried to perform an operation on a data category that does not support it: " + e.toString());
 			}
 		}
 		

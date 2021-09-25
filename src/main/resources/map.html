@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Map</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 100%;
+        }
+        .center {
+          text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+<div id="map"></div>
+
+<script>
+    //Map objects
+    let map;
+    let heatmap = null;
+    let infoWindow = null;
+
+    //Array of markers
+    let markers = [];
+    let markersEnabled = true;
+
+    //Array of heatmap locations
+    let heatMapData = []
+    let heatMapEnabled = false;
+    let heatMapRadius = 50;
+
+    /**
+    * Creates the google.maps.Map to be rendered on the html map div element with optional Map options.
+    */
+    function initMap() {
+        const myLatLng = { lat: 41.763, lng: -87.644 };
+        var myMapOptions = {
+            zoom: 1,
+            center: new google.maps.LatLng(myLatLng),
+            mapTypeControl: true,
+            streetViewControl: false,
+            fullscreenControl: false,
+            scaleControl: true,
+        }
+        map = new google.maps.Map(document.getElementById("map"), myMapOptions);
+
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: heatMapData
+        });
+    }
+
+    /**
+     * Change the heatmap raduus variable and update
+     * @param rad Radius to use
+     */
+    function changeRadius(rad) {
+        heatMapRadius = rad;
+        updateHeatMap();
+    }
+
+    /**
+     * Toggle markersEnabled true or not false, set the markers accordingly
+     */
+    function toggleMarkers() {
+        markersEnabled = markersEnabled ? false : true;
+
+        if (markersEnabled) {
+            markers.forEach(function (marker) {
+                marker.setMap(map);
+            });
+        } else {
+            markers.forEach(function (marker) {
+                marker.setMap(null);
+            });
+        }
+    }
+
+    /**
+     * Toggle heatMapEnabled true of false, then update
+     */
+    function toggleHeatmap() {
+        heatMapEnabled = heatMapEnabled ? false : true;
+
+        if (heatMapEnabled) {
+            updateHeatMap();
+        } else {
+            heatmap.setMap(null);
+        }
+    }
+
+    /**
+     * Update the heatmap with new data, depending on heatMapEnabled
+     */
+    function updateHeatMap() {
+        heatmap.setMap(null);
+        if (heatMapEnabled) {
+            heatmap = new google.maps.visualization.HeatmapLayer({
+                data: heatMapData,
+                radius: heatMapRadius,
+            });
+            heatmap.setMap(map);
+        }
+    }
+
+    /**
+     * Creates a new google.maps.Marker object for the given recordId, sets its position, and displays it on the map.
+     * @param recordId  The id of the CrimeRecord to which the added marker corresponds.
+     * @param latitude  The latitudinal location at which the crime took place.
+     * @param longitude The longitudinal location at which the crime took place.
+     */
+    function addMarker(recordId, latitude, longitude, color) {
+        //Create marker
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(latitude, longitude),
+            animation: (color == "blue") ? google.maps.Animation.BOUNCE : null,
+            selected: (color == "blue"),
+            zIndex: (color == "blue") ? 2 : 1,
+            crimeId: recordId,
+            optimized: true,
+            icon: {
+                url: "http://maps.google.com/mapfiles/ms/icons/" + color + "-dot.png"
+            }
+        });
+
+        //Create event listener
+        google.maps.event.addListener(marker, "click", function(e) {
+            toggleMarkerSelected(marker);
+        });
+
+        //Add to map and list
+        markers.push(marker);
+        if (markersEnabled) marker.setMap(map);
+
+        //Add to heatmap
+        heatMapData.push(new google.maps.LatLng(latitude, longitude));
+
+        updateHeatMap();
+    }
+
+    /**
+     * Removes a marker corresponding to a specific CrimeRecord from the map.
+     * @param recordId  The id of the CrimeRecord whose marker is to be removed.
+     */
+    function removeMarker(recordId) {
+        let marker = findMarker(recordId);
+
+        marker.setMap(null);
+        delete marker;
+
+        //Remove from heatmap
+        for (let i=0; i < heatMapData.length; i++) {
+            if (heatMapData[i].lat == marker.position.lat && heatMapData[i].lng == marker.position.lng) {
+                delete heatMapData[i];
+                break;
+            }
+        }
+
+        updateHeatMap();
+    }
+
+    /**
+     * Find a marker in the marker array by ID
+     * Null if not found
+     *
+     * @param id ID of record to find
+     * @returns {null|Marker} Marker with given ID, or null if not found
+     */
+    function findMarker(id) {
+        //Find marker
+        for (let i = 0; i < markers.length; i++) {
+            if (markers[i].crimeId == id) {
+                return markers[i];
+            }
+        }
+
+        return null
+    }
+
+    /**
+     * Deselect all markers
+     */
+    function deselectAllMarkers() {
+        for (let i=0; i < markers.length; i++) {
+            if (markers[i].selected) {
+                markers[i].setZIndex(1);
+                markers[i].setAnimation(null);
+                markers[i].selected = false;
+                markers[i].setIcon({url: "http://maps.google.com/mapfiles/ms/icons/" + "red" + "-dot.png"});
+            }
+        }
+    }
+
+    /**
+     * Deselect marker by ID
+     *
+     * @param id ID of marker to deselect
+     */
+    function deselectMarker(id) {
+        //Find marker
+        let marker = findMarker(id);
+
+        //Deselect if not null
+        if (marker != null) {
+            marker.setZIndex(1);
+            marker.setAnimation(null);
+            marker.selected = false;
+            marker.setIcon({url: "http://maps.google.com/mapfiles/ms/icons/" + "red" + "-dot.png"});
+        }
+    }
+
+    /**
+     * Select marker by ID
+     *
+     * @param id ID of marker to select
+     */
+    function selectMarker(id) {
+        //Find marker
+        let marker = findMarker(id);
+
+        //Select if not null
+        if (marker != null) {
+            marker.setZIndex(2);
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+            marker.selected = true;
+            marker.setIcon({url: "http://maps.google.com/mapfiles/ms/icons/" + "blue" + "-dot.png"});
+        }
+    }
+
+    /**
+     * Toggle selection of marker on click, toggle info window
+     *
+     * @param marker Marker to toggle
+     */
+    function toggleMarkerSelected(marker) {
+        if (marker.selected) {
+            //Close info window
+            if (infoWindow != null) infoWindow.close();
+
+            //Update active data selection
+            app.deselectRecord(marker.crimeId);
+        } else {
+            //Open info window
+            const contentString = '<div id="content" class="center">' +
+                                '<div id="siteNotice">' + '</div>' +
+                                '<h1 id="firstHeading" class="firstHeading" align="center" >Crime ID: ' + marker.crimeId + '</h1>' +
+                                '<div id="bodyContent" class="center">' + marker.position + '</div>' +
+                                '</div>';
+
+            if (infoWindow != null) infoWindow.close();
+            infoWindow = new google.maps.InfoWindow();
+            infoWindow.setContent(contentString); //"<div style ='width:200px; min-height:40px'>" + marker.position + "</div>");
+            infoWindow.open(map, marker);
+
+            //Update active data selection
+            app.selectRecord(marker.crimeId);
+        }
+    }
+
+    /**
+     * Removes all markers from the map.
+     */
+    function clearMarkers() {
+        for (let i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+            delete markers[i];
+        }
+        markers = [];
+    }
+
+    /**
+    * Sets the boundary of the map to contain all the markers to be seen.
+    * The map centered and the zoom is adjusted based on the markers and their positions.
+    * The best possible view of Google Map is then shown to the user
+    */
+    function setBounds() {
+        var bounds = new google.maps.LatLngBounds();
+
+        for (let i = 0; i < markers.length; i++) {
+            bounds.extend(markers[i].position)
+        }
+        map.setCenter(bounds.getCenter());
+        map.fitBounds(bounds);
+    }
+
+</script>
+
+<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAka2EHrmJfR-AU7CkIJFzplWzG2Z-x_qo&callback=initMap&libraries=visualization&v=weekly" async></script>
+
+</body>
+</html>
