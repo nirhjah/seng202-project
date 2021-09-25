@@ -1,17 +1,14 @@
 package seng202.group2.view;
 
-
 import com.sun.javafx.webkit.WebConsoleListener;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.fxml.LoadException;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
-import seng202.group2.controller.ApplicationEnvironment;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
@@ -173,7 +170,7 @@ public class MapController extends DataObserver implements Initializable {
         ActiveData activeData = DBMS.getActiveData();
 
         //Get active data from frame
-        ArrayList<CrimeRecord> activeRecords = activeData.getActiveRecords(activeData.currentMin, activeData.windowSizeInt);
+        ArrayList<CrimeRecord> activeRecords = activeData.getActiveRecords(activeData.getCurrentMin(), activeData.getFrameSize());
 
         // Remove all markers from the map, then add markers for all currently not selected active records
         clearMarkers();
@@ -224,7 +221,7 @@ public class MapController extends DataObserver implements Initializable {
      * Update markers when the frame changes
      */
     @Override
-    public void frameUpdate() {
+    public void frameUpdate(int min, int max, int size, int total) {
         activeDataUpdate();
     }
 }

@@ -51,8 +51,6 @@ public abstract class DataSource {
         for (DataObserver observer: observers) {
             observer.selectedRecordsUpdate();
         }
-        //System.out.println("Updating selection observers");
-        //System.out.println(DBMS.getActiveData().getSelectedRecords());
     }
 
     /**
@@ -63,14 +61,10 @@ public abstract class DataSource {
      * @param size - Frame size
      */
     public void updateFrame(int min, int max, int size) {
-        //Set variables
-        DBMS.getActiveData().currentMax = max;
-        DBMS.getActiveData().currentMin = min;
-        DBMS.getActiveData().windowSizeInt = size;
 
         //Update all observers
         for (DataObserver observer: observers) {
-            observer.frameUpdate();
+            observer.frameUpdate(min, max, size, DBMS.getActiveRecordsSize());
         }
     }
 }
