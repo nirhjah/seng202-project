@@ -10,7 +10,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.view.MapController">
    <center>
-      <WebView fx:id="webView" fontScale="1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1440.0" BorderPane.alignment="CENTER" />
+      <WebView fx:id="webView" fontScale="0.8" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1440.0" BorderPane.alignment="CENTER" />
    </center>
    <top>
       <HBox prefHeight="28.0" prefWidth="600.0" BorderPane.alignment="CENTER">
@@ -20,7 +20,7 @@
                   <Insets right="10.0" />
                </HBox.margin>
             </Label>
-            <Slider fx:id="radiusSlider" max="300.0" min="1.0" onDragDetected="#updateRadius" prefHeight="14.0" prefWidth="233.0" value="30.0" />
+            <Slider fx:id="radiusSlider" blockIncrement="15.0" max="300.0" min="1.0" prefHeight="24.0" prefWidth="550.0" showTickMarks="true" snapToTicks="true" value="30.0" />
             <CheckBox alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#toggleHeatMap" text="Heatmap">
                <HBox.margin>
                   <Insets left="10.0" />

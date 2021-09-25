@@ -41,7 +41,10 @@
         var myMapOptions = {
             zoom: 1,
             center: new google.maps.LatLng(myLatLng),
-            mapTypeControl: false,
+            mapTypeControl: true,
+            streetViewControl: false,
+            fullscreenControl: false,
+            scaleControl: true,
         }
         map = new google.maps.Map(document.getElementById("map"), myMapOptions);
 

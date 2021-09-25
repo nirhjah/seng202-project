@@ -67,6 +67,10 @@ public class MapController extends DataObserver implements Initializable {
             }
         });
 
+        radiusSlider.valueChangingProperty().addListener((obs, oldVal, newVal) -> {
+            updateRadius();
+        });
+
         //Connect javascript to this Java class so that it can call methods
         JSObject win = (JSObject) webEngine.executeScript("window");
         win.setMember("app", this);
