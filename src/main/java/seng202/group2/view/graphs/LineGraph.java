@@ -33,14 +33,10 @@ public class LineGraph extends Graph {
      *************************************************************************************************************/
 
     // X Axis Options
-    protected Label xSelectorLabel = new Label("X Axis");
-    protected ComboBox<DataCategory> xAxisSelector = new ComboBox<>();
-    protected Numerical xCategory = null;
+    protected SelectionGraphOption<DataCategory> xAxisSelector = new SelectionGraphOption<>("X Axis");
 
     // Y Axis Options
-    protected Label ySelectorLabel = new Label("Y Axis");
-    protected ComboBox<DataCategory> yAxisSelector = new ComboBox<>();
-    protected Numerical yCategory = null;
+    protected SelectionGraphOption<DataCategory> yAxisSelector = new SelectionGraphOption<>("Y Axis");
 
 
     /*************************************************************************************************************
@@ -49,29 +45,22 @@ public class LineGraph extends Graph {
 
     @Override
     public void initialize(BorderPane graphPane, VBox optionList) {
+        super.initialize(graphPane, optionList);
+
         lineChart.setTitle("Line Chart");
         graphPane.setCenter(lineChart);
 
-        xAxisSelector.getItems().addAll(DataCategory.getCategories(Numerical.class));
-        xAxisSelector.getItems().sort((i, j) -> {
-            return i.toString().compareTo(j.toString());
-        });
-        yAxisSelector.getItems().addAll(DataCategory.getCategories(Numerical.class));
-        yAxisSelector.getItems().sort((i, j) -> {
+        // Sort categories alphanumerically
+        ArrayList<DataCategory> categories = new ArrayList<>(DataCategory.getCategories(Numerical.class));
+        categories.sort((i, j) -> {
             return i.toString().compareTo(j.toString());
         });
 
-        populateOptions(optionList);
-    }
+        // Add categories to option lists
+        xAxisSelector.setItems(categories);
+        yAxisSelector.setItems(categories);
 
-    private void populateOptions(VBox optionList) {
-        optionList.getChildren().clear();
-        optionList.getChildren().addAll(xSelectorLabel, xAxisSelector, ySelectorLabel, yAxisSelector);
-    }
-
-    private void retrieveOptions() {
-        xCategory = (Numerical) xAxisSelector.getSelectionModel().getSelectedItem();
-        yCategory = (Numerical) yAxisSelector.getSelectionModel().getSelectedItem();
+        addOptions(xAxisSelector, yAxisSelector);
     }
 
 
@@ -79,24 +68,24 @@ public class LineGraph extends Graph {
      *                                   Graph and Option Initialization.                                        *
      *************************************************************************************************************/
 
-    NumberAxis xAxis = new NumberAxis();
-    NumberAxis yAxis = new NumberAxis();
-    LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+    protected NumberAxis xAxis = new NumberAxis();
+    protected NumberAxis yAxis = new NumberAxis();
+    protected LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
 
     @Override
     public void plotGraph() {
-        retrieveOptions();
+        DataCategory xCat = xAxisSelector.getSelectedItem();
+        DataCategory yCat = yAxisSelector.getSelectedItem();
 
-        if (!isReady())
+        if (xCat == null || yCat == null)
             throw new NullPointerException("One or more required fields have not been set.");
 
-        ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();
-
-        DataCategory xCat = (DataCategory) xCategory;
-        DataCategory yCat = (DataCategory) yCategory;
+        // Set axis labels
         xAxis.setLabel(xCat.toString());
         yAxis.setLabel(yCat.toString());
 
+        // Generate data set from records
+        ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();
         XYChart.Series<Number, Number> dataSeries = new XYChart.Series<>();
         for (CrimeRecord record : records) {
             dataSeries.getData().add(new XYChart.Data<>(
@@ -109,9 +98,4 @@ public class LineGraph extends Graph {
         lineChart.getData().addAll(dataSeries);
     }
 
-    private boolean isReady() {
-        if (xCategory != null && yCategory != null)
-            return true;
-        return false;
-    }
 }
