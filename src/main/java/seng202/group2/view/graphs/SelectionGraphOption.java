@@ -29,6 +29,7 @@ public class SelectionGraphOption<T> extends GraphOption {
         super(name);
 
         root.getChildren().addAll(nameLabel, optionSelector);
+        setItemFactory((item) -> item.toString());
     }
 
     /**
@@ -93,7 +94,10 @@ public class SelectionGraphOption<T> extends GraphOption {
                     public void updateItem(T item, boolean empty) {
                         super.updateItem(item, empty);
                         try {
-                            setText(factoryFunction.apply(item));
+                            if (item != null)
+                                setText(factoryFunction.apply(item));
+                            else
+                                setText("None");
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
