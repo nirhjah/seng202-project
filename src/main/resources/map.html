@@ -12,6 +12,9 @@
         #map {
             height: 100%;
         }
+        .center {
+          text-align: center;
+        }
     </style>
 </head>
 
@@ -244,10 +247,10 @@
             app.deselectRecord(marker.crimeId);
         } else {
             //Open info window
-            const contentString = '<div id="content">' +
+            const contentString = '<div id="content" class="center">' +
                                 '<div id="siteNotice">' + '</div>' +
-                                '<h1 id="firstHeading" class="firstHeading">Crime ID: ' + marker.crimeId + '</h1>' +
-                                '<div id="bodyContent">' + marker.position + '</div>' +
+                                '<h1 id="firstHeading" class="firstHeading" align="center" >Crime ID: ' + marker.crimeId + '</h1>' +
+                                '<div id="bodyContent" class="center">' + marker.position + '</div>' +
                                 '</div>';
 
             if (infoWindow != null) infoWindow.close();
