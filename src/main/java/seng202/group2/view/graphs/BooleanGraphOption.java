@@ -1,5 +1,6 @@
 package seng202.group2.view.graphs;
 
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -28,6 +29,22 @@ public class BooleanGraphOption extends GraphOption {
      */
     public Boolean getState() {
         return checkBox.isSelected();
+    }
+
+    /** A simple functional interface stub to facilitate use of lambda expressions for method addChangeListener. */
+    @FunctionalInterface
+    private interface StateChangeListener {
+        void onChange();
+    }
+
+    /**
+     * Adds a function to be called when a change in the state of the option occurs.
+     * @param onChangeFunction A lambda function which takes no arguments, and returns no parameters.
+     */
+    public void addChangeListener(StateChangeListener onChangeFunction) {
+        checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            onChangeFunction.onChange();
+        });
     }
 
     @Override
