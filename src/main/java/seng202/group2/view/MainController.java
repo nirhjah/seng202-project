@@ -15,6 +15,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -126,6 +127,7 @@ public class MainController extends DataObserver implements Initializable {
 			stage.setResizable(false);
 			stage.setTitle("Import Window");
 			stage.setScene(new Scene(root, 400, 200));
+			stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/CAMS_logo.png")));
 			stage.show();
 		} catch (IOException e) {
 			// This is where you would enter the error handling code, for now just print the stacktrace
@@ -163,6 +165,7 @@ public class MainController extends DataObserver implements Initializable {
 			Stage stage = new Stage();
 			stage.setTitle("Graph Window");
 			stage.setScene(new Scene(root, 1280, 720));
+			stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/CAMS_logo.png")));
 	
 			stage.show();
 		} catch (IOException e) {
@@ -195,6 +198,7 @@ public class MainController extends DataObserver implements Initializable {
 			stage.setResizable(false);
 			stage.setTitle("Filters");
 			stage.setScene(new Scene(root, 600, 400));
+			stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/CAMS_logo.png")));
 			stage.show();
 		} catch (IOException e) {
 			// This is where you would enter the error handling code, for now just print the stacktrace
@@ -220,6 +224,8 @@ public class MainController extends DataObserver implements Initializable {
 			stage.setResizable(false);
 			stage.setTitle("Unimplemented Window");
 			stage.setScene(new Scene(root, 400, 200));
+			stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/CAMS_logo.png")));
+			
 			stage.show();
 		} catch (IOException e) {
 			// This is where you would enter the error handling code, for now just print the stacktrace
