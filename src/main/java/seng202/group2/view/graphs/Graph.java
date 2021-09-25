@@ -1,14 +1,13 @@
 package seng202.group2.view.graphs;
 
-import javafx.scene.control.ListView;
+import javafx.scene.chart.Chart;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.reflections.Reflections;
-import seng202.group2.model.datacategories.DataClassification;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.LinkedHashMap;
 import java.util.Set;
 
 /**
@@ -19,6 +18,10 @@ import java.util.Set;
  * @author Connor Dunlop
  */
 public abstract class Graph {
+
+    /*************************************************************************************************************
+     *                                   Dynamic Graph Type Collection                                           *
+     *************************************************************************************************************/
 
     /**
      * A set of all graph subtype classes found using reflection.
@@ -39,9 +42,7 @@ public abstract class Graph {
 
     /**
      * Searches for Graph subtypes in the graphs package using reflection.
-     * Returns a set populated with the Class object of each Graph subtype.
-     *
-     * @return A set of the Class objects of each Graph subtype.
+     * Adds the Class object of each Graph subtype to the graphTypes set.
      */
     private static void lookupGraphTypes() {
         System.out.println("Scanning for Graph subtypes.");
@@ -68,11 +69,74 @@ public abstract class Graph {
         }
     }
 
+    /*************************************************************************************************************
+     *                                   Graph Option Interfacing                                                *
+     *************************************************************************************************************/
+
+    /** A node used to display graph options/settings to the user. */
+    private VBox optionList;
+    /** A map of option names to their option objects. */
+    private LinkedHashMap<String, GraphOption> options = new LinkedHashMap<>();
+
+    /**
+     * Adds an option to the option pane.
+     * The root node produced by the GraphOption is added to the option list.
+     * @param option A GraphOption to add to the option pane.
+     */
+    public void addOption(GraphOption option) {
+        if (option == null)
+            throw new IllegalArgumentException("Cannot add a null GraphOption.");
+        if (options.containsKey(option.getName()))
+            throw new IllegalArgumentException("Tried to add a GraphOption with name " + option.getName() + ", but a GraphOption with that name already exists.");
+
+        options.put(option.getName(), option);
+        optionList.getChildren().add(option.getRoot());
+    }
+
+    /**
+     * Returns the GraphOption associated with the given name/identifier currently displayed in the options pane.
+     * Returns null if no GraphOption is associated with the given name.
+     *
+     * @param name The name/string identifier of the GraphOption to retrieve.
+     * @return The GraphOption associated with the given name/identifier.
+     */
+    public GraphOption getOption(String name) {
+        return options.get(name);
+    }
+
+    /**
+     * Clears all graph options from the options pane.
+     */
+    public void clearOptions() {
+        optionList.getChildren().clear();
+        options.clear();
+    }
+
+    /*************************************************************************************************************
+     *                                    Graph plotting.                                                        *
+     *************************************************************************************************************/
+
+    /** A node used to display a chart. */
+    private BorderPane graphPane;
+
+    /**
+     * Adds a chart to the graph display pane.
+     * @param chart The graph to display.
+     */
+    public void setChart(Chart chart) {
+        this.graphPane.setCenter(chart);
+    }
+
     /**
      * Sets up the graph and sets it as the center of the provided pane.
      * @param graphPane The pane to add the graph to.
      */
-    public abstract void initialize(BorderPane graphPane, VBox optionList);
+    public void initialize(BorderPane graphPane, VBox optionList) {
+        this.graphPane = graphPane;
+        this.optionList = optionList;
+    }
+
+
 
     /**
      * Generates the graph using the stored settings.
