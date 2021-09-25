@@ -94,6 +94,17 @@ public abstract class Graph {
     }
 
     /**
+     * Adds a collection of options, in the order they are passed, to the option pane.
+     * The root node produced by each GraphOption is added to the option list.
+     * @param options A collection of GraphOptions to add to the option pane.
+     */
+    public void addOptions(GraphOption... options) {
+        for (GraphOption graphOption : options) {
+            addOption(graphOption);
+        }
+    }
+
+    /**
      * Returns the GraphOption associated with the given name/identifier currently displayed in the options pane.
      * Returns null if no GraphOption is associated with the given name.
      *
