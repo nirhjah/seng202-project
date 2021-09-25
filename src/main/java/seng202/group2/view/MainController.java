@@ -159,11 +159,20 @@ public class MainController extends DataObserver implements Initializable {
 	 */
 	public void showGraphWindow() {
 		try {
-			Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("graph.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader();
+
+			Parent root = fxmlLoader.load(CamsApplication.class.getClassLoader().getResource("graph.fxml"));
+			GraphController graphController = (GraphController) fxmlLoader.getController();
+
 			Stage stage = new Stage();
 			stage.setTitle("Graph Window");
 			stage.setScene(new Scene(root, 1280, 720));
-	
+
+			DBMS.getActiveData().addObserver(graphController);
+			stage.setOnCloseRequest(event -> {
+				DBMS.getActiveData().removeObserver(graphController);
+			});
+
 			stage.show();
 		} catch (IOException e) {
 			// This is where you would enter the error handling code, for now just print the stacktrace

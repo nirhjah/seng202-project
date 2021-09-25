@@ -34,8 +34,6 @@ public class GraphController extends DataObserver {
 	 * Initialize method
 	 */
 	public void initialize() {
-		DBMS.getActiveData().addObserver(this);
-
 		for (Class<? extends Graph> graphType : Graph.getGraphTypes()) {
 			graphTypes.put(graphType.toString(), graphType);
 		}
