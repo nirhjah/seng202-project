@@ -8,10 +8,8 @@ import seng202.group2.model.DBMS;
 import seng202.group2.model.datacategories.Categorical;
 import seng202.group2.model.datacategories.DataCategory;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.awt.desktop.SystemEventListener;
+import java.util.*;
 
 public class CrimesOverTimeGraph extends TimeSeriesGraph {
 
@@ -68,7 +66,6 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
             DataCategory perValueCategory = perCategoryValueSelector.getSelectedItem();
             Map<String, XYChart.Series<Number, Number>> perCategoryValueSeries = generateTimeSeriesPerCategory(perValueCategory);
             for (String categoryValue : perCategoryValueSeries.keySet()) {
-                System.out.println("Adding line for category value: " + categoryValue);
                 lineChart.getData().add(perCategoryValueSeries.get(categoryValue));
             }
         }
@@ -115,17 +112,17 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
 
         // For each value the interval may take on, count the number of crime records which have that value
         ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();
-        HashMap<Object, HashMap<Number, Integer>> perCategoryValueCounts = new HashMap<>();
+        HashMap<String, HashMap<Number, Integer>> perCategoryValueCounts = new HashMap<>();
         for (CrimeRecord record : records) {
             // Get the category value of the record
-            Object categoryValue = category.getRecordValue(record);
+            String categoryValue = category.getRecordCategory(record).getValueString();
 
             // Get the time interval value of the record
             Calendar date = record.getDate();
             Number recordIntervalValue = intervalType.getIntervalValue(date);
 
             // If the category value has already been encountered
-            if (perCategoryValueCounts.containsKey(category)) {
+            if (perCategoryValueCounts.containsKey(categoryValue)) {
                 // Get the value count map for that category value
                 HashMap<Number, Integer> valueCounts = perCategoryValueCounts.get(categoryValue);
                 // Increment the count for the interval value of the record
@@ -136,7 +133,6 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
 
             // If the category value has not been encountered yet
             } else {
-                System.out.println("Found new category value: " + categoryValue.toString());
                 // Create a new interval value count map for this category value
                 HashMap<Number, Integer> valueCounts = new HashMap<>();
                 valueCounts.put(recordIntervalValue, 1);
@@ -147,10 +143,8 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
         HashMap<String, XYChart.Series<Number, Number>> categoryValueSeries = new HashMap<>();
 
         // Construct a data series for each category value
-        for (Object categoryValue : perCategoryValueCounts.keySet()) {
-            System.out.println("Creating dataSeries for category value: " + categoryValue.toString());
+        for (String categoryValue : perCategoryValueCounts.keySet()) {
             HashMap<Number, Integer> valueCounts = perCategoryValueCounts.get(categoryValue);
-
             // Construct a series from the record counts for each value
             XYChart.Series<Number, Number> dataSeries = new XYChart.Series<>();
             for (Number value : valueCounts.keySet()) {
@@ -159,7 +153,17 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
                         valueCounts.get(value)
                 ));
             }
-            categoryValueSeries.put(categoryValue.toString(), dataSeries);
+
+//            dataSeries.getData().sort((i, j) -> {
+//                if (i.getXValue().byteValue() > j.getXValue().byteValue())
+//                    return 1;
+//                else if (i.getXValue().byteValue() < j.getXValue().byteValue())
+//                    return -1;
+//                else
+//                    return 0;
+//            });
+
+            categoryValueSeries.put(categoryValue, dataSeries);
         }
 
         return categoryValueSeries;
