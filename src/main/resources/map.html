@@ -66,6 +66,11 @@
         markers.push(marker);
     }
 
+    function reloadMarker(marker) {
+        marker.setMap(null);
+        marker.setMap(map);
+    }
+
     /**
      * Removes a marker corresponding to a specific CrimeRecord from the map.
      * @param recordId  The id of the CrimeRecord whose marker is to be removed.
@@ -125,9 +130,15 @@
             if (infoWindow != null) infoWindow.close();
             app.deselectRecord(marker.crimeId);
         } else {
+            const contentString = '<div id="content">' +
+                                '<div id="siteNotice">' + '</div>' +
+                                '<h1 id="firstHeading" class="firstHeading">Crime ID: ' + marker.crimeId + '</h1>' +
+                                '<div id="bodyContent">' + marker.position + '</div>' +
+                                '</div>';
+
             if (infoWindow != null) infoWindow.close();
             infoWindow = new google.maps.InfoWindow();
-            infoWindow.setContent("<div style ='width:200px; min-height:40px'>" + marker.position + "</div>");
+            infoWindow.setContent(contentString); //"<div style ='width:200px; min-height:40px'>" + marker.position + "</div>");
             infoWindow.open(map, marker);
             app.selectRecord(marker.crimeId);
         }
