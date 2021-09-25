@@ -41,7 +41,7 @@ public class BooleanGraphOption extends GraphOption {
 
     /** A simple functional interface stub to facilitate use of lambda expressions for method addChangeListener. */
     @FunctionalInterface
-    private interface StateChangeListener {
+    public interface StateChangeListener {
         void onChange();
     }
 
