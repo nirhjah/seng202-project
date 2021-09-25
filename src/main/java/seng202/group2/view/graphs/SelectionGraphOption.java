@@ -9,6 +9,7 @@ import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
+import java.util.Collection;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
@@ -40,10 +41,27 @@ public class SelectionGraphOption<T> extends GraphOption {
     }
 
     /**
+     * Sets the choices from which the user may choose from.
+     * @param items The objects between which the user may choose.
+     */
+    public void setItems(Collection<T> items) {
+        clearItems();
+        addItems(items);
+    }
+
+    /**
      * Adds a collection of choices from which the user may choose from.
      * @param items The objects between which the user may choose.
      */
     public void addItems(T... items) {
+        optionSelector.getItems().addAll(items);
+    }
+
+    /**
+     * Adds a collection of choices from which the user may choose from.
+     * @param items The objects between which the user may choose.
+     */
+    public void addItems(Collection<T> items) {
         optionSelector.getItems().addAll(items);
     }
 
