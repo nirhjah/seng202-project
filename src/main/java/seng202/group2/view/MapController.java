@@ -5,11 +5,13 @@ import com.sun.javafx.webkit.WebConsoleListener;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.fxml.LoadException;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
+import seng202.group2.controller.ApplicationEnvironment;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
@@ -30,6 +32,8 @@ import java.util.ResourceBundle;
  */
 
 public class MapController extends DataObserver implements Initializable {
+
+    public boolean mapTabOpen = true;
 
     /** JavaFX's WebView Element hold the visualization of a map.html. */
     @FXML private WebView webView;
@@ -158,8 +162,14 @@ public class MapController extends DataObserver implements Initializable {
         );
     }
 
+    /**
+     * Update active data
+     */
     @Override
     public void activeDataUpdate() {
+        //Exit if not open
+        if (!mapTabOpen) return;
+
         ActiveData activeData = DBMS.getActiveData();
 
         //Get active data from frame
@@ -194,6 +204,9 @@ public class MapController extends DataObserver implements Initializable {
      */
     @Override
     public void selectedRecordsUpdate() {
+        //Exit if tab isnt open
+        if (!mapTabOpen) return;
+
         //Deselect all markers
         webEngine.executeScript(
                 "deselectAllMarkers();"

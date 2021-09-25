@@ -1,6 +1,5 @@
 package seng202.group2.view;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -10,16 +9,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import seng202.group2.controller.CSVImporter;
-import seng202.group2.controller.DataImporter;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.controller.DataObserver;
@@ -49,6 +43,7 @@ public class MainController extends DataObserver implements Initializable {
 	private int currentMax = DBMS.getActiveData().currentMax;
 	@FXML private TextField windowSize;
 	@FXML private Text recordsShown;
+	@FXML private Tab mapTab;
 
 	//Table
 	@FXML private TableView<CrimeRecord> tableView;
@@ -67,6 +62,8 @@ public class MainController extends DataObserver implements Initializable {
 	@FXML private TableColumn<CrimeRecord, Short> fbiCodeColumn;
 	@FXML private TableColumn<CrimeRecord, Short> latitudeColumn;
 	@FXML private TableColumn<CrimeRecord, Short> longitudeColumn;
+
+	@FXML private MapController mapController;
 
 	/**
 	 * Update window size when a new size is entered into windowSize textField.
@@ -127,10 +124,18 @@ public class MainController extends DataObserver implements Initializable {
 		showNotImplementedYet();
 	}
 
+	public void toggleMapTab() {
+		if (mapTab.isSelected()) {
+			//Update map window
+			mapController.mapTabOpen = true;
+			mapController.activeDataUpdate();
+		} else {
+			mapController.mapTabOpen = false;
+		}
+	}
+
 	/**
 	 * This showMapWindow method opens the map window and brings it to the front.
-	 *
-	 * TODO This method is not yet implemented. Temporarily it is calling {@link MainController#showNotImplementedYet()}
 	 */
 	public void showMapWindow() {
 		try {
@@ -139,8 +144,23 @@ public class MainController extends DataObserver implements Initializable {
 			stage.setTitle("Map Window");
 			stage.setScene(new Scene(root, 900, 600));
 			stage.show();
+
+			//Reopen tab on close
+			stage.setOnCloseRequest(event -> {
+				mapTab.setDisable(false);
+				if (mapTab.isSelected()) {
+					mapController.mapTabOpen = true;
+					mapController.activeDataUpdate();
+				}
+			});
+
+			//Dissable map tab
+			mapTab.setDisable(true);
+			mapController.mapTabOpen = false;
+
 		} catch (IOException e) {
 			// This is where you would enter the error handling code, for now just print the stacktrace
+			mapTab.setDisable(false);
 			e.printStackTrace();
 		}
 
@@ -261,16 +281,7 @@ public class MainController extends DataObserver implements Initializable {
 		longitudeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("longitude"));
 		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-		//Import test files
-		File file = new File("testfiles/5k.csv");
-
-		try {
-			DataImporter importer = new CSVImporter(file);
-			DBMS.addRecords(importer.importAllRecords());
-			importer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		mapController.mapTabOpen = false;
 	}
 
 	/**
