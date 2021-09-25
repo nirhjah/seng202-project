@@ -86,6 +86,8 @@ public class GraphController extends DataObserver {
 		//Make sure the full graph is displayed and not obscured
 		hideControlMenu();
 		
+		//TODO find a way to make the screencapture wait until after the control menu is hidden.
+		
 		/*Currently this section assumes that the stage exists (i.e. to click the export button
 		 * the window must be opened.
 		 *Find the edges of the window. These are rounded to give the equivalent of integer values.
@@ -96,7 +98,7 @@ public class GraphController extends DataObserver {
 		double height = Math.floor(stage.getHeight());
 		
 		//Set the bounds of the area to select.
-		Rectangle2D bounds = new Rectangle2D(x + 5, y + 90, width - 70, height - 120);
+		Rectangle2D bounds = new Rectangle2D(x + 10, y + 31, width - 20, height - 33);
 		
 		//Select the given area and create an image
 		javafx.scene.robot.Robot robot = new Robot();
