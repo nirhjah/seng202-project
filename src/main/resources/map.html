@@ -19,11 +19,19 @@
 <div id="map"></div>
 
 <script>
+    //Map objects
     let map;
-
-    /** An array of types google.maps.Marker, storing all markers to be displayed on the map. */
-    let markers = [];
+    let heatmap = null;
     let infoWindow = null;
+
+    //Array of markers
+    let markers = [];
+    let markersEnabled = true;
+
+    //Array of heatmap locations
+    let heatMapData = []
+    let heatMapEnabled = false;
+    let heatMapRadius = 50;
 
     /**
     * Creates the google.maps.Map to be rendered on the html map div element with optional Map options.
@@ -36,6 +44,63 @@
             mapTypeControl: false,
         }
         map = new google.maps.Map(document.getElementById("map"), myMapOptions);
+
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: heatMapData
+        });
+    }
+
+    /**
+     * Change the heatmap raduus variable and update
+     * @param rad Radius to use
+     */
+    function changeRadius(rad) {
+        heatMapRadius = rad;
+        updateHeatMap();
+    }
+
+    /**
+     * Toggle markersEnabled true or not false, set the markers accordingly
+     */
+    function toggleMarkers() {
+        markersEnabled = markersEnabled ? false : true;
+
+        if (markersEnabled) {
+            markers.forEach(function (marker) {
+                marker.setMap(map);
+            });
+        } else {
+            markers.forEach(function (marker) {
+                marker.setMap(null);
+            });
+        }
+    }
+
+    /**
+     * Toggle heatMapEnabled true of false, then update
+     */
+    function toggleHeatmap() {
+        heatMapEnabled = heatMapEnabled ? false : true;
+
+        if (heatMapEnabled) {
+            updateHeatMap();
+        } else {
+            heatmap.setMap(null);
+        }
+    }
+
+    /**
+     * Update the heatmap with new data, depending on heatMapEnabled
+     */
+    function updateHeatMap() {
+        heatmap.setMap(null);
+        if (heatMapEnabled) {
+            heatmap = new google.maps.visualization.HeatmapLayer({
+                data: heatMapData,
+                radius: heatMapRadius,
+            });
+            heatmap.setMap(map);
+        }
     }
 
     /**
@@ -45,6 +110,7 @@
      * @param longitude The longitudinal location at which the crime took place.
      */
     function addMarker(recordId, latitude, longitude, color) {
+        //Create marker
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(latitude, longitude),
             animation: (color == "blue") ? google.maps.Animation.BOUNCE : null,
@@ -57,13 +123,19 @@
             }
         });
 
+        //Create event listener
         google.maps.event.addListener(marker, "click", function(e) {
             toggleMarkerSelected(marker);
         });
 
-        marker.setMap(map);
-
+        //Add to map and list
         markers.push(marker);
+        if (markersEnabled) marker.setMap(map);
+
+        //Add to heatmap
+        heatMapData.push(new google.maps.LatLng(latitude, longitude));
+
+        updateHeatMap();
     }
 
     /**
@@ -75,6 +147,16 @@
 
         marker.setMap(null);
         delete marker;
+
+        //Remove from heatmap
+        for (let i=0; i < heatMapData.length; i++) {
+            if (heatMapData[i].lat == marker.position.lat && heatMapData[i].lng == marker.position.lng) {
+                delete heatMapData[i];
+                break;
+            }
+        }
+
+        updateHeatMap();
     }
 
     /**
@@ -204,7 +286,7 @@
 </script>
 
 <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAka2EHrmJfR-AU7CkIJFzplWzG2Z-x_qo&callback=initMap&libraries=&v=weekly" async></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAka2EHrmJfR-AU7CkIJFzplWzG2Z-x_qo&callback=initMap&libraries=visualization&v=weekly" async></script>
 
 </body>
 </html>

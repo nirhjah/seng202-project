@@ -5,6 +5,8 @@ import com.sun.javafx.webkit.WebConsoleListener;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
@@ -12,7 +14,6 @@ import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -32,6 +33,8 @@ public class MapController extends DataObserver implements Initializable {
 
     /** JavaFX's WebView Element hold the visualization of a map.html. */
     @FXML private WebView webView;
+    @FXML private Label radiusSliderLabel;
+    @FXML private Slider radiusSlider;
 
     /** WebEngine is a non-visual object to support web page managements
      *  and enable two-way communication between a Java application and JavaScript
@@ -59,6 +62,7 @@ public class MapController extends DataObserver implements Initializable {
         // Wait until javascript in map.html has loaded before trying to call functions from there
         webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
+                updateRadius();
                 activeDataUpdate();
             }
         });
@@ -66,6 +70,29 @@ public class MapController extends DataObserver implements Initializable {
         //Connect javascript to this Java class so that it can call methods
         JSObject win = (JSObject) webEngine.executeScript("window");
         win.setMember("app", this);
+    }
+
+    /**
+     * Toggle the markers on and off
+     */
+    public void toggleMarkers() {
+        webEngine.executeScript("toggleMarkers();");
+    }
+
+    /**
+     * Toggle the heatmap on and off
+     */
+    public void toggleHeatMap() {
+        webEngine.executeScript("toggleHeatmap();");
+    }
+
+    /**
+     * Update heatmap radius
+     */
+    public void updateRadius() {
+        int radius = (int) radiusSlider.getValue();
+        radiusSliderLabel.setText("Heatmap Radius: " + radius);
+        webEngine.executeScript("changeRadius(" + radius +");");
     }
 
     /**
