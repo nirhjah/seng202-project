@@ -23,7 +23,7 @@
 
     /** An array of types google.maps.Marker, storing all markers to be displayed on the map. */
     let markers = [];
-    var infoWindow = null;
+    let infoWindow = null;
 
     /**
     * Creates the google.maps.Map to be rendered on the html map div element with optional Map options.
@@ -47,7 +47,10 @@
     function addMarker(recordId, latitude, longitude, color) {
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(latitude, longitude),
+            animation: null,
+            zIndex: 1,
             crimeId: recordId,
+            optimized: true,
             selected: (color == "blue"),
             icon: {
                 url: "http://maps.google.com/mapfiles/ms/icons/" + color + "-dot.png"
@@ -61,11 +64,6 @@
         marker.setMap(map);
 
         markers.push(marker);
-    }
-
-    function reloadMarker(marker) {
-        marker.setMap(null);
-        marker.setMap(map);
     }
 
     /**
@@ -93,6 +91,8 @@
         //Remove currently selected
         for (let i=0; i < markers.length; i++) {
             if (markers[i].selected) {
+                markers[i].setZIndex(1);
+                markers[i].setAnimation(null);
                 markers[i].selected = false;
                 markers[i].setIcon({url: "http://maps.google.com/mapfiles/ms/icons/" + "red" + "-dot.png"});
             }
@@ -101,33 +101,30 @@
 
     function deselectMarker(id) {
         let marker = findMarker(id);
-        console.log(marker + " " + id);
-
         if (marker != null) {
+            marker.setZIndex(1);
+            marker.setAnimation(null);
             marker.selected = false;
             marker.setIcon({url: "http://maps.google.com/mapfiles/ms/icons/" + "red" + "-dot.png"});
-            //reloadMarker(marker);
         }
     }
 
     function selectMarker(id) {
         let marker = findMarker(id);
-        console.log(marker + " " + id);
 
         if (marker != null) {
+            marker.setZIndex(2);
+            marker.setAnimation(google.maps.Animation.BOUNCE);
             marker.selected = true;
             marker.setIcon({url: "http://maps.google.com/mapfiles/ms/icons/" + "blue" + "-dot.png"});
-            //reloadMarker(marker);
         }
     }
 
     function toggleMarkerSelected(marker) {
         if (marker.selected) {
-            //deselectMarker(marker);
             if (infoWindow != null) infoWindow.close();
             app.deselectRecord(marker.crimeId);
         } else {
-            //selectMarker(marker);
             if (infoWindow != null) infoWindow.close();
             infoWindow = new google.maps.InfoWindow();
             infoWindow.setContent("<div style ='width:200px; min-height:40px'>" + marker.position + "</div>");
@@ -153,20 +150,15 @@
     * The best possible view of Google Map is then shown to the user
     */
     function setBounds() {
-
         var bounds = new google.maps.LatLngBounds();
 
         for (let i = 0; i < markers.length; i++) {
-            if (markers[i].position.toString() == "(0, 0)") {
-                markers.splice(i, 1);
-                i--;
-            } else {
-                bounds.extend(markers[i].position)
-            }
+            bounds.extend(markers[i].position)
         }
         map.setCenter(bounds.getCenter());
         map.fitBounds(bounds);
     }
+
 </script>
 
 <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
