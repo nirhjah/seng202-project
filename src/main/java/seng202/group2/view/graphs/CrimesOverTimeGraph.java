@@ -5,8 +5,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
-import seng202.group2.model.datacategories.DataCategory;
-import seng202.group2.model.datacategories.Numerical;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,34 +17,19 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
      *************************************************************************************************************/
 
 
-
     /*************************************************************************************************************
      *                                   Graph and Option Initialization.                                        *
      *************************************************************************************************************/
 
     @Override
     public void initialize(BorderPane graphPane, VBox optionList) {
+        super.initialize(graphPane, optionList);
+
         lineChart.setTitle("Number of Crimes over Time");
-        lineChart.animatedProperty().setValue(false);
         graphPane.setCenter(lineChart);
 
-        intervalTypeSelector.getItems().addAll(TimeSeriesGraph.IntervalType.values());
-
-        yAxisSelector.getItems().addAll(DataCategory.getCategories(Numerical.class));
-        yAxisSelector.getItems().sort((i, j) -> {
-            return i.toString().compareTo(j.toString());
-        });
-
-        populateOptions(optionList);
-    }
-
-    private void populateOptions(VBox optionList) {
-        optionList.getChildren().clear();
-        optionList.getChildren().addAll(intervalTypeLabel, intervalTypeSelector);
-    }
-
-    private void retrieveOptions() {
-        intervalType = intervalTypeSelector.getSelectionModel().getSelectedItem();
+        clearOptions();
+        addOptions(intervalTypeSelector);
     }
 
 
@@ -56,11 +39,12 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
 
     @Override
     public void plotGraph() {
-        retrieveOptions();
+        IntervalType intervalType = intervalTypeSelector.getSelectedItem();
 
-        if (!isReady())
+        if (intervalType == null)
             throw new NullPointerException("One or more required fields have not been set.");
 
+        // Set Axis properties
         xAxis.setLabel(intervalType.toString());
         xAxis.setForceZeroInRange(false);
 
@@ -85,14 +69,9 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
             ));
         }
 
+        // Plot data set
         lineChart.getData().clear();
         lineChart.getData().addAll(dataSeries);
-    }
-
-    private boolean isReady() {
-        if (intervalType != null)
-            return true;
-        return false;
     }
 
 }
