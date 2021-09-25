@@ -2,6 +2,11 @@ package seng202.group2.model.datacategories;
 
 import seng202.group2.model.CrimeRecord;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
+
 /**
  * The address of the crime incident at a city block level.
  * Zip code with last two digits anonymized followed by street name.
@@ -10,8 +15,6 @@ import seng202.group2.model.CrimeRecord;
  *
  */
 public class Block extends DataCategory implements Importable {
-
-	private static final Block instance = new Block();
 	
 	/**
 	 * The address of the crime incident at a city block level.
@@ -19,6 +22,10 @@ public class Block extends DataCategory implements Importable {
 	 */
 	private String block = null;
 
+	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
+			"BLOCK"
+	));
+	private static final Block instance = new Block();
 	public static Block getInstance() {
 		return instance;
 	}
@@ -45,6 +52,11 @@ public class Block extends DataCategory implements Importable {
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getBlockCategory();
+	}
+
+	@Override
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -56,6 +68,16 @@ public class Block extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "block";
+	}
+
+	@Override
+	public String getValueString() {
+		return block.toString();
+	}
+
+	@Override
+	public boolean matchesString(String identifier) {
+		return identifierStrings.contains(identifier);
 	}
 
 	@Override
