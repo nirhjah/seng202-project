@@ -24,6 +24,14 @@ public class BooleanGraphOption extends GraphOption {
     }
 
     /**
+     * Sets the state of the option to enabled if state true, disabled if state false.
+     * @param state True to set the option state to enabled, false to set the option state to disabled.
+     */
+    public void setState(Boolean state) {
+        checkBox.selectedProperty().setValue(state);
+    }
+
+    /**
      * Checks whether the option is enabled or not.
      * @return True if the option is enabled, false otherwise.
      */
