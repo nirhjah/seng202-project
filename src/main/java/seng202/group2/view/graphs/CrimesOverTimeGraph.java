@@ -10,6 +10,23 @@ import seng202.group2.model.datacategories.DataCategory;
 
 import java.util.*;
 
+/**
+ * A TimeSeriesGraph type used to plot a graph of number of crime records over time.
+ * The time domain is partitioned into a set of intervals, and a count of crime records which occur within each
+ * interval is produced. These counts are then plotted against each time interval.
+ *
+ * An option is provided to plot a graph of number of crime records per [DataCategory] over time.
+ * When a (Categorical) DataCategory is selected to plot a line per distinct category value, separate counts for each
+ * category value are kept for the number of crime records that occur within each time interval.
+ *
+ * When plotting graphs of crime records per [DataCategory] over time, the system is unable to cope with large numbers
+ * of distinct category values. To prevent the user's system from being overwhelmed by trying to plot such a graph,
+ * the number lines for distinct category values which may be plotted at once is limited.
+ * The limit is determined by an option presented to the user, which is hard-capped at the value of  MAX_CATEGORY_VALUES.
+ * TODO Provide the user an option to choose which category values are plotted.
+ *
+ * @author Connor Dunlop
+ */
 public class CrimesOverTimeGraph extends TimeSeriesGraph {
 
     private static final String NAME = "Crimes Over Time";
@@ -24,6 +41,10 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
      *************************************************************************************************************/
 
     protected SelectionGraphOption<DataCategory> perCategoryValueSelector = new SelectionGraphOption<>("Plot Line per Category Value");
+
+
+    private final int MAX_CATEGORY_VALUES = 50;
+    protected NumericGraphOption maxCategoryValueSelector = new NumericGraphOption("Maximum Category Value Lines \nto Plot");
 
     /*************************************************************************************************************
      *                                   Graph and Option Initialization.                                        *
@@ -42,9 +63,24 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
         categories.add(0, null);
 
         perCategoryValueSelector.addItems(categories);
+        perCategoryValueSelector.addChangeListener(() -> {
+            populateOptions();
+        });
 
+        maxCategoryValueSelector.setBounds(1, MAX_CATEGORY_VALUES);
+
+        populateOptions();
+    }
+
+    private void populateOptions() {
         clearOptions();
         addOptions(intervalTypeSelector, perCategoryValueSelector);
+        if (perCategoryValueSelector.getSelectedItem() != null) {
+            maxCategoryValueSelector.setRequired(true);
+            addOptions(maxCategoryValueSelector);
+        } else {
+            maxCategoryValueSelector.setRequired(false);
+        }
     }
 
 
@@ -80,8 +116,11 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
     }
 
     /**
+     * Generates a data series containing the counts of crime records in ActiveData which occur within each partition
+     * of the time domain.
+     * The partitions are determined by the IntervalType selected by the user.
      *
-     * @return
+     * @return A data series for the number of crimes over time, according to the user selected time interval.
      */
     private XYChart.Series<Number, Number> generateTimeSeries() {
         IntervalType intervalType = intervalTypeSelector.getSelectedItem();
@@ -111,12 +150,18 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
     }
 
     /**
+     * Generates a data series consisting of number of crimes per time interval from the CrimeRecords in ActiveData,
+     * for each distinct value a record takes on for a given DataCategory.
      *
-     * @param category
-     * @return
+     * TODO Decompose this method, if sensible/possible
+     * @param category A Categorical DataCategory from which to plot a graph for each category value.
+     * @return A map of category values to a series of number of crime records over time, whose crime records have that category value.
      */
     private Map<String, XYChart.Series<Number, Number>> generateTimeSeriesPerCategory(DataCategory category) {
         IntervalType intervalType = intervalTypeSelector.getSelectedItem();
+
+        int maxCategoryValues = maxCategoryValueSelector.getValue();
+        int numCategoryValues = 0;
 
         // For each value the interval may take on, count the number of crime records which have that value
         ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();
@@ -141,6 +186,12 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
 
             // If the category value has not been encountered yet
             } else {
+                // If the maximum number of category values have already been discovered, skip this record
+                if (maxCategoryValues <= numCategoryValues)
+                    continue;
+                else
+                    numCategoryValues++;
+
                 // Create a new interval value count map for this category value
                 HashMap<Number, Integer> valueCounts = new HashMap<>();
                 valueCounts.put(recordIntervalValue, 1);
@@ -161,15 +212,6 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
                         valueCounts.get(value)
                 ));
             }
-
-//            dataSeries.getData().sort((i, j) -> {
-//                if (i.getXValue().byteValue() > j.getXValue().byteValue())
-//                    return 1;
-//                else if (i.getXValue().byteValue() < j.getXValue().byteValue())
-//                    return -1;
-//                else
-//                    return 0;
-//            });
 
             categoryValueSeries.put(categoryValue, dataSeries);
         }
