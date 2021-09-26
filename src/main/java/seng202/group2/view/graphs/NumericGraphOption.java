@@ -13,7 +13,7 @@ public class NumericGraphOption extends GraphOption {
 
     private VBox root = new VBox();
     private Label nameLabel = new Label(NAME);
-    private Spinner<Integer> numberSpinner = new Spinner<>();
+    private Spinner<Integer> numberSpinner = new Spinner<>(0,0,0,1);
 
     NumericGraphOption(String name) {
         super(name);
@@ -38,6 +38,24 @@ public class NumericGraphOption extends GraphOption {
 
         spinnerFactory.setMin(min);
         spinnerFactory.setMax(max);
+    }
+
+    /**
+     * Sets the value in the numeric input.
+     * @param value A value to be set in the numeric input.
+     */
+    public void setValue(Integer value) {
+        SpinnerValueFactory.IntegerSpinnerValueFactory spinnerFactory =
+                (SpinnerValueFactory.IntegerSpinnerValueFactory) numberSpinner.getValueFactory();
+        spinnerFactory.setValue(value);
+    }
+
+    /**
+     * Returns the value of the numeric input.
+     * @return The value of the numeric input.
+     */
+    public Integer getValue() {
+        return numberSpinner.getValue();
     }
 
     @Override
