@@ -25,7 +25,7 @@ public class GraphController extends DataObserver {
 	@FXML private BorderPane controlPane;
 	@FXML private VBox optionList = new VBox();
 
-	private Map<String, Class<? extends Graph>> graphTypes = new HashMap<>();
+	private Map<String, Graph> graphTypes = new HashMap<>();
 	@FXML private ComboBox<String> graphTypeSelector;
 
 	private Graph graph;
@@ -34,8 +34,8 @@ public class GraphController extends DataObserver {
 	 * Initialize method
 	 */
 	public void initialize() {
-		for (Class<? extends Graph> graphType : Graph.getGraphTypes()) {
-			graphTypes.put(graphType.toString(), graphType);
+		for (Graph graphType : Graph.getGraphTypes()) {
+			graphTypes.put(graphType.NAME, graphType);
 		}
 		graphTypeSelector.getItems().addAll(graphTypes.keySet());
 	}

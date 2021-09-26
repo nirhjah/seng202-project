@@ -4,9 +4,11 @@ import javafx.scene.chart.Chart;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import org.reflections.Reflections;
+import seng202.group2.model.datacategories.DataCategory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
@@ -26,17 +28,17 @@ public abstract class Graph {
      *************************************************************************************************************/
 
     /**
-     * A set of all graph subtype classes found using reflection.
+     * A set of all graph subtype instances, from classes found using reflection.
      * This set is populated when the method getGraphTypes is first called.
      */
-    private static Set<Class<? extends Graph>> graphTypes = null;
+    private static Set<Graph> graphTypes = null;
 
     /**
      * Gets a set of the Class objects of each Graph subtype.
      *
-     * @return A set of the Class objects of each Graph subtype found using reflection.
+     * @return A set of instances of each Graph subtype found using reflection.
      */
-    public static final Set<Class<? extends Graph>> getGraphTypes() {
+    public static final Set<Graph> getGraphTypes() {
         if (graphTypes == null)
             lookupGraphTypes();
         return graphTypes;
@@ -44,15 +46,51 @@ public abstract class Graph {
 
     /**
      * Searches for Graph subtypes in the graphs package using reflection.
-     * Adds the Class object of each Graph subtype to the graphTypes set.
+     * Adds an instance of each Graph subtype to the graphTypes set.
      */
     private static void lookupGraphTypes() {
         System.out.println("Scanning for Graph subtypes.");
 
         Reflections reflections = new Reflections("seng202.group2.view.graphs");
-        graphTypes = reflections.getSubTypesOf(Graph.class);
+        Set<Class<? extends Graph>> graphTypeClasses = reflections.getSubTypesOf(Graph.class);
+
+        graphTypes = new HashSet<>();
+        for (Class<? extends Graph> graphClass : graphTypeClasses) {
+            try {
+                Constructor<?> graphConstructor = graphClass.getConstructor();
+                Graph graphInstance = (Graph) graphConstructor.newInstance();
+                if (graphInstance == null)
+                    throw new NullPointerException("Static instance of Graph " + graphClass + " was not initialised.");
+                graphTypes.add(graphInstance);
+            } catch (IllegalAccessException e) {
+                System.out.println("Could not get instance of Graph " + graphClass);
+                System.out.println("The default constructor of " + graphClass + " is not accessible.");
+            } catch (InvocationTargetException e) {
+                System.out.println("Could not get instance of Graph " + graphClass);
+                System.out.println("The default constructor of " + graphClass + " threw an error:");
+                System.out.println(e.getCause().toString());
+                e.getCause().printStackTrace();
+            } catch (NoSuchMethodException e) {
+                System.out.println("Could not get instance of Graph " + graphClass);
+                System.out.println("The default constructor of " + graphClass + " does not exist.");
+            } catch (InstantiationException e) {
+                System.out.println("Could not get instance of Graph " + graphClass);
+                System.out.println("The graph class " + graphClass + " could not be instantiated.");
+            }
+        }
 
         System.out.println("Found Graph subtypes: " + graphTypes);
+    }
+
+    /**
+     * Returns a new instance of the given graph type.
+     *
+     * @param graphType An instance of a particular graph type.
+     * @return A new instance of the given graph type.
+     * @throws InstantiationException If an instance of the given graph type could not be created.
+     */
+    public static Graph newGraph(Graph graphType) throws InstantiationException {
+        return newGraph(graphType.getClass());
     }
 
     /**
