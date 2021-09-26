@@ -27,6 +27,17 @@ public abstract class GraphOption {
         this.NAME_LABEL = new Label(name);
     }
 
+    /**
+     * Creates a new GraphOption with the provided string identifier.
+     * @param name A string identifier for the option. Used to label the option. Must be unique within scope of the Graph.
+     */
+    GraphOption(String name, boolean isRequired) {
+        this.NAME = name;
+        this.NAME_LABEL = new Label(name);
+
+        setRequired(isRequired);
+    }
+
     /** Gets the string identifier of this option. */
     public final String getName() {
         return NAME;

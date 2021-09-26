@@ -32,6 +32,13 @@ public class SelectionGraphOption<T> extends GraphOption {
         setItemFactory((item) -> item.toString());
     }
 
+    SelectionGraphOption(String name, boolean isRequired) {
+        super(name, isRequired);
+
+        root.getChildren().addAll(nameLabel, optionSelector);
+        setItemFactory((item) -> item.toString());
+    }
+
     /**
      * Sets the choices from which the user may choose from.
      * @param items The objects between which the user may choose.

@@ -23,6 +23,12 @@ public class BooleanGraphOption extends GraphOption {
         root.getChildren().addAll(nameLabel, checkBox);
     }
 
+    BooleanGraphOption(String name, boolean isRequired) {
+        super(name, isRequired);
+
+        root.getChildren().addAll(nameLabel, checkBox);
+    }
+
     /**
      * Sets the state of the option to enabled if state true, disabled if state false.
      * @param state True to set the option state to enabled, false to set the option state to disabled.
