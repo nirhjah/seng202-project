@@ -12,9 +12,8 @@ import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
+import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
 
 /**

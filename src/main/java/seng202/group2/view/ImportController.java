@@ -68,7 +68,9 @@ public class ImportController {
 	public void browseImportDirectory()
 	{
 		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Comma Separated Value","*.csv"));
 		File chosenFile = fileChooser.showOpenDialog(null);
+		
 		
 		if (chosenFile != null) {
 			importPathTextField.setText(chosenFile.getAbsolutePath());
