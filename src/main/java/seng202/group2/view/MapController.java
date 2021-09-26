@@ -174,7 +174,7 @@ public class MapController extends DataObserver implements Initializable {
         clearMarkers();
         for (CrimeRecord record : activeRecords) {
             //Prevent null location records
-            if (record.getLatitude() != 0.0 && record.getLongitude() != 0.0) {
+            if (record.getLatitude() != null && record.getLongitude() != null) {
                 if (!DBMS.getActiveData().isSelected(record.getID()))
                     addMarker(record, "red");
             }
@@ -185,7 +185,7 @@ public class MapController extends DataObserver implements Initializable {
             CrimeRecord record = DBMS.getRecord(selectedRecord);
             if (record != null)
                 //Prevent null location records
-                if (record.getLatitude() != 0.0 && record.getLongitude() != 0.0) {
+                if (record.getLatitude() != null && record.getLongitude() != null) {
                     addMarker(record, "blue");
                 }
         }
