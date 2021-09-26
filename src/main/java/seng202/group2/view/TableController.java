@@ -113,9 +113,9 @@ public class TableController extends DataObserver implements Initializable {
     }
 
     @Override
-    public void frameUpdate(int min, int max, int size, int total) {
+    public void frameUpdate() {
         //Get records in frame range
-        ArrayList<CrimeRecord> activeRecords = new ArrayList<>(DBMS.getActiveData().getActiveRecords(min, size));
+        ArrayList<CrimeRecord> activeRecords = new ArrayList<>(DBMS.getActiveData().getActiveRecords());
 
         //Update table
         tableView.getItems().clear();

@@ -79,6 +79,6 @@ public class GraphController extends DataObserver {
 
 	@Override
 	public void frameUpdate() {
-		return;
+		activeDataUpdate();
 	}
 }

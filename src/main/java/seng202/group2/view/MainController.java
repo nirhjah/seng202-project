@@ -42,7 +42,7 @@ public class MainController extends DataObserver implements Initializable {
 	//View controllers
 	@FXML private MapController mapController;
 	@FXML private TableController tableController;
-//	@FXML private GraphController graphController;
+	@FXML private GraphController graphController;
 
 	/**
 	 * Update window size when a new size is entered into windowSize textField.
@@ -104,7 +104,7 @@ public class MainController extends DataObserver implements Initializable {
 			//Update map window
 			ActiveData activeData =  DBMS.getActiveData();
 			activeData.addObserver(mapController);
-			mapController.frameUpdate(activeData.getCurrentMin(), activeData.getCurrentMax(), activeData.getFrameSize(), activeData.getRecordCount());
+			mapController.frameUpdate();
 		} else {
 			DBMS.getActiveData().removeObserver(mapController);
 		}
@@ -118,24 +118,25 @@ public class MainController extends DataObserver implements Initializable {
 			//Update table window
 			ActiveData activeData =  DBMS.getActiveData();
 			activeData.addObserver(tableController);
-			tableController.frameUpdate(activeData.getCurrentMin(), activeData.getCurrentMax(), activeData.getFrameSize(), activeData.getRecordCount());
+			tableController.frameUpdate();
 		} else {
 			DBMS.getActiveData().removeObserver(tableController);
 		}
 	}
 
-//	/**
-//	 * Toggle graph tab visible, called when tabs are changed
-//	 */
-//	public void toggleGraphTab() {
-//		if (graphTab.isSelected()) {
-//			//Update graph window
-//			graphController.graphTabOpen = true;
-//			graphController.activeDataUpdate();
-//		} else {
-//			graphController.graphTabOpen = false;
-//		}
-//	}
+	/**
+	 * Toggle graph tab visible, called when tabs are changed
+	 */
+	public void toggleGraphTab() {
+		if (graphTab.isSelected()) {
+			//Update graph window
+			ActiveData activeData =  DBMS.getActiveData();
+			activeData.addObserver(graphController);
+			graphController.frameUpdate();
+		} else {
+			DBMS.getActiveData().removeObserver(graphController);
+		}
+	}
 
 
 	/**
@@ -146,17 +147,16 @@ public class MainController extends DataObserver implements Initializable {
 			//Get Javafx
 			FXMLLoader loader = new FXMLLoader(CamsApplication.class.getClassLoader().getResource("map.fxml"));
 			Parent root = (Parent) loader.load();
-			MapController controller = (MapController)loader.getController();
-			DBMS.getActiveData().addObserver(controller);
-
+			MapController mapWindowController = (MapController)loader.getController();
 			Stage stage = new Stage();
 			stage.setTitle("Map Window");
 			stage.setScene(new Scene(root, 900, 600));
 			stage.show();
 
+			DBMS.getActiveData().addObserver(mapWindowController);
 			//Reopen map tab on close
 			stage.setOnCloseRequest(event -> {
-				DBMS.getActiveData().removeObserver(controller);
+				DBMS.getActiveData().removeObserver(mapWindowController);
 				mapTab.setDisable(false);
 				toggleMapTab();
 			});
@@ -181,21 +181,33 @@ public class MainController extends DataObserver implements Initializable {
 	 */
 	public void showGraphWindow() {
 		try {
-			FXMLLoader fxmlLoader = new FXMLLoader();
+			FXMLLoader loader = new FXMLLoader(CamsApplication.class.getClassLoader().getResource("graph.fxml"));
 
-			Parent root = fxmlLoader.load(CamsApplication.class.getClassLoader().getResource("graph.fxml"));
-			GraphController graphController = (GraphController) fxmlLoader.getController();
+			Parent root = loader.load();
+			GraphController graphWindowController = (GraphController) loader.getController();
 
 			Stage stage = new Stage();
 			stage.setTitle("Graph Window");
 			stage.setScene(new Scene(root, 1280, 720));
 
-			DBMS.getActiveData().addObserver(graphController);
+			DBMS.getActiveData().addObserver(graphWindowController);
 			stage.setOnCloseRequest(event -> {
-				DBMS.getActiveData().removeObserver(graphController);
+				DBMS.getActiveData().removeObserver(graphWindowController);
 			});
 
 			stage.show();
+
+			//Reopen map tab on close
+			stage.setOnCloseRequest(event -> {
+				DBMS.getActiveData().removeObserver(graphWindowController);
+				graphTab.setDisable(false);
+				toggleGraphTab();
+			});
+
+			//Disable map tab
+			tabPane.getSelectionModel().select(tableTab);
+			graphTab.setDisable(true);
+			toggleMapTab();
 		} catch (IOException e) {
 			// This is where you would enter the error handling code, for now just print the stacktrace
 			e.printStackTrace();
@@ -290,7 +302,7 @@ public class MainController extends DataObserver implements Initializable {
 	}
 
 	@Override
-	public void frameUpdate(int min, int max, int size, int total) {
+	public void frameUpdate() {
 		updateText();
 	}
 }

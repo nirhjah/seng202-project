@@ -31,7 +31,7 @@ public class ActiveData extends DataSource {
         frameSize = newSize;
         currentMax = Math.min(activeData.currentMin + frameSize, recordCount);
 
-        updateFrame(activeData.currentMin, currentMax, frameSize);
+        updateFrame();
     }
 
     /**
@@ -42,7 +42,7 @@ public class ActiveData extends DataSource {
         currentMax = Math.min(currentMax + frameSize, recordCount);
         currentMin = Math.max(Math.min(currentMin + frameSize, recordCount - frameSize), 0);
 
-        updateFrame(currentMin, currentMax, frameSize);
+        updateFrame();
     }
 
     /**
@@ -53,7 +53,7 @@ public class ActiveData extends DataSource {
         currentMin = Math.max(currentMin - frameSize, 0);
         currentMax = Math.max(currentMax - frameSize, Math.max(Math.min(recordCount, frameSize), 0));
 
-        updateFrame(currentMin, currentMax, frameSize);
+        updateFrame();
     }
 
     /**
@@ -230,6 +230,10 @@ public class ActiveData extends DataSource {
      * @return ArrayList<CrimeRecords> of active records.
      */
     public ArrayList<CrimeRecord> getActiveRecords() {
+        return DBMS.getActiveRecords(currentMin, frameSize, generateOrderString());
+    }
+
+    public ArrayList<CrimeRecord> getAllActiveRecords() {
         return DBMS.getActiveRecords(0, -1, generateOrderString());
     }
 

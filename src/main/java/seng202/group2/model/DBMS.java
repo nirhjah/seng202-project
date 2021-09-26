@@ -39,81 +39,48 @@ public class DBMS {
     }
 
     /**
+     * Create a table in the database
+     * @param tableName
+     */
+    private static void createTable(String tableName) {
+        try {
+            System.out.println("Building " + tableName + " table");
+
+            //Get the database and select the table
+            Statement state = conn.createStatement();
+            ResultSet result = state.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND tbl_name='" + tableName + "'");
+
+            //Build table if it does not exist
+            Statement state2 = conn.createStatement();
+            state2.execute("CREATE TABLE IF NOT EXISTS " + tableName + "(id integer,"
+                    + "caseNum string,"
+                    + "date string,"
+                    + "block string,"
+                    + "IUCR string,"
+                    + "primaryDescription string,"
+                    + "secondaryDescription string,"
+                    + "locationDescription string,"
+                    + "arrest boolean,"
+                    + "domestic boolean,"
+                    + "beat short,"
+                    + "ward short,"
+                    + "fbiCode string,"
+                    + "latitude float,"
+                    + "longitude float,"
+                    + "primary key(id));"
+            );
+        } catch (SQLException e) {
+            System.out.println("Failed to create " + tableName + " table in database. DBMS:initialize:78");
+        }
+    }
+
+    /**
      * Create the database and tables if they do not exist. Every computer will run this once, but you can also delete
      * the CrimeRecords.db file, and it will recreate it.
-     *
-     * TODO Test if you can use IF NOT EXISTS
      */
     private static void initialize() {
-        if (!hasDataBase) {
-            hasDataBase = true;
-
-            try {
-                //Get the database and select the table
-                Statement state = conn.createStatement();
-                ResultSet result = state.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND tbl_name='Records'");
-
-                //If the table does not exist
-                if (!result.next()) {
-                    System.out.println("Building table");
-
-                    //Build table
-                    Statement state2 = conn.createStatement();
-                    state2.execute("CREATE TABLE Records(id integer,"
-                            + "caseNum string,"
-                            + "date string,"
-                            + "block string,"
-                            + "IUCR string,"
-                            + "primaryDescription string,"
-                            + "secondaryDescription string,"
-                            + "locationDescription string,"
-                            + "arrest boolean,"
-                            + "domestic boolean,"
-                            + "beat short,"
-                            + "ward short,"
-                            + "fbiCode string,"
-                            + "latitude float,"
-                            + "longitude float,"
-                            + "primary key(id));"
-                    );
-                }
-            } catch (SQLException e) {
-                System.out.println("Failed to create Records table in database. DBMS:initialize:78");
-            }
-
-            try {
-                //Get the database and select the table
-                Statement state = conn.createStatement();
-                ResultSet result = state.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND tbl_name='ActiveRecords'");
-
-                //If the table does not exist
-                if (!result.next()) {
-                    System.out.println("Building table");
-
-                    //Build table
-                    Statement state2 = conn.createStatement();
-                    state2.execute("CREATE TABLE ActiveRecords(id integer,"
-                            + "caseNum string,"
-                            + "date string,"
-                            + "block string,"
-                            + "IUCR string,"
-                            + "primaryDescription string,"
-                            + "secondaryDescription string,"
-                            + "locationDescription string,"
-                            + "arrest boolean,"
-                            + "domestic boolean,"
-                            + "beat short,"
-                            + "ward short,"
-                            + "fbiCode string,"
-                            + "latitude float,"
-                            + "longitude float,"
-                            + "primary key(id));"
-                    );
-                }
-            } catch (SQLException e) {
-                System.out.println("Failed to create ActiveRecords table in database. DBMS:initialize:111");
-            }
-        }
+        createTable("Records");
+        createTable("ActiveRecords");
     }
 
     /**

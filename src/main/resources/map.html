@@ -22,16 +22,46 @@
 <div id="map"></div>
 
 <script>
+    //Map controls
+    let streetNamesEnabled = true;
+    let animationsEnabled = true;
+
+    const fixedStyles = [
+        {
+            featureType: "poi",
+            elementType: "labels",
+            stylers: [
+                { visibility: "off" }
+            ]
+        },
+        {
+            featureType: 'transit',
+            elementType: 'labels',
+            stylers: [{visibility: 'off'}]
+        },
+    ];
+
+    let styles = [];
+
+    let mapOptions = {
+        zoom: 1,
+        mapTypeControl: true,
+        streetViewControl: false,
+        fullscreenControl: false,
+        scaleControl: true,
+        styles: styles,
+    };
+
     //Map objects
     let map;
     let heatmap = null;
     let infoWindow = null;
 
-    //Array of markers
+    //Markers
     let markers = [];
     let markersEnabled = true;
 
-    //Array of heatmap locations
+    //Heatmap
     let heatMapData = []
     let heatMapEnabled = false;
     let heatMapRadius = 50;
@@ -40,16 +70,16 @@
     * Creates the google.maps.Map to be rendered on the html map div element with optional Map options.
     */
     function initMap() {
-        const myLatLng = { lat: 41.763, lng: -87.644 };
-        var myMapOptions = {
+        let initialMapOptions = {
             zoom: 1,
-            center: new google.maps.LatLng(myLatLng),
             mapTypeControl: true,
             streetViewControl: false,
             fullscreenControl: false,
             scaleControl: true,
-        }
-        map = new google.maps.Map(document.getElementById("map"), myMapOptions);
+            styles: fixedStyles,
+        };
+
+        map = new google.maps.Map(document.getElementById("map"), initialMapOptions);
 
         heatmap = new google.maps.visualization.HeatmapLayer({
             data: heatMapData
@@ -95,6 +125,53 @@
         }
     }
 
+    function toggleStreetNames() {
+        streetNamesEnabled = streetNamesEnabled ? false : true;
+
+        //clear styles
+        while (styles.length > 0)
+            styles.pop();
+
+        //Add fixed styles
+        styles = styles.concat(fixedStyles);
+
+        //Add street name style
+        if (streetNamesEnabled) {
+            styles.push({
+                featureType: 'road',
+                elementType: 'labels',
+                stylers: [{visibility: 'on'}]
+            });
+        } else {
+            styles.push({
+                featureType: 'road',
+                elementType: 'labels',
+                stylers: [{visibility: 'off'}]
+            });
+        }
+
+        mapOptions = {
+            zoom: map.zoom,
+            center: map.center,
+            mapTypeControl: map.mapTypeControl,
+            streetViewControl: map.streetViewControl,
+            fullscreenControl: map.fullscreenControl,
+            scaleControl: map.scaleControl,
+            styles: styles,
+        };
+        map.setOptions(mapOptions);
+    }
+
+    function toggleAnimations() {
+        animationsEnabled = animationsEnabled ? false : true;
+
+        if (animationsEnabled) {
+            markers.forEach((marker) => {if (marker.selected) (marker.setAnimation(google.maps.Animation.BOUNCE))})
+        } else {
+            markers.forEach((marker) => {if (marker.selected) (marker.setAnimation(null))})
+        }
+    }
+
     /**
      * Update the heatmap with new data, depending on heatMapEnabled
      */
@@ -119,7 +196,7 @@
         //Create marker
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(latitude, longitude),
-            animation: (color == "blue") ? google.maps.Animation.BOUNCE : null,
+            animation: (color == "blue" && animationsEnabled) ? google.maps.Animation.BOUNCE : null,
             selected: (color == "blue"),
             zIndex: (color == "blue") ? 2 : 1,
             crimeId: recordId,
@@ -227,7 +304,7 @@
         //Select if not null
         if (marker != null) {
             marker.setZIndex(2);
-            marker.setAnimation(google.maps.Animation.BOUNCE);
+            if (animationsEnabled) marker.setAnimation(google.maps.Animation.BOUNCE);
             marker.selected = true;
             marker.setIcon({url: "http://maps.google.com/mapfiles/ms/icons/" + "blue" + "-dot.png"});
         }

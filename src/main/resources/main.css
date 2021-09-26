@@ -6,6 +6,10 @@
     -fx-background-color: #4B007D;
 }
 
+#graph {
+    -fx-background-color: white;
+}
+
 #map {
     -fx-background-color: white;
 }

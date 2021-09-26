@@ -67,6 +67,8 @@ public class LocationDescription extends DataCategory implements Importable, Cat
 
 	@Override
 	public String getValueString() {
+		if (locationDescription == null) throw new NullPointerException();
+
 		return locationDescription.toString();
 	}
 
