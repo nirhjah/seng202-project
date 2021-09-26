@@ -39,8 +39,14 @@ public class CSVImporter extends DataImporter {
 	 * @param file A File instance constructed from the path of the file to be imported from.
 	 * @throws FileNotFoundException If there was no file found at the supplied file path
 	 */
-	public CSVImporter(File file) throws FileNotFoundException {
+	public CSVImporter(File file) throws FileNotFoundException, UnsupportedFileTypeException {
 		super(file);
+
+		// Get suffix
+		String fileName = file.getAbsolutePath();
+		String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+		if (!suffix.equals("csv"))
+			throw new UnsupportedFileTypeException("Cannot import file type \"" + suffix + "\" with CSVImporter.");
 		
 		// Make a new CSV file parser from OpenCSV
 		fileReader = new CSVReader(new FileReader(file));
