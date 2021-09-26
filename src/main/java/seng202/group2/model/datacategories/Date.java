@@ -15,7 +15,7 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class Date extends DataCategory implements Importable, Categorical {
+public class Date extends DataCategory implements Importable {
 	
 	/** The date and time at which the crime incident occurred */
 	private Calendar date = null;
