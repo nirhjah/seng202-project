@@ -102,6 +102,8 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph implements Plottable {
         xAxis.setLabel(intervalType.toString());
         xAxis.setForceZeroInRange(false);
 
+        yAxis.setLabel("Number of Crime Records");
+
         // Plot data set
         lineChart.getData().clear();
         if (perCategoryValueSelector.getSelectedItem() == null) {
@@ -111,6 +113,7 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph implements Plottable {
             DataCategory perValueCategory = perCategoryValueSelector.getSelectedItem();
             Map<String, XYChart.Series<Number, Number>> perCategoryValueSeries = generateTimeSeriesPerCategory(perValueCategory);
             for (String categoryValue : perCategoryValueSeries.keySet()) {
+                perCategoryValueSeries.get(categoryValue).setName(categoryValue);
                 lineChart.getData().add(perCategoryValueSeries.get(categoryValue));
             }
 
