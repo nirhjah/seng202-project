@@ -105,6 +105,7 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
         // Plot data set
         lineChart.getData().clear();
         if (perCategoryValueSelector.getSelectedItem() == null) {
+            lineChart.setLegendVisible(false);
             lineChart.getData().addAll(generateTimeSeries());
         } else {
             DataCategory perValueCategory = perCategoryValueSelector.getSelectedItem();
@@ -112,6 +113,8 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
             for (String categoryValue : perCategoryValueSeries.keySet()) {
                 lineChart.getData().add(perCategoryValueSeries.get(categoryValue));
             }
+
+            lineChart.setLegendVisible(true);
         }
     }
 

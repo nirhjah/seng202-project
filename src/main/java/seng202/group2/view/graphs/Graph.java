@@ -237,6 +237,7 @@ public abstract class Graph {
      */
     protected void setChart(Chart chart) {
         chart.setAnimated(false);
+        chart.setLegendVisible(false);
         this.graphPane.setCenter(chart);
     }
 
