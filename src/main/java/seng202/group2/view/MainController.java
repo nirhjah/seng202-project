@@ -148,17 +148,16 @@ public class MainController extends DataObserver implements Initializable {
 			FXMLLoader loader = new FXMLLoader(CamsApplication.class.getClassLoader().getResource("map.fxml"));
 			Parent root = (Parent) loader.load();
 			MapController controller = (MapController)loader.getController();
+			DBMS.getActiveData().addObserver(controller);
 
 			Stage stage = new Stage();
 			stage.setTitle("Map Window");
 			stage.setScene(new Scene(root, 900, 600));
 			stage.show();
 
-			//Set an onclose event to clean up
-			stage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, controller::exitApplication);
-
 			//Reopen map tab on close
 			stage.setOnCloseRequest(event -> {
+				DBMS.getActiveData().removeObserver(controller);
 				mapTab.setDisable(false);
 				toggleMapTab();
 			});

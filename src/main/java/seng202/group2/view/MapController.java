@@ -53,9 +53,6 @@ public class MapController extends DataObserver implements Initializable {
      *  - Use webEngine to provide access to the document object model of the web page map.html
      */
     public void initialize(URL location, ResourceBundle resources) {
-        DBMS.getActiveData().addObserver(this);
-
-
         webEngine = webView.getEngine();
         webEngine.load(CamsApplication.class.getClassLoader().getResource("map.html").toExternalForm());
 
@@ -79,16 +76,6 @@ public class MapController extends DataObserver implements Initializable {
         //Connect javascript to this Java class so that it can call methods
         JSObject win = (JSObject) webEngine.executeScript("window");
         win.setMember("app", this);
-    }
-
-    /**
-     * Runs when the window is closed
-     *
-     * @param event WindowEvent (close window)
-     */
-    public void exitApplication(WindowEvent event) {
-        //Remove observer
-        DBMS.getActiveData().removeObserver(this);
     }
 
     /**
