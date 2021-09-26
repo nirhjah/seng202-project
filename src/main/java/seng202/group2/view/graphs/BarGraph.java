@@ -140,9 +140,20 @@ public class BarGraph extends Graph {
         // Construct a series with the data from each category
         XYChart.Series<String, Number> dataSeries = new XYChart.Series<>();
         for (CrimeRecord record : records) {
+            String xValue;
+            try {
+                xValue = xCat.getRecordValue(record).toString();
+            } catch (NullPointerException e) {
+                continue;
+            }
+
+            Number yValue = (Number) yCat.getRecordValue(record);
+            if (yValue == null)
+                continue;
+
             dataSeries.getData().add(new XYChart.Data<String, Number>(
-                    xCat.getRecordValue(record).toString(),
-                    (Number) yCat.getRecordValue(record)
+                    xValue,
+                    yValue
             ));
         }
 
@@ -166,7 +177,13 @@ public class BarGraph extends Graph {
         ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();
         HashMap<String, Integer> valueCounts = new HashMap<>();
         for (CrimeRecord record : records) {
-            String recordValue = xCat.getRecordValue(record).toString();
+            String recordValue;
+            try {
+                recordValue = xCat.getRecordValue(record).toString();
+            } catch (NullPointerException e) {
+                continue;
+            }
+
             if (valueCounts.containsKey(recordValue))
                 valueCounts.put(recordValue, valueCounts.get(recordValue) + 1);
             else

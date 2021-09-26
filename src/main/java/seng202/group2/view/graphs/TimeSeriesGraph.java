@@ -42,6 +42,8 @@ public class TimeSeriesGraph extends LineGraph {
 
             @Override
             public Number getIntervalValue(Calendar date) {
+                if (date == null)
+                    return null;
                 return date.get(Calendar.HOUR_OF_DAY);
             }
         },
@@ -54,6 +56,8 @@ public class TimeSeriesGraph extends LineGraph {
 
             @Override
             public Number getIntervalValue(Calendar date) {
+                if (date == null)
+                    return null;
                 return date.get(Calendar.DAY_OF_MONTH);
             }
         },
@@ -66,6 +70,8 @@ public class TimeSeriesGraph extends LineGraph {
 
             @Override
             public Number getIntervalValue(Calendar date) {
+                if (date == null)
+                    return null;
                 return date.get(Calendar.MONTH) + 1;
             }
         },
@@ -78,6 +84,8 @@ public class TimeSeriesGraph extends LineGraph {
 
             @Override
             public Number getIntervalValue(Calendar date) {
+                if (date == null)
+                    return null;
                 return date.get(Calendar.YEAR);
             }
         };
@@ -130,9 +138,16 @@ public class TimeSeriesGraph extends LineGraph {
         XYChart.Series<Number, Number> dataSeries = new XYChart.Series<>();
         for (CrimeRecord record : records) {
             Calendar date = record.getDate();
+
+            Number xValue = intervalType.getIntervalValue(date);
+            Number yValue = (Number) yCategory.getRecordValue(record);
+
+            if (xValue == null || yValue == null)
+                continue;
+
             dataSeries.getData().add(new XYChart.Data<>(
-                    intervalType.getIntervalValue(date),
-                    (Number) yCategory.getRecordValue(record)
+                    xValue,
+                    yValue
             ));
         }
 

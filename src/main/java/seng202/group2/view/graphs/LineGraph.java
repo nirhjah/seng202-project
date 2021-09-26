@@ -93,9 +93,15 @@ public class LineGraph extends Graph {
         ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();
         XYChart.Series<Number, Number> dataSeries = new XYChart.Series<>();
         for (CrimeRecord record : records) {
+            Number xValue = (Number) xCat.getRecordValue(record);
+            Number yValue = (Number) yCat.getRecordValue(record);
+
+            if (xValue == null || yValue == null)
+                continue;
+
             dataSeries.getData().add(new XYChart.Data<>(
-                    (Number) xCat.getRecordValue(record),
-                    (Number) yCat.getRecordValue(record)
+                    xValue,
+                    yValue
             ));
         }
 

@@ -131,6 +131,10 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
         for (CrimeRecord record : records) {
             Calendar date = record.getDate();
             Number recordValue = intervalType.getIntervalValue(date);
+
+            if (recordValue == null)
+                continue;
+
             if (valueCounts.containsKey(recordValue))
                 valueCounts.put(recordValue, valueCounts.get(recordValue) + 1);
             else
@@ -167,12 +171,20 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
         ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();
         HashMap<String, HashMap<Number, Integer>> perCategoryValueCounts = new HashMap<>();
         for (CrimeRecord record : records) {
-            // Get the category value of the record
-            String categoryValue = category.getRecordCategory(record).getValueString();
+            String categoryValue;
+            try {
+                // Get the category value of the record
+                categoryValue = category.getRecordCategory(record).getValueString();
+            } catch (NullPointerException e) {
+                continue;
+            }
 
             // Get the time interval value of the record
             Calendar date = record.getDate();
             Number recordIntervalValue = intervalType.getIntervalValue(date);
+
+            if (recordIntervalValue == null)
+                continue;
 
             // If the category value has already been encountered
             if (perCategoryValueCounts.containsKey(categoryValue)) {
