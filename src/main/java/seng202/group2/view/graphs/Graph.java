@@ -202,9 +202,9 @@ public abstract class Graph {
      */
     public void displayInvalidOptionsDialogue() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            Parent root = fxmlLoader.load(CamsApplication.class.getClassLoader().getResource("graph-settings-dialog.fxml"));
-            GraphConfigurationDialogController dialogController = (GraphConfigurationDialogController) fxmlLoader.getController();
+            FXMLLoader fxmlLoader = new FXMLLoader(CamsApplication.class.getClassLoader().getResource("graph-settings-dialog.fxml"));
+            Parent root = fxmlLoader.load();
+            GraphConfigurationDialogController dialogController = fxmlLoader.getController();
 
             dialogController.addInvalidOptions(getInvalidOptions());
 
