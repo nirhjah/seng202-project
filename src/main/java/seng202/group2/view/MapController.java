@@ -93,6 +93,20 @@ public class MapController extends DataObserver implements Initializable {
     }
 
     /**
+     * Toggle the street names on and off
+     */
+    public void toggleStreetNames() {
+        webEngine.executeScript("toggleStreetNames();");
+    }
+
+    /**
+     * Toggle the animations on and off
+     */
+    public void toggleAnimations() {
+        webEngine.executeScript("toggleAnimations();");
+    }
+
+    /**
      * Update heatmap radius
      */
     public void updateRadius() {

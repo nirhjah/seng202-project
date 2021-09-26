@@ -22,7 +22,7 @@ public class ObserverTestClass extends DataObserver {
      */
     @Override
     public void activeDataUpdate() {
-        testRecords = DBMS.getActiveData().getActiveRecords();
+        testRecords = DBMS.getActiveData().getAllActiveRecords();
     }
 
     @Override
