@@ -81,16 +81,14 @@ public class GraphController extends DataObserver {
 	@FXML public void plotGraph() {
 		graph.plotGraph();
 	}
-	
+
+	// TODO Hide graph options pane when taking a screencap
 	@FXML public void showExportWindow() {
-		//Make sure the full graph is displayed and not obscured
-		hideControlMenu();
-		
-		//TODO find a way to make the screencapture wait until after the control menu is hidden.
-		
-		/*Currently this section assumes that the stage exists (i.e. to click the export button
+
+		/*
+		 * Currently this section assumes that the stage exists (i.e. to click the export button
 		 * the window must be opened.
-		 *Find the edges of the window. These are rounded to give the equivalent of integer values.
+		 * Find the edges of the window. These are rounded to give the equivalent of integer values.
 		 */
 		double x = Math.floor(stage.getX());
 		double y = Math.floor(stage.getY());
@@ -116,17 +114,17 @@ public class GraphController extends DataObserver {
 		File save = saveChooser.showSaveDialog(saveStage);
 		
 		//Check filename is not null and save file
-		if(save != null) {
+		if (save != null) {
 			String saveName = save.getName();
 			//check whether user put ".png" on the filename
-			if(!saveName.toUpperCase().endsWith(".PNG")) {
+			if (!saveName.toUpperCase().endsWith(".PNG")) {
 				save = new File(save.getAbsolutePath() + ".png");
 			}
 			
 			//Write to the file
 			try {
 				ImageIO.write(SwingFXUtils.fromFXImage(exportVisual, null), "png", save);
-			} catch(IOException e) {
+			} catch (IOException e) {
 				// This is where you would enter the error handling code, for now just print the stacktrace
 				e.printStackTrace();
 			}
