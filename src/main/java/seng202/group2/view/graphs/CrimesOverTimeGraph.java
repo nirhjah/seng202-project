@@ -8,10 +8,11 @@ import seng202.group2.model.DBMS;
 import seng202.group2.model.datacategories.Categorical;
 import seng202.group2.model.datacategories.DataCategory;
 
-import java.awt.desktop.SystemEventListener;
 import java.util.*;
 
 public class CrimesOverTimeGraph extends TimeSeriesGraph {
+
+    public static final String NAME = "Crimes Over Time";
 
     /*************************************************************************************************************
      *                                   Graph Settings and Options.                                             *
@@ -28,7 +29,6 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
         super.initialize(graphPane, optionList);
 
         lineChart.setTitle("Number of Crimes over Time");
-        graphPane.setCenter(lineChart);
 
         ArrayList<DataCategory> categories = new ArrayList<>(DataCategory.getCategories(Categorical.class));
         categories.sort((i, j) -> {

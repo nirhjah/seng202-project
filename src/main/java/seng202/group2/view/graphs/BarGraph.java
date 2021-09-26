@@ -23,6 +23,8 @@ import java.util.*;
  */
 public class BarGraph extends Graph {
 
+    public static final String NAME = "Bar";
+
     /*************************************************************************************************************
      *                                   Graph Settings and Options.                                             *
      *************************************************************************************************************/
@@ -47,7 +49,7 @@ public class BarGraph extends Graph {
         super.initialize(graphPane, optionList);
 
         barChart.setTitle("Bar Graph");
-        graphPane.setCenter(barChart);
+        setChart(barChart);
 
         ArrayList<DataCategory> xCategories = new ArrayList<>(DataCategory.getCategories(Categorical.class));
         xCategories.sort((i, j) -> {

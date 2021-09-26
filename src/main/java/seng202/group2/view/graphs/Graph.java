@@ -19,6 +19,8 @@ import java.util.Set;
  */
 public abstract class Graph {
 
+    public static final String NAME = "Invalid Graph Type";
+
     /*************************************************************************************************************
      *                                   Dynamic Graph Type Collection                                           *
      *************************************************************************************************************/
@@ -134,7 +136,8 @@ public abstract class Graph {
      * Adds a chart to the graph display pane.
      * @param chart The graph to display.
      */
-    public void setChart(Chart chart) {
+    protected void setChart(Chart chart) {
+        chart.setAnimated(false);
         this.graphPane.setCenter(chart);
     }
 

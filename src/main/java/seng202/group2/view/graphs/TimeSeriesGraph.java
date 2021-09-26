@@ -12,6 +12,8 @@ import java.util.Calendar;
 
 public class TimeSeriesGraph extends LineGraph {
 
+    public static final String NAME = "Time Series";
+
     /*************************************************************************************************************
      *                                   Graph Settings and Options.                                             *
      *************************************************************************************************************/
@@ -93,7 +95,6 @@ public class TimeSeriesGraph extends LineGraph {
         super.initialize(graphPane, optionList);
 
         lineChart.setTitle("Time Series Chart");
-        graphPane.setCenter(lineChart);
 
         intervalTypeSelector.setItems(IntervalType.values());
 

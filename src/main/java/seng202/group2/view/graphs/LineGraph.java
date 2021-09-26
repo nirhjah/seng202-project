@@ -3,30 +3,22 @@ package seng202.group2.view.graphs;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
-import seng202.group2.model.datacategories.Categorical;
 import seng202.group2.model.datacategories.DataCategory;
-import seng202.group2.model.datacategories.DataClassification;
 import seng202.group2.model.datacategories.Numerical;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  *
  * @author Connor Dunlop
  */
 public class LineGraph extends Graph {
+
+    public static final String NAME = "Line";
 
     /*************************************************************************************************************
      *                                   Graph Settings and Options.                                             *
@@ -48,7 +40,7 @@ public class LineGraph extends Graph {
         super.initialize(graphPane, optionList);
 
         lineChart.setTitle("Line Chart");
-        graphPane.setCenter(lineChart);
+        setChart(lineChart);
 
         // Sort categories alphanumerically
         ArrayList<DataCategory> categories = new ArrayList<>(DataCategory.getCategories(Numerical.class));
