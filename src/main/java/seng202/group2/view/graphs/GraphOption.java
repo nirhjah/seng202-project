@@ -58,4 +58,11 @@ public abstract class GraphOption {
      * @return True if this option is in a valid state for plotting, false if the option's state does not meet the requirements for plotting.
      */
     public abstract boolean requirementsMet();
+
+    /**
+     * Returns a string describing the state of the option.
+     * This description should include information about the validity of the option's configuration.
+     * @return A string describing the option's state, with regard to validity.
+     */
+    public abstract String getValidityMessage();
 }

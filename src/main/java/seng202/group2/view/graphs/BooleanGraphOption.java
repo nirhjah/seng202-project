@@ -68,4 +68,9 @@ public class BooleanGraphOption extends GraphOption {
     public boolean requirementsMet() {
         return true;
     }
+
+    @Override
+    public String getValidityMessage() {
+        return "Configuration valid";
+    }
 }

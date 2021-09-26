@@ -124,4 +124,12 @@ public class SelectionGraphOption<T> extends GraphOption {
         else
             return true;
     }
+
+    @Override
+    public String getValidityMessage() {
+        if (requirementsMet())
+            return "Configuration valid";
+        else
+            return "Must select an option";
+    }
 }

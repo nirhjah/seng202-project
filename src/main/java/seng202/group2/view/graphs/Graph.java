@@ -1,10 +1,18 @@
 package seng202.group2.view.graphs;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.Chart;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.reflections.Reflections;
+import seng202.group2.view.CamsApplication;
+import seng202.group2.view.GraphController;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
@@ -187,6 +195,33 @@ public abstract class Graph {
                 invalidOptions.add(option);
         }
         return invalidOptions;
+    }
+
+    /**
+     * Creates a dialogue box indicating that not all options are in a valid state for plotting.
+     */
+    public void displayInvalidOptionsDialogue() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = fxmlLoader.load(CamsApplication.class.getClassLoader().getResource("graph-settings-dialog.fxml"));
+            GraphConfigurationDialogController dialogController = (GraphConfigurationDialogController) fxmlLoader.getController();
+
+            dialogController.addInvalidOptions(getInvalidOptions());
+
+            Stage stage = new Stage();
+
+            // Prevent use of the application while dialogue is open.
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+
+            stage.setTitle("Error: Invalid Graph Configuration");
+            stage.setScene(new Scene(root, 400, 300));
+
+            stage.show();
+        } catch (IOException e) {
+            // This is where you would enter the error handling code, for now just print the stacktrace
+            e.printStackTrace();
+        }
     }
 
     /*************************************************************************************************************
