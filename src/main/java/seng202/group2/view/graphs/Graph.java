@@ -4,7 +4,6 @@ import javafx.scene.chart.Chart;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import org.reflections.Reflections;
-import seng202.group2.model.datacategories.DataCategory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -21,7 +20,7 @@ import java.util.Set;
  */
 public abstract class Graph {
 
-    public static final String NAME = "Invalid Graph Type";
+    public abstract String getName();
 
     /*************************************************************************************************************
      *                                   Dynamic Graph Type Collection                                           *

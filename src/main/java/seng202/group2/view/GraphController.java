@@ -35,7 +35,7 @@ public class GraphController extends DataObserver {
 	 */
 	public void initialize() {
 		for (Graph graphType : Graph.getGraphTypes()) {
-			graphTypes.put(graphType.NAME, graphType);
+			graphTypes.put(graphType.getName(), graphType);
 		}
 		graphTypeSelector.getItems().addAll(graphTypes.keySet());
 	}

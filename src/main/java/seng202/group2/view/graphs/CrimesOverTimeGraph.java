@@ -12,7 +12,12 @@ import java.util.*;
 
 public class CrimesOverTimeGraph extends TimeSeriesGraph {
 
-    public static final String NAME = "Crimes Over Time";
+    private static final String NAME = "Crimes Over Time";
+
+    @Override
+    public String getName() {
+        return this.NAME;
+    }
 
     /*************************************************************************************************************
      *                                   Graph Settings and Options.                                             *

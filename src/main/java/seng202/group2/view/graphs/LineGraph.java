@@ -18,7 +18,12 @@ import java.util.ArrayList;
  */
 public class LineGraph extends Graph {
 
-    public static final String NAME = "Line";
+    private static final String NAME = "Line";
+
+    @Override
+    public String getName() {
+        return this.NAME;
+    }
 
     /*************************************************************************************************************
      *                                   Graph Settings and Options.                                             *

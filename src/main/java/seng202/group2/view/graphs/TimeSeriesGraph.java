@@ -12,7 +12,12 @@ import java.util.Calendar;
 
 public class TimeSeriesGraph extends LineGraph {
 
-    public static final String NAME = "Time Series";
+    private static final String NAME = "Time Series";
+
+    @Override
+    public String getName() {
+        return this.NAME;
+    }
 
     /*************************************************************************************************************
      *                                   Graph Settings and Options.                                             *

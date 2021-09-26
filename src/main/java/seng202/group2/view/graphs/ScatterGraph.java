@@ -18,7 +18,12 @@ import java.util.ArrayList;
  */
 public class ScatterGraph extends Graph {
 
-    public static final String NAME = "Scatter";
+    private static final String NAME = "Scatter";
+
+    @Override
+    public String getName() {
+        return this.NAME;
+    }
 
     /*************************************************************************************************************
      *                                   Graph Settings and Options.                                             *

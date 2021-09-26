@@ -23,7 +23,12 @@ import java.util.*;
  */
 public class BarGraph extends Graph {
 
-    public static final String NAME = "Bar";
+    private static final String NAME = "Bar";
+
+    @Override
+    public String getName() {
+        return this.NAME;
+    }
 
     /*************************************************************************************************************
      *                                   Graph Settings and Options.                                             *
