@@ -13,6 +13,10 @@ import seng202.group2.model.datacategories.Numerical;
 import java.util.ArrayList;
 
 /**
+ * A simple Graph type used to plot a scatter chart.
+ * Populates the graph options pane with two selection options, one for selecting a DataCategory for the X Axis,
+ * another for selecting a DataCategory for the Y Axis.
+ * The DataCategorys for each axis are Numerical.
  *
  * @author Connor Dunlop
  */

@@ -10,6 +10,15 @@ import seng202.group2.model.datacategories.DataCategory;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+/**
+ * A LineGraph type which is used to plot a graph over time.
+ * Defines an enumeration of intervals which the user may choose between.
+ * When plotting records using a TimeSeriesGraph, the time domain is partitioned into intervals.
+ *
+ * TODO Add more time intervals - continuous, custom, more primitives such as day of week, etc.
+ *
+ * @author Connor Dunlop
+ */
 public class TimeSeriesGraph extends LineGraph {
 
     private static final String NAME = "Time Series";
