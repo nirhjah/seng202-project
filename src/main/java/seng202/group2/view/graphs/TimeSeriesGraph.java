@@ -88,7 +88,7 @@ public class TimeSeriesGraph extends LineGraph {
         public abstract Number getIntervalValue(Calendar date);
     }
 
-    protected SelectionGraphOption<IntervalType> intervalTypeSelector = new SelectionGraphOption<>("Interval Type");
+    protected SelectionGraphOption<IntervalType> intervalTypeSelector = new SelectionGraphOption<>("Interval Type", true);
 
 
     /*************************************************************************************************************
@@ -117,8 +117,11 @@ public class TimeSeriesGraph extends LineGraph {
         IntervalType intervalType = intervalTypeSelector.getSelectedItem();
         DataCategory yCategory = yAxisSelector.getSelectedItem();
 
-        if (intervalTypeSelector.getSelectedItem() == null || yAxisSelector.getSelectedItem() == null)
-            throw new NullPointerException("One or more required fields have not been set.");
+        // Check all required fields have been set
+        if (!optionStatesValid()) {
+            displayInvalidOptionsDialogue();
+            return;
+        }
 
         // Set Axis labels
         xAxis.setLabel(intervalType.toString());

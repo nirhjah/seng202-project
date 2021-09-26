@@ -39,10 +39,10 @@ public class BarGraph extends Graph {
     protected BooleanGraphOption recordCountToggle = new BooleanGraphOption("Record Count");
 
     // X Axis Options
-    protected SelectionGraphOption<DataCategory> xAxisSelector = new SelectionGraphOption<>("X Axis");
+    protected SelectionGraphOption<DataCategory> xAxisSelector = new SelectionGraphOption<>("X Axis", true);
 
     // Y Axis Options
-    protected SelectionGraphOption<DataCategory> yAxisSelector = new SelectionGraphOption<>("Y Axis");
+    protected SelectionGraphOption<DataCategory> yAxisSelector = new SelectionGraphOption<>("Y Axis", true);
 
 
     /*************************************************************************************************************
@@ -102,8 +102,10 @@ public class BarGraph extends Graph {
             yCategory = yAxisSelector.getSelectedItem();
 
         // Check all required fields have been set
-        if (xCategory == null || (!recordCountToggle.getState() && yCategory == null))
-            throw new NullPointerException("One or more required fields have not been set.");
+        if (!optionStatesValid()) {
+            displayInvalidOptionsDialogue();
+            return;
+        }
 
         // Set Axis labels as required
         xAxis.setLabel(xCategory.toString());

@@ -30,10 +30,10 @@ public class LineGraph extends Graph {
      *************************************************************************************************************/
 
     // X Axis Options
-    protected SelectionGraphOption<DataCategory> xAxisSelector = new SelectionGraphOption<>("X Axis");
+    protected SelectionGraphOption<DataCategory> xAxisSelector = new SelectionGraphOption<>("X Axis", true);
 
     // Y Axis Options
-    protected SelectionGraphOption<DataCategory> yAxisSelector = new SelectionGraphOption<>("Y Axis");
+    protected SelectionGraphOption<DataCategory> yAxisSelector = new SelectionGraphOption<>("Y Axis", true);
 
 
     /*************************************************************************************************************
@@ -75,8 +75,11 @@ public class LineGraph extends Graph {
         DataCategory xCat = xAxisSelector.getSelectedItem();
         DataCategory yCat = yAxisSelector.getSelectedItem();
 
-        if (xCat == null || yCat == null)
-            throw new NullPointerException("One or more required fields have not been set.");
+        // Check all required fields have been set
+        if (!optionStatesValid()) {
+            displayInvalidOptionsDialogue();
+            return;
+        }
 
         // Set axis labels
         xAxis.setLabel(xCat.toString());

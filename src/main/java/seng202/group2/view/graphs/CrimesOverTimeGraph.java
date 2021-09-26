@@ -56,8 +56,11 @@ public class CrimesOverTimeGraph extends TimeSeriesGraph {
     public void plotGraph() {
         IntervalType intervalType = intervalTypeSelector.getSelectedItem();
 
-        if (intervalType == null)
-            throw new NullPointerException("One or more required fields have not been set.");
+        // Check all required fields have been set
+        if (!optionStatesValid()) {
+            displayInvalidOptionsDialogue();
+            return;
+        }
 
         // Set Axis properties
         xAxis.setLabel(intervalType.toString());
