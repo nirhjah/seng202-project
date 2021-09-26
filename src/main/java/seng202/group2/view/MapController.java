@@ -27,6 +27,7 @@ import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
+import seng202.group2.view.graphs.GraphConfigurationDialogController;
 
 import java.io.File;
 import java.io.IOException;
@@ -252,11 +253,38 @@ public class MapController extends DataObserver implements Initializable {
         activeDataUpdate();
     }
 
+    public void showExportErrorDialogue() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(CamsApplication.class.getClassLoader().getResource("export-unsupported-dialog.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = new Stage();
+
+            // Prevent use of the application while dialogue is open.
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+
+            stage.setTitle("Exporting not Supported in Tabbed Views.");
+            stage.setScene(new Scene(root, 400, 300));
+
+            stage.show();
+        } catch (IOException e) {
+            // This is where you would enter the error handling code, for now just print the stacktrace
+            e.printStackTrace();
+        }
+    };
+
     /**
 	 * This showExportWindow method opens the export window and brings it to the front.
 	 * It allows the user to export the current map window as a visual.
 	 */
 	public void showExportWindow() {
+
+        if (stage == null) {
+            showExportErrorDialogue();
+            return;
+        }
+
 		/*Currently this section assumes that the stage exists (i.e. to click the export button
 		 * the window must be opened.
 		 *Find the edges of the window. These are rounded to give the equivalent of integer values.

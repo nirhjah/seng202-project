@@ -11,7 +11,10 @@ import javax.imageio.ImageIO;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
@@ -19,6 +22,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.robot.Robot;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
@@ -91,8 +95,34 @@ public class GraphController extends DataObserver {
 			graph.plotGraph();
 	}
 
+	public void showExportErrorDialogue() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(CamsApplication.class.getClassLoader().getResource("export-unsupported-dialog.fxml"));
+			Parent root = fxmlLoader.load();
+
+			Stage stage = new Stage();
+
+			// Prevent use of the application while dialogue is open.
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setResizable(false);
+
+			stage.setTitle("Exporting not Supported in Tabbed Views.");
+			stage.setScene(new Scene(root, 400, 300));
+
+			stage.show();
+		} catch (IOException e) {
+			// This is where you would enter the error handling code, for now just print the stacktrace
+			e.printStackTrace();
+		}
+	};
+
 	// TODO Hide graph options pane when taking a screencap
 	@FXML public void showExportWindow() {
+
+		if (stage == null) {
+			showExportErrorDialogue();
+			return;
+		}
 
 		/*
 		 * Currently this section assumes that the stage exists (i.e. to click the export button
