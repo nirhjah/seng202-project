@@ -15,7 +15,9 @@ class NumericGraphOptionTest {
     /** JavaFX environment must be initialised to use JavaFX components. */
     @BeforeAll
     static void initializeJavaFXEnvironment() {
-        Platform.startup(() -> {});
+        try {
+            Platform.startup(() -> {});
+        } catch (IllegalStateException e) {}
     }
 
     /** Tests getting and setting of the numerical value. */

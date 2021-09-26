@@ -16,7 +16,9 @@ class BooleanGraphOptionTest {
     /** To create JFX components JFX must be initialized. */
     @BeforeAll
     static void initializeJavaFXEnvironment() {
-        Platform.startup(() -> {});
+        try {
+            Platform.startup(() -> {});
+        } catch (IllegalStateException e) {}
     }
 
     /** Tests setting and getting of boolean state. */

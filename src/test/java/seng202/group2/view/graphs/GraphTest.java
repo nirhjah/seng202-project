@@ -35,7 +35,9 @@ class GraphTest {
     /** JavaFX environment and toolkits must be initialised to be able to create JavaFX components. */
     @BeforeAll
     static void initializeJavaFXEnvironment() {
-        Platform.startup(() -> {});
+        try {
+            Platform.startup(() -> {});
+        } catch (IllegalStateException e) {}
 
         testGraph.initialize(new BorderPane(), new VBox());
     }

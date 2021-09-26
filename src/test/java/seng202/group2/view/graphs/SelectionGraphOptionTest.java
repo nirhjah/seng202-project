@@ -18,7 +18,9 @@ class SelectionGraphOptionTest {
     /** JFX must be initialised to construct JFX components. */
     @BeforeAll
     static void initializeJavaFXEnvironment() {
-        Platform.startup(() -> {});
+        try {
+            Platform.startup(() -> {});
+        } catch (IllegalStateException e) {}
     }
 
     /** Tests setting and getting of choices */
