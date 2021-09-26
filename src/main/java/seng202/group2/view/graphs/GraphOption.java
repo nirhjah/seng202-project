@@ -37,4 +37,25 @@ public abstract class GraphOption {
      * @return A root node whose children display, and allow the user to interact with, this graph option.
      */
     public abstract Node getRoot();
+
+    /**
+     * A flag which indicates whether this option has invalid and valid states,
+     * where a valid state is required to plot the graph.
+     * False by default.
+     */
+    protected boolean isRequired = false;
+
+    /**
+     * Sets whether this option must be set to be able to plot the graph to which this option applies.
+     * @param isRequired True if this option must be set for plotting, false if it does not need to be set.
+     */
+    public void setRequired(boolean isRequired) {
+        this.isRequired = isRequired;
+    }
+
+    /**
+     * Checks whether this option has a valid state set for plotting.
+     * @return True if this option is in a valid state for plotting, false if the option's state does not meet the requirements for plotting.
+     */
+    public abstract boolean requirementsMet();
 }

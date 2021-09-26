@@ -111,4 +111,17 @@ public class SelectionGraphOption<T> extends GraphOption {
     public Node getRoot() {
         return root;
     }
+
+    /**
+     * A SelectionGraphOption is in a valid state for plotting if either it is not required to be in a valid state for
+     * plotting, or if an item has been selected.
+     * @return True if in a valid state for plotting, false if not.
+     */
+    @Override
+    public boolean requirementsMet() {
+        if (isRequired)
+            return optionSelector.getSelectionModel().getSelectedItem() != null;
+        else
+            return true;
+    }
 }

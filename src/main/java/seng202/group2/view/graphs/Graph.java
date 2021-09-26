@@ -9,6 +9,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -162,6 +163,32 @@ public abstract class Graph {
         options.clear();
     }
 
+    /**
+     * Checks that all GraphOptions are in a valid state for plotting.
+     * I.e. checks that all required options are in a valid configuration.
+     * @return False if any options are in an invalid state for plotting, true if all options are in a valid state.
+     */
+    public boolean optionStatesValid() {
+        for (GraphOption option : options.values()) {
+            if (!option.requirementsMet())
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * Returns a set of all GraphOptions which are not in a valid state for plotting.
+     * @return A set of all GraphOptions which are not in a valid state for plotting.
+     */
+    public Set<GraphOption> getInvalidOptions() {
+        LinkedHashSet<GraphOption> invalidOptions = new LinkedHashSet<>();
+        for (GraphOption option : options.values()) {
+            if (!option.requirementsMet())
+                invalidOptions.add(option);
+        }
+        return invalidOptions;
+    }
+
     /*************************************************************************************************************
      *                                    Graph plotting.                                                        *
      *************************************************************************************************************/
@@ -187,10 +214,9 @@ public abstract class Graph {
         this.optionList = optionList;
     }
 
-
-
     /**
      * Generates the graph using the stored settings.
      */
     public abstract void plotGraph();
+
 }

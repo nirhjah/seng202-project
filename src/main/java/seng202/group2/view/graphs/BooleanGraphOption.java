@@ -59,4 +59,13 @@ public class BooleanGraphOption extends GraphOption {
     public Node getRoot() {
         return root;
     }
+
+    /**
+     * A BooleanGraphOption has no invalid state for plotting, so always return true.
+     * @return true
+     */
+    @Override
+    public boolean requirementsMet() {
+        return true;
+    }
 }
