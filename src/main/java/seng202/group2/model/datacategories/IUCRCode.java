@@ -13,7 +13,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class IUCRCode extends DataCategory implements Importable {
+public class IUCRCode extends DataCategory implements Importable, Categorical {
 
 	/** The IUCR code */
 	private String iucrCode = null;

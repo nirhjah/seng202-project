@@ -13,7 +13,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class SecondaryDescription extends DataCategory implements Importable {
+public class SecondaryDescription extends DataCategory implements Importable, Categorical {
 
 	/** The secondary description of the crime type this code corresponds to */
 	private String secondaryDescription = null;

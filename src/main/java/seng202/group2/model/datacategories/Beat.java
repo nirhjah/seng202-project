@@ -13,7 +13,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class Beat extends DataCategory implements Importable {
+public class Beat extends DataCategory implements Importable, Numerical, Categorical {
 
 	/**
 	 * Police district where the crime incident occurred.

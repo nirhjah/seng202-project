@@ -176,10 +176,30 @@ public class MainController extends DataObserver implements Initializable {
 	/**
 	 * This showGraphWindow method opens the graph window and brings it to the front.
 	 *
-	 * TODO This method is not yet implemented. Temporarily it is calling {@link MainController#showNotImplementedYet()}
+	 * The graph window uses the 'graph.fxml' FXML file and the GraphController Class
+	 * @see GraphController
 	 */
 	public void showGraphWindow() {
-		showNotImplementedYet();
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+
+			Parent root = fxmlLoader.load(CamsApplication.class.getClassLoader().getResource("graph.fxml"));
+			GraphController graphController = (GraphController) fxmlLoader.getController();
+
+			Stage stage = new Stage();
+			stage.setTitle("Graph Window");
+			stage.setScene(new Scene(root, 1280, 720));
+
+			DBMS.getActiveData().addObserver(graphController);
+			stage.setOnCloseRequest(event -> {
+				DBMS.getActiveData().removeObserver(graphController);
+			});
+
+			stage.show();
+		} catch (IOException e) {
+			// This is where you would enter the error handling code, for now just print the stacktrace
+			e.printStackTrace();
+		}
 	}
 
 	/**

@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class LocationDescription extends DataCategory implements Importable {
+public class LocationDescription extends DataCategory implements Importable, Categorical {
 
 	/** A textual description of the location where the crime incident occurred */
 	private String locationDescription = null;

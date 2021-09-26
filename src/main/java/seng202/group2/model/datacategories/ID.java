@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class ID extends DataCategory implements Importable {
+public class ID extends DataCategory implements Importable, Numerical, Categorical {
 
     /** The ID associated with the crime record in the police database */
     private Integer ID = -1;

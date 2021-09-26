@@ -42,6 +42,15 @@ public abstract class DataCategory {
 		return dataCategories;
 	}
 
+	public static final Set<DataCategory> getCategories(Class<? extends DataClassification> classification) {
+		Set<DataCategory> subSetCategories = new HashSet<>();
+		for (DataCategory dataCategory : dataCategories) {
+			if (classification.isInstance(dataCategory))
+				subSetCategories.add(dataCategory);
+		}
+		return subSetCategories;
+	}
+
 	/**
 	 * Searches for DataCategory subtypes in the datacategories package using reflection.
 	 * Returns a set populated with the static instances stored by each DataCategory subtype,

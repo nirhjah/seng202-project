@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class Ward extends DataCategory implements Importable {
+public class Ward extends DataCategory implements Importable, Numerical, Categorical {
 
 	/** Election precinct where the crime incident occurred. */
 	private Short ward = null;

@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class Longitude extends DataCategory implements Importable {
+public class Longitude extends DataCategory implements Importable, Numerical {
 
 	/** The longitudinal location where the crime incident occurred. */
 	private Float longitude = null;
