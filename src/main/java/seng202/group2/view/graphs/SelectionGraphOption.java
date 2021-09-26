@@ -97,6 +97,14 @@ public class SelectionGraphOption<T> extends GraphOption {
     }
 
     /**
+     * Sets the selection to the specified item.
+     * @param item The item to select.
+     */
+    public void setSelectedItem(T item) {
+        optionSelector.getSelectionModel().select(item);
+    }
+
+    /**
      * Gets the choice which has been chosen by the user.
      * @return The object selected by the user.
      */
