@@ -51,6 +51,9 @@ public class ScatterGraph extends Graph {
         scatterChart.setTitle("Scatter Chart");
         setChart(scatterChart);
 
+        xAxis.setForceZeroInRange(false);
+        yAxis.setForceZeroInRange(false);
+
         // Sort categories alphanumerically
         ArrayList<DataCategory> categories = new ArrayList<>(DataCategory.getCategories(Numerical.class));
         categories.sort((i, j) -> {

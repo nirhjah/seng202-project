@@ -51,6 +51,9 @@ public class LineGraph extends Graph {
         lineChart.setTitle("Line Chart");
         setChart(lineChart);
 
+        xAxis.setForceZeroInRange(false);
+        yAxis.setForceZeroInRange(false);
+
         // Sort categories alphanumerically
         ArrayList<DataCategory> categories = new ArrayList<>(DataCategory.getCategories(Numerical.class));
         categories.sort((i, j) -> {
