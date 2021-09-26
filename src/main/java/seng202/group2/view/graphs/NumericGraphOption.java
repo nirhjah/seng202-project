@@ -47,6 +47,10 @@ public class NumericGraphOption extends GraphOption {
     public void setValue(Integer value) {
         SpinnerValueFactory.IntegerSpinnerValueFactory spinnerFactory =
                 (SpinnerValueFactory.IntegerSpinnerValueFactory) numberSpinner.getValueFactory();
+
+        if (value < spinnerFactory.getMin() || spinnerFactory.getMax() < value)
+            throw new IllegalArgumentException("Value out of bounds.");
+
         spinnerFactory.setValue(value);
     }
 
