@@ -56,16 +56,12 @@ public abstract class DataSource {
 
     /**
      * Update active data frame variables and update all observers of the change
-     *
-     * @param min - Minimum database index to show
-     * @param max - Maximum database index to show
-     * @param size - Frame size
      */
-    public void updateFrame(int min, int max, int size) {
+    public void updateFrame() {
 
         //Update all observers
         for (DataObserver observer: observers) {
-            observer.frameUpdate(min, max, size, DBMS.getActiveRecordsSize());
+            observer.frameUpdate();
         }
     }
 }

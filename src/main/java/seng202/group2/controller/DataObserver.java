@@ -17,11 +17,6 @@ public abstract class DataObserver {
 
     /**
      * Update the view frame
-     *
-     * @param min Minimum index to display
-     * @param max  Maximum index to display
-     * @param size Frame size
-     * @param total Total size of activeRecords database
      */
-    public abstract void frameUpdate(int min, int max, int size, int total);
+    public abstract void frameUpdate();
 }

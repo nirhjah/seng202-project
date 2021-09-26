@@ -78,7 +78,7 @@ public class GraphController extends DataObserver {
 	}
 
 	@Override
-	public void frameUpdate(int min, int max, int size, int total) {
+	public void frameUpdate() {
 		activeDataUpdate();
 	}
 }

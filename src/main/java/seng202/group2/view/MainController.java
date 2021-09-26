@@ -104,7 +104,7 @@ public class MainController extends DataObserver implements Initializable {
 			//Update map window
 			ActiveData activeData =  DBMS.getActiveData();
 			activeData.addObserver(mapController);
-			mapController.frameUpdate(activeData.getCurrentMin(), activeData.getCurrentMax(), activeData.getFrameSize(), activeData.getRecordCount());
+			mapController.frameUpdate();
 		} else {
 			DBMS.getActiveData().removeObserver(mapController);
 		}
@@ -118,7 +118,7 @@ public class MainController extends DataObserver implements Initializable {
 			//Update table window
 			ActiveData activeData =  DBMS.getActiveData();
 			activeData.addObserver(tableController);
-			tableController.frameUpdate(activeData.getCurrentMin(), activeData.getCurrentMax(), activeData.getFrameSize(), activeData.getRecordCount());
+			tableController.frameUpdate();
 		} else {
 			DBMS.getActiveData().removeObserver(tableController);
 		}
@@ -132,7 +132,7 @@ public class MainController extends DataObserver implements Initializable {
 			//Update graph window
 			ActiveData activeData =  DBMS.getActiveData();
 			activeData.addObserver(graphController);
-			graphController.frameUpdate(activeData.getCurrentMin(), activeData.getCurrentMax(), activeData.getFrameSize(), activeData.getRecordCount());
+			graphController.frameUpdate();
 		} else {
 			DBMS.getActiveData().removeObserver(graphController);
 		}
@@ -302,7 +302,7 @@ public class MainController extends DataObserver implements Initializable {
 	}
 
 	@Override
-	public void frameUpdate(int min, int max, int size, int total) {
+	public void frameUpdate() {
 		updateText();
 	}
 }

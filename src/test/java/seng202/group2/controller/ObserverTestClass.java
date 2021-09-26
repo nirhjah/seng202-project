@@ -1,4 +1,5 @@
 package seng202.group2.controller;
+import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
 
@@ -31,11 +32,12 @@ public class ObserverTestClass extends DataObserver {
     }
 
     @Override
-    public void frameUpdate(int min, int max, int size, int total) {
-        this.min = min;
-        this.max = max;
-        this.size = size;
-        this.total = total;
+    public void frameUpdate() {
+        ActiveData activeData = DBMS.getActiveData();
+        this.min = activeData.getCurrentMin();
+        this.max = activeData.getCurrentMax();
+        this.size = activeData.getFrameSize();
+        this.total = activeData.getRecordCount();
     }
 
     /**

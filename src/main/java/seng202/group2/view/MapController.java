@@ -182,7 +182,7 @@ public class MapController extends DataObserver implements Initializable {
         ActiveData activeData = DBMS.getActiveData();
 
         //Get active data from frame
-        ArrayList<CrimeRecord> activeRecords = activeData.getActiveRecords(activeData.getCurrentMin(), activeData.getFrameSize());
+        ArrayList<CrimeRecord> activeRecords = activeData.getActiveRecords();
 
         // Remove all markers from the map, then add markers for all currently not selected active records
         clearMarkers();
@@ -230,7 +230,7 @@ public class MapController extends DataObserver implements Initializable {
      * Update markers when the frame changes
      */
     @Override
-    public void frameUpdate(int min, int max, int size, int total) {
+    public void frameUpdate() {
         activeDataUpdate();
     }
 }
