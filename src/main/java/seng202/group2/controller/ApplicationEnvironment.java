@@ -10,7 +10,6 @@ import java.sql.SQLException;
 
 // TODO: implement class
 public class ApplicationEnvironment {
-
 	public static void main(String[] args) throws IOException {
 		DBMS.clearDB();
 		CamsApplication.main(args);

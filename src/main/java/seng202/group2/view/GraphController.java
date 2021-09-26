@@ -3,6 +3,7 @@ package seng202.group2.view;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ import javafx.stage.Stage;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
 import seng202.group2.view.graphs.Graph;
+import seng202.group2.view.graphs.Plottable;
 
 
 /**
@@ -37,7 +39,7 @@ public class GraphController extends DataObserver {
 	@FXML private BorderPane controlPane;
 	@FXML private VBox optionList = new VBox();
 
-	private Map<String, Class<? extends Graph>> graphTypes = new HashMap<>();
+	private Map<String, Graph> graphTypes = new HashMap<>();
 	@FXML private ComboBox<String> graphTypeSelector;
 
 	private Graph graph;
@@ -48,12 +50,18 @@ public class GraphController extends DataObserver {
 	 * Initialize method
 	 */
 	public void initialize() {
-		DBMS.getActiveData().addObserver(this);
-
-		for (Class<? extends Graph> graphType : Graph.getGraphTypes()) {
-			graphTypes.put(graphType.toString(), graphType);
+		for (Graph graphType : Graph.getGraphTypes()) {
+			if (!(graphType instanceof Plottable))
+				continue;
+			graphTypes.put(graphType.getName(), graphType);
 		}
-		graphTypeSelector.getItems().addAll(graphTypes.keySet());
+
+		ArrayList<String> sortedGraphTypes = new ArrayList<String>(graphTypes.keySet());
+		sortedGraphTypes.sort((i, j) -> {
+			return i.toString().compareTo(j.toString());
+		});
+
+		graphTypeSelector.getItems().addAll(sortedGraphTypes);
 	}
 
 	@FXML public void selectGraphType() {
@@ -79,7 +87,8 @@ public class GraphController extends DataObserver {
 	}
 
 	@FXML public void plotGraph() {
-		graph.plotGraph();
+		if (graph != null)
+			graph.plotGraph();
 	}
 
 	// TODO Hide graph options pane when taking a screencap
@@ -94,25 +103,25 @@ public class GraphController extends DataObserver {
 		double y = Math.floor(stage.getY());
 		double width = Math.floor(stage.getWidth());
 		double height = Math.floor(stage.getHeight());
-		
+
 		//Set the bounds of the area to select.
 		Rectangle2D bounds = new Rectangle2D(x + 10, y + 31, width - 20, height - 33);
-		
+
 		//Select the given area and create an image
 		javafx.scene.robot.Robot robot = new Robot();
 		WritableImage exportVisual = robot.getScreenCapture(null, bounds);
-		
+
 		//Save the image
 		//Create a save dialog
 		FileChooser saveChooser = new FileChooser();
 		saveChooser.setTitle("Save Image");
 		FileChooser.ExtensionFilter saveTypes = new FileChooser.ExtensionFilter("image files (*.png)", "*.png");
 		saveChooser.getExtensionFilters().add(saveTypes);
-		
+
 		Stage saveStage = new Stage();
 		saveStage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/CAMS_logo.png")));
 		File save = saveChooser.showSaveDialog(saveStage);
-		
+
 		//Check filename is not null and save file
 		if (save != null) {
 			String saveName = save.getName();
@@ -120,7 +129,7 @@ public class GraphController extends DataObserver {
 			if (!saveName.toUpperCase().endsWith(".PNG")) {
 				save = new File(save.getAbsolutePath() + ".png");
 			}
-			
+
 			//Write to the file
 			try {
 				ImageIO.write(SwingFXUtils.fromFXImage(exportVisual, null), "png", save);
@@ -132,10 +141,20 @@ public class GraphController extends DataObserver {
 	}
 
 	@Override
-	public void updateModel() {
+	public void activeDataUpdate() {
 		plotGraph();
 	}
-	
+
+	@Override
+	public void selectedRecordsUpdate() {
+		return;
+	}
+
+	@Override
+	public void frameUpdate() {
+		activeDataUpdate();
+	}
+
 	/**
 	 * Used to define for this class the window in which it exists
 	 * @param stage

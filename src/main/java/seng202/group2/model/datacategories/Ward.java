@@ -2,6 +2,10 @@ package seng202.group2.model.datacategories;
 
 import seng202.group2.model.CrimeRecord;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Election precinct where the crime incident occurred.
  * 
@@ -10,11 +14,13 @@ import seng202.group2.model.CrimeRecord;
  */
 public class Ward extends DataCategory implements Importable, Numerical, Categorical {
 
-	private static final Ward instance = new Ward();
-
 	/** Election precinct where the crime incident occurred. */
 	private Short ward = null;
 
+	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
+			"WARD"
+	));
+	private static final Ward instance = new Ward();
 	public static Ward getInstance() {
 		return instance;
 	}
@@ -41,6 +47,11 @@ public class Ward extends DataCategory implements Importable, Numerical, Categor
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getWardCategory();
+	}
+
+	@Override
 	public Short parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -57,6 +68,19 @@ public class Ward extends DataCategory implements Importable, Numerical, Categor
 	@Override
 	public String getSQL() {
 		return "ward";
+	}
+
+	@Override
+	public String getValueString() {
+		if (ward == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
+		return ward.toString();
+	}
+
+	@Override
+	public boolean matchesString(String identifier) {
+		return identifierStrings.contains(identifier);
 	}
 
 	@Override

@@ -3,44 +3,41 @@ package seng202.group2.view.graphs;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
-import seng202.group2.model.datacategories.Categorical;
 import seng202.group2.model.datacategories.DataCategory;
-import seng202.group2.model.datacategories.DataClassification;
 import seng202.group2.model.datacategories.Numerical;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
+ * A simple Graph type used to plot a line chart.
+ * Populates the graph options pane with two selection options, one for selecting a DataCategory for the X Axis,
+ * another for selecting a DataCategory for the Y Axis.
+ * The DataCategorys for both axis are Numerical.
  *
  * @author Connor Dunlop
  */
 public class LineGraph extends Graph {
+
+    private static final String NAME = "Line";
+
+    @Override
+    public String getName() {
+        return this.NAME;
+    }
 
     /*************************************************************************************************************
      *                                   Graph Settings and Options.                                             *
      *************************************************************************************************************/
 
     // X Axis Options
-    protected Label xSelectorLabel = new Label("X Axis");
-    protected ComboBox<DataCategory> xAxisSelector = new ComboBox<>();
-    protected Numerical xCategory = null;
+    protected SelectionGraphOption<DataCategory> xAxisSelector = new SelectionGraphOption<>("X Axis", true);
 
     // Y Axis Options
-    protected Label ySelectorLabel = new Label("Y Axis");
-    protected ComboBox<DataCategory> yAxisSelector = new ComboBox<>();
-    protected Numerical yCategory = null;
+    protected SelectionGraphOption<DataCategory> yAxisSelector = new SelectionGraphOption<>("Y Axis", true);
 
 
     /*************************************************************************************************************
@@ -49,29 +46,26 @@ public class LineGraph extends Graph {
 
     @Override
     public void initialize(BorderPane graphPane, VBox optionList) {
+        super.initialize(graphPane, optionList);
+
         lineChart.setTitle("Line Chart");
-        graphPane.setCenter(lineChart);
+        setChart(lineChart);
 
-        xAxisSelector.getItems().addAll(DataCategory.getCategories(Numerical.class));
-        xAxisSelector.getItems().sort((i, j) -> {
+        xAxis.setForceZeroInRange(false);
+        yAxis.setForceZeroInRange(false);
+
+        // Sort categories alphanumerically
+        ArrayList<DataCategory> categories = new ArrayList<>(DataCategory.getCategories(Numerical.class));
+        categories.sort((i, j) -> {
             return i.toString().compareTo(j.toString());
         });
-        yAxisSelector.getItems().addAll(DataCategory.getCategories(Numerical.class));
-        yAxisSelector.getItems().sort((i, j) -> {
-            return i.toString().compareTo(j.toString());
-        });
 
-        populateOptions(optionList);
-    }
+        // Add categories to option lists
+        xAxisSelector.setItems(categories);
+        yAxisSelector.setItems(categories);
 
-    private void populateOptions(VBox optionList) {
-        optionList.getChildren().clear();
-        optionList.getChildren().addAll(xSelectorLabel, xAxisSelector, ySelectorLabel, yAxisSelector);
-    }
-
-    private void retrieveOptions() {
-        xCategory = (Numerical) xAxisSelector.getSelectionModel().getSelectedItem();
-        yCategory = (Numerical) yAxisSelector.getSelectionModel().getSelectedItem();
+        clearOptions();
+        addOptions(xAxisSelector, yAxisSelector);
     }
 
 
@@ -79,29 +73,38 @@ public class LineGraph extends Graph {
      *                                   Graph and Option Initialization.                                        *
      *************************************************************************************************************/
 
-    NumberAxis xAxis = new NumberAxis();
-    NumberAxis yAxis = new NumberAxis();
-    LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+    protected NumberAxis xAxis = new NumberAxis();
+    protected NumberAxis yAxis = new NumberAxis();
+    protected LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
 
     @Override
     public void plotGraph() {
-        retrieveOptions();
+        DataCategory xCat = xAxisSelector.getSelectedItem();
+        DataCategory yCat = yAxisSelector.getSelectedItem();
 
-        if (!isReady())
-            throw new NullPointerException("One or more required fields have not been set.");
+        // Check all required fields have been set
+        if (!optionStatesValid()) {
+            displayInvalidOptionsDialogue();
+            return;
+        }
 
-        ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();
-
-        DataCategory xCat = (DataCategory) xCategory;
-        DataCategory yCat = (DataCategory) yCategory;
+        // Set axis labels
         xAxis.setLabel(xCat.toString());
         yAxis.setLabel(yCat.toString());
 
+        // Generate data set from records
+        ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();
         XYChart.Series<Number, Number> dataSeries = new XYChart.Series<>();
         for (CrimeRecord record : records) {
+            Number xValue = (Number) xCat.getRecordValue(record);
+            Number yValue = (Number) yCat.getRecordValue(record);
+
+            if (xValue == null || yValue == null)
+                continue;
+
             dataSeries.getData().add(new XYChart.Data<>(
-                    (Number) xCat.getRecordValue(record),
-                    (Number) yCat.getRecordValue(record)
+                    xValue,
+                    yValue
             ));
         }
 
@@ -109,9 +112,4 @@ public class LineGraph extends Graph {
         lineChart.getData().addAll(dataSeries);
     }
 
-    private boolean isReady() {
-        if (xCategory != null && yCategory != null)
-            return true;
-        return false;
-    }
 }

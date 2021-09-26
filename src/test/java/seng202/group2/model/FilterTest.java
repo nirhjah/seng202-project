@@ -77,7 +77,7 @@ public class FilterTest {
     void equalitySingleTest() {
         activeData.addFilter(FilterType.EQ.createFilter(Beat.getInstance(), "5"));
 
-        ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        ArrayList<CrimeRecord> records = activeData.getAllActiveRecords();
         assertEquals(1, records.size());
 
         assertEquals((short) 5, records.get(0).getBeat());
@@ -96,7 +96,7 @@ public class FilterTest {
         for (Short expectedBeat : expectedBeats)
             activeData.addFilter(FilterType.EQ.createFilter(Beat.getInstance(), expectedBeat.toString()));
 
-        ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        ArrayList<CrimeRecord> records = activeData.getAllActiveRecords();
         assertEquals(expectedBeats.size(), records.size());
 
         for (CrimeRecord record : records)
@@ -116,7 +116,7 @@ public class FilterTest {
 
         activeData.addFilter(FilterType.GT.createFilter(Beat.getInstance(), gtValue.toString()));
 
-        ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        ArrayList<CrimeRecord> records = activeData.getAllActiveRecords();
         assertEquals(numRecords - gtValue, records.size());
 
         for (CrimeRecord record : records)
@@ -138,7 +138,7 @@ public class FilterTest {
         activeData.addFilter(FilterType.GT.createFilter(Beat.getInstance(), gtValueSmall.toString()));
         activeData.addFilter(FilterType.GT.createFilter(Beat.getInstance(), gtValue.toString()));
 
-        ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        ArrayList<CrimeRecord> records = activeData.getAllActiveRecords();
         assertEquals(numRecords - gtValue, records.size());
 
         for (CrimeRecord record : records)
@@ -158,7 +158,7 @@ public class FilterTest {
 
         activeData.addFilter(FilterType.LT.createFilter(Beat.getInstance(), ltValue.toString()));
 
-        ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        ArrayList<CrimeRecord> records = activeData.getAllActiveRecords();
         assertEquals(ltValue - 1, records.size());
 
         for (CrimeRecord record : records)
@@ -180,7 +180,7 @@ public class FilterTest {
         activeData.addFilter(FilterType.LT.createFilter(Beat.getInstance(), ltValueBig.toString()));
         activeData.addFilter(FilterType.LT.createFilter(Beat.getInstance(), ltValue.toString()));
 
-        ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        ArrayList<CrimeRecord> records = activeData.getAllActiveRecords();
         assertEquals(ltValue - 1, records.size());
 
         for (CrimeRecord record : records)
@@ -198,7 +198,7 @@ public class FilterTest {
         for (short i = numRecords; 0 < i; i--)
             expectedBeats.add(i);
 
-        ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        ArrayList<CrimeRecord> records = activeData.getAllActiveRecords();
         assertEquals(numRecords, records.size());
 
         for (int i = 0; i < numRecords; i++)
@@ -218,7 +218,7 @@ public class FilterTest {
         for (short i = numRecords; 0 < i; i--)
             expectedBeats.add(i);
 
-        ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        ArrayList<CrimeRecord> records = activeData.getAllActiveRecords();
         assertEquals(numRecords, records.size());
 
         for (int i = 0; i < numRecords; i++)
@@ -238,12 +238,12 @@ public class FilterTest {
         activeData.addFilter(ltFilter);
 
         // No records should match these filters
-        ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        ArrayList<CrimeRecord> records = activeData.getAllActiveRecords();
         assertEquals(0, records.size());
 
         // Remove one filter so some match
         activeData.removeFilter(ltFilter);
-        records = activeData.getActiveRecords();
+        records = activeData.getAllActiveRecords();
         assertEquals(1, records.size());
 
         assertEquals((short) 9, records.get(0).getBeat());
@@ -267,7 +267,7 @@ public class FilterTest {
         activeData.addFilter(FilterType.EQ.createFilter(Beat.getInstance(), "8"));
         activeData.addFilter(FilterType.SORT.createFilter(Beat.getInstance(), "DESC"));
 
-        ArrayList<CrimeRecord> records = activeData.getActiveRecords();
+        ArrayList<CrimeRecord> records = activeData.getAllActiveRecords();
         assertEquals(expectedBeats.size(), records.size());
 
         for (int i = 0; i < expectedBeats.size(); i++)

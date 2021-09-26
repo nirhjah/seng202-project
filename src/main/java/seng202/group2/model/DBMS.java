@@ -1,5 +1,8 @@
 package seng202.group2.model;
 
+import seng202.group2.model.datacategories.DataCategory;
+import seng202.group2.model.datacategories.ID;
+
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,7 +16,7 @@ import java.util.Calendar;
 public class DBMS {
 
     private static final ActiveData activeData = new ActiveData();               //Active data class
-    private static final String DATE_FORMAT = "yyyy/MM/dd hh:mm:ss a";     //Date format
+    private static final String DATE_FORMAT = "MM'/'dd'/'yyyy hh':'mm':'ss a";     //Date format
     private static  boolean hasDataBase = false;                           //Database is created
     private static Connection conn;                                        //Database connection
     private static int idCounter = -1;                                     //Current item ID
@@ -36,81 +39,48 @@ public class DBMS {
     }
 
     /**
+     * Create a table in the database
+     * @param tableName
+     */
+    private static void createTable(String tableName) {
+        try {
+            System.out.println("Building " + tableName + " table");
+
+            //Get the database and select the table
+            Statement state = conn.createStatement();
+            ResultSet result = state.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND tbl_name='" + tableName + "'");
+
+            //Build table if it does not exist
+            Statement state2 = conn.createStatement();
+            state2.execute("CREATE TABLE IF NOT EXISTS " + tableName + "(id integer,"
+                    + "caseNum string,"
+                    + "date string,"
+                    + "block string,"
+                    + "IUCR string,"
+                    + "primaryDescription string,"
+                    + "secondaryDescription string,"
+                    + "locationDescription string,"
+                    + "arrest boolean,"
+                    + "domestic boolean,"
+                    + "beat short,"
+                    + "ward short,"
+                    + "fbiCode string,"
+                    + "latitude float,"
+                    + "longitude float,"
+                    + "primary key(id));"
+            );
+        } catch (SQLException e) {
+            System.out.println("Failed to create " + tableName + " table in database. DBMS:initialize:78");
+        }
+    }
+
+    /**
      * Create the database and tables if they do not exist. Every computer will run this once, but you can also delete
      * the CrimeRecords.db file, and it will recreate it.
-     *
-     * TODO Test if you can use IF NOT EXISTS
      */
     private static void initialize() {
-        if (!hasDataBase) {
-            hasDataBase = true;
-
-            try {
-                //Get the database and select the table
-                Statement state = conn.createStatement();
-                ResultSet result = state.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND tbl_name='Records'");
-
-                //If the table does not exist
-                if (!result.next()) {
-                    System.out.println("Building table");
-
-                    //Build table
-                    Statement state2 = conn.createStatement();
-                    state2.execute("CREATE TABLE Records(id integer,"
-                            + "caseNum string,"
-                            + "date string,"
-                            + "block string,"
-                            + "IUCR string,"
-                            + "primaryDescription string,"
-                            + "secondaryDescription string,"
-                            + "locationDescription string,"
-                            + "arrest boolean,"
-                            + "domestic boolean,"
-                            + "beat short,"
-                            + "ward short,"
-                            + "fbiCode string,"
-                            + "latitude float,"
-                            + "longitude float,"
-                            + "primary key(id));"
-                    );
-                }
-            } catch (SQLException e) {
-                System.out.println("Failed to create Records table in database. DBMS:initialize:78");
-            }
-
-            try {
-                //Get the database and select the table
-                Statement state = conn.createStatement();
-                ResultSet result = state.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND tbl_name='ActiveRecords'");
-
-                //If the table does not exist
-                if (!result.next()) {
-                    System.out.println("Building table");
-
-                    //Build table
-                    Statement state2 = conn.createStatement();
-                    state2.execute("CREATE TABLE ActiveRecords(id integer,"
-                            + "caseNum string,"
-                            + "date string,"
-                            + "block string,"
-                            + "IUCR string,"
-                            + "primaryDescription string,"
-                            + "secondaryDescription string,"
-                            + "locationDescription string,"
-                            + "arrest boolean,"
-                            + "domestic boolean,"
-                            + "beat short,"
-                            + "ward short,"
-                            + "fbiCode string,"
-                            + "latitude float,"
-                            + "longitude float,"
-                            + "primary key(id));"
-                    );
-                }
-            } catch (SQLException e) {
-                System.out.println("Failed to create ActiveRecords table in database. DBMS:initialize:111");
-            }
-        }
+        createTable("Records");
+        createTable("ActiveRecords");
     }
 
     /**
@@ -196,7 +166,6 @@ public class DBMS {
         } catch (SQLException | ParseException e) {
             e.getStackTrace();
         }
-
 
         return crimeRecord;
     }
@@ -359,60 +328,28 @@ public class DBMS {
         }
 
 
-        //Insert into database
+        // Generate insert statement for the CrimeRecord instance
         SQLInsertStatement state = new SQLInsertStatement("Records");
-        state.setValue("id", Integer.toString(idCounter));
-        state.setValue("caseNum", record.getCaseNum());
-
-        //Convert date
-        Calendar time = record.getDate();
-        if (time != null) {
-            int year = time.get(Calendar.YEAR);
-            int month = time.get(Calendar.MONTH) + 1; // Note: zero based!
-            int day = time.get(Calendar.DAY_OF_MONTH);
-            int hour = time.get(Calendar.HOUR_OF_DAY);
-            int minute = time.get(Calendar.MINUTE);
-            int second = time.get(Calendar.SECOND);
-            int a = time.get(Calendar.AM_PM);
-            state.setValue("date", String.format("%d/%02d/%02d %02d:%02d:%02d ", year, month, day, hour, minute, second) + ((a == 0) ? "AM" : "PM"));
+        for (DataCategory category : DataCategory.getCategories()) {
+            try {
+                state.setValue(category.getSQL(), category.getRecordCategory(record).getValueString());
+            } catch (NullPointerException e) {
+                state.setValue(category.getSQL(), null);
+            }
         }
-
-        state.setValue("block", record.getBlock());
-
-        //Set IUCR to data, or null
-        try {
-            state.setValue("IUCR", record.getIucr());
-            state.setValue("primaryDescription", record.getPrimaryDescription());
-            state.setValue("secondaryDescription", record.getSecondaryDescription());
-        } catch (NullPointerException e) {
-            System.out.println("IUCR Error in addData");
-            state.setValue("IUCR", null);
-            state.setValue("primaryDescription", null);
-            state.setValue("secondaryDescription",null);
-        }
-        state.setValue("locationDescription", record.getLocationDescription());
-        state.setValue("arrest", String.valueOf(record.getArrest()));
-        state.setValue("domestic", String.valueOf(record.getDomestic()));
-        state.setValue("beat", String.valueOf(record.getBeat()));
-        state.setValue("ward", String.valueOf(record.getWard()));
-        state.setValue("fbiCode", record.getFbiCode());
-        state.setValue("latitude", String.valueOf(record.getLatitude()));
-        state.setValue("longitude", String.valueOf(record.getLongitude()));
+        state.setValue(ID.getInstance().getSQL(), Integer.toString(idCounter++));
 
         try {
             //Insert into the database
             Statement insert = conn.createStatement();
             insert.execute(state.getStatement());
 
-            //Increment ID
-            idCounter++;
-
             //Update observers
             if (update) {
-                activeData.updateActiveRecords();
+                activeData.updateActiveData();
             }
         } catch (SQLException e) {
-            System.out.println("Could not insert record into Records table. DBMS:addRecord:436");
+            System.out.println("Could not insert record into Records table: " + e.toString());
         }
     }
 
@@ -430,7 +367,7 @@ public class DBMS {
         System.out.println();
 
         activeData.updateActiveRecords();
-        activeData.updateObservers();
+        activeData.updateActiveData();
     }
 
     /**
@@ -449,7 +386,7 @@ public class DBMS {
             deleteStatement.execute("DELETE FROM ActiveRecords;");
 
         } catch (SQLException e) {
-            System.out.println("Could not clear ActiveRecords. DBMS:updateActiveDatabase:473");
+            System.out.println("Could not clear ActiveRecords. DBMS:updateActiveDatabase:448");
         }
 
         //Copy data in blocks to reduce string size
@@ -508,7 +445,7 @@ public class DBMS {
             Statement state2 = conn.createStatement();
             state2.execute("DELETE FROM ActiveRecords WHERE id =" + id);
         } catch (SQLException e) {
-            System.out.println("Could not delete record with ID: " + id + " from database. DBMS:deleteRecord:535");
+            System.out.println("Could not delete record with ID: " + id + " from database. DBMS:deleteRecord:505");
         }
     }
 
@@ -527,7 +464,7 @@ public class DBMS {
             Statement state2 = conn.createStatement();
             state2.execute("DELETE FROM ActiveRecords;");
         } catch (SQLException e) {
-            System.out.println("Could not delete all records from database. DBMS:clearDB:554");
+            System.out.println("Could not delete all records from database. DBMS:clearDB:524");
         }
 
         //Reset counter
@@ -546,13 +483,12 @@ public class DBMS {
 
         try {
             Statement state = conn.createStatement();
-
             ResultSet res = state.executeQuery("SELECT COUNT(DISTINCT id) as total FROM Records;");
 
             res.next();
             return res.getInt("total");
         } catch (SQLException e) {
-            System.out.println("Failed to get size of Record table. DBMS:getRecordsSize:578");
+            System.out.println("Failed to get size of Record table. DBMS:getRecordsSize:548");
         }
 
         return -1;
@@ -578,7 +514,7 @@ public class DBMS {
             res.next();
             return res.getInt("total");
         } catch (SQLException e) {
-            System.out.println("Failed to get size of ActiveRecord table. DBMS:getActiveRecordsSize:578");
+            System.out.println("Failed to get size of ActiveRecord table. DBMS:getActiveRecordsSize:571");
         }
 
         return -1;

@@ -2,7 +2,10 @@ package seng202.group2.model.datacategories;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import seng202.group2.model.CrimeRecord;
 
@@ -12,9 +15,7 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class Date extends DataCategory implements Importable, Numerical, Categorical {
-
-	private static final Date instance = new Date();
+public class Date extends DataCategory implements Importable {
 	
 	/** The date and time at which the crime incident occurred */
 	private Calendar date = null;
@@ -28,6 +29,10 @@ public class Date extends DataCategory implements Importable, Numerical, Categor
 			"yyyy'-'MM'-'dd'T'HH':'mm':'ss"
 	};
 
+	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
+			"DATEOFOCCURRENCE"
+	));
+	private static final Date instance = new Date();
 	public static Date getInstance() {
 		return instance;
 	}
@@ -51,6 +56,11 @@ public class Date extends DataCategory implements Importable, Numerical, Categor
 			throw new IllegalArgumentException("Cannot get attribute value of null record.");
 		
 		return record.getDate();
+	}
+
+	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getDateCategory();
 	}
 
 	@Override
@@ -81,6 +91,21 @@ public class Date extends DataCategory implements Importable, Numerical, Categor
 	@Override
 	public String getSQL() {
 		return "date";
+	}
+
+	@Override
+	public String getValueString() {
+		if (date == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
+		java.util.Date date = this.date.getTime();
+		String strDate = (new SimpleDateFormat(dateFormats[0])).format(date);
+		return strDate;
+	}
+
+	@Override
+	public boolean matchesString(String identifier) {
+		return identifierStrings.contains(identifier);
 	}
 
 	@Override

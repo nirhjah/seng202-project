@@ -13,8 +13,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import seng202.group2.controller.CSVImporter;
 import seng202.group2.controller.DataImporter;
-import seng202.group2.model.datacategories.IUCRCode;
-import seng202.group2.model.CrimeRecord;
+import seng202.group2.controller.UnsupportedFileTypeException;
 import seng202.group2.model.DBMS;
 
 /**
@@ -50,7 +49,7 @@ public class ImportController {
 			DataImporter importer = new CSVImporter(file);
 			DBMS.addRecords(importer.importAllRecords());
 			importer.close();
-		} catch (IOException e) {
+		} catch (IOException | UnsupportedFileTypeException e) {
 			e.printStackTrace();
 		}
 
@@ -68,7 +67,9 @@ public class ImportController {
 	public void browseImportDirectory()
 	{
 		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Comma Separated Value","*.csv"));
 		File chosenFile = fileChooser.showOpenDialog(null);
+		
 		
 		if (chosenFile != null) {
 			importPathTextField.setText(chosenFile.getAbsolutePath());

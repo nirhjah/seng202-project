@@ -2,6 +2,10 @@ package seng202.group2.model.datacategories;
 
 import seng202.group2.model.CrimeRecord;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * A textual description of the location where the crime incident occurred.
  * 
@@ -10,11 +14,13 @@ import seng202.group2.model.CrimeRecord;
  */
 public class LocationDescription extends DataCategory implements Importable, Categorical {
 
-	private static final LocationDescription instance = new LocationDescription();
-
 	/** A textual description of the location where the crime incident occurred */
 	private String locationDescription = null;
 
+	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
+			"LOCATIONDESCRIPTION"
+	));
+	private static final LocationDescription instance = new LocationDescription();
 	public static LocationDescription getInstance() {
 		return instance;
 	}
@@ -41,6 +47,11 @@ public class LocationDescription extends DataCategory implements Importable, Cat
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getLocationDescriptionCategory();
+	}
+
+	@Override
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -52,6 +63,19 @@ public class LocationDescription extends DataCategory implements Importable, Cat
 	@Override
 	public String getSQL() {
 		return "locationDescription";
+	}
+
+	@Override
+	public String getValueString() {
+		if (locationDescription == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
+		return locationDescription.toString();
+	}
+
+	@Override
+	public boolean matchesString(String identifier) {
+		return identifierStrings.contains(identifier);
 	}
 
 	@Override
