@@ -21,8 +21,8 @@
       <artifactId>javafx-fxml</artifactId>
       <version>11.0.2</version>
     </dependency>
-    
-	<dependency>
+
+    <dependency>
 	  <groupId>org.openjfx</groupId>
 	  <artifactId>javafx-swing</artifactId>
 	  <version>18-ea+2</version>

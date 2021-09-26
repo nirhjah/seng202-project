@@ -1,29 +1,21 @@
 package seng202.group2.view;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import seng202.group2.controller.CSVImporter;
-import seng202.group2.controller.DataImporter;
-import seng202.group2.model.CrimeRecord;
+import seng202.group2.model.ActiveData;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
-import seng202.group2.model.FilterType;
 
 /**
  * MainController is the GUI controller for the main Cams window.
@@ -35,82 +27,44 @@ import seng202.group2.model.FilterType;
  * MainController implements {@link Initializable} for setting up TableColumn values
  *
  * @author Sam Clark
- * TODO connect each button to their associated method.
- * TODO Implement data searching.
  */
 public class MainController extends DataObserver implements Initializable {
 	/** The variable used to retrieve user input into the search text field. */
 	@FXML private TextField searchTextField;
 
-	//Variables used to control page(window) size
-	private int windowSizeInt = 1000;
-	private int recordCount = 0;
-	private int currentMin = 0;
-	private int currentMax = windowSizeInt;
+	//FXML fields
 	@FXML private TextField windowSize;
 	@FXML private Text recordsShown;
+	@FXML private TabPane tabPane;
+	@FXML private Tab mapTab;
+	@FXML private Tab tableTab;
+	@FXML private Tab graphTab;
 
-	//Table
-	@FXML private TableView<CrimeRecord> tableView;
-	@FXML private TableColumn<CrimeRecord, Integer> idColumn;
-	@FXML private TableColumn<CrimeRecord, String> caseNumColumn;
-	@FXML private TableColumn<CrimeRecord, String> dateColumn;
-	@FXML private TableColumn<CrimeRecord, String> blockColumn;
-	@FXML private TableColumn<CrimeRecord, String> iucrColumn;
-	@FXML private TableColumn<CrimeRecord, String> primaryDescriptionColumn;
-	@FXML private TableColumn<CrimeRecord, String> secondaryDescriptionColumn;
-	@FXML private TableColumn<CrimeRecord, String> locationDescriptionColumn;
-	@FXML private TableColumn<CrimeRecord, Boolean> arrestColumn;
-	@FXML private TableColumn<CrimeRecord, Boolean> domesticColumn;
-	@FXML private TableColumn<CrimeRecord, Short> beatColumn;
-	@FXML private TableColumn<CrimeRecord, Short> wardColumn;
-	@FXML private TableColumn<CrimeRecord, Short> fbiCodeColumn;
-	@FXML private TableColumn<CrimeRecord, Short> latitudeColumn;
-	@FXML private TableColumn<CrimeRecord, Short> longitudeColumn;
-
-	/**
-	 * Update the current page of records. This displays a subset of the active data.
-	 */
-	private void recordsUpdate() {
-		ArrayList<CrimeRecord> activeRecords = new ArrayList<>(DBMS.getActiveData().getActiveRecords(currentMin, windowSizeInt));
-
-		//Change the text
-		recordsShown.setText(Math.max(currentMin, 0) + "-" + Math.min(currentMax, recordCount) + "/" + recordCount);
-
-
-		//Update table
-		tableView.getItems().clear();
-		for (CrimeRecord record: activeRecords)
-			tableView.getItems().add(record);
-	}
+	//View controllers
+	@FXML private MapController mapController;
+	@FXML private TableController tableController;
+	@FXML private GraphController graphController;
 
 	/**
 	 * Update window size when a new size is entered into windowSize textField.
 	 */
 	public void updateWindowSize() {
-		windowSizeInt = Integer.parseInt(windowSize.getText());
-		currentMax = currentMin + windowSizeInt;
-		recordsUpdate();
+		DBMS.getActiveData().updateFrameSize(Integer.parseInt(windowSize.getText()));
 	}
 
 	/**
 	 * Cycle to the next set of data
 	 */
 	public void recordsScrollNext() {
-		currentMax = Math.min(currentMax + windowSizeInt, recordCount);
-		currentMin = Math.min(currentMin + windowSizeInt, recordCount - windowSizeInt);
-		recordsUpdate();
+		DBMS.getActiveData().incrementFrame();
 	}
 
 	/**
 	 * Cycle to the previous set of data
 	 */
 	public void recordsScrollPrev() {
-		currentMin = Math.max(currentMin - windowSizeInt, 0);
-		currentMax = Math.max(currentMax - windowSizeInt, Math.min(recordCount, windowSizeInt));
-		recordsUpdate();
+		DBMS.getActiveData().decrementFrame();
 	}
-
 
 	/**
 	 * showImportWindow method opens the import window and brings it to the front.
@@ -127,6 +81,7 @@ public class MainController extends DataObserver implements Initializable {
 			stage.setResizable(false);
 			stage.setTitle("Import Window");
 			stage.setScene(new Scene(root, 400, 200));
+			stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/CAMS_logo.png")));
 			stage.show();
 		} catch (IOException e) {
 			// This is where you would enter the error handling code, for now just print the stacktrace
@@ -144,36 +99,124 @@ public class MainController extends DataObserver implements Initializable {
 	}
 
 	/**
+	 * Toggle map tab visible, called when tabs are changed
+	 */
+	public void toggleMapTab() {
+		if (mapTab.isSelected()) {
+			//Update map window
+			ActiveData activeData =  DBMS.getActiveData();
+			activeData.addObserver(mapController);
+			mapController.frameUpdate();
+		} else {
+			DBMS.getActiveData().removeObserver(mapController);
+		}
+	}
+
+	/**
+	 * Toggle map tab visible, called when tabs are changed
+	 */
+	public void toggleTableTab() {
+		if (tableTab.isSelected()) {
+			//Update table window
+			ActiveData activeData =  DBMS.getActiveData();
+			activeData.addObserver(tableController);
+			tableController.frameUpdate();
+		} else {
+			DBMS.getActiveData().removeObserver(tableController);
+		}
+	}
+
+	/**
+	 * Toggle graph tab visible, called when tabs are changed
+	 */
+	public void toggleGraphTab() {
+		if (graphTab.isSelected()) {
+			//Update graph window
+			ActiveData activeData =  DBMS.getActiveData();
+			activeData.addObserver(graphController);
+			graphController.frameUpdate();
+		} else {
+			DBMS.getActiveData().removeObserver(graphController);
+		}
+	}
+
+
+	/**
 	 * This showMapWindow method opens the map window and brings it to the front.
-	 *
-	 * TODO This method is not yet implemented. Temporarily it is calling {@link MainController#showNotImplementedYet()}
 	 */
 	public void showMapWindow() {
 		try {
+			//Get Javafx
 			FXMLLoader loader = new FXMLLoader(CamsApplication.class.getClassLoader().getResource("map.fxml"));
-			Parent root = loader.load();
+			Parent root = (Parent) loader.load();
+			MapController mapWindowController = (MapController)loader.getController();
 			Stage stage = new Stage();
 			stage.setTitle("Map Window");
 			stage.setScene(new Scene(root, 900, 600));
 			stage.show();
-			//Access the map controller to send it the window
-			MapController controller = loader.getController();
-			controller.setStage(stage);
+
+			mapWindowController.setStage(stage);
+
+			DBMS.getActiveData().addObserver(mapWindowController);
+			//Reopen map tab on close
+			stage.setOnCloseRequest(event -> {
+				DBMS.getActiveData().removeObserver(mapWindowController);
+				mapTab.setDisable(false);
+				toggleMapTab();
+			});
+
+			//Disable map tab
+			tabPane.getSelectionModel().select(tableTab);
+			mapTab.setDisable(true);
+			toggleMapTab();
+
 		} catch (IOException e) {
 			// This is where you would enter the error handling code, for now just print the stacktrace
+			mapTab.setDisable(false);
 			e.printStackTrace();
 		}
-
-		//DBMS.getActiveData().addFilter(FilterType.EQ.createFilter("id", "10"));
 	}
 
 	/**
 	 * This showGraphWindow method opens the graph window and brings it to the front.
 	 *
-	 * TODO This method is not yet implemented. Temporarily it is calling {@link MainController#showNotImplementedYet()}
+	 * The graph window uses the 'graph.fxml' FXML file and the GraphController Class
+	 * @see GraphController
 	 */
 	public void showGraphWindow() {
-		showNotImplementedYet();
+		try {
+			FXMLLoader loader = new FXMLLoader(CamsApplication.class.getClassLoader().getResource("graph.fxml"));
+
+			Parent root = loader.load();
+			Stage stage = new Stage();
+			stage.setTitle("Graph Window");
+			stage.setScene(new Scene(root, 1280, 720));
+
+			GraphController graphWindowController = (GraphController) loader.getController();
+			graphWindowController.setStage(stage);
+
+			DBMS.getActiveData().addObserver(graphWindowController);
+			stage.setOnCloseRequest(event -> {
+				DBMS.getActiveData().removeObserver(graphWindowController);
+			});
+
+			stage.show();
+
+			//Reopen map tab on close
+			stage.setOnCloseRequest(event -> {
+				DBMS.getActiveData().removeObserver(graphWindowController);
+				graphTab.setDisable(false);
+				toggleGraphTab();
+			});
+
+			//Disable map tab
+			tabPane.getSelectionModel().select(tableTab);
+			graphTab.setDisable(true);
+			toggleMapTab();
+		} catch (IOException e) {
+			// This is where you would enter the error handling code, for now just print the stacktrace
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -195,14 +238,15 @@ public class MainController extends DataObserver implements Initializable {
 		try {
 			Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("filter.fxml"));
 			Stage stage = new Stage();
-			// This will cause the login window to always be in front of the main window
+
+			// This will cause the window to always be in front of the main window
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.setResizable(false);
 			stage.setTitle("Filters");
 			stage.setScene(new Scene(root, 600, 400));
+			stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/CAMS_logo.png")));
 			stage.show();
 		} catch (IOException e) {
-			// This is where you would enter the error handling code, for now just print the stacktrace
 			e.printStackTrace();
 		}
 	}
@@ -215,8 +259,7 @@ public class MainController extends DataObserver implements Initializable {
 	 * The unimplemented window uses the 'unimplemented.fxml' FXML file and the UnimplementedController Class
 	 * @see UnimplementedController
 	 */
-	public void showNotImplementedYet()
-	{
+	public void showNotImplementedYet() {
 		try {
 			Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("unimplemented.fxml"));
 			Stage stage = new Stage();
@@ -225,12 +268,13 @@ public class MainController extends DataObserver implements Initializable {
 			stage.setResizable(false);
 			stage.setTitle("Unimplemented Window");
 			stage.setScene(new Scene(root, 400, 200));
+			stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/CAMS_logo.png")));
+
 			stage.show();
 		} catch (IOException e) {
 			// This is where you would enter the error handling code, for now just print the stacktrace
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
@@ -240,53 +284,33 @@ public class MainController extends DataObserver implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		DBMS.getActiveData().addObserver(this);
 
-		recordsShown.setText(currentMin + "-" + currentMax + "/" + recordCount);
-		windowSize.setText(Integer.toString(windowSizeInt));
-
-		idColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Integer>("ID"));
-		caseNumColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("caseNum"));
-		dateColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("dateString"));
-		blockColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("block"));
-		iucrColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("iucr"));
-		primaryDescriptionColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("primaryDescription"));
-		secondaryDescriptionColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("secondaryDescription"));
-		locationDescriptionColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("locationDescription"));
-		arrestColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Boolean>("arrest"));
-		domesticColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Boolean>("domestic"));
-		beatColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("beat"));
-		wardColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("ward"));
-		fbiCodeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("fbiCode"));
-		latitudeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("latitude"));
-		longitudeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("longitude"));
-		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-		//Import test files
-		File file = new File("testfiles/10k.csv");
-
-		try {
-			DataImporter importer = new CSVImporter(file);
-			DBMS.addRecords(importer.importAllRecords());
-			importer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		updateText();
 	}
 
-	/**
-	 * Update the model when the observer is called. This will reset the window to show rows 0 - limit
-	 */
+	private void updateText() {
+		ActiveData activeData =  DBMS.getActiveData();
+		int min = activeData.getCurrentMin();
+		int max = activeData.getCurrentMax();
+		int total = activeData.getRecordCount();
+		int size = activeData.getFrameSize();
+
+		recordsShown.setText(min + "-" + max + "/" + total);
+		windowSize.setText(Integer.toString(size));
+	}
+
 	@Override
-	public void updateModel() {
-		ArrayList<CrimeRecord> activeRecords = DBMS.getActiveData().getActiveRecords(0, windowSizeInt);
+	public void activeDataUpdate() {
+		DBMS.getActiveData().updateFrameSize(Integer.parseInt(windowSize.getText()));
+		updateText();
+	}
 
-		//Change the number of records
-		recordCount = DBMS.getActiveRecordsSize();
-		recordsShown.setText(0 + "-" + Math.min(windowSizeInt, recordCount) + "/" + recordCount);
+	@Override
+	public void selectedRecordsUpdate() {
+		updateText();
+	}
 
-
-		//Update table
-		tableView.getItems().clear();
-		for (CrimeRecord record: activeRecords)
-			tableView.getItems().add(record);
+	@Override
+	public void frameUpdate() {
+		updateText();
 	}
 }

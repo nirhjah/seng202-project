@@ -93,20 +93,20 @@ public class CrimeRecord {
 	public String toString() {
 		
 		return "Crime record: " + ID + "\n" +
-				"Case Number: " + caseNum + "\n" +
-				"Date: " + date + "\n" +
-				"Block: " + block + "\n" +
-				"IUCR: " + iucr + "\n" +
-				"Primary Description: " + primaryDescription + "\n" +
-				"Secondary Description: " + secondaryDescription + "\n" +
-				"Location Description: " + locationDescription + "\n" +
-				"Arrest: " + arrest + "\n" +
-				"Domestic: " + domestic + "\n" +
-				"Beat: " + beat + "\n" +
-				"Ward: " + ward + "\n" +
-				"FBI Code: " + fbiCode + "\n" +
-				"Latitude: " + latitude + "\n" +
-				"Longitude: " + longitude + "\n";
+				"Case Number: " + caseNum.getValue() + "\n" +
+				"Date: " + date.getValue() + "\n" +
+				"Block: " + block.getValue() + "\n" +
+				"IUCR: " + iucr.getValue() + "\n" +
+				"Primary Description: " + primaryDescription.getValue() + "\n" +
+				"Secondary Description: " + secondaryDescription.getValue() + "\n" +
+				"Location Description: " + locationDescription.getValue() + "\n" +
+				"Arrest: " + arrest.getValue() + "\n" +
+				"Domestic: " + domestic.getValue() + "\n" +
+				"Beat: " + beat.getValue() + "\n" +
+				"Ward: " + ward.getValue() + "\n" +
+				"FBI Code: " + fbiCode.getValue() + "\n" +
+				"Latitude: " + latitude.getValue() + "\n" +
+				"Longitude: " + longitude.getValue() + "\n";
 	}
 
 	//Getters/Setters:
@@ -117,6 +117,10 @@ public class CrimeRecord {
 
 	public void setID(int ID) {
 		this.ID.setValue(ID);
+	}
+
+	public ID getIDCategory() {
+		return this.ID;
 	}
 
 	/**
@@ -134,6 +138,10 @@ public class CrimeRecord {
 	public String getCaseNum() {
 		return caseNum.getValue();
 	}
+
+	public CaseNumber getCaseNumCategory() {
+		return caseNum;
+	}
 	
 	/**
 	 * Sets the date/time on which the crime incident occurred.
@@ -142,27 +150,6 @@ public class CrimeRecord {
 	public void setDate(Calendar date) {
 		this.date.setValue(date);
 	}
-	
-	/**
-	 * Gets the date/time on which the crime incident occurred in string format.
-	 * @return The date/time on which the crime incident occurred, in a string format.
-	 */
-	public String getDateString() {
-		Calendar date = this.date.getValue();
-		if (date == null) {
-			return "NONE";
-		}
-
-		int year = date.get(Calendar.YEAR);
-		int month = date.get(Calendar.MONTH) + 1; // Note: zero based!
-		int day = date.get(Calendar.DAY_OF_MONTH);
-		int hour = date.get(Calendar.HOUR_OF_DAY);
-		int minute = date.get(Calendar.MINUTE);
-		int second = date.get(Calendar.SECOND);
-		int a = date.get(Calendar.AM_PM);
-
-		return String.format("%d/%02d/%02d %02d:%02d:%02d ", year, month, day, hour, minute, second) + ((a == 0)? "AM": "PM"); // + ((a == 0)? "AM": "PM")
-	}
 
 	/**
 	 * Gets the date/time on which the crime incident occurred.
@@ -170,6 +157,10 @@ public class CrimeRecord {
 	 */
 	public Calendar getDate() {
 		return date.getValue();
+	}
+
+	public Date getDateCategory() {
+		return date;
 	}
 
 	/**
@@ -186,6 +177,10 @@ public class CrimeRecord {
 	 */
 	public String getBlock() {
 		return block.getValue();
+	}
+
+	public Block getBlockCategory() {
+		return block;
 	}
 	
 	/**
@@ -204,6 +199,10 @@ public class CrimeRecord {
 		return iucr.getValue();
 	}
 
+	public IUCRCode getIucrCategory() {
+		return iucr;
+	}
+
 	/**
 	 * Sets the primary description of the crime incident.
 	 * @param primaryDescription The primary description of the crime incident.
@@ -218,6 +217,10 @@ public class CrimeRecord {
 	 */
 	public String getPrimaryDescription() {
 		return primaryDescription.getValue();
+	}
+
+	public PrimaryDescription getPrimaryDescriptionCategory() {
+		return primaryDescription;
 	}
 
 	/**
@@ -235,6 +238,10 @@ public class CrimeRecord {
 	public String getSecondaryDescription() {
 		return secondaryDescription.getValue();
 	}
+
+	public SecondaryDescription getSecondaryDescriptionCategory() {
+		return secondaryDescription;
+	}
 	
 	/**
 	 * Sets the location description of the crime incident.
@@ -250,6 +257,10 @@ public class CrimeRecord {
 	 */
 	public String getLocationDescription() {
 		return locationDescription.getValue();
+	}
+
+	public LocationDescription getLocationDescriptionCategory() {
+		return locationDescription;
 	}
 	
 	/**
@@ -267,6 +278,10 @@ public class CrimeRecord {
 	public Boolean getArrest() {
 		return arrest.getValue();
 	}
+
+	public Arrest getArrestCategory() {
+		return arrest;
+	}
 	
 	/**
 	 * Sets the boolean value domestic, which is used to indicate whether or not the crime incident was classified as domestic.
@@ -282,6 +297,10 @@ public class CrimeRecord {
 	 */
 	public Boolean getDomestic() {
 		return domestic.getValue();
+	}
+
+	public Domestic getDomesticCategory() {
+		return domestic;
 	}
 	
 	/**
@@ -299,6 +318,10 @@ public class CrimeRecord {
 	public Short getBeat() {
 		return beat.getValue();
 	}
+
+	public Beat getBeatCategory() {
+		return beat;
+	}
 	
 	/**
 	 * Sets the ward where the crime incident occurred.
@@ -314,6 +337,10 @@ public class CrimeRecord {
 	 */
 	public Short getWard() {
 		return ward.getValue();
+	}
+
+	public Ward getWardCategory() {
+		return ward;
 	}
 	
 	/**
@@ -331,6 +358,10 @@ public class CrimeRecord {
 	public String getFbiCode() {
 		return fbiCode.getValue();
 	}
+
+	public FBICode getFbiCodeCategory() {
+		return fbiCode;
+	}
 	
 	/**
 	 * Sets the latitudinal location where the crime incident occurred.
@@ -347,6 +378,10 @@ public class CrimeRecord {
 	public Float getLatitude() {
 		return latitude.getValue();
 	}
+
+	public Latitude getLatitudeCategory() {
+		return latitude;
+	}
 	
 	/**
 	 * Sets the longitudinal location where the crime incident occurred.
@@ -362,5 +397,9 @@ public class CrimeRecord {
 	 */
 	public Float getLongitude() {
 		return longitude.getValue();
+	}
+
+	public Longitude getLongitudeCategory() {
+		return longitude;
 	}
 }

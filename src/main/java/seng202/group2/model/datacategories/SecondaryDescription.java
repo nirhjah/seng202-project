@@ -2,6 +2,10 @@ package seng202.group2.model.datacategories;
 
 import seng202.group2.model.CrimeRecord;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * A textual description giving more details supplementing the categorization
  * of the crime type provided in the primary description.
@@ -9,19 +13,21 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class SecondaryDescription extends DataCategory implements Importable {
-
-	private static final SecondaryDescription instance = new SecondaryDescription();
+public class SecondaryDescription extends DataCategory implements Importable, Categorical {
 
 	/** The secondary description of the crime type this code corresponds to */
 	private String secondaryDescription = null;
 
+	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
+			"SECONDARYDESCRIPTION"
+	));
+	private static final SecondaryDescription instance = new SecondaryDescription();
 	public static SecondaryDescription getInstance() {
 		return instance;
 	}
 
 	@Override
-	public void setRecordValue(CrimeRecord record, Object data) throws UnsupportedCategoryException {
+	public void setRecordValue(CrimeRecord record, Object data) {
 		if (record == null)
 			throw new IllegalArgumentException("Cannot set attribute value of null record.");
 			
@@ -42,6 +48,11 @@ public class SecondaryDescription extends DataCategory implements Importable {
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getSecondaryDescriptionCategory();
+	}
+
+	@Override
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -53,6 +64,19 @@ public class SecondaryDescription extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "secondaryDescription";
+	}
+
+	@Override
+	public String getValueString() {
+		if (secondaryDescription == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
+		return secondaryDescription.toString();
+	}
+
+	@Override
+	public boolean matchesString(String identifier) {
+		return identifierStrings.contains(identifier);
 	}
 
 	@Override
@@ -76,7 +100,7 @@ public class SecondaryDescription extends DataCategory implements Importable {
 	}
 
 	@Override
-	public boolean isString() {
-		return true;
+	public Class<? extends Object> getValueType() {
+		return String.class;
 	}
 }

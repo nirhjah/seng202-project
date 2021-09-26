@@ -2,6 +2,10 @@ package seng202.group2.model.datacategories;
 
 import seng202.group2.model.CrimeRecord;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Police district where the crime incident occurred.
  * (Area of the city broken down for patrol and statistical purposes)
@@ -9,16 +13,18 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class Beat extends DataCategory implements Importable {
+public class Beat extends DataCategory implements Importable, Numerical, Categorical {
 
-	private static final Beat instance = new Beat();
-	
 	/**
 	 * Police district where the crime incident occurred.
 	 * (Area of the city broken down for patrol and statistical purposes)
 	 */
 	private Short beat = null;
 
+	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
+			"BEAT"
+	));
+	private static final Beat instance = new Beat();
 	public static Beat getInstance() {
 		return instance;
 	}
@@ -45,6 +51,11 @@ public class Beat extends DataCategory implements Importable {
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getBeatCategory();
+	}
+
+	@Override
 	public Short parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -61,6 +72,19 @@ public class Beat extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "beat";
+	}
+
+	@Override
+	public String getValueString() {
+		if (beat == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
+		return beat.toString();
+	}
+
+	@Override
+	public boolean matchesString(String identifier) {
+		return identifierStrings.contains(identifier);
 	}
 
 	@Override
@@ -84,7 +108,7 @@ public class Beat extends DataCategory implements Importable {
 	}
 
 	@Override
-	public boolean isString() {
-		return false;
+	public Class<? extends Object> getValueType() {
+		return Short.class;
 	}
 }

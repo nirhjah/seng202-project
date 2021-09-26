@@ -2,25 +2,31 @@ package seng202.group2.model.datacategories;
 
 import seng202.group2.model.CrimeRecord;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * A textual description of the type of the crime incident.
  * 
  * @author Connor Dunlop
  *
  */
-public class PrimaryDescription extends DataCategory implements Importable {
-
-	private static final PrimaryDescription instance = new PrimaryDescription();
+public class PrimaryDescription extends DataCategory implements Importable, Categorical {
 
 	/** The primary description of the crime type this code corresponds to */
 	private String primaryDescription = null;
 
+	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
+			"PRIMARYDESCRIPTION"
+	));
+	private static final PrimaryDescription instance = new PrimaryDescription();
 	public static PrimaryDescription getInstance() {
 		return instance;
 	}
 
 	@Override
-	public void setRecordValue(CrimeRecord record, Object data) throws UnsupportedCategoryException {
+	public void setRecordValue(CrimeRecord record, Object data) {
 		if (record == null)
 			throw new IllegalArgumentException("Cannot set attribute value of null record.");
 			
@@ -41,6 +47,11 @@ public class PrimaryDescription extends DataCategory implements Importable {
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getPrimaryDescriptionCategory();
+	}
+
+	@Override
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -52,6 +63,19 @@ public class PrimaryDescription extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "primaryDescription";
+	}
+
+	@Override
+	public String getValueString() {
+		if (primaryDescription == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
+		return primaryDescription.toString();
+	}
+
+	@Override
+	public boolean matchesString(String identifier) {
+		return identifierStrings.contains(identifier);
 	}
 
 	@Override
@@ -75,7 +99,7 @@ public class PrimaryDescription extends DataCategory implements Importable {
 	}
 
 	@Override
-	public boolean isString() {
-		return true;
+	public Class<? extends Object> getValueType() {
+		return String.class;
 	}
 }

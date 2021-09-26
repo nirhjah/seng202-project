@@ -2,6 +2,10 @@ package seng202.group2.model.datacategories;
 
 import seng202.group2.model.CrimeRecord;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Illinois Uniform Crime Reporting code.
  * Four digit code used to classify the criminal incident
@@ -9,13 +13,15 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public class IUCRCode extends DataCategory implements Importable {
-
-	private static final IUCRCode instance = new IUCRCode();
+public class IUCRCode extends DataCategory implements Importable, Categorical {
 
 	/** The IUCR code */
 	private String iucrCode = null;
 
+	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
+			"IUCR"
+	));
+	private static final IUCRCode instance = new IUCRCode();
 	public static IUCRCode getInstance() {
 		return instance;
 	}
@@ -42,6 +48,11 @@ public class IUCRCode extends DataCategory implements Importable {
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getIucrCategory();
+	}
+
+	@Override
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -55,6 +66,19 @@ public class IUCRCode extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "IUCR";
+	}
+
+	@Override
+	public String getValueString() {
+		if (iucrCode == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
+		return iucrCode.toString();
+	}
+
+	@Override
+	public boolean matchesString(String identifier) {
+		return identifierStrings.contains(identifier);
 	}
 
 	@Override
@@ -78,7 +102,7 @@ public class IUCRCode extends DataCategory implements Importable {
 	}
 
 	@Override
-	public boolean isString() {
-		return true;
+	public Class<? extends Object> getValueType() {
+		return String.class;
 	}
 }

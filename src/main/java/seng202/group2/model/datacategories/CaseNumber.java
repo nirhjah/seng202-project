@@ -2,19 +2,25 @@ package seng202.group2.model.datacategories;
 
 import seng202.group2.model.CrimeRecord;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * The case number associated with the crime record in the police database.
  * 
  * @author Connor Dunlop
  *
  */
-public class CaseNumber extends DataCategory implements Importable {
+public class CaseNumber extends DataCategory implements Importable, Categorical {
 
-	private static final CaseNumber instance = new CaseNumber();
-	
 	/** The case number associated with the crime record in the police database */
 	private String caseNum = null;
 
+	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
+			"CASE#"
+	));
+	private static final CaseNumber instance = new CaseNumber();
 	public static CaseNumber getInstance() {
 		return instance;
 	}
@@ -41,6 +47,11 @@ public class CaseNumber extends DataCategory implements Importable {
 	}
 
 	@Override
+	public DataCategory getRecordCategory(CrimeRecord record) {
+		return record.getCaseNumCategory();
+	}
+
+	@Override
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
@@ -52,6 +63,19 @@ public class CaseNumber extends DataCategory implements Importable {
 	@Override
 	public String getSQL() {
 		return "caseNum";
+	}
+
+	@Override
+	public String getValueString() {
+		if (caseNum == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
+		return caseNum.toString();
+	}
+
+	@Override
+	public boolean matchesString(String identifier) {
+		return identifierStrings.contains(identifier);
 	}
 
 	@Override
@@ -75,7 +99,7 @@ public class CaseNumber extends DataCategory implements Importable {
 	}
 
 	@Override
-	public boolean isString() {
-		return true;
+	public Class<? extends Object> getValueType() {
+		return String.class;
 	}
 }

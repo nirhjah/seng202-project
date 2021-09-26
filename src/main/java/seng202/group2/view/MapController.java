@@ -1,12 +1,16 @@
 package seng202.group2.view;
 
-
 import com.sun.javafx.webkit.WebConsoleListener;
+import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.concurrent.Worker;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,6 +21,8 @@ import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import netscape.javascript.JSObject;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
@@ -39,21 +45,32 @@ import javax.imageio.ImageIO;
  *
  *  @author Yiyang Yu
  *  @author Connor Dunlop
+ *  @author Moses Wescombe
  *  @author George Hampton
  */
 
 public class MapController extends DataObserver implements Initializable {
-
-    /** WebView hold the visualization of a map.html. */
+    /** JavaFX's WebView Element hold the visualization of a map.html. */
     @FXML private WebView webView;
+    @FXML private Label radiusSliderLabel;
+    @FXML private Slider radiusSlider;
+
+    /** WebEngine is a non-visual object to support web page managements
+     *  and enable two-way communication between a Java application and JavaScript
+     *  */
     private WebEngine webEngine;
-    
+
     /** The stage that the map window is created on*/
     private Stage stage;
 
+    /**
+     * Initialize the map window
+     *
+     * This method prepares the Map Window in the UI. It does the following preparations:
+     *  - Add an observer to the activeData, which will be displayed as markers on the map.
+     *  - Use webEngine to provide access to the document object model of the web page map.html
+     */
     public void initialize(URL location, ResourceBundle resources) {
-        DBMS.getActiveData().addObserver(this);
-
         webEngine = webView.getEngine();
         webEngine.load(CamsApplication.class.getClassLoader().getResource("map.html").toExternalForm());
 
@@ -65,23 +82,55 @@ public class MapController extends DataObserver implements Initializable {
         // Wait until javascript in map.html has loaded before trying to call functions from there
         webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
-                updateModel();
+                updateRadius();
+                activeDataUpdate();
             }
         });
+
+        radiusSlider.valueChangingProperty().addListener((obs, oldVal, newVal) -> {
+            updateRadius();
+        });
+
+        //Connect javascript to this Java class so that it can call methods
+        JSObject win = (JSObject) webEngine.executeScript("window");
+        win.setMember("app", this);
     }
 
-    @Override
-    public void updateModel() {
-        ActiveData activeData = DBMS.getActiveData();
-        ArrayList<CrimeRecord> activeRecords = activeData.getActiveRecords();
+    /**
+     * Toggle the markers on and off
+     */
+    public void toggleMarkers() {
+        webEngine.executeScript("toggleMarkers();");
+    }
 
-        // Remove all markers from the map, then add markers for all active records
-        clearMarkers();
-        for (CrimeRecord record : activeRecords) {
-            if (record.getLatitude() != null && record.getLongitude() != null) {
-                addMarker(record);
-            }
-        }
+    /**
+     * Toggle the heatmap on and off
+     */
+    public void toggleHeatMap() {
+        webEngine.executeScript("toggleHeatmap();");
+    }
+
+    /**
+     * Toggle the street names on and off
+     */
+    public void toggleStreetNames() {
+        webEngine.executeScript("toggleStreetNames();");
+    }
+
+    /**
+     * Toggle the animations on and off
+     */
+    public void toggleAnimations() {
+        webEngine.executeScript("toggleAnimations();");
+    }
+
+    /**
+     * Update heatmap radius
+     */
+    public void updateRadius() {
+        int radius = (int) radiusSlider.getValue();
+        radiusSliderLabel.setText("Heatmap Radius: " + radius);
+        webEngine.executeScript("changeRadius(" + radius +");");
     }
 
     /**
@@ -89,10 +138,30 @@ public class MapController extends DataObserver implements Initializable {
      * The marker is placed at the latitude and longitude stored by the CrimeRecord, where the crime occurred.
      * @param record The record for which to add a map marker.
      */
-    public void addMarker(CrimeRecord record) {
+    public void addMarker(CrimeRecord record, String color) {
         webEngine.executeScript(
-                "addMarker(" + record.getID() + "," + record.getLatitude() + "," + record.getLongitude() + ");"
+                "addMarker(" + record.getID() + "," + record.getLatitude() + "," + record.getLongitude() + ",'" + color + "');"
         );
+    }
+
+    /**
+     * Select a record by ID
+     *
+     * @param id - ID of record to select
+     */
+    public void selectRecord(int id) {
+        DBMS.getActiveData().selectRecord(id);
+        DBMS.getActiveData().updateSelectionObservers();
+    }
+
+    /**
+     * Deselect a record by ID
+     *
+     * @param id - ID of record to deselect
+     */
+    public void deselectRecord(int id) {
+        DBMS.getActiveData().deselectRecord(id);
+        DBMS.getActiveData().updateSelectionObservers();
     }
 
     /**
@@ -113,7 +182,76 @@ public class MapController extends DataObserver implements Initializable {
                 "clearMarkers();"
         );
     }
-    
+
+    /**
+     * Sets the boundary of the map to display all markers in view
+     */
+    public void setBounds() {
+        webEngine.executeScript(
+                "setBounds();"
+        );
+    }
+
+    /**
+     * Update active data
+     */
+    @Override
+    public void activeDataUpdate() {
+        ActiveData activeData = DBMS.getActiveData();
+
+        //Get active data from frame
+        ArrayList<CrimeRecord> activeRecords = activeData.getActiveRecords();
+
+        // Remove all markers from the map, then add markers for all currently not selected active records
+        clearMarkers();
+        for (CrimeRecord record : activeRecords) {
+            //Prevent null location records
+            if (record.getLatitude() != null && record.getLongitude() != null) {
+                if (!DBMS.getActiveData().isSelected(record.getID()))
+                    addMarker(record, "red");
+            }
+        }
+
+        //Add selected markers
+        for (Integer selectedRecord : activeData.getSelectedRecords()) {
+            CrimeRecord record = DBMS.getRecord(selectedRecord);
+            if (record != null)
+                //Prevent null location records
+                if (record.getLatitude() != null && record.getLongitude() != null) {
+                    addMarker(record, "blue");
+                }
+        }
+
+        // Adjust the boundary of the map based on the activeData and their marker positions
+        setBounds();
+    }
+
+    /**
+     * Update selected markers
+     */
+    @Override
+    public void selectedRecordsUpdate() {
+        //Deselect all markers
+        webEngine.executeScript(
+                "deselectAllMarkers();"
+        );
+
+        //Select markers
+        for (Integer selectedRecord : DBMS.getActiveData().getSelectedRecords()) {
+            webEngine.executeScript(
+                    "selectMarker(" + selectedRecord + ");"
+            );
+        }
+    }
+
+    /**
+     * Update markers when the frame changes
+     */
+    @Override
+    public void frameUpdate() {
+        activeDataUpdate();
+    }
+
     /**
 	 * This showExportWindow method opens the export window and brings it to the front.
 	 * It allows the user to export the current map window as a visual.
@@ -127,24 +265,24 @@ public class MapController extends DataObserver implements Initializable {
 		double y = Math.floor(stage.getY());
 		double width = Math.floor(stage.getWidth());
 		double height = Math.floor(stage.getHeight());
-		
+
 		//Set the bounds of the area to select.
 		Rectangle2D bounds = new Rectangle2D(x + 5, y + 90, width - 70, height - 120);
-		
+
 		//Select the given area and create an image
 		javafx.scene.robot.Robot robot = new Robot();
 		WritableImage exportVisual = robot.getScreenCapture(null, bounds);
-		
+
 		//Save the image
 		//Create a save dialog
 		FileChooser saveChooser = new FileChooser();
 		saveChooser.setTitle("Save Image");
 		FileChooser.ExtensionFilter saveTypes = new FileChooser.ExtensionFilter("image files (*.png)", "*.png");
 		saveChooser.getExtensionFilters().add(saveTypes);
-		
+
 		Stage stage = new Stage();
 		File save = saveChooser.showSaveDialog(stage);
-		
+
 		//Check filename is not null and save file
 		if(save != null) {
 			String saveName = save.getName();
@@ -152,7 +290,7 @@ public class MapController extends DataObserver implements Initializable {
 			if(!saveName.toUpperCase().endsWith(".PNG")) {
 				save = new File(save.getAbsolutePath() + ".png");
 			}
-			
+
 			//Write to the file
 			try {
 				ImageIO.write(SwingFXUtils.fromFXImage(exportVisual, null), "png", save);
@@ -162,7 +300,7 @@ public class MapController extends DataObserver implements Initializable {
 			}
 		}
 	}
-	
+
 	/**
 	 * Stores the stage that the map is drawn on.
 	 * @param stage The stage this map is drawn on.

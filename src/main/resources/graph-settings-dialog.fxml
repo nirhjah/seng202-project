@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.view.graphs.GraphConfigurationDialogController">
+   <top>
+      <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+        <items>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="85.0" prefWidth="411.0" text="Graph configuration invalid." textAlignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <padding>
+                  <Insets bottom="25.0" top="25.0" />
+               </padding>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="127.0" prefWidth="398.0" text="The following settings must be set before plotting a graph:" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+        </items>
+      </SplitPane>
+   </top>
+   <center>
+      <Accordion fx:id="invalidOptionsAccordion" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>
