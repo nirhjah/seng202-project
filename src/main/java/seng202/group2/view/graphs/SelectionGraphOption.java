@@ -39,6 +39,22 @@ public class SelectionGraphOption<T> extends GraphOption {
         setItemFactory((item) -> item.toString());
     }
 
+    /** A simple functional interface stub to facilitate use of lambda expressions for method addChangeListener. */
+    @FunctionalInterface
+    public interface StateChangeListener {
+        void onChange();
+    }
+
+    /**
+     * Adds a function to be called when a change in the state of the option occurs.
+     * @param onChangeFunction A lambda function which takes no arguments, and returns no parameters.
+     */
+    public void addChangeListener(BooleanGraphOption.StateChangeListener onChangeFunction) {
+        optionSelector.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            onChangeFunction.onChange();
+        });
+    }
+
     /**
      * Sets the choices from which the user may choose from.
      * @param items The objects between which the user may choose.
