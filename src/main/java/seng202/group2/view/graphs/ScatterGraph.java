@@ -20,7 +20,7 @@ import java.util.ArrayList;
  *
  * @author Connor Dunlop
  */
-public class ScatterGraph extends Graph {
+public class ScatterGraph extends Graph implements Plottable {
 
     private static final String NAME = "Scatter";
 

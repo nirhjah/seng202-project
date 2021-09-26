@@ -21,7 +21,7 @@ import java.util.*;
  *
  * @author Connor Dunlop
  */
-public class BarGraph extends Graph {
+public class BarGraph extends Graph implements Plottable {
 
     private static final String NAME = "Bar";
 

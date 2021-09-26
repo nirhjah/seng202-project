@@ -27,7 +27,7 @@ import java.util.*;
  *
  * @author Connor Dunlop
  */
-public class CrimesOverTimeGraph extends TimeSeriesGraph {
+public class CrimesOverTimeGraph extends TimeSeriesGraph implements Plottable {
 
     private static final String NAME = "Crimes Over Time";
 

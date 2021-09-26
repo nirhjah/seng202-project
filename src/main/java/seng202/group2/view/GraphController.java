@@ -1,6 +1,7 @@
 package seng202.group2.view;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import javafx.scene.layout.VBox;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
 import seng202.group2.view.graphs.Graph;
+import seng202.group2.view.graphs.Plottable;
 
 
 /**
@@ -35,9 +37,17 @@ public class GraphController extends DataObserver {
 	 */
 	public void initialize() {
 		for (Graph graphType : Graph.getGraphTypes()) {
+			if (!(graphType instanceof Plottable))
+				continue;
 			graphTypes.put(graphType.getName(), graphType);
 		}
-		graphTypeSelector.getItems().addAll(graphTypes.keySet());
+
+		ArrayList<String> sortedGraphTypes = new ArrayList<String>(graphTypes.keySet());
+		sortedGraphTypes.sort((i, j) -> {
+			return i.toString().compareTo(j.toString());
+		});
+
+		graphTypeSelector.getItems().addAll(sortedGraphTypes);
 	}
 
 	@FXML public void selectGraphType() {
