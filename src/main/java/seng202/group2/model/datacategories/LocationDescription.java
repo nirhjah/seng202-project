@@ -67,7 +67,8 @@ public class LocationDescription extends DataCategory implements Importable, Cat
 
 	@Override
 	public String getValueString() {
-		if (locationDescription == null) throw new NullPointerException();
+		if (locationDescription == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
 
 		return locationDescription.toString();
 	}

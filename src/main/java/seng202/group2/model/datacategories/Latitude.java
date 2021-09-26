@@ -77,6 +77,9 @@ public class Latitude extends DataCategory implements Importable, Numerical {
 
 	@Override
 	public String getValueString() {
+		if (latitude == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
 		return latitude.toString();
 	}
 

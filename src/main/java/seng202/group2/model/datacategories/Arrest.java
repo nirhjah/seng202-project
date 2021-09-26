@@ -77,6 +77,9 @@ public class Arrest extends DataCategory implements Importable, Categorical {
 
 	@Override
 	public String getValueString() {
+		if (arrest == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
 		return arrest.toString();
 	}
 

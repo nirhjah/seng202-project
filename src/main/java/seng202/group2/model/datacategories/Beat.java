@@ -76,6 +76,9 @@ public class Beat extends DataCategory implements Importable, Numerical, Categor
 
 	@Override
 	public String getValueString() {
+		if (beat == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
 		return beat.toString();
 	}
 

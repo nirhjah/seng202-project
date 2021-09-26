@@ -67,6 +67,9 @@ public class CaseNumber extends DataCategory implements Importable, Categorical 
 
 	@Override
 	public String getValueString() {
+		if (caseNum == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
 		return caseNum.toString();
 	}
 

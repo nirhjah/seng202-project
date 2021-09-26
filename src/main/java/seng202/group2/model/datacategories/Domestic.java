@@ -77,6 +77,9 @@ public class Domestic extends DataCategory implements Importable, Categorical {
 
 	@Override
 	public String getValueString() {
+		if (domestic == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
 		return domestic.toString();
 	}
 

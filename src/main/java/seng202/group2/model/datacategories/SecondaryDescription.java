@@ -68,6 +68,9 @@ public class SecondaryDescription extends DataCategory implements Importable, Ca
 
 	@Override
 	public String getValueString() {
+		if (secondaryDescription == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
 		return secondaryDescription.toString();
 	}
 

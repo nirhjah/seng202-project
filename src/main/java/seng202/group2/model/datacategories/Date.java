@@ -95,6 +95,9 @@ public class Date extends DataCategory implements Importable, Categorical {
 
 	@Override
 	public String getValueString() {
+		if (date == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
 		java.util.Date date = this.date.getTime();
 		String strDate = (new SimpleDateFormat(dateFormats[0])).format(date);
 		return strDate;

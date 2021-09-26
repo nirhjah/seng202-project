@@ -67,6 +67,9 @@ public class ID extends DataCategory implements Importable, Numerical, Categoric
 
     @Override
     public String getValueString() {
+        if (ID == null)
+            throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
         return ID.toString();
     }
 

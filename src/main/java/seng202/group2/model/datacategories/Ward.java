@@ -72,6 +72,9 @@ public class Ward extends DataCategory implements Importable, Numerical, Categor
 
 	@Override
 	public String getValueString() {
+		if (ward == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
 		return ward.toString();
 	}
 

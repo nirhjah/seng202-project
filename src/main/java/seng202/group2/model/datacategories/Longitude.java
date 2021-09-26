@@ -77,6 +77,9 @@ public class Longitude extends DataCategory implements Importable, Numerical {
 
 	@Override
 	public String getValueString() {
+		if (longitude == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
 		return longitude.toString();
 	}
 

@@ -67,6 +67,9 @@ public class PrimaryDescription extends DataCategory implements Importable, Cate
 
 	@Override
 	public String getValueString() {
+		if (primaryDescription == null)
+			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
+
 		return primaryDescription.toString();
 	}
 
