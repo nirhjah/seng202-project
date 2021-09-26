@@ -12,6 +12,10 @@ public class ObserverTestClass extends DataObserver {
     /** Records are stored here so that test methods can access at any time */
     private ArrayList<CrimeRecord> testRecords;
     private HashSet<Integer> selectedRecords;
+    public int min;
+    public int max;
+    public int size;
+    public int total;
 
     /**
      * Get the records
@@ -27,8 +31,11 @@ public class ObserverTestClass extends DataObserver {
     }
 
     @Override
-    public void frameUpdate() {
-        return;
+    public void frameUpdate(int min, int max, int size, int total) {
+        this.min = min;
+        this.max = max;
+        this.size = size;
+        this.total = total;
     }
 
     /**

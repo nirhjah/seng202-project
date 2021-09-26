@@ -15,10 +15,46 @@ public class ActiveData extends DataSource {
     private HashSet<Integer> selectedRecords = new HashSet<>();
 
     //Frame variables
-    public int windowSizeInt = 1000;
-    public int recordCount = 0;
-    public int currentMin = 0;
-    public int currentMax = windowSizeInt;
+    private int frameSize = 1000;
+    private int recordCount = 0;
+    private int currentMin = 0;
+    private int currentMax = 0;
+
+    /**
+     * Update the frame size
+     * @param newSize New frame size
+     */
+    public void updateFrameSize(int newSize) {
+        ActiveData activeData = DBMS.getActiveData();
+        recordCount = DBMS.getActiveRecordsSize();
+
+        frameSize = newSize;
+        currentMax = Math.min(activeData.currentMin + frameSize, recordCount);
+
+        updateFrame(activeData.currentMin, currentMax, frameSize);
+    }
+
+    /**
+     * Increment the current frame
+     */
+    public void incrementFrame() {
+        recordCount = DBMS.getActiveRecordsSize();
+        currentMax = Math.min(currentMax + frameSize, recordCount);
+        currentMin = Math.max(Math.min(currentMin + frameSize, recordCount - frameSize), 0);
+
+        updateFrame(currentMin, currentMax, frameSize);
+    }
+
+    /**
+     * Decrement the current frame
+     */
+    public void decrementFrame() {
+        recordCount = DBMS.getActiveRecordsSize();
+        currentMin = Math.max(currentMin - frameSize, 0);
+        currentMax = Math.max(currentMax - frameSize, Math.max(Math.min(recordCount, frameSize), 0));
+
+        updateFrame(currentMin, currentMax, frameSize);
+    }
 
     /**
      * Add a filter to the filter list
@@ -141,6 +177,28 @@ public class ActiveData extends DataSource {
     }
 
     /**
+     * Generates an order string using Filters to enable SQL sorting.
+     */
+    private String generateOrderString() {
+        String orderString = "";
+        boolean firstSort = true;
+
+        for (Filter filter : filters) {
+            if (filter.getType() == FilterType.SORT) {
+                if (!firstSort) {
+                    orderString += ", ";
+                } else {
+                    orderString += " ORDER BY ";
+                    firstSort = false;
+                }
+
+                orderString += filter.getSQLText();
+            }
+        }
+        return orderString;
+    }
+
+    /**
      * Updates the ActiveRecords database in DBMS. This updates using all current filters.
      */
     public void updateActiveRecords() {
@@ -167,28 +225,6 @@ public class ActiveData extends DataSource {
     }
 
     /**
-     * Generates an order string using Filters to enable SQL sorting.
-     */
-    private String generateOrderString() {
-        String orderString = "";
-        boolean firstSort = true;
-
-        for (Filter filter : filters) {
-            if (filter.getType() == FilterType.SORT) {
-                if (!firstSort) {
-                    orderString += ", ";
-                } else {
-                    orderString += " ORDER BY ";
-                    firstSort = false;
-                }
-
-                orderString += filter.getSQLText();
-            }
-        }
-        return orderString;
-    }
-
-    /**
      * Get all currently active records.
      *
      * @return ArrayList<CrimeRecords> of active records.
@@ -207,10 +243,6 @@ public class ActiveData extends DataSource {
      */
     public ArrayList<CrimeRecord> getActiveRecords(int start, int limit) {
         return DBMS.getActiveRecords(start, limit, generateOrderString());
-    }
-
-    public ArrayList<Filter> getFilters() {
-        return filters;
     }
 
     /**
@@ -248,19 +280,35 @@ public class ActiveData extends DataSource {
     }
 
     /**
-     * Returns the set of selected crime records.
-     * @return The set of selected crime record ids.
-     */
-    public HashSet<Integer> getSelectedRecords() {
-        return selectedRecords;
-    }
-
-    /**
      * Checks if a crime record is selected.
      * @param id The id of the CrimeRecord the selection of which is to be determined.
      * @return True if the CrimeRecord is selected, false if not.
      */
     public boolean isSelected(Integer id) {
         return selectedRecords.contains(id);
+    }
+
+    public ArrayList<Filter> getFilters() {
+        return filters;
+    }
+
+    public HashSet<Integer> getSelectedRecords() {
+        return selectedRecords;
+    }
+
+    public int getFrameSize() {
+        return frameSize;
+    }
+
+    public int getRecordCount() {
+        return recordCount;
+    }
+
+    public int getCurrentMin() {
+        return currentMin;
+    }
+
+    public int getCurrentMax() {
+        return currentMax;
     }
 }

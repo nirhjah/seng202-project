@@ -2,6 +2,7 @@ package seng202.group2.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
 import java.sql.SQLException;
@@ -116,5 +117,22 @@ public class DataObserverTest {
         for (Integer result : results) {
             assertTrue(recordsToSelect.contains(result));
         }
+    }
+
+    @Test
+    void frameUpdateTest() {
+        try {
+            addRecords(50);
+        } catch (SQLException | ClassNotFoundException | ParseException e) {
+            e.printStackTrace();
+        }
+
+        ActiveData activeData = DBMS.getActiveData();
+        activeData.updateFrameSize(10);
+
+        assertEquals(observer.min, activeData.getCurrentMin());
+        assertEquals(observer.max, activeData.getCurrentMax());
+        assertEquals(observer.size, activeData.getFrameSize());
+        assertEquals(observer.total, activeData.getRecordCount());
     }
 }

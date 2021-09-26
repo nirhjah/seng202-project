@@ -1,19 +1,23 @@
 package seng202.group2.view;
 
-
 import com.sun.javafx.webkit.WebConsoleListener;
+import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.concurrent.Worker;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.WindowEvent;
 import netscape.javascript.JSObject;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -27,10 +31,10 @@ import java.util.ResourceBundle;
  *
  *  @author Yiyang Yu
  *  @author Connor Dunlop
+ *  @author Moses Wescombe
  */
 
 public class MapController extends DataObserver implements Initializable {
-
     /** JavaFX's WebView Element hold the visualization of a map.html. */
     @FXML private WebView webView;
     @FXML private Label radiusSliderLabel;
@@ -49,8 +53,6 @@ public class MapController extends DataObserver implements Initializable {
      *  - Use webEngine to provide access to the document object model of the web page map.html
      */
     public void initialize(URL location, ResourceBundle resources) {
-        DBMS.getActiveData().addObserver(this);
-
         webEngine = webView.getEngine();
         webEngine.load(CamsApplication.class.getClassLoader().getResource("map.html").toExternalForm());
 
@@ -158,18 +160,21 @@ public class MapController extends DataObserver implements Initializable {
         );
     }
 
+    /**
+     * Update active data
+     */
     @Override
     public void activeDataUpdate() {
         ActiveData activeData = DBMS.getActiveData();
 
         //Get active data from frame
-        ArrayList<CrimeRecord> activeRecords = activeData.getActiveRecords(activeData.currentMin, activeData.windowSizeInt);
+        ArrayList<CrimeRecord> activeRecords = activeData.getActiveRecords(activeData.getCurrentMin(), activeData.getFrameSize());
 
         // Remove all markers from the map, then add markers for all currently not selected active records
         clearMarkers();
         for (CrimeRecord record : activeRecords) {
             //Prevent null location records
-            if (record.getLatitude() != 0.0 && record.getLongitude() != 0.0) {
+            if (record.getLatitude() != null && record.getLongitude() != null) {
                 if (!DBMS.getActiveData().isSelected(record.getID()))
                     addMarker(record, "red");
             }
@@ -180,7 +185,7 @@ public class MapController extends DataObserver implements Initializable {
             CrimeRecord record = DBMS.getRecord(selectedRecord);
             if (record != null)
                 //Prevent null location records
-                if (record.getLatitude() != 0.0 && record.getLongitude() != 0.0) {
+                if (record.getLatitude() != null && record.getLongitude() != null) {
                     addMarker(record, "blue");
                 }
         }
@@ -211,7 +216,7 @@ public class MapController extends DataObserver implements Initializable {
      * Update markers when the frame changes
      */
     @Override
-    public void frameUpdate() {
+    public void frameUpdate(int min, int max, int size, int total) {
         activeDataUpdate();
     }
 }

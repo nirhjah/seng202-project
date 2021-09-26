@@ -55,7 +55,9 @@ public class ActiveDataTest {
 
     @BeforeEach
     void clearFilters() {
+        DBMS.clearDB();
         activeData.clearFilters(false);
+        activeData.updateFrameSize(1000);
     }
 
     @Test
@@ -274,6 +276,61 @@ public class ActiveDataTest {
 
         assertTrue(activeData.isSelected(5));
         assertTrue(!activeData.isSelected(6));
+    }
 
+    @Test
+    void updateFrameSizeTest() {
+        activeData.updateFrameSize(20);
+
+        assertEquals(20, activeData.getFrameSize());
+    }
+
+    @Test
+    void incrementFrameNoRecordsTest() {
+        activeData.incrementFrame();
+
+        assertEquals(0, activeData.getCurrentMin());
+        assertEquals(0, activeData.getCurrentMax());
+    }
+
+    @Test
+    void incrementFrameTest() {
+        try {
+            addRecords(50);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        activeData.updateFrameSize(10);
+        activeData.incrementFrame();
+
+        assertEquals(10, activeData.getCurrentMin());
+        assertEquals(20, activeData.getCurrentMax());
+    }
+
+    @Test
+    void decrementFrameNoRecordsTest() {
+        activeData.decrementFrame();
+
+        assertEquals(0, activeData.getCurrentMin());
+        assertEquals(0, activeData.getCurrentMax());
+    }
+
+    @Test
+    void decrementFrameTest() {
+        try {
+            addRecords(50);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        activeData.updateFrameSize(10);
+        activeData.incrementFrame();
+        activeData.incrementFrame();
+        activeData.decrementFrame();
+
+
+        assertEquals(10, activeData.getCurrentMin());
+        assertEquals(20, activeData.getCurrentMax());
     }
 }
