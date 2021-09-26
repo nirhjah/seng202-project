@@ -24,17 +24,6 @@ public class TimeSeriesGraph extends LineGraph {
      *************************************************************************************************************/
 
     protected enum IntervalType {
-        CONTINUOUS {
-            @Override
-            public String toString() {
-                return "Continuous";
-            }
-
-            @Override
-            public Number getIntervalValue(Calendar date) {
-                return date.toInstant().getEpochSecond();
-            }
-        },
 
         HOUR_OF_DAY {
             @Override
