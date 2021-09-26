@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
@@ -87,6 +88,14 @@ public class SelectionGraphOption<T> extends GraphOption {
      */
     public void addItems(Collection<T> items) {
         optionSelector.getItems().addAll(items);
+    }
+
+    /**
+     * Returns a list of the choices this option is presenting to the user.
+     * @return A list of the choices this option is presenting to the user.
+     */
+    public List<T> getItems() {
+        return optionSelector.getItems();
     }
 
     /**
