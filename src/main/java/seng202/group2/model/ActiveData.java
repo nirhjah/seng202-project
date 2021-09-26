@@ -230,6 +230,10 @@ public class ActiveData extends DataSource {
      * @return ArrayList<CrimeRecords> of active records.
      */
     public ArrayList<CrimeRecord> getActiveRecords() {
+        return DBMS.getActiveRecords(currentMin, frameSize, generateOrderString());
+    }
+
+    public ArrayList<CrimeRecord> getAllActiveRecords() {
         return DBMS.getActiveRecords(0, -1, generateOrderString());
     }
 

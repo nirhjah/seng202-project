@@ -18,6 +18,8 @@ public abstract class DataSource {
     public void addObserver(DataObserver observer) {
         if (!observers.contains(observer))
             observers.add(observer);
+
+        System.out.println(observers);
     }
 
     /**
@@ -27,6 +29,9 @@ public abstract class DataSource {
      */
     public void removeObserver(DataObserver observer) {
         observers.remove(observer);
+
+        System.out.println(observers);
+
     }
 
     /**

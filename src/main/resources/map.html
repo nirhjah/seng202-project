@@ -41,6 +41,22 @@
     */
     function initMap() {
         const myLatLng = { lat: 41.763, lng: -87.644 };
+
+        var remove_poi = [
+            {
+                featureType: "poi",
+                elementType: "labels",
+                stylers: [
+                    { visibility: "off" }
+                ]
+            },
+            {
+                featureType: 'transit',
+                elementType: 'labels',
+                stylers: [{visibility: 'off'}]
+            }
+        ]
+
         var myMapOptions = {
             zoom: 1,
             center: new google.maps.LatLng(myLatLng),
@@ -48,6 +64,7 @@
             streetViewControl: false,
             fullscreenControl: false,
             scaleControl: true,
+            styles: remove_poi,
         }
         map = new google.maps.Map(document.getElementById("map"), myMapOptions);
 

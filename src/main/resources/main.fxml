@@ -137,9 +137,9 @@
           <Tab fx:id="mapTab" onSelectionChanged="#toggleMapTab" text="Map">
               <fx:include id="map" fx:id="map" source="map.fxml" />
           </Tab>
-<!--            <Tab fx:id="graphTab" onSelectionChanged="#toggleGraphTab" text="Graph">-->
-<!--                <fx:include fx:id="graph" id="graph" source="graph.fxml"/>-->
-<!--            </Tab>-->
+            <Tab fx:id="graphTab" onSelectionChanged="#toggleGraphTab" text="Graph">
+                <fx:include fx:id="graph" id="graph" source="graph.fxml"/>
+            </Tab>
         </tabs>
       </TabPane>
    </center>

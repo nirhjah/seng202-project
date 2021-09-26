@@ -63,7 +63,8 @@ public class GraphController extends DataObserver {
 	}
 
 	@FXML public void plotGraph() {
-		graph.plotGraph();
+		if (graph != null)
+			graph.plotGraph();
 	}
 
 	@Override
@@ -77,7 +78,7 @@ public class GraphController extends DataObserver {
 	}
 
 	@Override
-	public void frameUpdate() {
-		return;
+	public void frameUpdate(int min, int max, int size, int total) {
+		activeDataUpdate();
 	}
 }
