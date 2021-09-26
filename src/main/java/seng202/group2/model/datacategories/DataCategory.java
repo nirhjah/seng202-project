@@ -44,7 +44,7 @@ public abstract class DataCategory {
 
 	public static final Set<DataCategory> getCategories(Class<? extends DataClassification> classification) {
 		Set<DataCategory> subSetCategories = new HashSet<>();
-		for (DataCategory dataCategory : dataCategories) {
+		for (DataCategory dataCategory : getCategories()) {
 			if (classification.isInstance(dataCategory))
 				subSetCategories.add(dataCategory);
 		}
