@@ -13,7 +13,7 @@ public class NumericGraphOption extends GraphOption {
 
     private VBox root = new VBox();
     private Label nameLabel = new Label(NAME);
-    private Spinner<Integer> numberSpinner = new Spinner<>(0,0,0,1);
+    private Spinner<Integer> numberSpinner = new Spinner<>(1,1,1,1);
 
     NumericGraphOption(String name) {
         super(name);
