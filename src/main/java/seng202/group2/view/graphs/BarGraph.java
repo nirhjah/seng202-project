@@ -53,7 +53,7 @@ public class BarGraph extends Graph {
     public void initialize(BorderPane graphPane, VBox optionList) {
         super.initialize(graphPane, optionList);
 
-        barChart.setTitle("Bar Graph");
+        barChart.setTitle("Bar Chart");
         setChart(barChart);
 
         ArrayList<DataCategory> xCategories = new ArrayList<>(DataCategory.getCategories(Categorical.class));
