@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.DBMS;
@@ -102,10 +103,11 @@ public class MainController extends DataObserver implements Initializable {
 	public void toggleMapTab() {
 		if (mapTab.isSelected()) {
 			//Update map window
-			mapController.mapTabOpen = true;
-			mapController.activeDataUpdate();
+			ActiveData activeData =  DBMS.getActiveData();
+			activeData.addObserver(mapController);
+			mapController.frameUpdate(activeData.getCurrentMin(), activeData.getCurrentMax(), activeData.getFrameSize(), activeData.getRecordCount());
 		} else {
-			mapController.mapTabOpen = false;
+			DBMS.getActiveData().removeObserver(mapController);
 		}
 	}
 
@@ -115,10 +117,11 @@ public class MainController extends DataObserver implements Initializable {
 	public void toggleTableTab() {
 		if (tableTab.isSelected()) {
 			//Update table window
-			tableController.tableTabOpen = true;
-			tableController.activeDataUpdate();
+			ActiveData activeData =  DBMS.getActiveData();
+			activeData.addObserver(tableController);
+			tableController.frameUpdate(activeData.getCurrentMin(), activeData.getCurrentMax(), activeData.getFrameSize(), activeData.getRecordCount());
 		} else {
-			tableController.tableTabOpen = false;
+			DBMS.getActiveData().removeObserver(tableController);
 		}
 	}
 
@@ -141,33 +144,35 @@ public class MainController extends DataObserver implements Initializable {
 	 */
 	public void showMapWindow() {
 		try {
-			Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("map.fxml"));
+			//Get Javafx
+			FXMLLoader loader = new FXMLLoader(CamsApplication.class.getClassLoader().getResource("map.fxml"));
+			Parent root = (Parent) loader.load();
+			MapController controller = (MapController)loader.getController();
+
 			Stage stage = new Stage();
 			stage.setTitle("Map Window");
 			stage.setScene(new Scene(root, 900, 600));
 			stage.show();
 
-			//Reopen tab on close
+			//Set an onclose event to clean up
+			stage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, controller::exitApplication);
+
+			//Reopen map tab on close
 			stage.setOnCloseRequest(event -> {
 				mapTab.setDisable(false);
-				if (mapTab.isSelected()) {
-					mapController.mapTabOpen = true;
-					mapController.activeDataUpdate();
-				}
+				toggleMapTab();
 			});
 
-			//Dissable map tab
+			//Disable map tab
 			tabPane.getSelectionModel().select(tableTab);
 			mapTab.setDisable(true);
-			mapController.mapTabOpen = false;
+			toggleMapTab();
 
 		} catch (IOException e) {
 			// This is where you would enter the error handling code, for now just print the stacktrace
 			mapTab.setDisable(false);
 			e.printStackTrace();
 		}
-
-		//DBMS.getActiveData().addFilter(FilterType.EQ.createFilter("id", "10"));
 	}
 
 	/**
@@ -242,9 +247,6 @@ public class MainController extends DataObserver implements Initializable {
 		DBMS.getActiveData().addObserver(this);
 
 		updateText();
-
-		tableController.tableTabOpen = true;
-		mapController.mapTabOpen = false;
 	}
 
 	private void updateText() {

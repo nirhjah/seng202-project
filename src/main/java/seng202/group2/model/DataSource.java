@@ -16,7 +16,8 @@ public abstract class DataSource {
      * @param observer -- Observer object to add
      */
     public void addObserver(DataObserver observer) {
-        observers.add(observer);
+        if (!observers.contains(observer))
+            observers.add(observer);
     }
 
     /**
@@ -25,7 +26,8 @@ public abstract class DataSource {
      * @param observer -- Observer object to remove
      */
     public void removeObserver(DataObserver observer) {
-        observers.remove(observer);
+        if (observers.contains(observer))
+            observers.remove(observer);
     }
 
     /**

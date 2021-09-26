@@ -15,9 +15,6 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class TableController extends DataObserver implements Initializable {
-    //True if tab is currently open
-    public boolean tableTabOpen = true;
-
     //Table
     @FXML private TableView<CrimeRecord> tableView;
     @FXML private TableColumn<CrimeRecord, Integer> idColumn;
