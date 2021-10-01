@@ -15,15 +15,14 @@
 
 <StackPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.view.GraphController">
    <children>
-      <BorderPane fx:id="graphPane" onMouseClicked="#showControlMenu" prefHeight="200.0" prefWidth="200.0" />
-      <BorderPane fx:id="controlPane" prefHeight="200.0" prefWidth="200.0">
+      <BorderPane fx:id="graphPane" onMouseClicked="#toggleControlMenu" prefHeight="200.0" prefWidth="200.0" />
+      <BorderPane fx:id="controlPane" pickOnBounds="false" prefHeight="200.0" prefWidth="200.0">
          <right>
-            <GridPane alignment="CENTER_RIGHT" prefWidth="200.0" vgap="10.0" BorderPane.alignment="CENTER">
+            <GridPane id="graphControlMenu" alignment="CENTER_RIGHT" prefWidth="200.0" stylesheets="@main.css" vgap="10.0" BorderPane.alignment="CENTER">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints minHeight="20.0" prefHeight="30.0" vgrow="NEVER" />
                   <RowConstraints minHeight="20.0" prefHeight="30.0" vgrow="NEVER" />
                   <RowConstraints minHeight="20.0" prefHeight="30.0" vgrow="NEVER" />
                 <RowConstraints maxHeight="1.7976931348623157E308" minHeight="0.0" prefHeight="30.0" vgrow="NEVER" />
@@ -31,11 +30,10 @@
                   <RowConstraints minHeight="20.0" prefHeight="30.0" vgrow="NEVER" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" onAction="#hideControlMenu" prefWidth="10000.0" text="Hide Menu" />
-                  <Button mnemonicParsing="false" onAction="#showExportWindow" prefHeight="26.0" prefWidth="208.0" text="Export" GridPane.rowIndex="1" />
-                  <Label text="Chart Type" GridPane.rowIndex="2" />
-                  <ComboBox fx:id="graphTypeSelector" onAction="#selectGraphType" prefWidth="10000.0" GridPane.rowIndex="3" />
-                  <ScrollPane hbarPolicy="NEVER" GridPane.rowIndex="4">
+                  <Button mnemonicParsing="false" onAction="#showExportWindow" prefHeight="26.0" prefWidth="208.0" text="Export" />
+                  <Label text="Chart Type" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="graphTypeSelector" onAction="#selectGraphType" prefWidth="10000.0" GridPane.rowIndex="2" />
+                  <ScrollPane hbarPolicy="NEVER" GridPane.rowIndex="3">
                      <content>
                         <AnchorPane maxWidth="200.0" prefHeight="260.0" prefWidth="200.0">
                            <children>
@@ -44,7 +42,7 @@
                         </AnchorPane>
                      </content>
                   </ScrollPane>
-                  <Button fx:id="plotButton" mnemonicParsing="false" onAction="#plotGraph" prefWidth="10000.0" text="Plot Graph" GridPane.rowIndex="5" />
+                  <Button fx:id="plotButton" mnemonicParsing="false" onAction="#plotGraph" prefWidth="10000.0" text="Plot Graph" GridPane.rowIndex="4" />
                </children>
                <BorderPane.margin>
                   <Insets />

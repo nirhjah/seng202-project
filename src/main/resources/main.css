@@ -10,6 +10,10 @@
     -fx-background-color: white;
 }
 
+#graphControlMenu {
+    -fx-background-color: white;
+}
+
 #map {
     -fx-background-color: white;
 }
