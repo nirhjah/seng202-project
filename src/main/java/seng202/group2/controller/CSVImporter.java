@@ -147,4 +147,25 @@ public class CSVImporter extends DataImporter {
 		
 		return crimeData;
 	}
+
+	@Override
+	public ArrayList<CrimeRecord> importRecords(Integer recordCount) throws IOException {
+		// Parse the header row if it has not been parsed yet.
+		if (categoryMap == null)
+			parseCategories();
+
+		ArrayList<CrimeRecord> crimeData = new ArrayList<CrimeRecord>();
+
+		String[] values;
+		for (int i = 0; i < recordCount; i++) {
+			// Get values for next crime record
+			values = fileReader.readNextSilently();
+			if (values == null) // If no more crime records
+				break;
+
+			crimeData.add(parseRecord(values));
+		}
+
+		return crimeData;
+	}
 }

@@ -71,9 +71,22 @@ public abstract class DataImporter {
 	
 	/**
 	 * Imports all crime records from the file to which this DataImporter is bound to.
-	 * @return A CrimeData instance with all (valid) crime records from the file.
+	 *
+	 * @return An ArrayList of crime records with all (valid) crime records from the file.
 	 * @throws IOException If an error occurs when trying to parse the file.
 	 */
 	public abstract ArrayList<CrimeRecord> importAllRecords() throws IOException;
-	
+
+
+	/**
+	 * Imports the next [recordCount] valid crime records from the file which this DataImporter is bound to.
+	 * If there are fewer than [recordCount] valid crime records remaining in the file, returns the remaining
+	 * valid crime records.
+	 * If there are no crime records left to read from the file, returns an empty ArrayList.
+	 *
+	 * @param recordCount The number of (valid) crime records to import.
+	 * @return An ArrayList of the imported crime records.
+	 * @throws IOException If an error occurs when trying to parse the file.
+	 */
+	public abstract  ArrayList<CrimeRecord> importRecords(Integer recordCount) throws IOException;
 }
