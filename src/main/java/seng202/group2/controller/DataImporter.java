@@ -68,6 +68,15 @@ public abstract class DataImporter {
 				throw new UnsupportedFileTypeException(suffix);
 		}
 	}
+
+	/**
+	 * Counts the number of crime records stored in the file this importer is bound to.
+	 * Does not check if the crime record is valid.
+	 *
+	 * @return The number of crime records stored in the file.
+	 * @throws IOException If an error occurs when trying to read.
+	 */
+	public abstract Integer countRecords() throws IOException;
 	
 	/**
 	 * Imports all crime records from the file to which this DataImporter is bound to.
