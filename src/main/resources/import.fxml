@@ -32,8 +32,8 @@
       </Text>
       <TextField fx:id="importPathTextField" promptText="Directory of csv file" GridPane.columnSpan="2" GridPane.rowIndex="1" />
       <Button mnemonicParsing="false" onAction="#browseImportDirectory" prefWidth="70.0" text="Browse" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-      <Button mnemonicParsing="false" onAction="#importFileFromField" prefWidth="70.0" text="Import" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-      <ProgressBar fx:id="progressBar" prefWidth="1000.0" progress="0.0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+      <Button fx:id="importButton" mnemonicParsing="false" onAction="#importFileFromField" prefWidth="70.0" text="Import" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <ProgressBar fx:id="progressBar" prefWidth="1000.0" progress="0.0" visible="false" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <Label fx:id="importMessage" text="Select a file to import." GridPane.rowIndex="3" />
       <HBox fx:id="importProgressMessageBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <children>

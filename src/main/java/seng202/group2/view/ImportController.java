@@ -3,6 +3,7 @@ package seng202.group2.view;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
@@ -56,6 +57,7 @@ public class ImportController {
 	@FXML private HBox importProgressMessageBox;
 	@FXML private Label recordsSoFar;
 	@FXML private Label recordsToImport;
+	@FXML private Button importButton;
 
 	/** The number of crime records imported so far. */
 	private int numImported = 0;
@@ -71,6 +73,8 @@ public class ImportController {
 			case IDLE:
 				Platform.runLater(() -> {
 					importMessage.setText("Select a file to import.");
+					progressBar.setVisible(false);
+					importButton.setDisable(false);
 					importProgressMessageBox.setVisible(false);
 					progressBar.setProgress(0);
 				});
@@ -80,6 +84,8 @@ public class ImportController {
 				Platform.runLater(() -> {
 					importMessage.setText("Importing Records:");
 					importProgressMessageBox.setVisible(true);
+					importButton.setDisable(true);
+					progressBar.setVisible(true);
 					recordsSoFar.setText(Integer.toString(numImported));
 					recordsToImport.setText(Integer.toString(totalToImport));
 					progressBar.setProgress(((double) numImported) / ((double) totalToImport));
@@ -88,10 +94,10 @@ public class ImportController {
 
 			case POPULATING_DATABASE:
 				Platform.runLater(() -> {
-					importMessage.setText("Adding to Database...");
-					importProgressMessageBox.setVisible(false);
-					Stage stage = (Stage) importPathTextField.getScene().getWindow();
-					stage.getScene().setCursor(Cursor.WAIT);
+					importMessage.setText("Adding to Database:");
+					recordsSoFar.setText(Integer.toString(numImported));
+					recordsToImport.setText(Integer.toString(totalToImport));
+					progressBar.setProgress(((double) numImported) / ((double) totalToImport));
 				});
 				break;
 
@@ -111,10 +117,30 @@ public class ImportController {
 	 * @param records An ArrayList of crime records to add to the database.
 	 */
 	private void addToDatabase(ArrayList<CrimeRecord> records) {
+		//Change loading bar
 		status = ImportingStatus.POPULATING_DATABASE;
+		numImported = 0;
+		totalToImport = records.size();
 		updateProgress();
 
-		DBMS.addRecords(records);
+		//Loop through records in blocks
+		int start = 0;
+		int end;
+		while(start < records.size()) {
+			end = Math.min(records.size(), start + RECORDS_PER_IMPORT);
+
+			//Add records to database
+			DBMS.addRecords(records.subList(start, end));
+			numImported = end;
+
+			//Update progress
+			updateProgress();
+
+			start = end;
+		}
+
+		DBMS.getActiveData().updateActiveRecords();
+		DBMS.getActiveData().updateActiveData();
 	}
 
 	/**

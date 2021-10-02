@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * DataBaseManagementSystem. This controls the SQLite database and connects the data model together.
@@ -358,16 +359,10 @@ public class DBMS {
      *
      * @param records -- ArrayList of CrimeRecords to add to the database
      */
-    public static void addRecords(ArrayList<CrimeRecord> records) {
-        int count = 0;
+    public static void addRecords(List<CrimeRecord> records) {
         for (CrimeRecord record : records) {
             addRecord(record, false);
-            System.out.print("\rAdded " + ++count + " records to database");
         }
-        System.out.println();
-
-        activeData.updateActiveRecords();
-        activeData.updateActiveData();
     }
 
     /**
