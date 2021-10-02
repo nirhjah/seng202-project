@@ -451,12 +451,12 @@ public class DBMS {
     }
 
     /**
-     * Deletes all records from the database, by taking a HashSet of ID's and calling {@link DBMS#deleteRecord(int)}
-     * on each of them
-     * @param ids - A hashset of integer values, representing the ID's of the records to delete from the DBMS
+     * Deletes all the selected records from the database by calling {@link DBMS#deleteRecord(int)}
+     * on each of them. This method sets the selection to empty after deleting all the items, and then it
+     * updates the observers.
      */
-    public static void deleteRecords(HashSet<Integer> ids) {
-        for (Integer id: ids) {
+    public static void deleteSelectedRecords() {
+        for (Integer id: activeData.getSelectedRecords()) {
             deleteRecord(id);
         }
         activeData.clearSelection();

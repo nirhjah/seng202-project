@@ -251,6 +251,14 @@ public class MainController extends DataObserver implements Initializable {
 		}
 	}
 
+	/**
+	 * This method is called when the delete button is clicked on the CAMS main window.
+	 *
+	 * The 'delete records' window uses the 'deleteRecords.fxml' FXML file and the DeleteRecordsController Class
+	 * The 'delete records' window simply gets the user to confirm deletion and tells them how many records are selected.
+	 *
+	 * @see DeleteRecordsController
+	 */
 	public void openDeleteRecordsWindow() {
 		try {
 			Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("deleteRecords.fxml"));
