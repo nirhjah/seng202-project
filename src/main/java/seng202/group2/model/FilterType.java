@@ -26,6 +26,17 @@ public enum FilterType {
             return ">";
         }
     },
+    GT_EQ {
+        public Filter createFilter(DataCategory category, String pattern) {
+            if (category.getValueType() == String.class) {
+                pattern = "'" + pattern + "'";
+            }
+            return new Filter(category.getSQL() + " >= " + pattern + "", FilterType.GT_EQ);
+        }
+        public String toString() {
+            return ">=";
+        }
+    },
     LT {
         public Filter createFilter(DataCategory category, String pattern) {
             if (category.getValueType() == String.class) {
@@ -35,6 +46,17 @@ public enum FilterType {
         }
         public String toString() {
             return "<";
+        }
+    },
+    LT_EQ {
+        public Filter createFilter(DataCategory category, String pattern) {
+            if (category.getValueType() == String.class) {
+                pattern = "'" + pattern + "'";
+            }
+            return new Filter(category.getSQL() + " <= " + pattern + "", FilterType.LT_EQ);
+        }
+        public String toString() {
+            return "<=";
         }
     },
     /** Category sort */
