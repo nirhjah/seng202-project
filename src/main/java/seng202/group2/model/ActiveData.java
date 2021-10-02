@@ -25,11 +25,11 @@ public class ActiveData extends DataSource {
      * @param newSize New frame size
      */
     public void updateFrameSize(int newSize) {
-        ActiveData activeData = DBMS.getActiveData();
         recordCount = DBMS.getActiveRecordsSize();
 
         frameSize = newSize;
-        currentMax = Math.min(activeData.currentMin + frameSize, recordCount);
+        currentMin = Math.max(Math.min(currentMin, recordCount - frameSize), 0);
+        currentMax = Math.min(currentMin + frameSize, recordCount);
 
         updateFrame();
     }
