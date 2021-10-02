@@ -462,7 +462,6 @@ public class DBMS {
         activeData.clearSelection();
         activeData.updateActiveRecords();
         activeData.updateActiveData();
-        activeData.updateSelectionObservers();
     }
 
     /**
