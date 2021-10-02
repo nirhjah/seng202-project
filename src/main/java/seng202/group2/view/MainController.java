@@ -251,6 +251,24 @@ public class MainController extends DataObserver implements Initializable {
 		}
 	}
 
+	public void openDeleteRecordsWindow() {
+		try {
+			Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("deleteRecords.fxml"));
+			Stage stage = new Stage();
+			// This will cause the login window to always be in front of the main window
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setResizable(false);
+			stage.setTitle("Delete Records");
+			stage.setScene(new Scene(root, 400, 200));
+			stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/CAMS_logo.png")));
+
+			stage.show();
+		} catch (IOException e) {
+			// This is where you would enter the error handling code, for now just print the stacktrace
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * This showNotImplementedYet method opens the unimplemented window and brings it to the front.
 	 *

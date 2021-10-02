@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 
 /**
  * DataBaseManagementSystem. This controls the SQLite database and connects the data model together.
@@ -447,6 +448,21 @@ public class DBMS {
         } catch (SQLException e) {
             System.out.println("Could not delete record with ID: " + id + " from database. DBMS:deleteRecord:505");
         }
+    }
+
+    /**
+     * Deletes all records from the database, by taking a HashSet of ID's and calling {@link DBMS#deleteRecord(int)}
+     * on each of them
+     * @param ids - A hashset of integer values, representing the ID's of the records to delete from the DBMS
+     */
+    public static void deleteRecords(HashSet<Integer> ids) {
+        for (Integer id: ids) {
+            deleteRecord(id);
+        }
+        activeData.clearSelection();
+        activeData.updateActiveRecords();
+        activeData.updateActiveData();
+        activeData.updateSelectionObservers();
     }
 
     /**
