@@ -5,6 +5,7 @@ import seng202.group2.model.CrimeRecord;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An abstract class providing an interface for exporting crime data into a supported file type.
@@ -71,5 +72,5 @@ public abstract class DataExporter {
      * Writes the supplied records to the file which this exporter is bound to.
      * @param records An ArrayList of the crime records to write to the file.
      */
-    public abstract void exportRecords(ArrayList<CrimeRecord> records);
+    public abstract void exportRecords(List<CrimeRecord> records);
 }

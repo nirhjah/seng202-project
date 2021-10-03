@@ -3,12 +3,10 @@ package seng202.group2.controller;
 import com.opencsv.CSVWriter;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.datacategories.*;
+import seng202.group2.model.datacategories.Date;
 
 import java.io.*;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A crime data exporter used to export crime data to CSV file format.
@@ -86,7 +84,7 @@ public class CSVExporter extends DataExporter {
     }
 
     @Override
-    public void exportRecords(ArrayList<CrimeRecord> records) {
+    public void exportRecords(List<CrimeRecord> records) {
         // If the file header hasn't yet been written, write the header.
         if (!headerExists)
             writeHeader();
