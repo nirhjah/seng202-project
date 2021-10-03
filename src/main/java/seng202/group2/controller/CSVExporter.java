@@ -74,11 +74,11 @@ public class CSVExporter extends DataExporter {
      * IMPORTANT: This method currently assumes the provided file is empty.
      */
     private void writeHeader() {
-        ArrayList<String> headerNames = new ArrayList<>();
+        String[] headerNames = new String[categoryMap.size()];
         for (DataCategory category : DataCategory.getCategories(Exportable.class)) {
-            headerNames.add(category.toString().toUpperCase());
+            headerNames[categoryMap.get(category.getClass())] = category.toString().toUpperCase();
         }
-        fileWriter.writeNext(headerNames.toArray(new String[headerNames.size()]));
+        fileWriter.writeNext(headerNames);
 
         headerExists = true;
     }
