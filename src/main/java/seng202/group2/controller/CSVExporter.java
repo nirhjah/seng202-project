@@ -91,7 +91,7 @@ public class CSVExporter extends DataExporter {
 
         Set<DataCategory> exportableCategories = DataCategory.getCategories(Exportable.class);
         for (CrimeRecord record : records) {
-            ArrayList<String> recordValues = new ArrayList<>();
+            String[] recordValues = new String[categoryMap.size()];
 
             // Get record's values for each exportable category of data
             for (DataCategory exportableCategory : exportableCategories) {
@@ -101,11 +101,11 @@ public class CSVExporter extends DataExporter {
                 try {
                     valueString = exportableCategory.getRecordCategory(record).getValueString();
                 } catch (NullPointerException e) {}
-                recordValues.add(categoryMap.get(exportableCategory.getClass()), valueString);
+                recordValues[categoryMap.get(exportableCategory.getClass())] = valueString;
             }
 
             // Write record's values to file
-            fileWriter.writeNext(recordValues.toArray(new String[recordValues.size()]));
+            fileWriter.writeNext(recordValues);
         }
     }
 
