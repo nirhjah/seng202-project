@@ -78,7 +78,7 @@ public class CSVExporter extends DataExporter {
         for (DataCategory category : DataCategory.getCategories(Exportable.class)) {
             headerNames.add(category.toString().toUpperCase());
         }
-        fileWriter.writeNext((String[]) headerNames.toArray());
+        fileWriter.writeNext(headerNames.toArray(new String[headerNames.size()]));
 
         headerExists = true;
     }
@@ -105,7 +105,7 @@ public class CSVExporter extends DataExporter {
             }
 
             // Write record's values to file
-            fileWriter.writeNext((String[]) recordValues.toArray());
+            fileWriter.writeNext(recordValues.toArray(new String[recordValues.size()]));
         }
     }
 
