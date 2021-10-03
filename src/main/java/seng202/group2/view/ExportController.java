@@ -185,7 +185,7 @@ public class ExportController {
     {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Comma Separated Value","*.csv"));
-        File chosenFile = fileChooser.showOpenDialog(null);
+        File chosenFile = fileChooser.showSaveDialog(null);
 
 
         if (chosenFile != null) {
