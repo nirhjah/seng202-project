@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class Domestic extends DataCategory implements Importable, Categorical {
+public class Domestic extends DataCategory implements Importable, Exportable, Categorical {
 
 	/**
 	 * 1 if the crime incident was classified as domestic

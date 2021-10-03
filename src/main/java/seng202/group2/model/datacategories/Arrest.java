@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class Arrest extends DataCategory implements Importable, Categorical {
+public class Arrest extends DataCategory implements Importable, Exportable, Categorical {
 	
 	/**
 	 * 1 if the crime incident resulted in an arrest being made

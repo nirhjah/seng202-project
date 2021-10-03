@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class Latitude extends DataCategory implements Importable, Numerical {
+public class Latitude extends DataCategory implements Importable, Exportable, Numerical {
 
 	/** The latitudinal location where the crime incident occurred. */
 	private Float latitude = null;

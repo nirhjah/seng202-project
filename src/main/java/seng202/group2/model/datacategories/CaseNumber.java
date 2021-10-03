@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class CaseNumber extends DataCategory implements Importable, Categorical {
+public class CaseNumber extends DataCategory implements Importable, Exportable, Categorical {
 
 	/** The case number associated with the crime record in the police database */
 	private String caseNum = null;

@@ -13,7 +13,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class FBICode extends DataCategory implements Importable, Categorical {
+public class FBICode extends DataCategory implements Importable, Exportable, Categorical {
 
 	/**
 	 * FBI crime code assigned to the crime incident.

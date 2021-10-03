@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class PrimaryDescription extends DataCategory implements Importable, Categorical {
+public class PrimaryDescription extends DataCategory implements Importable, Exportable, Categorical {
 
 	/** The primary description of the crime type this code corresponds to */
 	private String primaryDescription = null;
