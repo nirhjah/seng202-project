@@ -91,11 +91,22 @@ public class MainController extends DataObserver implements Initializable {
 
 	/**
 	 * This showExportWindow method opens the export window and brings it to the front.
-	 *
-	 * TODO This method is not yet implemented. Temporarily it is calling {@link MainController#showNotImplementedYet()}
 	 */
 	public void showExportWindow() {
-		showNotImplementedYet();
+		try {
+			Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("export.fxml"));
+			Stage stage = new Stage();
+			// This will cause the login window to always be in front of the main window
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setResizable(false);
+			stage.setTitle("Export Data");
+			stage.setScene(new Scene(root, 400, 200));
+			stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/CAMS_logo.png")));
+			stage.show();
+		} catch (IOException e) {
+			// This is where you would enter the error handling code, for now just print the stacktrace
+			e.printStackTrace();
+		}
 	}
 
 	/**
