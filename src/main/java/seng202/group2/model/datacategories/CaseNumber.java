@@ -18,7 +18,8 @@ public class CaseNumber extends DataCategory implements Importable, Exportable, 
 	private String caseNum = null;
 
 	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
-			"CASE#"
+			"CASE#",
+			"CASENUMBER"
 	));
 	private static final CaseNumber instance = new CaseNumber();
 	public static CaseNumber getInstance() {

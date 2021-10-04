@@ -23,7 +23,8 @@ public class FBICode extends DataCategory implements Importable, Exportable, Cat
 	private String fbiCode = null;
 
 	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
-			"FBICD"
+			"FBICD",
+			"FBICODE"
 	));
 	private static final FBICode instance = new FBICode();
 	public static FBICode getInstance() {

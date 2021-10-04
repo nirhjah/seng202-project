@@ -19,7 +19,8 @@ public class IUCRCode extends DataCategory implements Importable, Exportable, Ca
 	private String iucrCode = null;
 
 	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
-			"IUCR"
+			"IUCR",
+			"IUCRCODE"
 	));
 	private static final IUCRCode instance = new IUCRCode();
 	public static IUCRCode getInstance() {

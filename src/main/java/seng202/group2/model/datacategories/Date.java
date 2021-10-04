@@ -30,7 +30,8 @@ public class Date extends DataCategory implements Importable, Exportable {
 	};
 
 	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
-			"DATEOFOCCURRENCE"
+			"DATEOFOCCURRENCE",
+			"DATE"
 	));
 	private static final Date instance = new Date();
 	public static Date getInstance() {
