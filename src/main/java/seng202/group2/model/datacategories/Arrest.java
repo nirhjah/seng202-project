@@ -62,9 +62,9 @@ public class Arrest extends DataCategory implements Importable, Exportable, Cate
 		
 		if (value == "")
 			return null;
-		else if (value.equals("Y") || value.equals("TRUE"))
+		else if (value.equals("Y") || value.equals("TRUE") || value.equals("true"))
 			return true;
-		else if (value.equals("N") || value.equals("FALSE"))
+		else if (value.equals("N") || value.equals("FALSE") || value.equals("false"))
 			return false;
 		else
 			throw new IllegalArgumentException("String was invalid.");
