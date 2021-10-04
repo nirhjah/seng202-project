@@ -9,6 +9,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
+import org.apache.commons.lang3.ObjectUtils;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
@@ -46,7 +47,11 @@ public class TableController extends DataObserver implements Initializable {
         dateColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<CrimeRecord, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<CrimeRecord, String> param) {
-                return new ReadOnlyObjectWrapper<>(param.getValue().getDateCategory().getValueString());
+                try {
+                    return new ReadOnlyObjectWrapper<>(param.getValue().getDateCategory().getValueString());
+                } catch (NullPointerException e) {
+                    return new ReadOnlyObjectWrapper<>("");
+                }
             }
         });
         blockColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("block"));
