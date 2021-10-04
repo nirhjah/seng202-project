@@ -17,7 +17,6 @@ import seng202.group2.model.DBMS;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -105,7 +104,6 @@ public class ExportController {
      */
     private void exportToFile(File file) {
         status = ExportingStatus.EXPORTING;
-        ArrayList<CrimeRecord> records = DBMS.getAllRecords();
 
         // Try to get an exporter for the provided file
         DataExporter exporter;
@@ -121,19 +119,21 @@ public class ExportController {
             return;
         }
 
+
         // Export all crime records to the file.
         try {
-            totalToExport = records.size();
+            totalToExport = DBMS.getRecordsSize();
 
             // Export the crime records in chunks
             int chunkStart = 0;
-            int chunkEnd;
-            while (chunkStart < records.size()) {
+            int chunkSize;
+            List<CrimeRecord> nextRecords;
+            while (chunkStart < totalToExport) {
 
                 // Get next sublist of records to export
-                chunkEnd = Math.min(records.size(), chunkStart + RECORDS_PER_EXPORT);
-                List<CrimeRecord> nextRecords = records.subList(chunkStart, chunkEnd);
-                chunkStart = chunkEnd;
+                chunkSize = Math.min(totalToExport - chunkStart, RECORDS_PER_EXPORT);
+                nextRecords = DBMS.getRecords(chunkStart, chunkSize);
+                chunkStart += chunkSize;
 
                 // Export sublist of records to file
                 exporter.exportRecords(nextRecords);
