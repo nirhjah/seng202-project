@@ -44,7 +44,7 @@
         </Text>
         <ComboBox fx:id="categoryComboBox" onAction="#changeOptions" prefWidth="220.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
         <Button mnemonicParsing="false" onAction="#addFilterFromInputs" text="Add Filter" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-      <CheckBox fx:id="sortCheckBox" mnemonicParsing="false" text="Sort" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+      <CheckBox fx:id="sortCheckBox" onAction="#changeOptions" mnemonicParsing="false" text="Sort" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets />
          </GridPane.margin>

@@ -101,7 +101,6 @@ public class Date extends DataCategory implements Importable {
 
 		java.util.Date date = this.date.getTime();
 		String strDate = (new SimpleDateFormat(DBMS.DATE_FORMAT)).format(date);
-		strDate += (this.date.getTimeInMillis() / 1000L);
 		return strDate;
 	}
 
