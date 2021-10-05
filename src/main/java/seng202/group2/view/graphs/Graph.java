@@ -57,8 +57,6 @@ public abstract class Graph {
      * Adds an instance of each Graph subtype to the graphTypes set.
      */
     private static void lookupGraphTypes() {
-        System.out.println("Scanning for Graph subtypes.");
-
         Reflections reflections = new Reflections("seng202.group2.view.graphs");
         Set<Class<? extends Graph>> graphTypeClasses = reflections.getSubTypesOf(Graph.class);
 
@@ -86,8 +84,6 @@ public abstract class Graph {
                 System.out.println("The graph class " + graphClass + " could not be instantiated.");
             }
         }
-
-        System.out.println("Found Graph subtypes: " + graphTypes);
     }
 
     /**

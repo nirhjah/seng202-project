@@ -6,6 +6,6 @@
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.view.filterControllers.boolController">
    <center>
-      <CheckBox mnemonicParsing="false" text="True" BorderPane.alignment="CENTER" />
+      <CheckBox fx:id="value" mnemonicParsing="false" text="True" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

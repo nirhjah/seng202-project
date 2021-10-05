@@ -23,10 +23,10 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
          </rowConstraints>
          <children>
-            <DatePicker GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+            <DatePicker fx:id="initialDate" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
             <Label alignment="BOTTOM_CENTER" text="Between" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
             <Label alignment="CENTER" text="and" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-            <DatePicker GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="TOP" />
+            <DatePicker fx:id="finalDate" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="TOP" />
          </children>
          <BorderPane.margin>
             <Insets />
