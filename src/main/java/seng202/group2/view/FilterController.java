@@ -34,6 +34,7 @@ public class FilterController implements Initializable {
     //Filter options
     @FXML private GridPane filterOptions;
     @FXML private OptionsController optionsController;
+    @FXML private CheckBox sortCheckBox;
 
     /** The JavaFX ComboBox that allows the user to select the category for filtering*/
     @FXML private ComboBox<DataCategory> categoryComboBox;
@@ -100,7 +101,9 @@ public class FilterController implements Initializable {
         DataCategory category = categoryComboBox.getSelectionModel().getSelectedItem();
         String resource = "./FilterOptions/";
 
-        if (category.getValueType() == Calendar.class) {
+        if (sortCheckBox.isSelected()) {
+            resource += "sortOptions.fxml";
+        } else if (category.getValueType() == Calendar.class) {
             resource += "dateOptions.fxml";
         } else if (category.getValueType() == Boolean.class) {
             resource += "boolOptions.fxml";
@@ -109,6 +112,7 @@ public class FilterController implements Initializable {
         } else {
             resource += "numberOptions.fxml";
         }
+
 
         try {
             FXMLLoader loader = new FXMLLoader(CamsApplication.class.getClassLoader().getResource(resource));

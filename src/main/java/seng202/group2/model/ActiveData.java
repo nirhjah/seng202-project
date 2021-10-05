@@ -15,6 +15,7 @@ public class ActiveData extends DataSource {
     private HashSet<Integer> selectedRecords = new HashSet<>();
 
     //Frame variables
+    private final int frameLimit = 10000;
     private int frameSize = 1000;
     private int recordCount = 0;
     private int currentMin = 0;
@@ -26,8 +27,7 @@ public class ActiveData extends DataSource {
      */
     public void updateFrameSize(int newSize) {
         recordCount = DBMS.getActiveRecordsSize();
-
-        frameSize = newSize;
+        frameSize = Math.max(Math.min(newSize, frameLimit), 1);
         currentMin = Math.max(Math.min(currentMin, recordCount - frameSize), 0);
         currentMax = Math.min(currentMin + frameSize, recordCount);
 

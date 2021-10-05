@@ -39,7 +39,7 @@ public class Filter {
         String[] temp = SQLText.split(" ");
 
         //If date
-        if (temp[0].equals("date")) {
+        if (temp[0].equals("date") && type != FilterType.SORT) {
             String result = "date between ";
 
             Calendar cal = Calendar.getInstance();

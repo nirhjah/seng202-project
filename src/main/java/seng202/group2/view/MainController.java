@@ -50,7 +50,12 @@ public class MainController extends DataObserver implements Initializable {
 	 * Update window size when a new size is entered into windowSize textField.
 	 */
 	public void updateWindowSize() {
-		DBMS.getActiveData().updateFrameSize(Integer.parseInt(windowSize.getText()));
+		try {
+			DBMS.getActiveData().updateFrameSize(Integer.parseInt(windowSize.getText()));
+		} catch (NumberFormatException e) {
+			System.out.println("Value " + windowSize.getText() + " is not an integer.");
+			windowSize.setText(Integer.toString(DBMS.getActiveData().getFrameSize()));
+		}
 	}
 
 	/**
@@ -301,5 +306,9 @@ public class MainController extends DataObserver implements Initializable {
 	@Override
 	public void frameUpdate() {
 		updateText();
+	}
+
+	public SplitPane getSplitPane() {
+		return splitPane;
 	}
 }
