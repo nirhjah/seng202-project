@@ -1,12 +1,11 @@
 package seng202.group2.view;
 
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import seng202.group2.controller.DataObserver;
@@ -38,9 +37,18 @@ public class TableController extends DataObserver implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        DBMS.getActiveData().addObserver(this);
+      DBMS.getActiveData().addObserver(this);
 
-        //Build table
+      //Default text on table pane instructing to please import data first
+      Platform.runLater(() -> {
+        if (tableView != null) {
+          String labelMessage = "No crime records in table. Please import a .csv file into the database first.";
+          final Label message = new Label(labelMessage);
+          tableView.setPlaceholder(message);
+        }
+      });
+
+      //Build table
         idColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Integer>("ID"));
         caseNumColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, String>("caseNum"));
         dateColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<CrimeRecord, String>, ObservableValue<String>>() {
