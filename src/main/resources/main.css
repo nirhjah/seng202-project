@@ -21,3 +21,10 @@
 #filter {
     -fx-background-color: white;
 }
+
+/*#filterTabs {*/
+/*    -fx-tab-max-height: 0 ;*/
+/*}*/
+/*#filterTabs .tab-header-area {*/
+/*    visibility: hidden ;*/
+/*}*/

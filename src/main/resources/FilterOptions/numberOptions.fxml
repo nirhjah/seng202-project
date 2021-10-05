@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.view.filterControllers.numberController">
+   <center>
+      <GridPane BorderPane.alignment="CENTER">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+            <RowConstraints maxHeight="31.0" minHeight="0.0" prefHeight="5.0" />
+            <RowConstraints maxHeight="77.0" minHeight="10.0" prefHeight="59.0" vgrow="NEVER" />
+            <RowConstraints maxHeight="25.0" minHeight="0.0" prefHeight="13.0" />
+         </rowConstraints>
+         <children>
+            <Label text="Value" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <TextField GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <ComboBox prefWidth="150.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
+   </center>
+</BorderPane>

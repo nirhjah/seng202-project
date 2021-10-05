@@ -5,10 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.Parent;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
@@ -18,9 +16,11 @@ import seng202.group2.model.DBMS;
 import seng202.group2.model.Filter;
 import seng202.group2.model.FilterType;
 import seng202.group2.model.datacategories.DataCategory;
+import seng202.group2.view.filterControllers.OptionsController;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -35,6 +35,9 @@ import java.util.ResourceBundle;
  * @author Sam Clark
  */
 public class FilterController implements Initializable {
+    @FXML private GridPane filterOptions;
+    @FXML private OptionsController optionsController;
+
     /** The JavaFX ComboBox that allows the user to select the category for filtering*/
     @FXML private ComboBox<DataCategory> categoryComboBox;
 
@@ -102,6 +105,32 @@ public class FilterController implements Initializable {
     {
         DBMS.getActiveData().clearFilters(true);
         listedFilters.clear();
+    }
+
+    public void changeOptions() {
+        DataCategory category = categoryComboBox.getSelectionModel().getSelectedItem();
+        String resource = "./FilterOptions/";
+
+        if (category.getValueType() == Calendar.class) {
+            resource += "dateOptions.fxml";
+        } else if (category.getValueType() == Boolean.class) {
+            resource += "boolOptions.fxml";
+        } else if (category.getValueType() == String.class) {
+            resource += "stringOptions.fxml";
+        } else {
+            resource += "numberOptions.fxml";
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(CamsApplication.class.getClassLoader().getResource(resource));
+            Parent root = loader.load();
+
+            optionsController = loader.getController();
+            filterOptions.getChildren().clear();
+            filterOptions.getChildren().add(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
