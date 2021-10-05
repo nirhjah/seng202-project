@@ -59,6 +59,7 @@
 
     //Markers
     let markers = [];
+    let markersSelected = [];
     let markersEnabled = true;
 
     //Heatmap
@@ -213,6 +214,7 @@
 
         //Add to map and list
         markers.push(marker);
+        if (marker.selected) markersSelected.push(marker);
         if (markersEnabled) marker.setMap(map);
 
         //Add to heatmap
@@ -307,6 +309,7 @@
             if (animationsEnabled) marker.setAnimation(google.maps.Animation.BOUNCE);
             marker.selected = true;
             marker.setIcon({url: "http://maps.google.com/mapfiles/ms/icons/" + "blue" + "-dot.png"});
+            markersSelected.push(marker);
         }
     }
 
