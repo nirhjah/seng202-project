@@ -13,9 +13,12 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.view.GraphController">
+<StackPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.view.GraphController">
    <children>
-      <BorderPane fx:id="graphPane" onMouseClicked="#toggleControlMenu" prefHeight="200.0" prefWidth="200.0" />
+      <BorderPane fx:id="graphPane" onMouseClicked="#toggleControlMenu" prefHeight="200.0" prefWidth="200.0">
+         <center>
+            <Label text="graph first" BorderPane.alignment="CENTER" />
+         </center></BorderPane>
       <BorderPane fx:id="controlPane" pickOnBounds="false" prefHeight="200.0" prefWidth="200.0">
          <right>
             <GridPane id="graphControlMenu" alignment="CENTER_RIGHT" prefWidth="200.0" stylesheets="@main.css" vgap="10.0" BorderPane.alignment="CENTER">
