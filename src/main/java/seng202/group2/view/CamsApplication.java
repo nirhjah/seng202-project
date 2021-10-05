@@ -40,6 +40,7 @@ public class CamsApplication extends Application {
         
         primaryStage.show();
 
+        //Stop filter pane from showing when window is being resized
         MainController controller = loader.getController();
         primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
             controller.getSplitPane().setDividerPositions(1);
