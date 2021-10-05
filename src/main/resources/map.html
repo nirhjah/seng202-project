@@ -366,10 +366,23 @@
         map.fitBounds(bounds);
     }
 
+    /**
+    * Set API key from local .env file
+    * @param key - Google Map API Key used for SENG202 Team 2 Project
+    */
+    function setApiKey(key){
+    api_key = key
+    var script = document.createElement('script');
+    script.src = "https://maps.googleapis.com/maps/api/js?key="+api_key+"&callback=initMap&libraries=visualization&v=weekly"
+    script.async = true
+    script.defer = true
+    document.body.appendChild(script);
+    }
+
 </script>
 
 <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAka2EHrmJfR-AU7CkIJFzplWzG2Z-x_qo&callback=initMap&libraries=visualization&v=weekly" async></script>
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAka2EHrmJfR-AU7CkIJFzplWzG2Z-x_qo&callback=initMap&libraries=visualization&v=weekly" async></script> -->
 
 </body>
 </html>

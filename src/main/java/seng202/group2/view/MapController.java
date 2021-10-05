@@ -1,8 +1,7 @@
 package seng202.group2.view;
 
 import com.sun.javafx.webkit.WebConsoleListener;
-import javafx.application.Application;
-import javafx.application.Platform;
+import io.github.cdimascio.dotenv.Dotenv;
 import javafx.concurrent.Worker;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -83,6 +82,8 @@ public class MapController extends DataObserver implements Initializable {
         // Wait until javascript in map.html has loaded before trying to call functions from there
         webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
+                Dotenv dotenv = Dotenv.load();
+                setApiKey(dotenv.get("API_KEY"));
                 updateRadius();
                 activeDataUpdate();
             }
@@ -95,6 +96,14 @@ public class MapController extends DataObserver implements Initializable {
         //Connect javascript to this Java class so that it can call methods
         JSObject win = (JSObject) webEngine.executeScript("window");
         win.setMember("app", this);
+    }
+
+    /**
+     * Set API key from local .env file
+     * @param key - Google Map API Key used for SENG202 Team 2 Project
+     */
+    private void setApiKey(String key){
+        webEngine.executeScript("setApiKey('"+ key +"');");
     }
 
     /**
