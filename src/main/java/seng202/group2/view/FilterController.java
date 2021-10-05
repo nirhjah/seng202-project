@@ -11,18 +11,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
-import seng202.group2.model.ActiveData;
-import seng202.group2.model.DBMS;
-import seng202.group2.model.Filter;
-import seng202.group2.model.FilterType;
+import seng202.group2.model.*;
 import seng202.group2.model.datacategories.DataCategory;
 import seng202.group2.view.filterControllers.OptionsController;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * FilterController is the controller class for the crime filters GUI.
@@ -158,7 +153,12 @@ public class FilterController implements Initializable {
             }
         });
         // Add all categories to category combo box and select the first
-        categoryComboBox.getItems().setAll(DataCategory.getCategories());
+        List<DataCategory> dataCategories = new ArrayList<>(DataCategory.getCategories());
+        dataCategories.sort((i, j) -> {
+            return i.toString().compareTo(j.toString());
+        });
+
+        categoryComboBox.getItems().setAll(dataCategories);
         categoryComboBox.getSelectionModel().select(0);
 
 
@@ -195,5 +195,7 @@ public class FilterController implements Initializable {
         });
         // Add all currently applied filters to applied filter list
         filterListView.setItems(listedFilters);
+
+        changeOptions();
     }
 }
