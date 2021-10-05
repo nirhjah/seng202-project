@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
@@ -127,20 +128,25 @@
       </GridPane>
    </bottom>
    <center>
-      <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-        <tabs>
-          <Tab fx:id="tableTab" onSelectionChanged="#toggleTableTab" text="Table">
-            <content>
-                <fx:include id="table" fx:id="table" source="table.fxml" />
-            </content>
-            </Tab>
-          <Tab fx:id="mapTab" onSelectionChanged="#toggleMapTab" text="Map">
-              <fx:include id="map" fx:id="map" source="map.fxml" />
-          </Tab>
-            <Tab fx:id="graphTab" onSelectionChanged="#toggleGraphTab" text="Graph">
-                <fx:include fx:id="graph" id="graph" source="graph.fxml"/>
-            </Tab>
-        </tabs>
-      </TabPane>
+      <SplitPane fx:id="splitPane" dividerPositions="1.0" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+            <TabPane fx:id="tabPane" prefHeight="558.0" prefWidth="489.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab fx:id="tableTab" onSelectionChanged="#toggleTableTab" text="Table">
+                  <content>
+                      <fx:include id="table" fx:id="table" source="table.fxml" />
+                  </content>
+                  </Tab>
+                <Tab fx:id="mapTab" onSelectionChanged="#toggleMapTab" text="Map">
+                    <fx:include id="map" fx:id="map" source="map.fxml" />
+                </Tab>
+                  <Tab fx:id="graphTab" onSelectionChanged="#toggleGraphTab" text="Graph">
+                      <fx:include id="graph" fx:id="graph" source="graph.fxml" />
+                  </Tab>
+              </tabs>
+            </TabPane>
+            <fx:include id="filter" fx:id="filter" minHeight="0.0" minWidth="0.0" source="filter.fxml" />
+        </items>
+      </SplitPane>
    </center>
 </BorderPane>

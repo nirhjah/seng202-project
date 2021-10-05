@@ -35,6 +35,7 @@ public class MainController extends DataObserver implements Initializable {
 	//FXML fields
 	@FXML private TextField windowSize;
 	@FXML private Text recordsShown;
+	@FXML private SplitPane splitPane;
 	@FXML private TabPane tabPane;
 	@FXML private Tab mapTab;
 	@FXML private Tab tableTab;
@@ -235,20 +236,8 @@ public class MainController extends DataObserver implements Initializable {
 	 * @see FilterController
 	 */
 	public void showFilterWindow() {
-		try {
-			Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("filter.fxml"));
-			Stage stage = new Stage();
-
-			// This will cause the window to always be in front of the main window
-			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.setResizable(false);
-			stage.setTitle("Filters");
-			stage.setScene(new Scene(root, 600, 400));
-			stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/CAMS_logo.png")));
-			stage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		double[] current = splitPane.getDividerPositions();
+		splitPane.setDividerPositions(current[0] > 0.9 ? 0.5 : 1);
 	}
 
 	/**
