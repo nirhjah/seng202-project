@@ -31,6 +31,7 @@ import seng202.group2.view.graphs.GraphConfigurationDialogController;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -72,18 +73,31 @@ public class MapController extends DataObserver implements Initializable {
      */
     public void initialize(URL location, ResourceBundle resources) {
         webEngine = webView.getEngine();
-        webEngine.load(CamsApplication.class.getClassLoader().getResource("map.html").toExternalForm());
-
+        //webEngine.load(CamsApplication.class.getClassLoader().getResource("map.html").toExternalForm());
         // Forwards console.log() output from any javascript to System.out
-        WebConsoleListener.setDefaultListener((webView, message, lineNumber, sourceId) -> {
+//        WebConsoleListener.setDefaultListener((webView, message, lineNumber, sourceId) -> {
+//          System.out.println(message + "[at " + lineNumber + "]");
+//        });
+
+        try {
+          File map = new File(CamsApplication.class.getClassLoader().getResource("map.html").getFile());
+          String content = new String(Files.readAllBytes(map.toPath()));
+          Dotenv dotenv = Dotenv.load();
+          content = content.replaceFirst("API_KEY_MATCHER", dotenv.get("API_KEY"));
+          webEngine.loadContent(content);
+          // Forwards console.log() output from any javascript to System.out
+          WebConsoleListener.setDefaultListener((webView, message, lineNumber, sourceId) -> {
             System.out.println(message + "[at " + lineNumber + "]");
-        });
+          });
+        } catch (IOException e) {
+          System.out.println(e.getMessage());
+        }
 
         // Wait until javascript in map.html has loaded before trying to call functions from there
         webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
                 Dotenv dotenv = Dotenv.load();
-                setApiKey(dotenv.get("API_KEY"));
+                //setApiKey(dotenv.get("API_KEY"));
                 updateRadius();
                 activeDataUpdate();
             }
@@ -106,7 +120,8 @@ public class MapController extends DataObserver implements Initializable {
         webEngine.executeScript("setApiKey('"+ key +"');");
     }
 
-    /**
+
+  /**
      * Toggle the markers on and off
      */
     public void toggleMarkers() {
