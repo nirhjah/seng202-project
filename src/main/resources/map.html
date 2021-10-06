@@ -371,12 +371,12 @@
     * @param key - Google Map API Key used for SENG202 Team 2 Project
     */
     function setApiKey(key){
-    api_key = key
-    var script = document.createElement('script');
-    script.src = "https://maps.googleapis.com/maps/api/js?key="+api_key+"&callback=initMap&libraries=visualization&v=weekly"
-    script.async = true
-    script.defer = true
-    document.body.appendChild(script);
+        api_key = key
+        var script = document.createElement('script');
+        script.src = "https://maps.googleapis.com/maps/api/js?key="+api_key+"&callback=initMap&libraries=visualization&v=weekly"
+        script.async = true
+        script.defer = true
+        document.body.appendChild(script);
     }
 
 </script>
