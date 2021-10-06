@@ -84,7 +84,8 @@ public class MapController extends DataObserver implements Initializable {
             if (newState == Worker.State.SUCCEEDED) {
                 Dotenv dotenv = Dotenv.load();
                 setApiKey(dotenv.get("API_KEY"));
-                updateRadius();
+
+              updateRadius();
                 activeDataUpdate();
             }
         });

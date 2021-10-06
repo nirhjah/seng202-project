@@ -22,6 +22,7 @@
 <div id="map"></div>
 
 <script>
+  let loaded = false;
     //Map controls
     let streetNamesEnabled = true;
     let animationsEnabled = true;
@@ -82,7 +83,8 @@
         map = new google.maps.Map(document.getElementById("map"), initialMapOptions);
 
         heatmap = new google.maps.visualization.HeatmapLayer({
-            data: heatMapData
+            data: heatMapData,
+            map: map,
         });
     }
 
@@ -372,11 +374,13 @@
     */
     function setApiKey(key){
         api_key = key
+
         var script = document.createElement('script');
         script.src = "https://maps.googleapis.com/maps/api/js?key="+api_key+"&callback=initMap&libraries=visualization&v=weekly"
         script.async = true
         script.defer = true
         document.body.appendChild(script);
+      loaded = true;
     }
 
 </script>
