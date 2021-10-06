@@ -3,7 +3,7 @@ package seng202.group2.view;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import seng202.group2.model.DBMS;
 import java.net.URL;
@@ -19,9 +19,9 @@ import java.util.ResourceBundle;
  */
 public class DeleteRecordsController implements Initializable {
 
-    /** The JavaFX text area which displays either how many records are selected, asking the user to confirm the deletion,
+    /** The JavaFX text which displays either how many records are selected, asking the user to confirm the deletion,
      * or it tells the user how to delete records if none are selected.*/
-    @FXML private TextArea deleteRecordsTextArea;
+    @FXML private Text deleteRecordsText;
 
     /** The JavaFX button which controls the deletion confirmation, This is hidden when no records are selected.*/
     @FXML private Button deleteRecordsButton;
@@ -31,7 +31,7 @@ public class DeleteRecordsController implements Initializable {
      * This method simply closes the window without doing anything, cancelling the deletion.
      */
     public void cancelDelete() {
-        Stage stage = (Stage) deleteRecordsTextArea.getScene().getWindow();
+        Stage stage = (Stage) deleteRecordsText.getScene().getWindow();
         stage.close();
     }
 
@@ -41,7 +41,7 @@ public class DeleteRecordsController implements Initializable {
      * which simply deletes all the selected records from the Database and active data, and updates the observers.
      */
     public void deleteSelectedRecords() {
-        Stage stage = (Stage) deleteRecordsTextArea.getScene().getWindow();
+        Stage stage = (Stage) deleteRecordsText.getScene().getWindow();
         DBMS.deleteSelectedRecords();
         stage.close();
     }
@@ -77,6 +77,6 @@ public class DeleteRecordsController implements Initializable {
             deleteRecordsButton.setVisible(true);
         }
 
-        deleteRecordsTextArea.setText(promptText);
+        deleteRecordsText.setText(promptText);
     }
 }
