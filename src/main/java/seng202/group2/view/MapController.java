@@ -112,13 +112,13 @@ public class MapController extends DataObserver implements Initializable {
         win.setMember("app", this);
     }
 
-    /**
-     * Set API key from local .env file
-     * @param key - Google Map API Key used for SENG202 Team 2 Project
-     */
-    private void setApiKey(String key){
-        webEngine.executeScript("setApiKey('"+ key +"');");
-    }
+//    /**
+//     * Set API key from local .env file
+//     * @param key - Google Map API Key used for SENG202 Team 2 Project
+//     */
+//    private void setApiKey(String key){
+//        webEngine.executeScript("setApiKey('"+ key +"');");
+//    }
 
 
   /**
@@ -213,7 +213,7 @@ public class MapController extends DataObserver implements Initializable {
      */
     public void setBounds() {
         webEngine.executeScript(
-                "setBounds();"
+                "setBoundsJS();"
         );
     }
 
