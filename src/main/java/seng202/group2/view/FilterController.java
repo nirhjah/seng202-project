@@ -12,6 +12,7 @@ import javafx.util.Callback;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.DBMS;
 import seng202.group2.model.Filter;
+import seng202.group2.model.FilterType;
 import seng202.group2.model.datacategories.DataCategory;
 import seng202.group2.view.filterControllers.OptionsController;
 import java.io.IOException;
@@ -65,7 +66,9 @@ public class FilterController implements Initializable {
         try {
             List<Filter> newFilters = optionsController.generateFilter(categoryComboBox.getSelectionModel().getSelectedItem());
 
-            newFilters.forEach((filter -> DBMS.getActiveData().addFilter(filter)));
+            DBMS.getActiveData().addFilters(newFilters);
+
+            listedFilters.removeIf(f -> f.getType() == FilterType.RANGE);
             listedFilters.addAll(newFilters);
         } catch (IllegalArgumentException exception) {
             System.out.println(exception.getMessage());

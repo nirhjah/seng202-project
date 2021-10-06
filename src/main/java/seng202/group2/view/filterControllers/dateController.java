@@ -2,6 +2,7 @@ package seng202.group2.view.filterControllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
+import seng202.group2.model.DBMS;
 import seng202.group2.model.Filter;
 import seng202.group2.model.FilterType;
 import seng202.group2.model.datacategories.DataCategory;
@@ -24,6 +25,7 @@ public class dateController extends OptionsController{
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
+        //Turn initial date into seconds
         LocalDate date1 = initialDate.getValue();
         Calendar cal = Calendar.getInstance();
         try {
@@ -33,6 +35,7 @@ public class dateController extends OptionsController{
         }
         long secondsDate1 = cal.getTimeInMillis() / 1000L;
 
+        //Turn final date into seconds
         LocalDate date2 = finalDate.getValue();
         Calendar cal2 = Calendar.getInstance();
         try {
@@ -42,7 +45,8 @@ public class dateController extends OptionsController{
         }
         long secondsDate2 = cal2.getTimeInMillis() / 1000L;
 
-        results.add(FilterType.GT_EQ.createFilter(category, secondsDate1 + " AND " + category.getSQL() + " <= " + secondsDate2));
+        //Add a filter that contains both ends
+        results.add(FilterType.RANGE.createFilter(category, "BETWEEN " + secondsDate1 + " AND " + secondsDate2));
 
         return results;
     }

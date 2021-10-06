@@ -50,6 +50,7 @@ public class numberController extends OptionsController {
         // Add all filter types to comparator combo box and select the first
         comparators.getItems().setAll(FilterType.values());
         comparators.getItems().remove(FilterType.SORT);
+        comparators.getItems().remove(FilterType.RANGE);
         comparators.getSelectionModel().select(0);
     }
 }

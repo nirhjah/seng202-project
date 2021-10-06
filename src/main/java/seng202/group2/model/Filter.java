@@ -39,8 +39,9 @@ public class Filter {
         String[] temp = SQLText.split(" ");
 
         //If date
-        if (temp[0].equals("date") && type != FilterType.SORT) {
-            String result = "date between ";
+        if (type == FilterType.RANGE) {
+            //date between
+            String result = temp[0] + " between ";
 
             Calendar cal = Calendar.getInstance();
             long epoch = Long.parseLong(temp[2]);
@@ -49,7 +50,7 @@ public class Filter {
             result += (new SimpleDateFormat("dd/MM/yyyy")).format(cal.getTime()) + " and ";
 
             Calendar cal2 = Calendar.getInstance();
-            long epoch2 = Long.parseLong(temp[6]);
+            long epoch2 = Long.parseLong(temp[4]);
             cal2.setTimeInMillis(epoch2 * 1000L);
 
             result += (new SimpleDateFormat("dd/MM/yyyy")).format(cal2.getTime());

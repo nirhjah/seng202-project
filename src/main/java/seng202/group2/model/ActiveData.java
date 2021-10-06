@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Active data class manages the filters, frame size and selected data, allowing the views to display a subset of the database
@@ -63,6 +64,11 @@ public class ActiveData extends DataSource {
      * @param update Update the observers
      */
     public void addFilter(Filter filter, boolean update) {
+        if (filter.getType() == FilterType.RANGE) {
+            //Remove any other range filters
+            filters.removeIf(f -> f.getType() == FilterType.RANGE);
+        }
+
         filters.add(filter);
 
         if (update) {
@@ -76,8 +82,23 @@ public class ActiveData extends DataSource {
      * @param filter Filter object to add
      */
     public void addFilter(Filter filter) {
+        if (filter.getType() == FilterType.RANGE) {
+            //Remove any other range filters
+            filters.removeIf(f -> f.getType() == FilterType.RANGE);
+        }
+
         filters.add(filter);
 
+        updateActiveData();
+    }
+
+    /**
+     * Add multiple filters
+     *
+     * @param filters Filters to add
+     */
+    public void addFilters(List<Filter> filters) {
+        filters.forEach((filter -> {addFilter(filter, false);}));
         updateActiveData();
     }
 
