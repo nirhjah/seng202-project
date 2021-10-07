@@ -18,14 +18,11 @@ import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import netscape.javascript.JSObject;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
-import seng202.group2.view.graphs.GraphConfigurationDialogController;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -123,6 +120,13 @@ public class MapController extends DataObserver implements Initializable {
     }
 
     /**
+     * Toggle only the selected markers
+     */
+    public void toggleOnlySelected() {
+        webEngine.executeScript("toggleOnlySelected();");
+    }
+
+    /**
      * Update heatmap radius
      */
     public void updateRadius() {
@@ -170,6 +174,7 @@ public class MapController extends DataObserver implements Initializable {
         webEngine.executeScript(
                 "removeMarker(" + record.getID() + ");"
         );
+        addLine();
     }
 
     /**
@@ -187,6 +192,15 @@ public class MapController extends DataObserver implements Initializable {
     public void setBounds() {
         webEngine.executeScript(
                 "setBounds();"
+        );
+    }
+
+    /**
+     * Checks if a line can be drawn between two markers,and draws it.
+     */
+    public void addLine() {
+        webEngine.executeScript(
+                "drawLine();"
         );
     }
 
@@ -222,6 +236,7 @@ public class MapController extends DataObserver implements Initializable {
 
         // Adjust the boundary of the map based on the activeData and their marker positions
         setBounds();
+        addLine();
     }
 
     /**
@@ -240,6 +255,8 @@ public class MapController extends DataObserver implements Initializable {
                     "selectMarker(" + selectedRecord + ");"
             );
         }
+
+        addLine();
     }
 
     /**
