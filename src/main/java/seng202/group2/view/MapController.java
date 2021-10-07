@@ -28,12 +28,13 @@ import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
 import seng202.group2.view.graphs.GraphConfigurationDialogController;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
@@ -71,46 +72,41 @@ public class MapController extends DataObserver implements Initializable {
      *  - Add an observer to the activeData, which will be displayed as markers on the map.
      *  - Use webEngine to provide access to the document object model of the web page map.html
      */
-    public void initialize(URL location, ResourceBundle resources) {
-        webEngine = webView.getEngine();
-        //webEngine.load(CamsApplication.class.getClassLoader().getResource("map.html").toExternalForm());
-        // Forwards console.log() output from any javascript to System.out
-//        WebConsoleListener.setDefaultListener((webView, message, lineNumber, sourceId) -> {
-//          System.out.println(message + "[at " + lineNumber + "]");
+//    public void initialize(URL location, ResourceBundle resources) {
+//        webEngine = webView.getEngine();
+//
+//        try {
+//          File map = new File(CamsApplication.class.getClassLoader().getResource("map.html").getFile());
+//          String content = new String(Files.readAllBytes(map.toPath()));
+//          Dotenv dotenv = Dotenv.load();
+//          content = content.replaceFirst("API_KEY_MATCHER", dotenv.get("API_KEY"));
+//          webEngine.loadContent(content);
+//          // Forwards console.log() output from any javascript to System.out
+//          WebConsoleListener.setDefaultListener((webView, message, lineNumber, sourceId) -> {
+//            System.out.println(message + "[at " + lineNumber + "]");
+//          });
+//        } catch (IOException e) {
+//          System.out.println(e.getMessage());
+//        }
+//
+//        // Wait until javascript in map.html has loaded before trying to call functions from there
+//        webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
+//            if (newState == Worker.State.SUCCEEDED) {
+//                Dotenv dotenv = Dotenv.load();
+//                //setApiKey(dotenv.get("API_KEY"));
+//                updateRadius();
+//                activeDataUpdate();
+//            }
 //        });
-
-        try {
-          File map = new File(CamsApplication.class.getClassLoader().getResource("map.html").getFile());
-          String content = new String(Files.readAllBytes(map.toPath()));
-          Dotenv dotenv = Dotenv.load();
-          content = content.replaceFirst("API_KEY_MATCHER", dotenv.get("API_KEY"));
-          webEngine.loadContent(content);
-          // Forwards console.log() output from any javascript to System.out
-          WebConsoleListener.setDefaultListener((webView, message, lineNumber, sourceId) -> {
-            System.out.println(message + "[at " + lineNumber + "]");
-          });
-        } catch (IOException e) {
-          System.out.println(e.getMessage());
-        }
-
-        // Wait until javascript in map.html has loaded before trying to call functions from there
-        webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
-            if (newState == Worker.State.SUCCEEDED) {
-                Dotenv dotenv = Dotenv.load();
-                //setApiKey(dotenv.get("API_KEY"));
-                updateRadius();
-                activeDataUpdate();
-            }
-        });
-
-        radiusSlider.valueChangingProperty().addListener((obs, oldVal, newVal) -> {
-            updateRadius();
-        });
-
-        //Connect javascript to this Java class so that it can call methods
-        JSObject win = (JSObject) webEngine.executeScript("window");
-        win.setMember("app", this);
-    }
+//
+//        radiusSlider.valueChangingProperty().addListener((obs, oldVal, newVal) -> {
+//            updateRadius();
+//        });
+//
+//        //Connect javascript to this Java class so that it can call methods
+//        JSObject win = (JSObject) webEngine.executeScript("window");
+//        win.setMember("app", this);
+//    }
 
 //    /**
 //     * Set API key from local .env file
@@ -119,6 +115,39 @@ public class MapController extends DataObserver implements Initializable {
 //    private void setApiKey(String key){
 //        webEngine.executeScript("setApiKey('"+ key +"');");
 //    }
+
+    public void initialize(URL location, ResourceBundle resources) {
+      webEngine = webView.getEngine();
+
+      InputStream is = getClass().getResourceAsStream("/map.html");
+      String content = new BufferedReader(
+        new InputStreamReader(is, StandardCharsets.UTF_8))
+        .lines()
+        .collect(Collectors.joining("\n"));
+      Dotenv dotenv = Dotenv.load();
+      content = content.replaceFirst("API_KEY_MATCHER", dotenv.get("API_KEY"));
+      webEngine.loadContent(content);
+      // Forwards console.log() output from any javascript to System.out
+      WebConsoleListener.setDefaultListener((webView, message, lineNumber, sourceId) -> {
+        System.out.println(message + "[at " + lineNumber + "]");
+      });
+
+      // Wait until javascript in map.html has loaded before trying to call functions from there
+      webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
+        if (newState == Worker.State.SUCCEEDED) {
+          updateRadius();
+          activeDataUpdate();
+        }
+      });
+
+      radiusSlider.valueChangingProperty().addListener((obs, oldVal, newVal) -> {
+        updateRadius();
+      });
+
+      //Connect javascript to this Java class so that it can call methods
+      JSObject win = (JSObject) webEngine.executeScript("window");
+      win.setMember("app", this);
+    }
 
 
   /**
