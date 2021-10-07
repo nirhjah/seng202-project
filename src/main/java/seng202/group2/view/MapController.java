@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.WritableImage;
@@ -22,6 +23,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+
 import netscape.javascript.JSObject;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
@@ -36,6 +38,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
+import javax.swing.text.Document;
+import javax.swing.text.html.parser.Element;
 
 /**
  * Map Controller is the controller class for the Map GUI
@@ -64,6 +68,8 @@ public class MapController extends DataObserver implements Initializable {
     /** The stage that the map window is created on*/
     private Stage stage;
 
+    
+    
     /**
      * Initialize the map window
      *
@@ -73,6 +79,7 @@ public class MapController extends DataObserver implements Initializable {
      */
     public void initialize(URL location, ResourceBundle resources) {
         webEngine = webView.getEngine();
+       
         webEngine.load(CamsApplication.class.getClassLoader().getResource("map.html").toExternalForm());
 
         // Forwards console.log() output from any javascript to System.out
