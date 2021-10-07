@@ -1,11 +1,8 @@
 package seng202.group2.view;
 
 import com.sun.javafx.webkit.WebConsoleListener;
-import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.concurrent.Worker;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;

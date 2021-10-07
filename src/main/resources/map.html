@@ -236,7 +236,7 @@
         //Remove from heatmap
         for (let i=0; i < heatMapData.length; i++) {
             if (heatMapData[i].lat == marker.position.lat && heatMapData[i].lng == marker.position.lng) {
-                delete heatMapData[i];
+                heatMapData.remove(i);
                 break;
             }
         }
@@ -352,6 +352,7 @@
             delete markers[i];
         }
         markers = [];
+        heatMapData = [];
     }
 
     /**
