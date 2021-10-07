@@ -25,7 +25,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.controller.DataObserver;
-import seng202.group2.model.DBMS;
 import seng202.group2.view.graphs.Graph;
 import seng202.group2.view.graphs.Plottable;
 
@@ -88,6 +87,13 @@ public class GraphController extends DataObserver {
 
 	@FXML public void showControlMenu() {
 		controlPane.setVisible(true);
+	}
+
+	@FXML public void toggleControlMenu() {
+		if (controlPane.isVisible())
+			hideControlMenu();
+		else
+			showControlMenu();
 	}
 
 	@FXML public void plotGraph() {

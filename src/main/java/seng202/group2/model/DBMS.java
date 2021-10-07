@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 
 /**
  * DataBaseManagementSystem. This controls the SQLite database and connects the data model together.
@@ -33,7 +34,7 @@ public class DBMS {
             //Initialize tables
             initialize();
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("Failed to get Connection DBMS:getConnection:34");
+            System.out.println("Failed to get Connection DBMS:getConnection");
             //e.printStackTrace();
         }
     }
@@ -70,7 +71,7 @@ public class DBMS {
                     + "primary key(id));"
             );
         } catch (SQLException e) {
-            System.out.println("Failed to create " + tableName + " table in database. DBMS:initialize:78");
+            System.out.println("Failed to create " + tableName + " table in database. DBMS:initialize");
         }
     }
 
@@ -98,7 +99,7 @@ public class DBMS {
             Statement state = conn.createStatement();
             return state.executeQuery(query);
         } catch (SQLException e) {
-            System.out.println("Could not run custom query. Query shown below. DBMS:customQuery:131");
+            System.out.println("Could not run custom query. Query shown below. DBMS:customQuery");
             System.out.println(query);
             // There should be a better way to do this line. Or in fact it should be dealt with before here.
             // This line removes the last filter applied, so that if an added filter is invalid then it is removed from
@@ -187,7 +188,7 @@ public class DBMS {
             ResultSet result = state.executeQuery("SELECT * FROM Records WHERE id =" + id);
             return generateCrimeRecord(result);
         } catch (SQLException e) {
-            System.out.println("Could not retrieve record with ID: " + id + " from Records table. DBMS:getRecord:248");
+            System.out.println("Could not retrieve record with ID: " + id + " from Records table. DBMS:getRecord");
         }
 
         return null;
@@ -217,7 +218,7 @@ public class DBMS {
                 records.add(generateCrimeRecord(results));
             }
         } catch (SQLException e) {
-            System.out.println("Could not retrieve records from Records table. DBMS:getRecords:278");
+            System.out.println("Could not retrieve records from Records table. DBMS:getRecords");
             //e.printStackTrace();
         }
 
@@ -241,7 +242,7 @@ public class DBMS {
             ResultSet result = state.executeQuery("SELECT * FROM ActiveRecords WHERE id =" + id);
             return generateCrimeRecord(result);
         } catch (SQLException e) {
-            System.out.println("Could not retrieve record with ID: " + id + " from ActiveRecords table. DBMS:getActiveRecord:302");
+            System.out.println("Could not retrieve record with ID: " + id + " from ActiveRecords table. DBMS:getActiveRecord");
         }
 
         return null;
@@ -276,7 +277,7 @@ public class DBMS {
                 records.add(generateCrimeRecord(results));
             }
         } catch (SQLException e) {
-            System.out.println("Could not retrieve records from ActiveRecords table. DBMS:getActiveRecords:331");
+            System.out.println("Could not retrieve records from ActiveRecords table. DBMS:getActiveRecords");
             //e.printStackTrace();
         }
 
@@ -297,7 +298,7 @@ public class DBMS {
             Statement state = conn.createStatement();
             return state.executeQuery("SELECT * FROM Records;");
         } catch (SQLException e) {
-            System.out.println("Could not get all records from the database. DBMS:getAllRecords:352");
+            System.out.println("Could not get all records from the database. DBMS:getAllRecords");
             //e.printStackTrace();
         }
 
@@ -323,7 +324,7 @@ public class DBMS {
                 ResultSet res = maxID.executeQuery("SELECT MAX(id) as max FROM Records;");
                 idCounter = res.getInt("max") + 1;
             } catch (SQLException e) {
-                System.out.println("Could not find the MAX ID in the Records table. DBMS:addRecord:378");
+                System.out.println("Could not find the MAX ID in the Records table. DBMS:addRecord");
             }
         }
 
@@ -386,7 +387,7 @@ public class DBMS {
             deleteStatement.execute("DELETE FROM ActiveRecords;");
 
         } catch (SQLException e) {
-            System.out.println("Could not clear ActiveRecords. DBMS:updateActiveDatabase:448");
+            System.out.println("Could not clear ActiveRecords. DBMS:updateActiveDatabase");
         }
 
         //Copy data in blocks to reduce string size
@@ -416,7 +417,7 @@ public class DBMS {
                 Statement getActive = conn.createStatement();
                 getActive.execute("INSERT INTO ActiveRecords SELECT * FROM Records " + conditions);
             } catch (SQLException e) {
-                System.out.println("Could not copy block to ActiveRecords. DBMS:updateActiveDatabase:508\n");
+                System.out.println("Could not copy block to ActiveRecords. DBMS:updateActiveDatabase\n");
             }
 
             //Update block count
@@ -445,8 +446,22 @@ public class DBMS {
             Statement state2 = conn.createStatement();
             state2.execute("DELETE FROM ActiveRecords WHERE id =" + id);
         } catch (SQLException e) {
-            System.out.println("Could not delete record with ID: " + id + " from database. DBMS:deleteRecord:505");
+            System.out.println("Could not delete record with ID: " + id + " from database. DBMS:deleteRecord");
         }
+    }
+
+    /**
+     * Deletes all the selected records from the database by calling {@link DBMS#deleteRecord(int)}
+     * on each of them. This method sets the selection to empty after deleting all the items, and then it
+     * updates the observers.
+     */
+    public static void deleteSelectedRecords() {
+        for (Integer id: activeData.getSelectedRecords()) {
+            deleteRecord(id);
+        }
+        activeData.clearSelection();
+        activeData.updateActiveRecords();
+        activeData.updateActiveData();
     }
 
     /**
@@ -464,7 +479,7 @@ public class DBMS {
             Statement state2 = conn.createStatement();
             state2.execute("DELETE FROM ActiveRecords;");
         } catch (SQLException e) {
-            System.out.println("Could not delete all records from database. DBMS:clearDB:524");
+            System.out.println("Could not delete all records from database. DBMS:clearDB");
         }
 
         //Reset counter
@@ -488,7 +503,7 @@ public class DBMS {
             res.next();
             return res.getInt("total");
         } catch (SQLException e) {
-            System.out.println("Failed to get size of Record table. DBMS:getRecordsSize:548");
+            System.out.println("Failed to get size of Record table. DBMS:getRecordsSize");
         }
 
         return -1;
@@ -514,7 +529,7 @@ public class DBMS {
             res.next();
             return res.getInt("total");
         } catch (SQLException e) {
-            System.out.println("Failed to get size of ActiveRecord table. DBMS:getActiveRecordsSize:571");
+            System.out.println("Failed to get size of ActiveRecord table. DBMS:getActiveRecordsSize");
         }
 
         return -1;

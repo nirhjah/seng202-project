@@ -252,6 +252,32 @@ public class MainController extends DataObserver implements Initializable {
 	}
 
 	/**
+	 * This method is called when the delete button is clicked on the CAMS main window.
+	 *
+	 * The 'delete records' window uses the 'deleteRecords.fxml' FXML file and the DeleteRecordsController Class
+	 * The 'delete records' window simply gets the user to confirm deletion and tells them how many records are selected.
+	 *
+	 * @see DeleteRecordsController
+	 */
+	public void openDeleteRecordsWindow() {
+		try {
+			Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("deleteRecords.fxml"));
+			Stage stage = new Stage();
+			// This will cause the login window to always be in front of the main window
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setResizable(false);
+			stage.setTitle("Delete Records");
+			stage.setScene(new Scene(root, 400, 200));
+			stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/CAMS_logo.png")));
+
+			stage.show();
+		} catch (IOException e) {
+			// This is where you would enter the error handling code, for now just print the stacktrace
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * This showNotImplementedYet method opens the unimplemented window and brings it to the front.
 	 *
 	 * The unimplemented window tells the user graphically that a feature they have interacted with is not implemented yet.
