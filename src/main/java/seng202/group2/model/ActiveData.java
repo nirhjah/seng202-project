@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Active data class manages the filters, frame size and selected data, allowing the views to display a subset of the database
@@ -15,6 +16,7 @@ public class ActiveData extends DataSource {
     private HashSet<Integer> selectedRecords = new HashSet<>();
 
     //Frame variables
+    private final int frameLimit = 10000;
     private int frameSize = 1000;
     private int recordCount = 0;
     private int currentMin = 0;
@@ -26,8 +28,7 @@ public class ActiveData extends DataSource {
      */
     public void updateFrameSize(int newSize) {
         recordCount = DBMS.getActiveRecordsSize();
-
-        frameSize = newSize;
+        frameSize = Math.max(Math.min(newSize, frameLimit), 1);
         currentMin = Math.max(Math.min(currentMin, recordCount - frameSize), 0);
         currentMax = Math.min(currentMin + frameSize, recordCount);
 
@@ -63,6 +64,11 @@ public class ActiveData extends DataSource {
      * @param update Update the observers
      */
     public void addFilter(Filter filter, boolean update) {
+        if (filter.getType() == FilterType.RANGE) {
+            //Remove any other range filters
+            filters.removeIf(f -> f.getType() == FilterType.RANGE);
+        }
+
         filters.add(filter);
 
         if (update) {
@@ -76,8 +82,23 @@ public class ActiveData extends DataSource {
      * @param filter Filter object to add
      */
     public void addFilter(Filter filter) {
+        if (filter.getType() == FilterType.RANGE) {
+            //Remove any other range filters
+            filters.removeIf(f -> f.getType() == FilterType.RANGE);
+        }
+
         filters.add(filter);
 
+        updateActiveData();
+    }
+
+    /**
+     * Add multiple filters
+     *
+     * @param filters Filters to add
+     */
+    public void addFilters(List<Filter> filters) {
+        filters.forEach((filter -> {addFilter(filter, false);}));
         updateActiveData();
     }
 

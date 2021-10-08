@@ -30,10 +30,8 @@ public class CamsApplication extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("/main.fxml"));
-//        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
-      Parent root = loader.load();
-
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/main.fxml"));
+        Parent root = loader.load();
         primaryStage.setTitle("CAMS - Crime Advertising Management System");
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.getScene().getStylesheets().add(CamsApplication.class.getClassLoader().getResource("main.css").toExternalForm());
@@ -41,6 +39,12 @@ public class CamsApplication extends Application {
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/CAMS_logo.png")));
 
         primaryStage.show();
+
+        //Stop filter pane from showing when window is being resized
+        MainController controller = loader.getController();
+        primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
+            controller.getSplitPane().setDividerPositions(1);
+        });
     }
 
 

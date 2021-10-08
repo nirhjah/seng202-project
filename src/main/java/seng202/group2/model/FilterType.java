@@ -59,6 +59,14 @@ public enum FilterType {
             return "<=";
         }
     },
+    RANGE {
+        public Filter createFilter(DataCategory category, String between) {
+            return new Filter(category.getSQL() + " " + between, FilterType.RANGE);
+        }
+        public String toString() {
+            return "RANGE";
+        }
+    },
     /** Category sort */
     SORT {
         /** @param ascending ASC | DESC */

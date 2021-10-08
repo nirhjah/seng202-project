@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import seng202.group2.model.CrimeRecord;
+import seng202.group2.model.DBMS;
 
 /**
  * The date and time at which the crime incident occurred.
@@ -99,7 +100,7 @@ public class Date extends DataCategory implements Importable {
 			throw new NullPointerException("Cannot convert null value stored by " + this.toString() + " to string.");
 
 		java.util.Date date = this.date.getTime();
-		String strDate = (new SimpleDateFormat(dateFormats[0])).format(date);
+		String strDate = (new SimpleDateFormat(DBMS.DATE_FORMAT)).format(date);
 		return strDate;
 	}
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.view.filterControllers.dateController">
+   <center>
+      <GridPane BorderPane.alignment="CENTER">
+         <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+         </rowConstraints>
+         <children>
+            <DatePicker fx:id="initialDate" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+            <Label alignment="BOTTOM_CENTER" text="Between" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            <Label alignment="CENTER" text="and" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            <DatePicker fx:id="finalDate" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="TOP" />
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </GridPane>
+   </center>
+</BorderPane>

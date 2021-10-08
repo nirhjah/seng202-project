@@ -59,8 +59,6 @@ public abstract class DataCategory {
 	 * @return A set of instance of DataCategory subtypes found using reflection.
 	 */
 	private static Set<DataCategory> lookupCategories() {
-		System.out.println("Scanning for DataCategory subtypes.");
-
 		Reflections reflections = new Reflections("seng202.group2.model.datacategories");
 		Set<Class<? extends DataCategory>> dataCategoryClasses = reflections.getSubTypesOf(DataCategory.class);
 
@@ -84,8 +82,6 @@ public abstract class DataCategory {
 				System.out.println("The method \"getInstance\" of " + dataCategoryClass + " does not exist.");
 			}
 		}
-
-		System.out.println("Found DataCategory subtypes: " + dataCategories);
 		return dataCategories;
 	}
 
