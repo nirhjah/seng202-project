@@ -69,7 +69,7 @@ public class GraphController extends DataObserver {
 
 		//Default text on the graph window instructing to please select a graph to plot first
 		if (graphTypeSelector.getValue() == null) {
-      String centerText = "No graph to generate. Please select a graph to plot in the control panel on the left.";
+      String centerText = "No graph to generate. Please select a graph to plot in the control panel on the right.";
       graphPane.setCenter(new Text(centerText));
     }
 
