@@ -37,6 +37,7 @@ import seng202.group2.view.graphs.Plottable;
  * @author nse41
  * @author Connor Dunlop
  * @author George Hampton
+ * @author Yiyang Yu
  */
 
 public class GraphController extends DataObserver {
