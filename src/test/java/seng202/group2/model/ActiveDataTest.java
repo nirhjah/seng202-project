@@ -120,7 +120,7 @@ public class ActiveDataTest {
         activeData.removeFilter(filter, false);
 
         //Check
-        assertEquals(filter2, activeData.getFilters().get(0));
+        assertEquals(filter3, activeData.getFilters().get(0));
         assertEquals(filter3, activeData.getFilters().get(1));
         assertEquals(filter4, activeData.getFilters().get(2));
     }
