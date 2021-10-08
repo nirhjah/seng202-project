@@ -4,10 +4,14 @@
 <?import javafx.scene.control.TableView?>
 
 
+<?import javafx.scene.control.Label?>
 <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="532.0" prefWidth="990.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.view.TableController">
     <content>
         <TableView fx:id="tableView" depthTest="ENABLE" minHeight="-Infinity" minWidth="563.0" onMouseClicked="#updateSelection" prefHeight="315.0" prefWidth="588.0">
-            <columns>
+          <placeholder>
+            <Label text="No crime records in table. Please import a .csv file into the database first."/>
+          </placeholder>
+          <columns>
                 <TableColumn fx:id="idColumn" prefWidth="50.0" text="ID" />
                 <TableColumn fx:id="caseNumColumn" prefWidth="70.0" text="Case Num" />
                 <TableColumn fx:id="dateColumn" prefWidth="70.0" text="Date" />

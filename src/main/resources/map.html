@@ -25,6 +25,7 @@
     //Map controls
     let streetNamesEnabled = true;
     let animationsEnabled = true;
+    let onlySelected = false;
 
     const fixedStyles = [
         {
@@ -56,9 +57,11 @@
     let map;
     let heatmap = null;
     let infoWindow = null;
+    let line = null;
 
     //Markers
     let markers = [];
+    let markersSelected = [];
     let markersEnabled = true;
 
     //Heatmap
@@ -96,14 +99,43 @@
     }
 
     /**
+     * Toggle only selected markers on or off
+     */
+    function toggleOnlySelected() {
+        onlySelected = !onlySelected;
+
+        heatMapData = [];
+        if (onlySelected) {
+            markers.forEach(function (marker) {
+                marker.setMap(null);
+            });
+            markersSelected.forEach(function (marker) {
+                if (markersEnabled) marker.setMap(map);
+                heatMapData.push(marker.position);
+            });
+        } else {
+            markers.forEach(function (marker) {
+                if (markersEnabled) marker.setMap(map);
+                heatMapData.push(marker.position);
+            });
+        }
+
+        updateHeatMap()
+    }
+
+    /**
      * Toggle markersEnabled true or not false, set the markers accordingly
      */
     function toggleMarkers() {
-        markersEnabled = markersEnabled ? false : true;
+        markersEnabled = !markersEnabled;
 
         if (markersEnabled) {
             markers.forEach(function (marker) {
-                marker.setMap(map);
+                if (onlySelected) {
+                    if (marker.selected) marker.setMap(map);
+                } else {
+                    marker.setMap(map);
+                }
             });
         } else {
             markers.forEach(function (marker) {
@@ -116,7 +148,7 @@
      * Toggle heatMapEnabled true of false, then update
      */
     function toggleHeatmap() {
-        heatMapEnabled = heatMapEnabled ? false : true;
+        heatMapEnabled = !heatMapEnabled;
 
         if (heatMapEnabled) {
             updateHeatMap();
@@ -126,7 +158,7 @@
     }
 
     function toggleStreetNames() {
-        streetNamesEnabled = streetNamesEnabled ? false : true;
+        streetNamesEnabled = !streetNamesEnabled;
 
         //clear styles
         while (styles.length > 0)
@@ -163,12 +195,12 @@
     }
 
     function toggleAnimations() {
-        animationsEnabled = animationsEnabled ? false : true;
+        animationsEnabled = !animationsEnabled;
 
         if (animationsEnabled) {
-            markers.forEach((marker) => {if (marker.selected) (marker.setAnimation(google.maps.Animation.BOUNCE))})
+            markersSelected.forEach((marker) => {if (marker.selected) (marker.setAnimation(google.maps.Animation.BOUNCE))})
         } else {
-            markers.forEach((marker) => {if (marker.selected) (marker.setAnimation(null))})
+            markersSelected.forEach((marker) => {if (marker.selected) (marker.setAnimation(null))})
         }
     }
 
@@ -213,10 +245,15 @@
 
         //Add to map and list
         markers.push(marker);
-        if (markersEnabled) marker.setMap(map);
+        if (marker.selected) markersSelected.push(marker);
 
-        //Add to heatmap
-        heatMapData.push(new google.maps.LatLng(latitude, longitude));
+        if (onlySelected) {
+            if (marker.selected && markersEnabled) marker.setMap(map);
+            if (marker.selected) heatMapData.push(new google.maps.LatLng(latitude, longitude));
+        } else {
+            if (markersEnabled) marker.setMap(map);
+            heatMapData.push(new google.maps.LatLng(latitude, longitude));
+        }
 
         updateHeatMap();
     }
@@ -229,12 +266,13 @@
         let marker = findMarker(recordId);
 
         marker.setMap(null);
-        delete marker;
+        let i = markers.indexOf(marker);
+        markers = markers.splice(i,i);
 
         //Remove from heatmap
         for (let i=0; i < heatMapData.length; i++) {
             if (heatMapData[i].lat == marker.position.lat && heatMapData[i].lng == marker.position.lng) {
-                delete heatMapData[i];
+                heatMapData = heatMapData.splice(i,i);
                 break;
             }
         }
@@ -270,6 +308,15 @@
                 markers[i].setAnimation(null);
                 markers[i].selected = false;
                 markers[i].setIcon({url: "http://maps.google.com/mapfiles/ms/icons/" + "red" + "-dot.png"});
+
+                markersSelected = markersSelected.splice(i,i);
+
+                if (onlySelected && markersEnabled) {
+                    markers[i].setMap(null);
+                    let x = heatMapData.indexOf(markers[i].position);
+                    heatMapData = heatMapData.splice(x,x);
+                    updateHeatMap()
+                }
             }
         }
     }
@@ -289,6 +336,17 @@
             marker.setAnimation(null);
             marker.selected = false;
             marker.setIcon({url: "http://maps.google.com/mapfiles/ms/icons/" + "red" + "-dot.png"});
+
+            let x = markersSelected.indexOf(markers);
+            markersSelected = markersSelected.splice(x,x);
+
+            if (onlySelected && markersEnabled) {
+                marker.setMap(null);
+                let x = heatMapData.indexOf(markers[i].position);
+                heatMapData = heatMapData.splice(x,x);
+
+                updateHeatMap()
+            }
         }
     }
 
@@ -307,6 +365,14 @@
             if (animationsEnabled) marker.setAnimation(google.maps.Animation.BOUNCE);
             marker.selected = true;
             marker.setIcon({url: "http://maps.google.com/mapfiles/ms/icons/" + "blue" + "-dot.png"});
+            markersSelected.push(marker);
+        }
+
+        if (onlySelected && markersEnabled) {
+            marker.setMap(map);
+            heatMapData.push(marker.position);
+
+            updateHeatMap()
         }
     }
 
@@ -346,9 +412,11 @@
     function clearMarkers() {
         for (let i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
-            delete markers[i];
         }
         markers = [];
+        heatMapData = [];
+
+        updateHeatMap()
     }
 
     /**
@@ -360,10 +428,60 @@
         var bounds = new google.maps.LatLngBounds();
 
         for (let i = 0; i < markers.length; i++) {
-            bounds.extend(markers[i].position)
+            if (onlySelected || markersSelected.length >= 1) {
+                if (markers[i].selected) bounds.extend(markers[i].position)
+            } else {
+                bounds.extend(markers[i].position)
+            }
         }
         map.setCenter(bounds.getCenter());
         map.fitBounds(bounds);
+    }
+
+    /**
+     * Draw a line between two markers
+     */
+    function drawLine() {
+        if (markersSelected.length == 2) {
+            line = new google.maps.Polyline({
+                path: [markersSelected[0].position, markersSelected[1].position],
+                strokeColor: "#FF0000",
+                strokeOpacity: 1.0,
+                strokeWeight: 3,
+                geodesic: true,
+                map: map
+            });
+            line.setMap(map);
+
+            const contentString = '<div id="content" class="center">' +
+                '<div id="siteNotice">' + '</div>' +
+                '<h1 id="firstHeading" class="firstHeading" align="center" >Distance: ' + haversine_distance(markersSelected[0], markersSelected[1]).toFixed(2) + 'km</h1>' +
+                '</div>';
+
+            if (infoWindow != null) infoWindow.close();
+            infoWindow = new google.maps.InfoWindow();
+            infoWindow.setContent(contentString);
+            infoWindow.open(map,markersSelected[0]);
+        } else {
+            if (line != null) line.setMap(null);
+        }
+    }
+
+    /**
+     * Distance between two points
+     * @param mk1 Marker 1
+     * @param mk2 Marker 2
+     * @returns {number} Distance between two points
+     */
+    function haversine_distance(mk1, mk2) {
+        const R = 3958.8; // Radius of the Earth in miles
+        let rlat1 = mk1.position.lat() * (Math.PI/180); // Convert degrees to radians
+        let rlat2 = mk2.position.lat() * (Math.PI/180); // Convert degrees to radians
+        let difflat = rlat2-rlat1; // Radian difference (latitudes)
+        let difflon = (mk2.position.lng()-mk1.position.lng()) * (Math.PI/180); // Radian difference (longitudes)
+
+        let d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
+        return d;
     }
 
 </script>

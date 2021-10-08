@@ -152,4 +152,25 @@ public class DBMSTest {
         assertEquals((oldSize - 1), DBMS.getRecordsSize());
         assertNull(res.getCaseNum());
     }
+
+    /**
+     * Tests the deleteSelectedRecords method in DBMS, both checks that the list of the data is reduced and that the
+     * size of the selected data is 0 after execution.
+     * @throws SQLException
+     * @throws ParseException
+     * @throws ClassNotFoundException
+     * @throws InterruptedException
+     */
+    @Test
+    void deleteSelectedRecordsTest() throws SQLException, ParseException, ClassNotFoundException, InterruptedException {
+        addRecords(10);
+        int oldSize = DBMS.getRecordsSize();
+        // select ids 2 and 3 to delete.
+        DBMS.getActiveData().selectRecord(2);
+        DBMS.getActiveData().selectRecord(3);
+        // delete the selected records
+        DBMS.deleteSelectedRecords();
+        assertEquals((oldSize-2), DBMS.getRecordsSize());
+        assertEquals(0, DBMS.getActiveData().getSelectedRecords().size());
+    }
 }

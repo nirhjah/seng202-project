@@ -1,5 +1,9 @@
 package seng202.group2.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+
 /**
  * Filters allow specific data and data order to be retrieved from the database.
  */
@@ -25,6 +29,36 @@ public class Filter {
      */
     public String getSQLText() {
         return SQLText;
+    }
+
+    /**
+     * Get the english string representation of the filter
+     * @return String rep of filter
+     */
+    public String getStringRepresentation() {
+        String[] temp = SQLText.split(" ");
+
+        //If date
+        if (type == FilterType.RANGE) {
+            //date between
+            String result = temp[0] + " between ";
+
+            Calendar cal = Calendar.getInstance();
+            long epoch = Long.parseLong(temp[2]);
+            cal.setTimeInMillis(epoch * 1000L);
+
+            result += (new SimpleDateFormat("dd/MM/yyyy")).format(cal.getTime()) + " and ";
+
+            Calendar cal2 = Calendar.getInstance();
+            long epoch2 = Long.parseLong(temp[4]);
+            cal2.setTimeInMillis(epoch2 * 1000L);
+
+            result += (new SimpleDateFormat("dd/MM/yyyy")).format(cal2.getTime());
+
+            return result;
+        } else {
+            return SQLText;
+        }
     }
 
     /**

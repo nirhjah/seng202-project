@@ -1,0 +1,14 @@
+System log of CAMS application for session (2021-10-08T00:38:34.134637100) :
+
+Building Records table
+Building ActiveRecords table
+Oct 08, 2021 12:38:34 AM javafx.fxml.FXMLLoader$ValueElement processValue
+WARNING: Loading FXML document with JavaFX API of version 16 by JavaFX runtime of version 15.0.1
+Oct 08, 2021 12:38:34 AM javafx.fxml.FXMLLoader$ValueElement processValue
+WARNING: Loading FXML document with JavaFX API of version 16 by JavaFX runtime of version 15.0.1
+Oct 08, 2021 12:38:34 AM javafx.fxml.FXMLLoader$ValueElement processValue
+WARNING: Loading FXML document with JavaFX API of version 16 by JavaFX runtime of version 15.0.1
+Oct 08, 2021 12:38:35 AM javafx.fxml.FXMLLoader$ValueElement processValue
+WARNING: Loading FXML document with JavaFX API of version 16 by JavaFX runtime of version 15.0.1
+Scanning for Graph subtypes.
+Found Graph subtypes: [seng202.group2.view.graphs.BarGraph@53e575b6, seng202.group2.view.graphs.CrimesOverTimeGraph@1ed32dc7, seng202.group2.view.graphs.TimeSeriesGraph@339db2db, seng202.group2.view.graphs.ScatterGraph@3c56279, seng202.group2.view.graphs.LineGraph@3bbc2512]

@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 
 /**
  * DataBaseManagementSystem. This controls the SQLite database and connects the data model together.
@@ -16,7 +17,7 @@ import java.util.Calendar;
 public class DBMS {
 
     private static final ActiveData activeData = new ActiveData();               //Active data class
-    private static final String DATE_FORMAT = "MM'/'dd'/'yyyy hh':'mm':'ss a";     //Date format
+    public static final String DATE_FORMAT = "dd'/'MM'/'yyyy hh':'mm':'ss a";     //Date format
     private static  boolean hasDataBase = false;                           //Database is created
     private static Connection conn;                                        //Database connection
     private static int idCounter = -1;                                     //Current item ID
@@ -54,7 +55,7 @@ public class DBMS {
             Statement state2 = conn.createStatement();
             state2.execute("CREATE TABLE IF NOT EXISTS " + tableName + "(id integer,"
                     + "caseNum string,"
-                    + "date string,"
+                    + "date long,"
                     + "block string,"
                     + "IUCR string,"
                     + "primaryDescription string,"
@@ -143,10 +144,10 @@ public class DBMS {
                     case "id" -> crimeRecord.setID(record.getInt("id"));
                     case "caseNum" -> crimeRecord.setCaseNum(record.getString("caseNum"));
                     case "date" -> {
-                        //Convert String from db to Calendar
-                        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+                        //Convert long from db to Calendar
                         Calendar cal = Calendar.getInstance();
-                        cal.setTime(sdf.parse(record.getString("date")));
+                        long epoch = Long.parseLong(record.getString("date"));
+                        cal.setTimeInMillis(epoch * 1000L);
                         crimeRecord.setDate(cal);
                     }
                     case "block" -> crimeRecord.setBlock(record.getString("block"));
@@ -163,7 +164,7 @@ public class DBMS {
                     case "longitude" -> crimeRecord.setLongitude(record.getFloat("longitude"));
                 }
             }
-        } catch (SQLException | ParseException e) {
+        } catch (SQLException e) {
             e.getStackTrace();
         }
 
@@ -447,6 +448,20 @@ public class DBMS {
         } catch (SQLException e) {
             System.out.println("Could not delete record with ID: " + id + " from database. DBMS:deleteRecord");
         }
+    }
+
+    /**
+     * Deletes all the selected records from the database by calling {@link DBMS#deleteRecord(int)}
+     * on each of them. This method sets the selection to empty after deleting all the items, and then it
+     * updates the observers.
+     */
+    public static void deleteSelectedRecords() {
+        for (Integer id: activeData.getSelectedRecords()) {
+            deleteRecord(id);
+        }
+        activeData.clearSelection();
+        activeData.updateActiveRecords();
+        activeData.updateActiveData();
     }
 
     /**

@@ -9,9 +9,11 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,6 +23,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.robot.Robot;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -34,6 +37,7 @@ import seng202.group2.view.graphs.Plottable;
  * @author nse41
  * @author Connor Dunlop
  * @author George Hampton
+ * @author Yiyang Yu
  */
 
 public class GraphController extends DataObserver {
@@ -63,6 +67,12 @@ public class GraphController extends DataObserver {
 		sortedGraphTypes.sort((i, j) -> {
 			return i.toString().compareTo(j.toString());
 		});
+
+		//Default text on the graph window instructing to please select a graph to plot first
+		if (graphTypeSelector.getValue() == null) {
+      String centerText = "No graph to generate. Please select a graph to plot in the control panel on the right.";
+      graphPane.setCenter(new Text(centerText));
+    }
 
 		graphTypeSelector.getItems().addAll(sortedGraphTypes);
 	}
