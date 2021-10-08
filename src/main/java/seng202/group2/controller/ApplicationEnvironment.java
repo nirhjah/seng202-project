@@ -21,7 +21,7 @@ public class ApplicationEnvironment {
 	/**
 	 * This sets up the system to log things in generated log files instead of in the console.
 	 */
-    private static void setSystemToLog() {
+    public static void setSystemToLog() {
     	try {
     		//This gets a unique file name for the log and creates the log file
     		LocalDateTime currentTime = java.time.LocalDateTime.now();
