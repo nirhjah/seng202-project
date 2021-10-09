@@ -1,18 +1,14 @@
 package seng202.group2.view;
 
 import com.sun.javafx.webkit.WebConsoleListener;
-import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.concurrent.Worker;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.WritableImage;
@@ -22,14 +18,12 @@ import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import netscape.javascript.JSObject;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
-import seng202.group2.view.graphs.GraphConfigurationDialogController;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,8 +32,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+
 
 
 /**
@@ -81,12 +74,7 @@ public class MapController extends DataObserver implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         webEngine = webView.getEngine();
        
-        
-        
-		 
-        
         webEngine.load(CamsApplication.class.getClassLoader().getResource("map.html").toExternalForm());
-      //  webView.getEngine().load("https://google.com"); tested with this and commented out the above, cursor showed as wait cursor properly
 
         // Forwards console.log() output from any javascript to System.out
         WebConsoleListener.setDefaultListener((webView, message, lineNumber, sourceId) -> {
@@ -97,25 +85,10 @@ public class MapController extends DataObserver implements Initializable {
         webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
 
             if (newState == Worker.State.SUCCEEDED) {
-            	
-            	
-            	//modify document's html body style (changing cursor)
-            	Document document = webView.getEngine().getDocument();
-                Element body = (Element)
-                    document.getElementsByTagName("body").item(0);
-                String style = body.getAttribute("style");
-                
-                
-                //set cursor to wait
-                body.setAttribute("style", "cursor: wait;" + style);
-              
+            	         
                 updateRadius();
                 activeDataUpdate();
-                
-                
-                
-          
-
+              
             }
               
           
