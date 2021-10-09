@@ -59,6 +59,7 @@
     let heatmap = null;
     let infoWindow = null;
     
+    
     changeCursor();
     
         
@@ -71,15 +72,20 @@
     let heatMapData = []
     let heatMapEnabled = false;
     let heatMapRadius = 50;
-
-
-	/**
-	* Function that changes the cursor to 'wait' when map is being loaded.
+    
+    
+    /**
+	* Changes the cursor to 'wait' when map is being loaded, then cursor is reverted back to default.
 	*/
 	function changeCursor() {
   		document.getElementById("map").style.cursor = "wait";
 	}
+    
 
+
+
+	
+	
 
     /**
     * Creates the google.maps.Map to be rendered on the html map div element with optional Map options.
@@ -107,6 +113,9 @@
         });
         
     }
+    
+    
+    
 
     /**
      * Change the heatmap raduus variable and update
