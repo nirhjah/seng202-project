@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.view.AddEditController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <GridPane alignment="BASELINE_RIGHT" hgap="15.0" prefHeight="327.0" prefWidth="286.0" vgap="15.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -51,7 +51,7 @@
                   <Font size="14.0" />
                </font>
             </Text>
-            <TextField fx:id="caseNumTextField1" prefHeight="0.0" prefWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="fbiCodeTextField" prefHeight="0.0" prefWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date:" GridPane.rowIndex="2">
                <font>
                   <Font size="14.0" />

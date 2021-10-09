@@ -232,7 +232,9 @@ public class MainController extends DataObserver implements Initializable {
 	 */
 	public void showAddRecordWindow() {
 		try {
-			Parent root = FXMLLoader.load(CamsApplication.class.getClassLoader().getResource("add_edit.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(CamsApplication.class.getClassLoader().getResource("add_edit.fxml"));
+			fxmlLoader.setController(new AddRecordController());
+			Parent root = fxmlLoader.load();
 			Stage stage = new Stage();
 			// This will cause the login window to always be in front of the main window
 			stage.initModality(Modality.APPLICATION_MODAL);

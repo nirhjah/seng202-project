@@ -27,7 +27,8 @@ public class Date extends DataCategory implements Importable {
 			"MM'/'dd'/'yyyy HH':'mm':'ss",
 			"MM'-'dd'-'yyyy HH':'mm':'ss",
 			"MM'/'dd'/'yyyy HH':'mm",
-			"yyyy'-'MM'-'dd'T'HH':'mm':'ss"
+			"yyyy'-'MM'-'dd'T'HH':'mm':'ss",
+			"yyyy-MM-dd"
 	};
 
 	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
@@ -68,8 +69,10 @@ public class Date extends DataCategory implements Importable {
 	public Calendar parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
-		else if (value == "")
+		else if (value.equals("")) {
+			System.out.println("Found the problem");
 			return null;
+		}
 		
 		java.util.Date date = null;
 		for (int i = 0; i < dateFormats.length; i++) {
@@ -113,8 +116,9 @@ public class Date extends DataCategory implements Importable {
 	public void setValue(Object value) {
 		if (value == null)
 			this.date = null;
-		else if (value instanceof Calendar)
+		else if (value instanceof Calendar) {
 			this.date = (Calendar) value;
+		}
 		else
 			throw new IllegalArgumentException("Data was of an incorrect type for Date.");
 	}
