@@ -38,8 +38,9 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
-import javax.swing.text.Document;
-import javax.swing.text.html.parser.Element;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 
 /**
  * Map Controller is the controller class for the Map GUI
@@ -80,7 +81,12 @@ public class MapController extends DataObserver implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         webEngine = webView.getEngine();
        
+        
+        
+		 
+        
         webEngine.load(CamsApplication.class.getClassLoader().getResource("map.html").toExternalForm());
+      //  webView.getEngine().load("https://google.com"); tested with this and commented out the above, cursor showed as wait cursor properly
 
         // Forwards console.log() output from any javascript to System.out
         WebConsoleListener.setDefaultListener((webView, message, lineNumber, sourceId) -> {
@@ -89,10 +95,30 @@ public class MapController extends DataObserver implements Initializable {
 
         // Wait until javascript in map.html has loaded before trying to call functions from there
         webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
+
             if (newState == Worker.State.SUCCEEDED) {
+            	
+            	
+            	//modify document's html body style (changing cursor)
+            	Document document = webView.getEngine().getDocument();
+                Element body = (Element)
+                    document.getElementsByTagName("body").item(0);
+                String style = body.getAttribute("style");
+                
+                
+                //set cursor to wait
+                body.setAttribute("style", "cursor: wait;" + style);
+              
                 updateRadius();
                 activeDataUpdate();
+                
+                
+                
+          
+
             }
+              
+          
         });
 
         radiusSlider.valueChangingProperty().addListener((obs, oldVal, newVal) -> {
