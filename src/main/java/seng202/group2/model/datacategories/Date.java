@@ -68,9 +68,8 @@ public class Date extends DataCategory implements Importable {
 	@Override
 	public Calendar parseString(String value) {
 		if (value == null)
-			throw new IllegalArgumentException("Cannot parse null string.");
+			return null; // TODO check this doesn't break the importer
 		else if (value.equals("")) {
-			System.out.println("Found the problem");
 			return null;
 		}
 		

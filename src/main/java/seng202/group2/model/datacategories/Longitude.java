@@ -55,7 +55,7 @@ public class Longitude extends DataCategory implements Importable, Numerical {
 	public Float parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
-		else if (value == "")
+		else if (value.equals(""))
 			return null;
 
 		try {
