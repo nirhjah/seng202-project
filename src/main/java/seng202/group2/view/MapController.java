@@ -175,9 +175,9 @@ public class MapController extends DataObserver implements Initializable {
 
         for (DataCategory category : textBoxDict.keySet()) {
             try {
-                textBoxDict.get(category).setText(category.getRecordValue(record).toString());
+                textBoxDict.get(category).setText(category.getRecordCategory(record).getValueString());
             } catch (NullPointerException exception) {
-                textBoxDict.get(category).setText("N/A");
+                textBoxDict.get(category).setText("");
             }
 
         }
