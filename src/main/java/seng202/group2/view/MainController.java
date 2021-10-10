@@ -162,6 +162,9 @@ public class MainController extends DataObserver implements Initializable {
 		}
 	}
 
+	/**
+	 * Toggle the selected records button
+	 */
 	public void toggleSelectedOnly() {
 		if (selectedButton.getText().equals("Selected Only")) {
 			selectedButton.setText("All Records");

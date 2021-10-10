@@ -117,6 +117,9 @@ public class TableController extends DataObserver implements Initializable {
         activeData.updateSelectionObservers();
     }
 
+    /**
+     * Toggle selected only variable
+     */
     public void toggleSelectedOnly() {
         selectedOnly = !selectedOnly;
         activeDataUpdate();
@@ -143,6 +146,8 @@ public class TableController extends DataObserver implements Initializable {
     @Override
     public void selectedRecordsUpdate() {
         ActiveData activeData = DBMS.getActiveData();
+
+        //Get only selected records
         if (selectedOnly) {
             HashSet<Integer> selected = activeData.getSelectedRecords();
 
