@@ -8,12 +8,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class EditRecordController extends AddEditController implements Initializable {
+    private Integer selectedID;
 
     public void addRecordFromFields() {
-        CrimeRecord newRecord = new CrimeRecord();
+        CrimeRecord record = new CrimeRecord();
 
-        if (checkAndSetInputFields(newRecord)) {
-            System.out.println("Now add this update to the dbms");
+        if (checkAndSetInputFields(record)) {
+            record.setID(selectedID);
+            DBMS.updateRecord(record);
             closeWindow();
         }
     }
@@ -23,7 +25,7 @@ public class EditRecordController extends AddEditController implements Initializ
         titleLabel.setText("Edit Record Details");
         addEditButton.setText("Update Record");
 
-        Integer selectedID = (Integer) DBMS.getActiveData().getSelectedRecords().toArray()[0];
+        selectedID = (Integer) DBMS.getActiveData().getSelectedRecords().toArray()[0];
         CrimeRecord record = DBMS.getRecord(selectedID);
         fillFieldsWithValues(record);
     }

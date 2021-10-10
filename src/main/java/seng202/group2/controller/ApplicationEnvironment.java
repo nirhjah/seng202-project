@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 // TODO: implement class
 public class ApplicationEnvironment {
-	private static final boolean logging = true; //Looging vs no logging
+	private static final boolean logging = false; //Looging vs no logging
 	public static void main(String[] args) throws IOException {
 		if (logging)
 			setSystemToLog();

@@ -244,13 +244,13 @@ class DateTest {
 		assertEquals(null, category.parseString(date));
 	}
 	
-	/**
-	 * Checks the parseString method of Date throws an error correctly when .
-	 */
-	@Test
-	void testParseString_Null() {
-		assertThrows(IllegalArgumentException.class, () -> {
-			category.parseString(null);
-		});
-	}
+//	/**
+//	 * Checks the parseString method of Date throws an error correctly when .
+//	 */
+//	@Test
+//	void testParseString_Null() {
+//		assertThrows(IllegalArgumentException.class, () -> {
+//			category.parseString(null);
+//		});
+//	}
 }
