@@ -114,6 +114,8 @@ public class BarGraph extends Graph implements Plottable {
         else
             yAxis.setLabel("Number of Records");
 
+        barChart.setTitle("Number of Records vs " + xCategory.toString());
+        
         // Get data to plot
         XYChart.Series<String, Number> dataSeries;
         if (recordCountToggle.getState())
