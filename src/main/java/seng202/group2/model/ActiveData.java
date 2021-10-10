@@ -225,15 +225,15 @@ public class ActiveData extends DataSource {
 	        if (hasComparison || hasEquality) {
 	        	query += " AND (" + createSearchStatement() + ")";
 	        } else {
-	        	query += "(" + createSearchStatement() + ")";
+	        	query += "" + createSearchStatement() + "";
 	        }
 	        isCondition = true;
         }
 
-        //Erase if there are no filters
-        if (!isCondition)
+        //Erase if there are no filters and no searches
+        if (!isCondition && searchPattern == "")
             query = "";
-        
+
         return query;
     }
 
@@ -281,7 +281,7 @@ public class ActiveData extends DataSource {
             //Update ActiveRecords database
             DBMS.updateActiveDatabase(IDs);
         } catch (SQLException e) {
-            System.out.println("Failed to add results to ArrayList. DBMS:updateActiveRecords:86");
+            System.out.println("Failed to add results to ArrayList. DBMS:updateActiveRecords");
         }
     }
 
