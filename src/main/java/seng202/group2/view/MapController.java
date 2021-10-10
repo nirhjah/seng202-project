@@ -62,8 +62,8 @@ public class MapController extends DataObserver implements Initializable {
     /** The stage that the map window is created on*/
     private Stage stage;
 
-    
-    
+
+
     /**
      * Initialize the map window
      *
@@ -73,7 +73,7 @@ public class MapController extends DataObserver implements Initializable {
      */
     public void initialize(URL location, ResourceBundle resources) {
         webEngine = webView.getEngine();
-       
+
         webEngine.load(CamsApplication.class.getClassLoader().getResource("map.html").toExternalForm());
 
         // Forwards console.log() output from any javascript to System.out
@@ -85,13 +85,13 @@ public class MapController extends DataObserver implements Initializable {
         webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
 
             if (newState == Worker.State.SUCCEEDED) {
-            	         
+
                 updateRadius();
                 activeDataUpdate();
-              
+
             }
-              
-          
+
+
         });
 
         radiusSlider.valueChangingProperty().addListener((obs, oldVal, newVal) -> {
@@ -166,6 +166,7 @@ public class MapController extends DataObserver implements Initializable {
     public void selectRecord(int id) {
         DBMS.getActiveData().selectRecord(id);
         DBMS.getActiveData().updateSelectionObservers();
+        showMarkerDetails(id);
     }
 
     /**
@@ -176,6 +177,15 @@ public class MapController extends DataObserver implements Initializable {
     public void deselectRecord(int id) {
         DBMS.getActiveData().deselectRecord(id);
         DBMS.getActiveData().updateSelectionObservers();
+    }
+
+  /**
+   * Open a side panel with record details grabbed from the database
+   *
+   * @param id ID of record to populate side panel with details of
+   */
+  public void showMarkerDetails(int id) {
+        System.out.println("[DEBUG] selected marker: "  + id);
     }
 
     /**
