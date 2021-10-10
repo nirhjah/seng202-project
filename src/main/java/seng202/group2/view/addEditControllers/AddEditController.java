@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import seng202.group2.model.CrimeRecord;
+import seng202.group2.model.DBMS;
 import seng202.group2.model.datacategories.*;
 
 import java.time.DateTimeException;
@@ -98,6 +99,9 @@ public class AddEditController {
         fbiCodeTextField.setText(record.getFbiCode());
 
         // Add date field
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DBMS.DATE_FORMAT);
+        datePicker.setValue(LocalDate.parse(record.getDateCategory().getValueString(), formatter));
+
         iucrTextField.setText(record.getIucr());
         primaryTextField.setText(record.getPrimaryDescription());
         secondaryTextField.setText(record.getSecondaryDescription());
