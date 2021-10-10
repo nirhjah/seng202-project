@@ -161,6 +161,8 @@ public class TableController extends DataObserver implements Initializable {
             if (activeData.isSelected(record.getID()))
                 tableView.getSelectionModel().select(record);
         }
+
+        if (parentController != null) parentController.updateText();
     }
 
     @Override

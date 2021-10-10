@@ -51,6 +51,18 @@ public class MainController extends DataObserver implements Initializable {
 	@FXML private GraphController graphController;
 
 	/**
+	 * Initialize the window.
+	 */
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		tableController.setParentController(this);
+		DBMS.getActiveData().addObserver(this);
+
+		updateText();
+		editRecordButton.setVisible(false);
+	}
+
+	/**
 	 * Update window size when a new size is entered into windowSize textField.
 	 */
 	public void updateWindowSize() {
@@ -346,25 +358,22 @@ public class MainController extends DataObserver implements Initializable {
 	}
 
 	/**
-	 * Initialize the window.
+	 * Update the record count text
 	 */
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		tableController.setParentController(this);
-		DBMS.getActiveData().addObserver(this);
-
-		updateText();
-		editRecordButton.setVisible(false);
-	}
-
-	private void updateText() {
+	public void updateText() {
 		ActiveData activeData =  DBMS.getActiveData();
 		int min = activeData.getCurrentMin();
 		int max = activeData.getCurrentMax();
 		int total = activeData.getRecordCount();
 		int size = activeData.getFrameSize();
 
-		recordsShown.setText(min + "-" + max + "/" + total);
+		if (selectedButton.getText().equals("All Records")) {
+			max = activeData.getSelectedRecords().size();
+			recordsShown.setText(max + "/" + total);
+		} else {
+			recordsShown.setText(min + "-" + max + "/" + total);
+		}
+
 		windowSize.setText(Integer.toString(size));
 	}
 
