@@ -340,6 +340,7 @@ public class MainController extends DataObserver implements Initializable {
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		tableController.setParentController(this);
 		DBMS.getActiveData().addObserver(this);
 
 		updateText();

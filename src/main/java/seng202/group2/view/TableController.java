@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
@@ -17,6 +18,9 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class TableController extends DataObserver implements Initializable {
+    //Parent controller
+    private MainController parentController;
+
     //Table
     @FXML private TableView<CrimeRecord> tableView;
     @FXML private TableColumn<CrimeRecord, Integer> idColumn;
@@ -34,6 +38,13 @@ public class TableController extends DataObserver implements Initializable {
     @FXML private TableColumn<CrimeRecord, Short> fbiCodeColumn;
     @FXML private TableColumn<CrimeRecord, Short> latitudeColumn;
     @FXML private TableColumn<CrimeRecord, Short> longitudeColumn;
+
+    /**
+     * Set the parent controller for this class
+     */
+    public void setParentController(MainController controller) {
+        parentController = controller;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -81,8 +92,13 @@ public class TableController extends DataObserver implements Initializable {
      * Called when a click event occurs on the tableView.
      * Updates the set of selected records in ActiveData using the selection out of currently tabulated records.
      */
-    public void updateSelection() {
+    public void updateSelection(MouseEvent event) {
         ActiveData activeData = DBMS.getActiveData();
+
+        //If double click, open update window
+        if (event.getClickCount() == 2) {
+            parentController.showEditRecordWindow();
+        }
 
         // Deselect all currently tabulated records
         for (CrimeRecord item : tableView.getItems()) {
