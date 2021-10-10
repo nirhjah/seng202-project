@@ -186,7 +186,7 @@ public class MainController extends DataObserver implements Initializable {
 			MapController mapWindowController = (MapController)loader.getController();
 			Stage stage = new Stage();
 			stage.setTitle("Map Window");
-			stage.setScene(new Scene(root, 900, 600));
+			stage.setScene(new Scene(root, 1280, 720));
 			stage.show();
 
 			mapWindowController.setStage(stage);
