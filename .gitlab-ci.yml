@@ -5,7 +5,7 @@ junit:
 generate_artifacts:
    stage: deploy
    script:
-      - mvn -B clean package
+      - xvfb-run mvn -B clean package
    artifacts:
       paths:
          - target/CAMS*.jar
