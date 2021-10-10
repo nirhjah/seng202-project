@@ -361,8 +361,8 @@ public class DBMS {
             if (first) first = false;
         }
 
-        updateRecordsString += updateString += " WHERE id = " + record.getID();
-        updateActiveRecordsString += updateString += " WHERE id = " + record.getID();
+        updateRecordsString += updateString + " WHERE id = " + record.getID();
+        updateActiveRecordsString += updateString + " WHERE id = " + record.getID();
 
         try {
             //Update in the database
@@ -376,6 +376,7 @@ public class DBMS {
             activeData.updateActiveData();
         } catch (SQLException e) {
             System.out.println("Could not update record: " + e.toString());
+            System.out.println(updateString);
         }
     }
 
