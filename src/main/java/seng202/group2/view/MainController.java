@@ -43,6 +43,7 @@ public class MainController extends DataObserver implements Initializable {
 	@FXML private Tab mapTab;
 	@FXML private Tab tableTab;
 	@FXML private Tab graphTab;
+	@FXML private Button selectedButton;
 
 	//View controllers
 	@FXML private MapController mapController;
@@ -149,6 +150,15 @@ public class MainController extends DataObserver implements Initializable {
 		}
 	}
 
+	public void toggleSelectedOnly() {
+		if (selectedButton.getText().equals("Selected Only")) {
+			selectedButton.setText("All Records");
+		} else {
+			selectedButton.setText("Selected Only");
+		}
+
+		tableController.toggleSelectedOnly();
+	}
 
 	/**
 	 * This showMapWindow method opens the map window and brings it to the front.

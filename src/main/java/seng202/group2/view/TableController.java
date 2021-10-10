@@ -15,11 +15,13 @@ import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 
 public class TableController extends DataObserver implements Initializable {
     //Parent controller
     private MainController parentController;
+    private boolean selectedOnly = false;
 
     //Table
     @FXML private TableView<CrimeRecord> tableView;
@@ -85,6 +87,7 @@ public class TableController extends DataObserver implements Initializable {
         fbiCodeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("fbiCode"));
         latitudeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("latitude"));
         longitudeColumn.setCellValueFactory(new PropertyValueFactory<CrimeRecord, Short>("longitude"));
+
         tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
@@ -114,8 +117,18 @@ public class TableController extends DataObserver implements Initializable {
         activeData.updateSelectionObservers();
     }
 
+    public void toggleSelectedOnly() {
+        selectedOnly = !selectedOnly;
+        activeDataUpdate();
+    }
+
     @Override
     public void activeDataUpdate() {
+        if (selectedOnly) {
+            selectedRecordsUpdate();
+            return;
+        }
+
         ActiveData activeData = DBMS.getActiveData();
         ArrayList<CrimeRecord> activeRecords = activeData.getActiveRecords(0, DBMS.getActiveData().getFrameSize());
 
@@ -130,11 +143,20 @@ public class TableController extends DataObserver implements Initializable {
     @Override
     public void selectedRecordsUpdate() {
         ActiveData activeData = DBMS.getActiveData();
+        if (selectedOnly) {
+            HashSet<Integer> selected = activeData.getSelectedRecords();
+
+            tableView.getItems().clear();
+            for (Integer id : selected) {
+                tableView.getItems().add(DBMS.getRecord(id));
+            }
+        }
+
 
         //Clear selections
         tableView.getSelectionModel().clearSelection();
 
-        //Select all records that are seleceted in active records
+        //Select all records that are selected in active records
         for (CrimeRecord record: tableView.getItems()) {
             if (activeData.isSelected(record.getID()))
                 tableView.getSelectionModel().select(record);
@@ -143,18 +165,6 @@ public class TableController extends DataObserver implements Initializable {
 
     @Override
     public void frameUpdate() {
-        //Get records in frame range
-        ArrayList<CrimeRecord> activeRecords = new ArrayList<>(DBMS.getActiveData().getActiveRecords());
-
-        //Update table
-        tableView.getItems().clear();
-        for (CrimeRecord record: activeRecords) {
-            tableView.getItems().add(record);
-
-            //Select record if required
-            if (DBMS.getActiveData().isSelected(record.getID())) {
-                tableView.getSelectionModel().select(record);
-            }
-        }
+        activeDataUpdate();
     }
 }
