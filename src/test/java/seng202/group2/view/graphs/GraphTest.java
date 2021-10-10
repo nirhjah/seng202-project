@@ -1,16 +1,12 @@
 package seng202.group2.view.graphs;
 
-import de.saxsys.javafx.test.JfxRunner;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Connor Dunlop
  */
-@RunWith(JfxRunner.class)
 class GraphTest {
 
     /** A custom graph implementation to enable testing of Graph class directly. */
@@ -37,6 +32,14 @@ class GraphTest {
             return;
         }
     };
+
+    /** JavaFX environment and toolkits must be initialised to be able to create JavaFX components. */
+    @BeforeAll
+    static void initializeJavaFXEnvironment() {
+        JFXPanel p = new JFXPanel();
+
+        testGraph.initialize(new BorderPane(), new VBox());
+    }
 
     /** Clear test graph's options list after every test. */
     @AfterEach

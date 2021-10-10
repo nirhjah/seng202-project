@@ -1,13 +1,9 @@
 package seng202.group2.view.graphs;
 
-import de.saxsys.javafx.test.JfxRunner;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
-import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,8 +12,13 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Connor Dunlop
  */
-@RunWith(JfxRunner.class)
 class BooleanGraphOptionTest {
+
+    /** To create JFX components JFX must be initialized. */
+    @BeforeAll
+    static void initializeJavaFXEnvironment() {
+        JFXPanel p = new JFXPanel();
+    }
 
     /** Tests setting and getting of boolean state. */
     @Test
@@ -45,4 +46,5 @@ class BooleanGraphOptionTest {
         option.setState(true);
         assertTrue(option.requirementsMet());
     }
+
 }
