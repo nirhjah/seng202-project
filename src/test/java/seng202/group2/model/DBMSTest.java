@@ -125,13 +125,11 @@ public class DBMSTest {
     void getAllRecordsTest() throws SQLException, ClassNotFoundException, ParseException, InterruptedException {
         addRecords(5);
 
-        ResultSet results = DBMS.getAllRecords();
-        results.next();
-        assertEquals("TEST1", results.getString("caseNum"));
-        results.next();
-        assertEquals("TEST2", results.getString("caseNum"));
-        results.next();
-        assertEquals("TEST3", results.getString("caseNum"));
+        ArrayList<CrimeRecord> records = DBMS.getAllRecords();
+
+        for (int i = 0; i < 5; i++) {
+            assertEquals("TEST" + Integer.toString(i + 1), records.get(i).getCaseNum());
+        }
     }
 
     /**

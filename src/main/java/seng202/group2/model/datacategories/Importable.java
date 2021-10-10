@@ -8,7 +8,7 @@ import seng202.group2.model.CrimeRecord;
  * @author Connor Dunlop
  *
  */
-public interface Importable {
+public interface Importable extends DataClassification {
     public Object parseString(String value);
     public Object getRecordValue(CrimeRecord record);
 }

@@ -12,13 +12,14 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class CaseNumber extends DataCategory implements Importable, Categorical {
+public class CaseNumber extends DataCategory implements Importable, Exportable, Categorical {
 
 	/** The case number associated with the crime record in the police database */
 	private String caseNum = null;
 
 	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
-			"CASE#"
+			"CASE#",
+			"CASENUMBER"
 	));
 	private static final CaseNumber instance = new CaseNumber();
 	public static CaseNumber getInstance() {

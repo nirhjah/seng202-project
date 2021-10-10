@@ -14,7 +14,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class Block extends DataCategory implements Importable, Categorical {
+public class Block extends DataCategory implements Importable, Exportable, Categorical {
 	
 	/**
 	 * The address of the crime incident at a city block level.
