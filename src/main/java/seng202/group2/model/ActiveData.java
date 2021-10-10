@@ -1,5 +1,7 @@
 package seng202.group2.model;
 
+import seng202.group2.model.datacategories.DataCategory;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,15 +18,6 @@ public class ActiveData extends DataSource {
     private ArrayList<Filter> filters = new ArrayList<>();
     //String pattern to match for search functionality
     private String searchPattern = "";
-    //Fields to check in search
-    private ArrayList<String> searchFields = new ArrayList<String>(
-    		Arrays.asList("caseNum", 
-    				"block", 
-    				"IUCR", 
-    				"primaryDescription", 
-    				"secondaryDescription", 
-    				"locationDescription",
-    				"fbiCode"));
     //List of record ids selected by the user
     private HashSet<Integer> selectedRecords = new HashSet<>();
 
@@ -160,13 +153,13 @@ public class ActiveData extends DataSource {
     public String createSearchStatement() {
     	String querySegment = "";
     	boolean orNeeded = false;
-    	for(String field: searchFields) {
+    	for(DataCategory field: DataCategory.getCategories()) {
     		if(orNeeded) {
     			querySegment += " OR ";
     		} else {
     			orNeeded = true;
     		}
-    		querySegment += field + " LIKE \"%" + searchPattern + "%\"";
+    		querySegment += "cast(" + field.getSQL() + " as text)" + " LIKE \"%" + searchPattern + "%\"";
     	}
     	return querySegment;
     }
@@ -220,7 +213,7 @@ public class ActiveData extends DataSource {
             query += equality;
         
         //Add search check at end
-        if (searchPattern != "") {
+        if (!searchPattern.equals("")) {
         	//Add search pattern match criteria to end appropriately
 	        if (hasComparison || hasEquality) {
 	        	query += " AND (" + createSearchStatement() + ")";
@@ -231,7 +224,7 @@ public class ActiveData extends DataSource {
         }
 
         //Erase if there are no filters and no searches
-        if (!isCondition && searchPattern == "")
+        if (!isCondition && searchPattern.equals(""))
             query = "";
 
         return query;

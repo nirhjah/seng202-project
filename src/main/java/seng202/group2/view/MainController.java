@@ -10,6 +10,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -248,8 +250,9 @@ public class MainController extends DataObserver implements Initializable {
 	/**
 	 * Applies the string currently in the search bar as the search pattern and applies the search to the data
 	 */
-	public void runSearch() {
-		DBMS.getActiveData().setSearchPattern(searchTextField.getText());
+	public void runSearch(KeyEvent event) {
+		if (event.getCode().equals(KeyCode.ENTER) || DBMS.getRecordsSize() <= 10000)
+			DBMS.getActiveData().setSearchPattern(searchTextField.getText());
 	}
 
 	/**
