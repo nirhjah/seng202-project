@@ -265,7 +265,7 @@ public class DBMS {
             //Select records from Records
             Statement state = conn.createStatement();
 
-            if (activeData.getFilters().size() > 0) {
+            if (activeData.getFilters().size() > 0 || activeData.getSearchPattern().length() > 1) {
                 results = state.executeQuery("SELECT * FROM ActiveRecords " + order + " LIMIT " + limit + " OFFSET " + min);
             } else {
                 results = state.executeQuery("SELECT * FROM Records " + order + " LIMIT " + limit + " OFFSET " + min);
@@ -426,8 +426,6 @@ public class DBMS {
 
             System.out.print("\rAdded " + start + " records to activeRecords database.");
         }
-        System.out.println("");
-
     }
 
     /**

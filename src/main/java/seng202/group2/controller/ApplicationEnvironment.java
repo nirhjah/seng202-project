@@ -10,10 +10,9 @@ import java.io.PrintStream;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-// TODO: implement class
 public class ApplicationEnvironment {
 	public static void main(String[] args) throws IOException {
-		setSystemToLog();
+		//setSystemToLog();
 		DBMS.clearDB();
 		CamsApplication.main(args);
 	}
