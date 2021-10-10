@@ -13,13 +13,14 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class IUCRCode extends DataCategory implements Importable, Categorical {
+public class IUCRCode extends DataCategory implements Importable, Exportable, Categorical {
 
 	/** The IUCR code */
 	private String iucrCode = null;
 
 	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
-			"IUCR"
+			"IUCR",
+			"IUCRCODE"
 	));
 	private static final IUCRCode instance = new IUCRCode();
 	public static IUCRCode getInstance() {

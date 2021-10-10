@@ -16,7 +16,7 @@ import seng202.group2.model.DBMS;
  * @author Connor Dunlop
  *
  */
-public class Date extends DataCategory implements Importable {
+public class Date extends DataCategory implements Importable, Exportable {
 	
 	/** The date and time at which the crime incident occurred */
 	private Calendar date = null;
@@ -32,7 +32,8 @@ public class Date extends DataCategory implements Importable {
 	};
 
 	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
-			"DATEOFOCCURRENCE"
+			"DATEOFOCCURRENCE",
+			"DATE"
 	));
 	private static final Date instance = new Date();
 	public static Date getInstance() {

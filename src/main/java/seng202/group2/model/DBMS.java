@@ -262,22 +262,37 @@ public class DBMS {
     /**
      * Gets all records in the database.
      *
-     * @return ResultSet (java.sql) Representing Query results. NULL if an error occurs.
+     * @return An ArrayList of all crime records stored in the database.
      */
-    public static ResultSet getAllRecords() {
+    public static ArrayList<CrimeRecord> getAllRecords() {
         if (conn == null) {
             getConnection();
         }
 
+        ResultSet results;
         try {
             Statement state = conn.createStatement();
-            return state.executeQuery("SELECT * FROM Records;");
+            results = state.executeQuery("SELECT * FROM Records;");
         } catch (SQLException e) {
             System.out.println("Could not get all records from the database. DBMS:getAllRecords");
             //e.printStackTrace();
+            return null;
         }
 
-        return null;
+        //Generate and add the records to the records ArrayList
+        ArrayList<CrimeRecord> records = new ArrayList<>();
+        while (true) {
+            try {
+                if (!results.next()) break;
+                records.add(generateCrimeRecord(results));
+            } catch (SQLException e) {
+                System.out.println("Could not retrieve record from record table.");
+                e.printStackTrace();
+                continue;
+            }
+        }
+
+        return records;
     }
 
     /**

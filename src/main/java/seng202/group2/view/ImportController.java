@@ -57,12 +57,20 @@ public class ImportController {
 	@FXML private HBox importProgressMessageBox;
 	@FXML private Label recordsSoFar;
 	@FXML private Label recordsToImport;
+	@FXML private Button browseButton;
 	@FXML private Button importButton;
 
 	/** The number of crime records imported so far. */
 	private int numImported = 0;
 	/** The total number of crime records stored in the file to be imported. */
 	private int totalToImport = 0;
+
+	/** Sets initial focus to browse button. */
+	public void initialise() {
+		Platform.runLater(() -> {
+			browseButton.requestFocus();
+		});
+	}
 
 	/**
 	 * Displays a message indicating which importing state/status the controller is in, and updates the user interface

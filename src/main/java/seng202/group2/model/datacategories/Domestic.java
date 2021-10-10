@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class Domestic extends DataCategory implements Importable, Categorical {
+public class Domestic extends DataCategory implements Importable, Exportable, Categorical {
 
 	/**
 	 * 1 if the crime incident was classified as domestic
@@ -62,9 +62,9 @@ public class Domestic extends DataCategory implements Importable, Categorical {
 
 		if (value.equals(""))
 			return null;
-		else if (value.equals("Y") || value.equals("TRUE"))
+		else if (value.equals("Y") || value.equals("TRUE") || value.equals("true"))
 			return true;
-		else if (value.equals("N") || value.equals("FALSE"))
+		else if (value.equals("N") || value.equals("FALSE") || value.equals("false"))
 			return false;
 		else
 			throw new IllegalArgumentException();
