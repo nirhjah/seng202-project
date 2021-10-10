@@ -136,7 +136,7 @@ public class TableController extends DataObserver implements Initializable {
         }
 
         ActiveData activeData = DBMS.getActiveData();
-        ArrayList<CrimeRecord> activeRecords = activeData.getActiveRecords(0, DBMS.getActiveData().getFrameSize());
+        ArrayList<CrimeRecord> activeRecords = activeData.getActiveRecords();
 
         //Update table
         tableView.getItems().clear();

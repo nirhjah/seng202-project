@@ -384,6 +384,11 @@ public class MainController extends DataObserver implements Initializable {
 	public void activeDataUpdate() {
 		DBMS.getActiveData().updateFrameSize(Integer.parseInt(windowSize.getText()));
 		updateText();
+		if (DBMS.getActiveData().getSelectedRecords().size() == 1) {
+			editRecordButton.setVisible(true);
+		} else {
+			editRecordButton.setVisible(false);
+		}
 	}
 
 	@Override
