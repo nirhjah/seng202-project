@@ -113,7 +113,6 @@ public class AddEditController {
         blockTextField.setText(record.getBlock());
         beatTextField.setText(record.getBeat().toString());
         wardTextField.setText(record.getWard().toString());
-
     }
 
     protected void closeWindow() {
