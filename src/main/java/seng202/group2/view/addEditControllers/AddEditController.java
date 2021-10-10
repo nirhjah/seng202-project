@@ -68,8 +68,10 @@ public class AddEditController {
     /** The JavaFX text field used to get user input for the Ward DataCategory. */
     @FXML private TextField wardTextField;
 
+    /** The JavaFX text field used to get user input for the Latitude DataCategory. */
     @FXML private TextField latitudeTextField;
 
+    /** The JavaFX text field used to get user input for the Longitude DataCategory. */
     @FXML private TextField longitudeTextField;
 
 
