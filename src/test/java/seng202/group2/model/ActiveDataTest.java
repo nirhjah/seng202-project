@@ -58,6 +58,7 @@ public class ActiveDataTest {
         DBMS.clearDB();
         activeData.clearFilters(false);
         activeData.updateFrameSize(1000);
+        activeData.setSearchPattern("");
     }
 
     @Test
@@ -175,8 +176,9 @@ public class ActiveDataTest {
         //Set search pattern
         activeData.setSearchPattern("pDesc2");
         activeData.updateActiveRecords();
-        
-        assertEquals(DBMS.getRecordsSize(), 1);
+
+        ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();
+        assertEquals(1, records.size());
         
         //Reset search pattern to blank
         activeData.setSearchPattern("");
@@ -358,16 +360,5 @@ public class ActiveDataTest {
 
         assertEquals(10, activeData.getCurrentMin());
         assertEquals(20, activeData.getCurrentMax());
-    }
-    
-    @Test
-    void createSearchStatementTest() {
-    	String testString = "item";
-    	activeData.setSearchPattern(testString);
-    	assertEquals("caseNum LIKE \"%" + testString + "%\" OR block LIKE \"%" + testString + "%\" OR IUCR LIKE \"%" + 
-    			testString + "%\" OR primaryDescription LIKE \"%" + testString + "%\" OR secondaryDescription LIKE \"%" +
-    			testString + "%\" OR locationDescription LIKE \"%" + testString + "%\" OR fbiCode LIKE \"%" + testString + "%\"",
-    			activeData.createSearchStatement());
-    	System.out.println(activeData.createSearchStatement());
     }
 }
