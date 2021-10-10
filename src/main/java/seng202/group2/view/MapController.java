@@ -1,6 +1,7 @@
 package seng202.group2.view;
 
 import com.sun.javafx.webkit.WebConsoleListener;
+import io.github.cdimascio.dotenv.Dotenv;
 import javafx.concurrent.Worker;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -29,10 +30,13 @@ import seng202.group2.model.DBMS;
 import seng202.group2.model.datacategories.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 
 
@@ -95,40 +99,42 @@ public class MapController extends DataObserver implements Initializable {
      *  - Use webEngine to provide access to the document object model of the web page map.html
      */
     public void initialize(URL location, ResourceBundle resources) {
-        webEngine = webView.getEngine();
+      webEngine = webView.getEngine();
 
-        webEngine.load(CamsApplication.class.getClassLoader().getResource("map.html").toExternalForm());
+      InputStream is = getClass().getResourceAsStream("/map.html");
+      String content = new BufferedReader(
+        new InputStreamReader(is, StandardCharsets.UTF_8))
+        .lines()
+        .collect(Collectors.joining("\n"));
+      Dotenv dotenv = Dotenv.load();
+      content = content.replaceFirst("API_KEY_MATCHER", dotenv.get("API_KEY"));
+      webEngine.loadContent(content);
+      // Forwards console.log() output from any javascript to System.out
+      WebConsoleListener.setDefaultListener((webView, message, lineNumber, sourceId) -> {
+        System.out.println(message + "[at " + lineNumber + "]");
+      });
 
-        // Forwards console.log() output from any javascript to System.out
-        WebConsoleListener.setDefaultListener((webView, message, lineNumber, sourceId) -> {
-            System.out.println(message + "[at " + lineNumber + "]");
-        });
+      // Wait until javascript in map.html has loaded before trying to call functions from there
+      webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
+        if (newState == Worker.State.SUCCEEDED) {
+          updateRadius();
+          activeDataUpdate();
+        }
+      });
 
-        // Wait until javascript in map.html has loaded before trying to call functions from there
-        webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
+      radiusSlider.valueChangingProperty().addListener((obs, oldVal, newVal) -> {
+        updateRadius();
+      });
 
-            if (newState == Worker.State.SUCCEEDED) {
-
-                updateRadius();
-                activeDataUpdate();
-
-            }
-
-
-        });
-
-        radiusSlider.valueChangingProperty().addListener((obs, oldVal, newVal) -> {
-            updateRadius();
-        });
-
-        //Connect javascript to this Java class so that it can call methods
-        JSObject win = (JSObject) webEngine.executeScript("window");
-        win.setMember("app", this);
+      //Connect javascript to this Java class so that it can call methods
+      JSObject win = (JSObject) webEngine.executeScript("window");
+      win.setMember("app", this);
 
         toggleDetailsPanel();
     }
 
-    /**
+
+  /**
      * Toggle the markers on and off
      */
     public void toggleMarkers() {
@@ -299,7 +305,7 @@ public class MapController extends DataObserver implements Initializable {
      */
     public void setBounds() {
         webEngine.executeScript(
-                "setBounds();"
+                "setBoundsJS();"
         );
     }
 

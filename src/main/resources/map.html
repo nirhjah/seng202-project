@@ -459,7 +459,7 @@
     * The map centered and the zoom is adjusted based on the markers and their positions.
     * The best possible view of Google Map is then shown to the user
     */
-    function setBounds() {
+    function setBoundsJS() {
         var bounds = new google.maps.LatLngBounds();
 
         for (let i = 0; i < markers.length; i++) {
@@ -520,9 +520,7 @@
     }
 
 </script>
-
-<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAka2EHrmJfR-AU7CkIJFzplWzG2Z-x_qo&callback=initMap&libraries=visualization&v=weekly" async></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=API_KEY_MATCHER&callback=initMap&libraries=visualization&v=weekly" async></script>
 
 </body>
 </html>
