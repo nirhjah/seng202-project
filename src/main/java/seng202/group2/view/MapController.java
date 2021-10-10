@@ -66,6 +66,15 @@ public class MapController extends DataObserver implements Initializable {
     @FXML private Text dateText;
     @FXML private Text iucrCodeText;
     @FXML private Text primaryText;
+    @FXML private Text secondaryText;
+    @FXML private Text arrestText;
+    @FXML private Text domesticText;
+    @FXML private Text locationText;
+    @FXML private Text blockText;
+    @FXML private Text beatText;
+    @FXML private Text wardText;
+    @FXML private Text lattitudeText;
+    @FXML private Text longitudeText;
 
     /** WebEngine is a non-visual object to support web page managements
      *  and enable two-way communication between a Java application and JavaScript
@@ -170,6 +179,18 @@ public class MapController extends DataObserver implements Initializable {
         dateText.setText("" + record.getDateCategory().getValueString());
         iucrCodeText.setText("" + record.getIucr());
         primaryText.setText("" + record.getPrimaryDescription());
+        secondaryText.setText("" + record.getSecondaryDescription());
+        arrestText.setText("" + record.getArrest());
+        domesticText.setText("" + record.getDomestic());
+
+
+      //  locationText.setText("" + record.getLocationDescription());
+//        blockText.setText("" + record.getBlock());
+//        beatText.setText("" + record.getBeat());
+//        wardText.setText("" + record.getWard());
+//        lattitudeText.setText("" + record.getLatitude());
+//        longitudeText.setText("" + record.getLongitude());
+
 
         borderPane.setLeft(recordInfoPane);
     }
