@@ -68,6 +68,10 @@ public class AddEditController {
     /** The JavaFX text field used to get user input for the Ward DataCategory. */
     @FXML private TextField wardTextField;
 
+    @FXML private TextField latitudeTextField;
+
+    @FXML private TextField longitudeTextField;
+
 
     /**
      * Assigns the user input values to a given CrimeRecord. If the values are all valid the method returns true otherwise
@@ -165,10 +169,19 @@ public class AddEditController {
             datePicker.setValue(LocalDate.parse(record.getDateCategory().getValueString(), formatter));
         } catch (NullPointerException exception) {} // In the case the value of the category is null the toString will thrown a Null pointer exception
 
-        arrestCheckBox.setSelected(record.getArrest());
-        domesticCheckBox.setSelected(record.getDomestic());
+        // Add arrest field
+        if (record.getArrest() == null) {
+            arrestCheckBox.setIndeterminate(true);
+        } else {
+            arrestCheckBox.setSelected(record.getArrest());
+        }
 
-
+        // add domestic field
+        if (record.getDomestic() == null) {
+            domesticCheckBox.setIndeterminate(true);
+        } else {
+            domesticCheckBox.setSelected(record.getDomestic());
+        }
     }
 
     /**
@@ -194,5 +207,7 @@ public class AddEditController {
         textFieldsDict.put(new Block(), blockTextField);
         textFieldsDict.put(new Beat(), beatTextField);
         textFieldsDict.put(new Ward(), wardTextField);
+        textFieldsDict.put(new Latitude(), latitudeTextField);
+        textFieldsDict.put(new Longitude(), longitudeTextField);
     }
 }
