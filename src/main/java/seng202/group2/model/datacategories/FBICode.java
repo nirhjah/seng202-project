@@ -60,7 +60,7 @@ public class FBICode extends DataCategory implements Importable, Categorical {
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
-		else if (value == "")
+		else if (value.equals(""))
 			return null;
 		while (value.startsWith("0"))
 			value = value.replaceFirst("0", "");

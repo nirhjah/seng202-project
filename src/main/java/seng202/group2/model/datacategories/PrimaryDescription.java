@@ -55,7 +55,7 @@ public class PrimaryDescription extends DataCategory implements Importable, Cate
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
-		else if (value == "")
+		else if (value.equals(""))
 			return null;
 		return value;
 	}

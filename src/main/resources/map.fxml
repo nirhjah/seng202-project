@@ -6,10 +6,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.web.WebView?>
 
@@ -17,19 +19,96 @@
    <center>
       <StackPane BorderPane.alignment="CENTER">
          <children>
-            <BorderPane>
+            <BorderPane fx:id="borderPane">
                <center>
-                  <WebView fx:id="webView" fontScale="0.8" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1440.0" />
+                  <WebView fx:id="webView" fontScale="0.8" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="7672.0" />
                </center>
-            </BorderPane>
-            <BorderPane fx:id="recordInfoPane" prefHeight="200.0" prefWidth="200.0">
-               <center>
-                  <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <left>
+                  <GridPane fx:id="recordInfoPane" hgap="10.0" prefHeight="763.0" prefWidth="365.0" vgap="10.0" BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="377.0" minHeight="0.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="870.0" minHeight="10.0" prefHeight="860.0" valignment="CENTER" vgrow="SOMETIMES" />
+                    </rowConstraints>
                      <children>
-                        <Text fx:id="idText" strokeType="OUTSIDE" strokeWidth="0.0" text="ID: " />
+                        <GridPane hgap="10.0" prefHeight="500.0" prefWidth="201.0" vgap="10.0" GridPane.rowIndex="1">
+                          <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="175.0" minWidth="10.0" prefWidth="136.0" />
+                            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="182.0" minWidth="10.0" prefWidth="168.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Crime ID:" />
+                              <Text fx:id="idText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+                              <Label text="Case Number:" GridPane.rowIndex="1" />
+                              <Text fx:id="caseNumText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label text="FBI CD:" GridPane.rowIndex="2" />
+                              <Text fx:id="fbiCodeText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label text="Date:" GridPane.rowIndex="3" />
+                              <Text fx:id="dateText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Label text="IUCR Code:" GridPane.rowIndex="5" />
+                              <Text fx:id="iucrCodeText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <Label text="Primary Description:" GridPane.rowIndex="6" />
+                              <Text fx:id="primaryText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <Label text="Secondary Description:" GridPane.rowIndex="7" />
+                              <Text fx:id="secondaryText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                              <Label text="Arrest Made:" GridPane.rowIndex="9" />
+                              <Text fx:id="arrestText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                              <Label text="Domestic Crime:" GridPane.rowIndex="10" />
+                              <Text fx:id="domesticText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                              <Label text="Location Description:" GridPane.rowIndex="12" />
+                              <Text fx:id="locationText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.0" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                              <Label text="Block:" GridPane.rowIndex="13" />
+                              <Text fx:id="blockText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                              <Label text="Beat:" GridPane.rowIndex="14" />
+                              <Text fx:id="beatText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+                              <Label text="Ward:" GridPane.rowIndex="15" />
+                              <Text fx:id="wardText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+                              <Label text="Lattitude:" GridPane.rowIndex="17" />
+                              <Text fx:id="lattitudeText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="17" />
+                              <Label text="Longitude:" GridPane.rowIndex="18" />
+                              <Text fx:id="longitudeText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="18" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </GridPane>
+                        <Label text="Crime Details">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
                      </children>
-                  </Pane>
-               </center>
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </GridPane>
+               </left>
             </BorderPane>
          </children>
       </StackPane>
@@ -64,6 +143,11 @@
                </padding>
             </CheckBox>
             <CheckBox alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#toggleOnlySelected" text="Only Selected">
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </CheckBox>
+            <CheckBox alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#toggleDetailsPanel" text="Extra Details">
                <padding>
                   <Insets left="10.0" />
                </padding>

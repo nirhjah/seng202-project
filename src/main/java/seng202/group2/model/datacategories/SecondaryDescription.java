@@ -56,7 +56,7 @@ public class SecondaryDescription extends DataCategory implements Importable, Ca
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
-		else if (value == "")
+		else if (value.equals(""))
 			return null;
 		return value;
 	}

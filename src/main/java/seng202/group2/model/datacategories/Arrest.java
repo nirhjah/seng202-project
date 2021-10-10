@@ -60,7 +60,7 @@ public class Arrest extends DataCategory implements Importable, Categorical {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
 		
-		if (value == "")
+		if (value.equals(""))
 			return null;
 		else if (value.equals("Y") || value.equals("TRUE"))
 			return true;

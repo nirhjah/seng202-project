@@ -2,6 +2,7 @@ package seng202.group2.model;
 
 import seng202.group2.model.datacategories.DataCategory;
 import seng202.group2.model.datacategories.ID;
+import seng202.group2.model.datacategories.UnsupportedCategoryException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,7 +17,6 @@ public class DBMS {
 
     private static final ActiveData activeData = new ActiveData();               //Active data class
     public static final String DATE_FORMAT = "dd'/'MM'/'yyyy hh':'mm':'ss a";     //Date format
-    private static  boolean hasDataBase = false;                           //Database is created
     private static Connection conn;                                        //Database connection
     private static int idCounter = -1;                                     //Current item ID
 
@@ -39,7 +39,7 @@ public class DBMS {
 
     /**
      * Create a table in the database
-     * @param tableName
+     * @param tableName Table name as a string
      */
     private static void createTable(String tableName) {
         try {
@@ -224,29 +224,6 @@ public class DBMS {
     }
 
     /**
-     * Gets a record from ActiveRecords table by ID.
-     *
-     * @param id Integer representing the ID of the record
-     * @return CrimeRecord retrieved from Records. NULL if the record does not exist
-     */
-    public static CrimeRecord getActiveRecord(int id) {
-        if (conn == null) {
-            getConnection();
-        }
-
-        try {
-            //Get record
-            Statement state = conn.createStatement();
-            ResultSet result = state.executeQuery("SELECT * FROM ActiveRecords WHERE id =" + id);
-            return generateCrimeRecord(result);
-        } catch (SQLException e) {
-            System.out.println("Could not retrieve record with ID: " + id + " from ActiveRecords table. DBMS:getActiveRecord");
-        }
-
-        return null;
-    }
-
-    /**
      * Get multiple records from ActiveRecords table as an ArrayList.
      *
      * @return ArrayList of CrimeRecords.
@@ -331,12 +308,12 @@ public class DBMS {
         SQLInsertStatement state = new SQLInsertStatement("Records");
         for (DataCategory category : DataCategory.getCategories()) {
             try {
-                state.setValue(category.getSQL(), category.getRecordCategory(record).getValueString());
+                state.setValue(category.getSQL(), category.getRecordCategory(record).getValueString(), category.getValueType() == String.class);
             } catch (NullPointerException e) {
-                state.setValue(category.getSQL(), null);
+                state.setValue(category.getSQL(), null, false);
             }
         }
-        state.setValue(ID.getInstance().getSQL(), Integer.toString(idCounter++));
+        state.setValue(ID.getInstance().getSQL(), Integer.toString(idCounter++), false);
 
         try {
             //Insert into the database
@@ -349,6 +326,57 @@ public class DBMS {
             }
         } catch (SQLException e) {
             System.out.println("Could not insert record into Records table: " + e.toString());
+        }
+    }
+
+    /**
+     * Updaet record in database. Updating based on records ID
+     *
+     * @param record Record holding all the new data to set
+     */
+    public static void updateRecord(CrimeRecord record) {
+        if (conn == null) {
+            getConnection();
+        }
+
+        // Generate update statement
+        String updateRecordsString = "UPDATE Records";
+        String updateActiveRecordsString = "UPDATE ActiveRecords";
+        String updateString = "";
+
+        boolean first = true;
+        for (DataCategory category : DataCategory.getCategories()) {
+            //Skip ID
+            if (category.getRecordCategory(record) instanceof ID) {
+                continue;
+            }
+
+            //Add category to string
+            try {
+                String value = SQLInsertStatement.formatValue(category.getSQL(), category.getRecordCategory(record).getValueString(), category.getValueType() == String.class);
+                updateString += (first? " SET " : ", ") + category.getSQL() + " = " + value;
+            } catch (NullPointerException e) {
+                continue;
+            }
+            if (first) first = false;
+        }
+
+        updateRecordsString += updateString + " WHERE id = " + record.getID();
+        updateActiveRecordsString += updateString + " WHERE id = " + record.getID();
+
+        try {
+            //Update in the database
+            Statement updateRecords = conn.createStatement();
+            updateRecords.execute(updateRecordsString);
+
+            Statement updateActiveRecords = conn.createStatement();
+            updateActiveRecords.execute(updateActiveRecordsString);
+
+            //Update observers
+            activeData.updateActiveData();
+        } catch (SQLException e) {
+            System.out.println("Could not update record: " + e.toString());
+            System.out.println(updateString);
         }
     }
 

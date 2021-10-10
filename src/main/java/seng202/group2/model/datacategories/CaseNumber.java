@@ -31,7 +31,7 @@ public class CaseNumber extends DataCategory implements Importable, Categorical 
 			throw new IllegalArgumentException("Cannot set attribute value of null record.");
 		
 		if (data == null)
-			record.setCaseNum(null);
+			throw new IllegalArgumentException("Required field cannot be null");
 		else if (data instanceof String)
 			record.setCaseNum((String) data);
 		else
@@ -53,9 +53,10 @@ public class CaseNumber extends DataCategory implements Importable, Categorical 
 
 	@Override
 	public String parseString(String value) {
+
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
-		else if (value == "")
+		else if (value.equals(""))
 			return null;
 		return value;
 	}

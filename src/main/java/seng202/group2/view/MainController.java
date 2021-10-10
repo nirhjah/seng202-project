@@ -16,6 +16,8 @@ import javafx.stage.Stage;
 import seng202.group2.model.ActiveData;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
+import seng202.group2.view.addEditControllers.AddRecordController;
+import seng202.group2.view.addEditControllers.EditRecordController;
 
 /**
  * MainController is the GUI controller for the main Cams window.
@@ -31,6 +33,7 @@ import seng202.group2.model.DBMS;
 public class MainController extends DataObserver implements Initializable {
 	/** The variable used to retrieve user input into the search text field. */
 	@FXML private TextField searchTextField;
+	@FXML private Button editRecordButton;
 
 	//FXML fields
 	@FXML private TextField windowSize;
@@ -40,11 +43,24 @@ public class MainController extends DataObserver implements Initializable {
 	@FXML private Tab mapTab;
 	@FXML private Tab tableTab;
 	@FXML private Tab graphTab;
+	@FXML private Button selectedButton;
 
 	//View controllers
 	@FXML private MapController mapController;
 	@FXML private TableController tableController;
 	@FXML private GraphController graphController;
+
+	/**
+	 * Initialize the window.
+	 */
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		tableController.setParentController(this);
+		DBMS.getActiveData().addObserver(this);
+
+		updateText();
+		editRecordButton.setVisible(false);
+	}
 
 	/**
 	 * Update window size when a new size is entered into windowSize textField.
@@ -146,6 +162,18 @@ public class MainController extends DataObserver implements Initializable {
 		}
 	}
 
+	/**
+	 * Toggle the selected records button
+	 */
+	public void toggleSelectedOnly() {
+		if (selectedButton.getText().equals("Selected Only")) {
+			selectedButton.setText("All Records");
+		} else {
+			selectedButton.setText("Selected Only");
+		}
+
+		tableController.toggleSelectedOnly();
+	}
 
 	/**
 	 * This showMapWindow method opens the map window and brings it to the front.
@@ -158,7 +186,7 @@ public class MainController extends DataObserver implements Initializable {
 			MapController mapWindowController = (MapController)loader.getController();
 			Stage stage = new Stage();
 			stage.setTitle("Map Window");
-			stage.setScene(new Scene(root, 900, 600));
+			stage.setScene(new Scene(root, 1280, 720));
 			stage.show();
 
 			mapWindowController.setStage(stage);
@@ -227,11 +255,46 @@ public class MainController extends DataObserver implements Initializable {
 
 	/**
 	 * This showAddRecordWindow method opens the addRecord window and brings it to the front.
-	 *
-	 * TODO This method is not yet implemented. Temporarily it is calling {@link MainController#showNotImplementedYet()}
 	 */
 	public void showAddRecordWindow() {
-		showNotImplementedYet();
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(CamsApplication.class.getClassLoader().getResource("add_edit.fxml"));
+			fxmlLoader.setController(new AddRecordController());
+			Parent root = fxmlLoader.load();
+			Stage stage = new Stage();
+			// This will cause the login window to always be in front of the main window
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setResizable(false);
+			stage.setTitle("Add record Window");
+			stage.setScene(new Scene(root, 400, 600));
+			stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/CAMS_logo.png")));
+			stage.show();
+		} catch (IOException e) {
+			// This is where you would enter the error handling code, for now just print the stacktrace
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * This showEditRecordWindow method opens the EditRecord window and brings it to the front.
+	 */
+	public void showEditRecordWindow() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(CamsApplication.class.getClassLoader().getResource("add_edit.fxml"));
+			fxmlLoader.setController(new EditRecordController());
+			Parent root = fxmlLoader.load();
+			Stage stage = new Stage();
+			// This will cause the login window to always be in front of the main window
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setResizable(false);
+			stage.setTitle("Edit record Window");
+			stage.setScene(new Scene(root, 400, 600));
+			stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/CAMS_logo.png")));
+			stage.show();
+		} catch (IOException e) {
+			// This is where you would enter the error handling code, for now just print the stacktrace
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -298,23 +361,22 @@ public class MainController extends DataObserver implements Initializable {
 	}
 
 	/**
-	 * Initialize the window.
+	 * Update the record count text
 	 */
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		DBMS.getActiveData().addObserver(this);
-
-		updateText();
-	}
-
-	private void updateText() {
+	public void updateText() {
 		ActiveData activeData =  DBMS.getActiveData();
 		int min = activeData.getCurrentMin();
 		int max = activeData.getCurrentMax();
 		int total = activeData.getRecordCount();
 		int size = activeData.getFrameSize();
 
-		recordsShown.setText(min + "-" + max + "/" + total);
+		if (selectedButton.getText().equals("All Records")) {
+			max = activeData.getSelectedRecords().size();
+			recordsShown.setText(max + "/" + total);
+		} else {
+			recordsShown.setText(min + "-" + max + "/" + total);
+		}
+
 		windowSize.setText(Integer.toString(size));
 	}
 
@@ -322,11 +384,21 @@ public class MainController extends DataObserver implements Initializable {
 	public void activeDataUpdate() {
 		DBMS.getActiveData().updateFrameSize(Integer.parseInt(windowSize.getText()));
 		updateText();
+		if (DBMS.getActiveData().getSelectedRecords().size() == 1) {
+			editRecordButton.setVisible(true);
+		} else {
+			editRecordButton.setVisible(false);
+		}
 	}
 
 	@Override
 	public void selectedRecordsUpdate() {
 		updateText();
+		if (DBMS.getActiveData().getSelectedRecords().size() == 1) {
+			editRecordButton.setVisible(true);
+		} else {
+			editRecordButton.setVisible(false);
+		}
 	}
 
 	@Override

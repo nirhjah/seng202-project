@@ -22,14 +22,16 @@ public class SQLInsertStatement {
     }
 
     /**
-     * Set a value of the new item.
+     * Format value to add to SQL statment
      *
-     * @param category -- Category to set
-     * @param value -- Value to set to
+     * @param category SQL string representing category
+     * @param value Value to maniplulate
+     * @param isString is a string
+     * @return New formatted value
      */
-    public void setValue(String category, String value) {
+    public static String formatValue(String category, String value, boolean isString) {
         if (value == null) {
-            return;
+            return null;
         }
 
         //Change dates to seconds-epoch
@@ -46,11 +48,27 @@ public class SQLInsertStatement {
             value = Long.toString(epoch);
         }
 
+        //Changes boolean values to uppercase
         if (value == "true" || value == "false") {
-            value.toUpperCase();
-        } else {
+            value = value.toUpperCase();
+        }
+
+        //Adds quotes if string
+        if (isString) {
             value = "'" + value + "'";
         }
+
+        return value;
+    }
+
+    /**
+     * Set a value of the new item.
+     *
+     * @param category -- Category to set
+     * @param value -- Value to set to
+     */
+    public void setValue(String category, String value, boolean isString) {
+        value = formatValue(category, value, isString);
 
         if (first) {
             intoString += category;
