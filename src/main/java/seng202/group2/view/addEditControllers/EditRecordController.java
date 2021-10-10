@@ -9,6 +9,15 @@ import java.util.ResourceBundle;
 
 public class EditRecordController extends AddEditController implements Initializable {
 
+    public void addRecordFromFields() {
+        CrimeRecord newRecord = new CrimeRecord();
+
+        if (checkAndSetInputFields(newRecord)) {
+            System.out.println("Now add this update to the dbms");
+            closeWindow();
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         titleLabel.setText("Edit Record Details");

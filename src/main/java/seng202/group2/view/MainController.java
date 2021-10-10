@@ -17,6 +17,7 @@ import seng202.group2.model.ActiveData;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
 import seng202.group2.view.addEditControllers.AddRecordController;
+import seng202.group2.view.addEditControllers.EditRecordController;
 
 /**
  * MainController is the GUI controller for the main Cams window.
@@ -32,6 +33,7 @@ import seng202.group2.view.addEditControllers.AddRecordController;
 public class MainController extends DataObserver implements Initializable {
 	/** The variable used to retrieve user input into the search text field. */
 	@FXML private TextField searchTextField;
+	@FXML private Button editRecordButton;
 
 	//FXML fields
 	@FXML private TextField windowSize;
@@ -228,8 +230,6 @@ public class MainController extends DataObserver implements Initializable {
 
 	/**
 	 * This showAddRecordWindow method opens the addRecord window and brings it to the front.
-	 *
-	 * TODO This method is not yet implemented. Temporarily it is calling {@link MainController#showNotImplementedYet()}
 	 */
 	public void showAddRecordWindow() {
 		try {
@@ -241,6 +241,28 @@ public class MainController extends DataObserver implements Initializable {
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.setResizable(false);
 			stage.setTitle("Add record Window");
+			stage.setScene(new Scene(root, 400, 600));
+			stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/CAMS_logo.png")));
+			stage.show();
+		} catch (IOException e) {
+			// This is where you would enter the error handling code, for now just print the stacktrace
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * This showEditRecordWindow method opens the EditRecord window and brings it to the front.
+	 */
+	public void showEditRecordWindow() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(CamsApplication.class.getClassLoader().getResource("add_edit.fxml"));
+			fxmlLoader.setController(new EditRecordController());
+			Parent root = fxmlLoader.load();
+			Stage stage = new Stage();
+			// This will cause the login window to always be in front of the main window
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setResizable(false);
+			stage.setTitle("Edit record Window");
 			stage.setScene(new Scene(root, 400, 600));
 			stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/CAMS_logo.png")));
 			stage.show();
@@ -321,6 +343,7 @@ public class MainController extends DataObserver implements Initializable {
 		DBMS.getActiveData().addObserver(this);
 
 		updateText();
+		editRecordButton.setVisible(false);
 	}
 
 	private void updateText() {
@@ -343,6 +366,11 @@ public class MainController extends DataObserver implements Initializable {
 	@Override
 	public void selectedRecordsUpdate() {
 		updateText();
+		if (DBMS.getActiveData().getSelectedRecords().size() == 1) {
+			editRecordButton.setVisible(true);
+		} else {
+			editRecordButton.setVisible(false);
+		}
 	}
 
 	@Override

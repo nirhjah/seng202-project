@@ -14,8 +14,6 @@ import java.util.Calendar;
 
 public class AddEditController {
 
-    private CrimeRecord newRecord;
-
     @FXML protected Label titleLabel;
 
     @FXML protected Button addEditButton;
@@ -98,6 +96,19 @@ public class AddEditController {
     protected void fillFieldsWithValues(CrimeRecord record) {
         caseNumTextField.setText(record.getCaseNum());
         fbiCodeTextField.setText(record.getFbiCode());
+
+        // Add date field
+        iucrTextField.setText(record.getIucr());
+        primaryTextField.setText(record.getPrimaryDescription());
+        secondaryTextField.setText(record.getSecondaryDescription());
+
+        arrestCheckBox.setSelected(record.getArrest());
+        domesticCheckBox.setSelected(record.getDomestic());
+
+        locationTextField.setText(record.getLocationDescription());
+        blockTextField.setText(record.getBlock());
+        beatTextField.setText(record.getBeat().toString());
+        wardTextField.setText(record.getWard().toString());
 
     }
 
