@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import seng202.group2.model.ActiveData;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.DBMS;
+import seng202.group2.view.addEditControllers.AddRecordController;
 
 /**
  * MainController is the GUI controller for the main Cams window.
