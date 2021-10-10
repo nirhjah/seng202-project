@@ -1,6 +1,9 @@
 package seng202.group2.view.graphs;
 
+import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -13,14 +16,12 @@ import static org.junit.jupiter.api.Assertions.*;
  * Unit tests for SelectionGraphOption class.
  * @author Connor Dunlop
  */
-class SelectionGraphOptionTest {
+class SelectionGraphOptionTest extends Application {
 
-    /** JFX must be initialised to construct JFX components. */
+    /** To create JFX components JFX must be initialized. */
     @BeforeAll
     static void initializeJavaFXEnvironment() {
-        try {
-            Platform.startup(() -> {});
-        } catch (IllegalStateException e) {}
+        JFXPanel p = new JFXPanel();
     }
 
     /** Tests setting and getting of choices */
@@ -81,4 +82,8 @@ class SelectionGraphOptionTest {
     }
 
 
+    @Override
+    public void start(Stage stage) throws Exception {
+
+    }
 }

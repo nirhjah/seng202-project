@@ -8,11 +8,31 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Text?>
 <?import javafx.scene.web.WebView?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.view.MapController">
    <center>
-      <WebView fx:id="webView" fontScale="0.8" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1440.0" BorderPane.alignment="CENTER" />
+      <StackPane BorderPane.alignment="CENTER">
+         <children>
+            <BorderPane>
+               <center>
+                  <WebView fx:id="webView" fontScale="0.8" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1440.0" />
+               </center>
+            </BorderPane>
+            <BorderPane fx:id="recordInfoPane" prefHeight="200.0" prefWidth="200.0">
+               <center>
+                  <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Text fx:id="idText" strokeType="OUTSIDE" strokeWidth="0.0" text="ID: " />
+                     </children>
+                  </Pane>
+               </center>
+            </BorderPane>
+         </children>
+      </StackPane>
    </center>
    <top>
       <HBox prefHeight="28.0" prefWidth="600.0" BorderPane.alignment="CENTER">

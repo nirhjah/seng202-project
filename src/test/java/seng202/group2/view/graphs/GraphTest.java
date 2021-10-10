@@ -1,8 +1,11 @@
 package seng202.group2.view.graphs;
 
+import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -17,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Connor Dunlop
  */
-class GraphTest {
+class GraphTest extends Application {
 
     /** A custom graph implementation to enable testing of Graph class directly. */
     private static Graph testGraph = new Graph() {
@@ -32,14 +35,10 @@ class GraphTest {
         }
     };
 
-    /** JavaFX environment and toolkits must be initialised to be able to create JavaFX components. */
+    /** To create JFX components JFX must be initialized. */
     @BeforeAll
     static void initializeJavaFXEnvironment() {
-        try {
-            Platform.startup(() -> {});
-        } catch (IllegalStateException e) {}
-
-        testGraph.initialize(new BorderPane(), new VBox());
+        JFXPanel p = new JFXPanel();
     }
 
     /** Clear test graph's options list after every test. */
@@ -133,4 +132,8 @@ class GraphTest {
         assertTrue(testGraph.getInvalidOptions().contains(option3));
     }
 
+    @Override
+    public void start(Stage stage) throws Exception {
+
+    }
 }

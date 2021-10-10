@@ -1,6 +1,9 @@
 package seng202.group2.view.graphs;
 
+import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -10,14 +13,12 @@ import static org.junit.jupiter.api.Assertions.*;
  * Unit tests for NumericGraphOption class.
  * @author Connor Dunlop
  */
-class NumericGraphOptionTest {
+class NumericGraphOptionTest extends Application {
 
-    /** JavaFX environment must be initialised to use JavaFX components. */
+    /** To create JFX components JFX must be initialized. */
     @BeforeAll
     static void initializeJavaFXEnvironment() {
-        try {
-            Platform.startup(() -> {});
-        } catch (IllegalStateException e) {}
+        JFXPanel p = new JFXPanel();
     }
 
     /** Tests getting and setting of the numerical value. */
@@ -45,4 +46,8 @@ class NumericGraphOptionTest {
         assertThrows(IllegalArgumentException.class, () -> option.setValue(6));
     }
 
+    @Override
+    public void start(Stage stage) throws Exception {
+
+    }
 }

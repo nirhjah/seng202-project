@@ -12,7 +12,9 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.robot.Robot;
+import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
@@ -54,6 +56,9 @@ public class MapController extends DataObserver implements Initializable {
     @FXML private Label radiusSliderLabel;
     @FXML private Slider radiusSlider;
 
+    @FXML private BorderPane recordInfoPane;
+    @FXML private Text idText;
+
     /** WebEngine is a non-visual object to support web page managements
      *  and enable two-way communication between a Java application and JavaScript
      *  */
@@ -61,7 +66,6 @@ public class MapController extends DataObserver implements Initializable {
 
     /** The stage that the map window is created on*/
     private Stage stage;
-
 
 
     /**
@@ -136,6 +140,14 @@ public class MapController extends DataObserver implements Initializable {
      */
     public void toggleOnlySelected() {
         webEngine.executeScript("toggleOnlySelected();");
+    }
+
+    public void toggleDetailsPane() {
+        if (recordInfoPane.isVisible()) {
+            recordInfoPane.setVisible(false);
+        } else {
+            recordInfoPane.setVisible(true);
+        }
     }
 
     /**

@@ -1,20 +1,24 @@
 package seng202.group2.view;
 
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import seng202.group2.controller.CSVImporter;
 import seng202.group2.controller.DataImporter;
 import seng202.group2.controller.UnsupportedFileTypeException;
+import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * ImportController is the controller class for the crime import GUI.
@@ -25,12 +29,176 @@ import seng202.group2.model.DBMS;
  * This class uses a {@link FileChooser} to select a file using a file explorer.
  *
  * @author Sam Clark
+ * @author Connor Dunlop
  *
  */
 public class ImportController {
 
+	/** The number of records to import per import step. */
+	private final int RECORDS_PER_IMPORT = 100;
+
 	/** The textField used for entering a filepath. */
 	@FXML private TextField importPathTextField;
+
+	/** Used to define the current importing status of the controller. */
+	private enum ImportingStatus {
+		/** The initial status, before the import button has been clicked. */
+		IDLE,
+		IMPORTING,
+		POPULATING_DATABASE,
+		DONE
+	}
+
+	/** The current importing status of the controller */
+	private ImportingStatus status = ImportingStatus.IDLE;
+
+	@FXML private ProgressBar progressBar;
+	@FXML private Label importMessage;
+	@FXML private HBox importProgressMessageBox;
+	@FXML private Label recordsSoFar;
+	@FXML private Label recordsToImport;
+	@FXML private Button importButton;
+
+	/** The number of crime records imported so far. */
+	private int numImported = 0;
+	/** The total number of crime records stored in the file to be imported. */
+	private int totalToImport = 0;
+
+	/**
+	 * Displays a message indicating which importing state/status the controller is in, and updates the user interface
+	 * appropriately to the importing status.
+	 */
+	public void updateProgress() {
+		switch (status) {
+			case IDLE:
+				Platform.runLater(() -> {
+					importMessage.setText("Select a file to import.");
+					progressBar.setVisible(false);
+					importButton.setDisable(false);
+					importProgressMessageBox.setVisible(false);
+					progressBar.setProgress(0);
+				});
+				break;
+
+			case IMPORTING:
+				Platform.runLater(() -> {
+					importMessage.setText("Importing Records:");
+					importProgressMessageBox.setVisible(true);
+					importButton.setDisable(true);
+					progressBar.setVisible(true);
+					recordsSoFar.setText(Integer.toString(numImported));
+					recordsToImport.setText(Integer.toString(totalToImport));
+					progressBar.setProgress(((double) numImported) / ((double) totalToImport));
+				});
+				break;
+
+			case POPULATING_DATABASE:
+				Platform.runLater(() -> {
+					importMessage.setText("Adding to Database:");
+					recordsSoFar.setText(Integer.toString(numImported));
+					recordsToImport.setText(Integer.toString(totalToImport));
+					progressBar.setProgress(((double) numImported) / ((double) totalToImport));
+				});
+				break;
+
+			case DONE:
+				Platform.runLater(() -> {
+					importMessage.setText("Done.");
+					Stage stage = (Stage) importPathTextField.getScene().getWindow();
+					stage.getScene().setCursor(Cursor.DEFAULT);
+					stage.close();
+				});
+				break;
+		}
+	}
+
+	/**
+	 * Adds an ArrayList of crime records to the database.
+	 * @param records An ArrayList of crime records to add to the database.
+	 */
+	private void addToDatabase(ArrayList<CrimeRecord> records) {
+		//Change loading bar
+		status = ImportingStatus.POPULATING_DATABASE;
+		numImported = 0;
+		totalToImport = records.size();
+		updateProgress();
+
+		//Loop through records in blocks
+		int start = 0;
+		int end;
+		while(start < records.size()) {
+			end = Math.min(records.size(), start + RECORDS_PER_IMPORT);
+
+			//Add records to database
+			DBMS.addRecords(records.subList(start, end));
+			numImported = end;
+
+			//Update progress
+			updateProgress();
+
+			start = end;
+		}
+
+		DBMS.getActiveData().updateActiveRecords();
+		DBMS.getActiveData().updateActiveData();
+	}
+
+	/**
+	 * Imports an ArrayList of crime records from the specified file.
+	 * This method imports the crime records in chunks of [RECORDS_PER_IMPORT] records.
+	 *
+	 * @param file The file from which to import crime records.
+	 * @return An ArrayList of crime records imported from the specified file.
+	 */
+	private ArrayList<CrimeRecord> importFromFile(File file) {
+		status = ImportingStatus.IMPORTING;
+		ArrayList<CrimeRecord> records = new ArrayList<>();
+
+		// Try to get an importer for the provided file
+		DataImporter importer;
+		try {
+			importer = DataImporter.getImporter(file.getPath());
+		} catch (UnsupportedFileTypeException e) {
+			e.printStackTrace();
+			System.out.println("File type not supported.");
+			return null;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("File does not exist.");
+			return null;
+		}
+
+		// Import all CrimeRecords in the file.
+		try {
+			totalToImport = importer.countRecords();
+
+			// Import the crime records in chunks
+			while (true) {
+				ArrayList<CrimeRecord> nextRecords = importer.importRecords(RECORDS_PER_IMPORT);
+				if (nextRecords.size() == 0)
+					break;
+
+				records.addAll(nextRecords);
+				numImported += nextRecords.size();
+				updateProgress();
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("Error parsing file.");
+
+		// Always try to close the importer
+		} finally {
+			try {
+				importer.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.out.println("Error trying to close file.");
+			}
+		}
+
+		return records;
+	}
 
 	/**
 	 * importFileFromField takes the giving filepath and passes it the importer.
@@ -42,19 +210,19 @@ public class ImportController {
 	 */
 	public void importFileFromField()
 	{
-		Stage stage = (Stage) importPathTextField.getScene().getWindow();
-		File file = new File(importPathTextField.getText());
+		String filePath = importPathTextField.getText();
+		if (filePath.equals(""))
+			return;
 
-		try {
-			DataImporter importer = new CSVImporter(file);
-			DBMS.addRecords(importer.importAllRecords());
-			importer.close();
-		} catch (IOException | UnsupportedFileTypeException e) {
-			e.printStackTrace();
-		}
-
-		stage.close();
+		File file = new File(filePath);
 		System.out.println("Retrieving file : " + importPathTextField.getText());
+
+		new Thread(() -> {
+			ArrayList<CrimeRecord> records = importFromFile(file);
+			addToDatabase(records);
+			status = ImportingStatus.DONE;
+			updateProgress();
+		}).start();
 	}
 
 	/**

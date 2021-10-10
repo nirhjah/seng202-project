@@ -27,7 +27,7 @@ Building the project:
 
 1. Ensure Maven is installed (check step 2 of Installation).
 2. Navigate to your project directory, open Command Prompt or Terminal and enter the following command:
-	'mvn-package'
+	'mvn package'
 3. A .jar file of the application will be generated, and can be found in the "\target\" subdirectory of the project directory ("\seng202-project-group-2\target\").
 
 

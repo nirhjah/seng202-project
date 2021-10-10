@@ -9,10 +9,11 @@ import java.time.LocalDateTime;
 
 // TODO: implement class
 public class ApplicationEnvironment {
-	private static final boolean logging = false; //Looging vs no logging
+	//Enable logging
+	private static final boolean logMessages = false;
+
 	public static void main(String[] args) throws IOException {
-		if (logging)
-			setSystemToLog();
+		if (logMessages) setSystemToLog();
 		DBMS.clearDB();
 		CamsApplication.main(args);
 	}
