@@ -1,7 +1,9 @@
 package seng202.group2.view.graphs;
 
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
+import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Connor Dunlop
  */
-class BooleanGraphOptionTest {
+class BooleanGraphOptionTest extends Application {
 
     /** To create JFX components JFX must be initialized. */
     @BeforeAll
@@ -47,4 +49,8 @@ class BooleanGraphOptionTest {
         assertTrue(option.requirementsMet());
     }
 
+    @Override
+    public void start(Stage stage) throws Exception {
+
+    }
 }

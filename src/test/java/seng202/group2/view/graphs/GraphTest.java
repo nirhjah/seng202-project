@@ -1,9 +1,11 @@
 package seng202.group2.view.graphs;
 
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -18,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Connor Dunlop
  */
-class GraphTest {
+class GraphTest extends Application {
 
     /** A custom graph implementation to enable testing of Graph class directly. */
     private static Graph testGraph = new Graph() {
@@ -130,4 +132,8 @@ class GraphTest {
         assertTrue(testGraph.getInvalidOptions().contains(option3));
     }
 
+    @Override
+    public void start(Stage stage) throws Exception {
+
+    }
 }
