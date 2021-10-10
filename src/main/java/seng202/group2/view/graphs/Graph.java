@@ -134,7 +134,7 @@ public abstract class Graph {
             throw new IllegalArgumentException("Tried to add a GraphOption with name " + option.getName() + ", but a GraphOption with that name already exists.");
 
         options.put(option.getName(), option);
-        optionList.getChildren().add(option.getRoot());
+        if (optionList != null) optionList.getChildren().add(option.getRoot());
     }
 
     /**
@@ -163,7 +163,9 @@ public abstract class Graph {
      * Clears all graph options from the options pane.
      */
     public void clearOptions() {
-        optionList.getChildren().clear();
+        if (optionList != null) {
+            optionList.getChildren().clear();
+        }
         options.clear();
     }
 
