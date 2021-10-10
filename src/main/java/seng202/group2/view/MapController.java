@@ -61,6 +61,11 @@ public class MapController extends DataObserver implements Initializable {
     @FXML private GridPane recordInfoPane;
     @FXML private BorderPane borderPane;
     @FXML private Text idText;
+    @FXML private Text caseNumText;
+    @FXML private Text fbiCodeText;
+    @FXML private Text dateText;
+    @FXML private Text iucrCodeText;
+    @FXML private Text primaryText;
 
     /** WebEngine is a non-visual object to support web page managements
      *  and enable two-way communication between a Java application and JavaScript
@@ -154,7 +159,19 @@ public class MapController extends DataObserver implements Initializable {
     public void setDetails(int id) {
         CrimeRecord record = DBMS.getRecord(id);
 
-        idText.setText("ID: " + record.getID());
+        idText.setText("" + record.getID());
+        caseNumText.setText("" + record.getCaseNum());
+        try {
+            fbiCodeText.setText(record.getFbiCode());
+        } catch (NullPointerException exception) {
+            fbiCodeText.setText("N/A");
+        }
+
+        dateText.setText("" + record.getDateCategory().getValueString());
+        iucrCodeText.setText("" + record.getIucr());
+        primaryText.setText("" + record.getPrimaryDescription());
+
+        borderPane.setLeft(recordInfoPane);
     }
 
     /**

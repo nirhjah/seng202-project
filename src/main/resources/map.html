@@ -4,7 +4,7 @@
 <head>
     <title>Map</title>
     <style>
-    	
+
         html, body {
             height: 100%;
             margin: 0;
@@ -50,9 +50,9 @@
         mapTypeControl: true,
         streetViewControl: false,
         fullscreenControl: false,
-        scaleControl: true,        
+        scaleControl: true,
         styles: styles,
-        
+
     };
 
     //Map objects
@@ -60,11 +60,11 @@
     let heatmap = null;
     let infoWindow = null;
     let line = null;
-    
-    
+
+
     changeCursor();
-    
-        
+
+
 
     //Markers
     let markers = [];
@@ -75,20 +75,20 @@
     let heatMapData = []
     let heatMapEnabled = false;
     let heatMapRadius = 50;
-    
-    
+
+
     /**
 	* Changes the cursor to 'wait' when map is being loaded, then cursor is reverted back to default.
 	*/
 	function changeCursor() {
   		document.getElementById("map").style.cursor = "wait";
 	}
-    
 
 
 
-	
-	
+
+
+
 
     /**
     * Creates the google.maps.Map to be rendered on the html map div element with optional Map options.
@@ -101,24 +101,24 @@
             fullscreenControl: false,
             scaleControl: true,
             styles: fixedStyles,
-            
-            
+
+
         };
-        
-        
+
+
         map = new google.maps.Map(document.getElementById("map"), initialMapOptions);
-        
-        
+
+
 
         heatmap = new google.maps.visualization.HeatmapLayer({
             data: heatMapData
-            
+
         });
-        
+
     }
-    
-    
-    
+
+
+
 
     /**
      * Change the heatmap raduus variable and update
@@ -160,7 +160,7 @@
     function toggleMarkers() {
         markersEnabled = !markersEnabled;
 
-        if (markersEnabled) {        	
+        if (markersEnabled) {
             markers.forEach(function (marker) {
                 if (onlySelected) {
                     if (marker.selected) marker.setMap(map);
@@ -275,7 +275,7 @@
         });
 
         //Add to map and list
-        
+
         markers.push(marker);
         if (marker.selected) markersSelected.push(marker);
 
