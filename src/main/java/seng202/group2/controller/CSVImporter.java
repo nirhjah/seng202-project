@@ -1,9 +1,6 @@
 package seng202.group2.controller;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -56,7 +53,19 @@ public class CSVImporter extends DataImporter {
 	public void close() throws IOException {
 		fileReader.close();
 	}
-	
+
+	@Override
+	public Integer countRecords() throws IOException {
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+
+		// Count the number of lines
+		int lines = 0;
+		while (reader.readLine() != null) lines++;
+		reader.close();
+
+		return lines - 1;
+	}
+
 	/**
 	 * Parses the first line of the CSV file to determine what DataCategory's are included in the file.
 	 * If any additional categories of data are included in the file, they are ignored.
@@ -145,6 +154,27 @@ public class CSVImporter extends DataImporter {
 		}
 		System.out.println();
 		
+		return crimeData;
+	}
+
+	@Override
+	public ArrayList<CrimeRecord> importRecords(Integer recordCount) throws IOException {
+		// Parse the header row if it has not been parsed yet.
+		if (categoryMap == null)
+			parseCategories();
+
+		ArrayList<CrimeRecord> crimeData = new ArrayList<CrimeRecord>();
+
+		String[] values;
+		for (int i = 0; i < recordCount; i++) {
+			// Get values for next crime record
+			values = fileReader.readNextSilently();
+			if (values == null) // If no more crime records
+				break;
+
+			crimeData.add(parseRecord(values));
+		}
+
 		return crimeData;
 	}
 }
