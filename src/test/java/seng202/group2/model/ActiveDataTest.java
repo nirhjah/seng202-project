@@ -129,6 +129,7 @@ public class ActiveDataTest {
     void getActiveRecordsTest() {
         //Add records
         DBMS.clearDB();
+        activeData.setSearchPattern("");
         try {
             addRecords(10);
         } catch (ParseException e) {
@@ -151,12 +152,37 @@ public class ActiveDataTest {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        //Make sure search pattern is blank
+        activeData.setSearchPattern("");
 
         // Add a sort filter which has no effect on database Size but makes the filter length  more than zero.
         activeData.addFilter(FilterType.SORT.createFilter(new Beat(), "ASC"));
         activeData.updateActiveRecords();
         assertEquals(DBMS.getRecordsSize(), DBMS.getActiveRecordsSize());
 
+    }
+    
+    @Test
+    void getActiveRecordsWithSearchTest() {
+    	//Add records
+    	DBMS.clearDB();
+        try {
+            addRecords(10);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+        //Set search pattern
+        activeData.setSearchPattern("pDesc2");
+        activeData.updateActiveRecords();
+        
+        assertEquals(DBMS.getRecordsSize(), 1);
+        
+        //Reset search pattern to blank
+        activeData.setSearchPattern("");
+        activeData.updateActiveRecords();
+        
+        assertEquals(DBMS.getRecordsSize(), DBMS.getActiveRecordsSize());
     }
 
     @Test
