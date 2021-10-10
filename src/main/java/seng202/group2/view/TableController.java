@@ -53,7 +53,10 @@ public class TableController extends DataObserver implements Initializable {
         //Default text on the table instructing to please import data first
         Platform.runLater(() -> {
             if (tableView != null) {
-                String labelMessage = "No crime records in table. Please import a .csv file (under \"Data\" above) into the database first.";
+                String labelMessage = "No crime records in table.\n\n" +
+                        "To see table content, either \n" +
+                        "1. Add a new record to the database or\n" +
+                        "2. Import a .csv file into the database.";
                 final Label message = new Label(labelMessage);
                 tableView.setPlaceholder(message);
             }
