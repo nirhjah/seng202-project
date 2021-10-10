@@ -3,15 +3,28 @@ package seng202.group2.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
 /**
  * Active data class manages the filters, frame size and selected data, allowing the views to display a subset of the database
+ * @author George Hampton
  */
 public class ActiveData extends DataSource {
     //List of filters
     private ArrayList<Filter> filters = new ArrayList<>();
+    //String pattern to match for search functionality
+    private String searchPattern = "";
+    //Fields to check in search
+    private ArrayList<String> searchFields = new ArrayList<String>(
+    		Arrays.asList("caseNum", 
+    				"block", 
+    				"IUCR", 
+    				"primaryDescription", 
+    				"secondaryDescription", 
+    				"locationDescription",
+    				"fbiCode"));
     //List of record ids selected by the user
     private HashSet<Integer> selectedRecords = new HashSet<>();
 
@@ -139,6 +152,24 @@ public class ActiveData extends DataSource {
         if (update)
             updateActiveData();
     }
+    
+    /**
+     * Uses the current set search string to create an SQL statement to run string matching
+     * @return the SQL statement to compare all search fields to the search string
+     */
+    public String createSearchStatement() {
+    	String querySegment = "";
+    	boolean orNeeded = false;
+    	for(String field: searchFields) {
+    		if(orNeeded) {
+    			querySegment += " OR ";
+    		} else {
+    			orNeeded = true;
+    		}
+    		querySegment += field + " LIKE \"%" + searchPattern + "%\"";
+    	}
+    	return querySegment;
+    }
 
     /**
      * Generate conditions string based on Filters
@@ -187,13 +218,22 @@ public class ActiveData extends DataSource {
         //Add equality checks to the end
         if (hasEquality)
             query += equality;
+        
+        //Add search check at end
+        if (searchPattern != "") {
+        	//Add search pattern match criteria to end appropriately
+	        if (hasComparison || hasEquality) {
+	        	query += " AND (" + createSearchStatement() + ")";
+	        } else {
+	        	query += "(" + createSearchStatement() + ")";
+	        }
+	        isCondition = true;
+        }
 
         //Erase if there are no filters
         if (!isCondition)
             query = "";
-
-        //System.out.println(query);
-
+        
         return query;
     }
 
@@ -223,8 +263,8 @@ public class ActiveData extends DataSource {
      * Updates the ActiveRecords database in DBMS. This updates using all current filters.
      */
     public void updateActiveRecords() {
-        //Dont update if there are no filters
-        if (filters.size() <= 0) {
+        //Dont update if there are no filters and no search criteria
+        if (filters.size() <= 0 && searchPattern == "") {
             return;
         }
 
@@ -335,5 +375,14 @@ public class ActiveData extends DataSource {
 
     public int getCurrentMax() {
         return currentMax;
+    }
+    
+    public void setSearchPattern(String newPattern) {
+    	this.searchPattern = newPattern;
+    	updateActiveData();
+    }
+    
+    public String getSearchPattern() {
+    	return searchPattern;
     }
 }

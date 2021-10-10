@@ -244,6 +244,13 @@ public class MainController extends DataObserver implements Initializable {
 		double[] current = splitPane.getDividerPositions();
 		splitPane.setDividerPositions(current[0] > 0.9 ? 0.5 : 1);
 	}
+	
+	/**
+	 * Applies the string currently in the search bar as the search pattern and applies the search to the data
+	 */
+	public void runSearch() {
+		DBMS.getActiveData().setSearchPattern(searchTextField.getText());
+	}
 
 	/**
 	 * This method is called when the delete button is clicked on the CAMS main window.
