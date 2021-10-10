@@ -15,7 +15,6 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.robot.Robot;
-import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
@@ -87,6 +86,7 @@ public class MapController extends DataObserver implements Initializable {
 
     /** The stage that the map window is created on*/
     private Stage stage;
+
 
 
     /**
@@ -399,65 +399,65 @@ public class MapController extends DataObserver implements Initializable {
     };
 
     /**
-	 * This showExportWindow method opens the export window and brings it to the front.
-	 * It allows the user to export the current map window as a visual.
-	 */
-	public void showExportWindow() {
+     * This showExportWindow method opens the export window and brings it to the front.
+     * It allows the user to export the current map window as a visual.
+     */
+    public void showExportWindow() {
 
         if (stage == null) {
             showExportErrorDialogue();
             return;
         }
 
-		/*Currently this section assumes that the stage exists (i.e. to click the export button
-		 * the window must be opened.
-		 *Find the edges of the window. These are rounded to give the equivalent of integer values.
-		 */
-		double x = Math.floor(stage.getX());
-		double y = Math.floor(stage.getY());
-		double width = Math.floor(stage.getWidth());
-		double height = Math.floor(stage.getHeight());
+        /*Currently this section assumes that the stage exists (i.e. to click the export button
+         * the window must be opened.
+         *Find the edges of the window. These are rounded to give the equivalent of integer values.
+         */
+        double x = Math.floor(stage.getX());
+        double y = Math.floor(stage.getY());
+        double width = Math.floor(stage.getWidth());
+        double height = Math.floor(stage.getHeight());
 
-		//Set the bounds of the area to select.
-		Rectangle2D bounds = new Rectangle2D(x + 5, y + 90, width - 70, height - 120);
+        //Set the bounds of the area to select.
+        Rectangle2D bounds = new Rectangle2D(x + 5, y + 90, width - 70, height - 120);
 
-		//Select the given area and create an image
-		javafx.scene.robot.Robot robot = new Robot();
-		WritableImage exportVisual = robot.getScreenCapture(null, bounds);
+        //Select the given area and create an image
+        javafx.scene.robot.Robot robot = new Robot();
+        WritableImage exportVisual = robot.getScreenCapture(null, bounds);
 
-		//Save the image
-		//Create a save dialog
-		FileChooser saveChooser = new FileChooser();
-		saveChooser.setTitle("Save Image");
-		FileChooser.ExtensionFilter saveTypes = new FileChooser.ExtensionFilter("image files (*.png)", "*.png");
-		saveChooser.getExtensionFilters().add(saveTypes);
+        //Save the image
+        //Create a save dialog
+        FileChooser saveChooser = new FileChooser();
+        saveChooser.setTitle("Save Image");
+        FileChooser.ExtensionFilter saveTypes = new FileChooser.ExtensionFilter("image files (*.png)", "*.png");
+        saveChooser.getExtensionFilters().add(saveTypes);
 
-		Stage stage = new Stage();
-		File save = saveChooser.showSaveDialog(stage);
+        Stage stage = new Stage();
+        File save = saveChooser.showSaveDialog(stage);
 
-		//Check filename is not null and save file
-		if(save != null) {
-			String saveName = save.getName();
-			//check whether user put ".png" on the filename
-			if(!saveName.toUpperCase().endsWith(".PNG")) {
-				save = new File(save.getAbsolutePath() + ".png");
-			}
+        //Check filename is not null and save file
+        if(save != null) {
+            String saveName = save.getName();
+            //check whether user put ".png" on the filename
+            if(!saveName.toUpperCase().endsWith(".PNG")) {
+                save = new File(save.getAbsolutePath() + ".png");
+            }
 
-			//Write to the file
-			try {
-				ImageIO.write(SwingFXUtils.fromFXImage(exportVisual, null), "png", save);
-			} catch(IOException e) {
-				// This is where you would enter the error handling code, for now just print the stacktrace
-				e.printStackTrace();
-			}
-		}
-	}
+            //Write to the file
+            try {
+                ImageIO.write(SwingFXUtils.fromFXImage(exportVisual, null), "png", save);
+            } catch(IOException e) {
+                // This is where you would enter the error handling code, for now just print the stacktrace
+                e.printStackTrace();
+            }
+        }
+    }
 
-	/**
-	 * Stores the stage that the map is drawn on.
-	 * @param stage The stage this map is drawn on.
-	 */
-	public void setStage(Stage stage) {
-		this.stage = stage;
-	}
+    /**
+     * Stores the stage that the map is drawn on.
+     * @param stage The stage this map is drawn on.
+     */
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 }
