@@ -85,7 +85,7 @@ public class AddEditController {
             createInputsDictionary();
         }
 
-        Boolean validRecord = true;
+        boolean validRecord = true;
         for (DataCategory category : textFieldsDict.keySet()) {
             Boolean valid = checkInputValue(textFieldsDict.get(category), category, record);
             if (!valid) {
@@ -97,8 +97,8 @@ public class AddEditController {
             validRecord = false;
         }
 
-        record.setArrest(arrestCheckBox.isSelected());
-        record.setDomestic(domesticCheckBox.isSelected());
+        record.setArrest(arrestCheckBox.isIndeterminate() ? null : arrestCheckBox.isSelected());
+        record.setDomestic(domesticCheckBox.isIndeterminate() ? null : domesticCheckBox.isSelected());
 
         return validRecord;
     }
