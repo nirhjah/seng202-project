@@ -89,7 +89,7 @@
                               <Label text="Lattitude:" GridPane.rowIndex="17" />
                               <Text fx:id="lattitudeText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="17" />
                               <Label text="Longitude:" GridPane.rowIndex="18" />
-                              <Text fx:id="longitutdeText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="18" />
+                              <Text fx:id="longitudeText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="18" />
                            </children>
                            <GridPane.margin>
                               <Insets />

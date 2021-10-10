@@ -27,11 +27,13 @@ import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
+import seng202.group2.model.datacategories.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
@@ -75,6 +77,7 @@ public class MapController extends DataObserver implements Initializable {
     @FXML private Text wardText;
     @FXML private Text lattitudeText;
     @FXML private Text longitudeText;
+    private HashMap<DataCategory, Text> textBoxDict;
 
     /** WebEngine is a non-visual object to support web page managements
      *  and enable two-way communication between a Java application and JavaScript
@@ -167,35 +170,64 @@ public class MapController extends DataObserver implements Initializable {
      */
     public void setDetails(int id) {
         CrimeRecord record = DBMS.getRecord(id);
+        if (textBoxDict == null)
+            createTextBoxDict();
 
-        idText.setText("" + record.getID());
-        caseNumText.setText("" + record.getCaseNum());
-        try {
-            fbiCodeText.setText(record.getFbiCode());
-        } catch (NullPointerException exception) {
-            fbiCodeText.setText("N/A");
+        for (DataCategory category : textBoxDict.keySet()) {
+            try {
+                textBoxDict.get(category).setText(category.getRecordValue(record).toString());
+            } catch (NullPointerException exception) {
+                textBoxDict.get(category).setText("N/A");
+            }
+
         }
-
-        dateText.setText("" + record.getDateCategory().getValueString());
-        iucrCodeText.setText("" + record.getIucr());
-        primaryText.setText("" + record.getPrimaryDescription());
-        secondaryText.setText("" + record.getSecondaryDescription());
-        arrestText.setText("" + record.getArrest());
-        domesticText.setText("" + record.getDomestic());
-
-
-      //  locationText.setText("" + record.getLocationDescription());
-//        blockText.setText("" + record.getBlock());
-//        beatText.setText("" + record.getBeat());
-//        wardText.setText("" + record.getWard());
-//        lattitudeText.setText("" + record.getLatitude());
-//        longitudeText.setText("" + record.getLongitude());
+//        idText.setText("" + record.getID());
+//        caseNumText.setText("" + record.getCaseNum());
+//        try {
+//            fbiCodeText.setText(record.getFbiCode());
+//        } catch (NullPointerException exception) {
+//            fbiCodeText.setText("N/A");
+//        }
+//
+//        dateText.setText("" + record.getDateCategory().getValueString());
+//        iucrCodeText.setText("" + record.getIucr());
+//        primaryText.setText("" + record.getPrimaryDescription());
+//        secondaryText.setText("" + record.getSecondaryDescription());
+//        arrestText.setText("" + record.getArrest());
+//        domesticText.setText("" + record.getDomestic());
+//
+//
+//      //  locationText.setText("" + record.getLocationDescription());
+////        blockText.setText("" + record.getBlock());
+////        beatText.setText("" + record.getBeat());
+////        wardText.setText("" + record.getWard());
+////        lattitudeText.setText("" + record.getLatitude());
+////        longitudeText.setText("" + record.getLongitude());
 
 
         borderPane.setLeft(recordInfoPane);
     }
 
-    /**
+    private void createTextBoxDict() {
+        textBoxDict = new HashMap<>();
+        textBoxDict.put(new ID(), idText);
+        textBoxDict.put(new CaseNumber(), caseNumText);
+        textBoxDict.put(new FBICode(), fbiCodeText);
+        textBoxDict.put(new Date(), dateText);
+        textBoxDict.put(new IUCRCode(), iucrCodeText);
+        textBoxDict.put(new PrimaryDescription(), primaryText);
+        textBoxDict.put(new SecondaryDescription(), secondaryText);
+        textBoxDict.put(new Arrest(), arrestText);
+        textBoxDict.put(new Domestic(), domesticText);
+        textBoxDict.put(new LocationDescription(), locationText);
+        textBoxDict.put(new Block(), blockText);
+        textBoxDict.put(new Beat(), beatText);
+        textBoxDict.put(new Ward(), wardText);
+        textBoxDict.put(new Latitude(), lattitudeText);
+        textBoxDict.put(new Longitude(), longitudeText);
+    }
+
+  /**
      * Toggle the details panel open and closed
      */
     public void toggleDetailsPanel() {
