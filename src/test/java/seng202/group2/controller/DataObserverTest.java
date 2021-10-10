@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 
-import static junit.framework.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test that child classes of DataObserver are correctly notified of updates

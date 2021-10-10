@@ -18,11 +18,13 @@ import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import netscape.javascript.JSObject;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -30,6 +32,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
+
+
 
 /**
  * Map Controller is the controller class for the Map GUI
@@ -58,6 +62,8 @@ public class MapController extends DataObserver implements Initializable {
     /** The stage that the map window is created on*/
     private Stage stage;
 
+
+
     /**
      * Initialize the map window
      *
@@ -67,6 +73,7 @@ public class MapController extends DataObserver implements Initializable {
      */
     public void initialize(URL location, ResourceBundle resources) {
         webEngine = webView.getEngine();
+
         webEngine.load(CamsApplication.class.getClassLoader().getResource("map.html").toExternalForm());
 
         // Forwards console.log() output from any javascript to System.out
@@ -76,10 +83,15 @@ public class MapController extends DataObserver implements Initializable {
 
         // Wait until javascript in map.html has loaded before trying to call functions from there
         webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
+
             if (newState == Worker.State.SUCCEEDED) {
+
                 updateRadius();
                 activeDataUpdate();
+
             }
+
+
         });
 
         radiusSlider.valueChangingProperty().addListener((obs, oldVal, newVal) -> {
@@ -154,6 +166,7 @@ public class MapController extends DataObserver implements Initializable {
     public void selectRecord(int id) {
         DBMS.getActiveData().selectRecord(id);
         DBMS.getActiveData().updateSelectionObservers();
+        showMarkerDetails(id);
     }
 
     /**
@@ -164,6 +177,17 @@ public class MapController extends DataObserver implements Initializable {
     public void deselectRecord(int id) {
         DBMS.getActiveData().deselectRecord(id);
         DBMS.getActiveData().updateSelectionObservers();
+    }
+
+  /**
+   * Open a side panel with record details grabbed from the database
+   *
+   * @param id ID of record to populate side panel with details of
+   */
+  public void showMarkerDetails(int id) {
+        CrimeRecord selectedRecord = DBMS.getRecord(id);
+
+        System.out.println("[DEBUG] selected marker: "  + selectedRecord);
     }
 
     /**
