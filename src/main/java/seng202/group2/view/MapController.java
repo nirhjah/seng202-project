@@ -51,6 +51,7 @@ import javax.imageio.ImageIO;
  *  @author Connor Dunlop
  *  @author Moses Wescombe
  *  @author George Hampton
+ *  @author Sam Clarke
  */
 
 public class MapController extends DataObserver implements Initializable {
@@ -203,9 +204,6 @@ public class MapController extends DataObserver implements Initializable {
 ////        wardText.setText("" + record.getWard());
 ////        lattitudeText.setText("" + record.getLatitude());
 ////        longitudeText.setText("" + record.getLongitude());
-
-
-        borderPane.setLeft(recordInfoPane);
     }
 
     private void createTextBoxDict() {
