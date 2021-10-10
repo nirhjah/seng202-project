@@ -28,7 +28,7 @@ public class AddEditController {
     /** The button used to execute either an add or edit of a crime record in the CAMS UI*/
     @FXML protected Button addEditButton;
 
-    /** This hash map stores as keys the datacategories which take data input from a textfield,
+    /** This hash map stores as keys the DataCategory's which take data input from a TextField,
      * and maps them to their corresponding UI TextField to simplify the retrieval of user input. */
     private HashMap<DataCategory, TextField> textFieldsDict;
 
