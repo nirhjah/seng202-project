@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.web.WebView?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.view.MapController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.view.MapController">
    <center>
       <StackPane BorderPane.alignment="CENTER">
          <children>
@@ -71,15 +71,15 @@
                               <Label text="IUCR Code:" GridPane.rowIndex="5" />
                               <Text fx:id="iucrCodeText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                               <Label text="Primary Description:" GridPane.rowIndex="6" />
-                              <Text fx:id="primaryText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <Text fx:id="primaryText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                               <Label text="Secondary Description:" GridPane.rowIndex="7" />
-                              <Text fx:id="secondaryText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                              <Text fx:id="secondaryText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                               <Label text="Arrest Made:" GridPane.rowIndex="9" />
                               <Text fx:id="arrestText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                               <Label text="Domestic Crime:" GridPane.rowIndex="10" />
                               <Text fx:id="domesticText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                               <Label text="Location Description:" GridPane.rowIndex="12" />
-                              <Text fx:id="locationText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                              <Text fx:id="locationText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.0" GridPane.columnIndex="1" GridPane.rowIndex="12" />
                               <Label text="Block:" GridPane.rowIndex="13" />
                               <Text fx:id="blockText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="13" />
                               <Label text="Beat:" GridPane.rowIndex="14" />
