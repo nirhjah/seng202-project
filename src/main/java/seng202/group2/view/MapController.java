@@ -185,7 +185,9 @@ public class MapController extends DataObserver implements Initializable {
    * @param id ID of record to populate side panel with details of
    */
   public void showMarkerDetails(int id) {
-        System.out.println("[DEBUG] selected marker: "  + id);
+        CrimeRecord selectedRecord = DBMS.getRecord(id);
+
+        System.out.println("[DEBUG] selected marker: "  + selectedRecord);
     }
 
     /**
