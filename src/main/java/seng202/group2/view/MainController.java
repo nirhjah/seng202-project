@@ -325,7 +325,7 @@ public class MainController extends DataObserver implements Initializable {
 	 * Applies the string currently in the search bar as the search pattern and applies the search to the data
 	 */
 	public void runSearch(KeyEvent event) {
-		if (event.getCode().equals(KeyCode.ENTER) || DBMS.getRecordsSize() <= 10000)
+		if (event.getCode().equals(KeyCode.ENTER) || DBMS.getRecordsSize() <= 10000 || searchTextField.getText().equals(""))
 			DBMS.getActiveData().setSearchPattern(searchTextField.getText());
 	}
 

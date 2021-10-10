@@ -154,6 +154,9 @@ public class ActiveData extends DataSource {
     	String querySegment = "";
     	boolean orNeeded = false;
     	for(DataCategory field: DataCategory.getCategories()) {
+            //Skip date
+            if (field.getSQL().equals("date")) continue;
+
     		if(orNeeded) {
     			querySegment += " OR ";
     		} else {
