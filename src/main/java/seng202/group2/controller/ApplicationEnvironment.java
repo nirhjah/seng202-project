@@ -1,19 +1,19 @@
 package seng202.group2.controller;
 
-import javafx.stage.Stage;
 import seng202.group2.view.CamsApplication;
 import seng202.group2.model.DBMS;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 // TODO: implement class
 public class ApplicationEnvironment {
+	//Enable logging
+	private static final boolean logMessages = false;
+
 	public static void main(String[] args) throws IOException {
-		setSystemToLog();
+		if (logMessages) setSystemToLog();
 		DBMS.clearDB();
 		CamsApplication.main(args);
 	}
