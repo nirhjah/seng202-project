@@ -1,6 +1,7 @@
 package seng202.group2.view;
 
 import com.sun.javafx.webkit.WebConsoleListener;
+import io.github.cdimascio.dotenv.Dotenv;
 import javafx.concurrent.Worker;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -12,7 +13,10 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.robot.Robot;
+import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
@@ -23,13 +27,19 @@ import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.DBMS;
+import seng202.group2.model.datacategories.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
-
+import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
+
+
 
 /**
  * Map Controller is the controller class for the Map GUI
@@ -42,6 +52,7 @@ import javax.imageio.ImageIO;
  *  @author Connor Dunlop
  *  @author Moses Wescombe
  *  @author George Hampton
+ *  @author Sam Clarke
  */
 
 public class MapController extends DataObserver implements Initializable {
@@ -49,6 +60,26 @@ public class MapController extends DataObserver implements Initializable {
     @FXML private WebView webView;
     @FXML private Label radiusSliderLabel;
     @FXML private Slider radiusSlider;
+
+    //Extra details
+    @FXML private GridPane recordInfoPane;
+    @FXML private BorderPane borderPane;
+    @FXML private Text idText;
+    @FXML private Text caseNumText;
+    @FXML private Text fbiCodeText;
+    @FXML private Text dateText;
+    @FXML private Text iucrCodeText;
+    @FXML private Text primaryText;
+    @FXML private Text secondaryText;
+    @FXML private Text arrestText;
+    @FXML private Text domesticText;
+    @FXML private Text locationText;
+    @FXML private Text blockText;
+    @FXML private Text beatText;
+    @FXML private Text wardText;
+    @FXML private Text lattitudeText;
+    @FXML private Text longitudeText;
+    private HashMap<DataCategory, Text> textBoxDict;
 
     /** WebEngine is a non-visual object to support web page managements
      *  and enable two-way communication between a Java application and JavaScript
@@ -58,6 +89,8 @@ public class MapController extends DataObserver implements Initializable {
     /** The stage that the map window is created on*/
     private Stage stage;
 
+
+
     /**
      * Initialize the map window
      *
@@ -66,32 +99,42 @@ public class MapController extends DataObserver implements Initializable {
      *  - Use webEngine to provide access to the document object model of the web page map.html
      */
     public void initialize(URL location, ResourceBundle resources) {
-        webEngine = webView.getEngine();
-        webEngine.load(CamsApplication.class.getClassLoader().getResource("map.html").toExternalForm());
+      webEngine = webView.getEngine();
 
-        // Forwards console.log() output from any javascript to System.out
-        WebConsoleListener.setDefaultListener((webView, message, lineNumber, sourceId) -> {
-            System.out.println(message + "[at " + lineNumber + "]");
-        });
+      InputStream is = getClass().getResourceAsStream("/map.html");
+      String content = new BufferedReader(
+        new InputStreamReader(is, StandardCharsets.UTF_8))
+        .lines()
+        .collect(Collectors.joining("\n"));
+      Dotenv dotenv = Dotenv.load();
+      content = content.replaceFirst("API_KEY_MATCHER", dotenv.get("API_KEY"));
+      webEngine.loadContent(content);
+      // Forwards console.log() output from any javascript to System.out
+      WebConsoleListener.setDefaultListener((webView, message, lineNumber, sourceId) -> {
+        System.out.println(message + "[at " + lineNumber + "]");
+      });
 
-        // Wait until javascript in map.html has loaded before trying to call functions from there
-        webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
-            if (newState == Worker.State.SUCCEEDED) {
-                updateRadius();
-                activeDataUpdate();
-            }
-        });
+      // Wait until javascript in map.html has loaded before trying to call functions from there
+      webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
+        if (newState == Worker.State.SUCCEEDED) {
+          updateRadius();
+          activeDataUpdate();
+        }
+      });
 
-        radiusSlider.valueChangingProperty().addListener((obs, oldVal, newVal) -> {
-            updateRadius();
-        });
+      radiusSlider.valueChangingProperty().addListener((obs, oldVal, newVal) -> {
+        updateRadius();
+      });
 
-        //Connect javascript to this Java class so that it can call methods
-        JSObject win = (JSObject) webEngine.executeScript("window");
-        win.setMember("app", this);
+      //Connect javascript to this Java class so that it can call methods
+      JSObject win = (JSObject) webEngine.executeScript("window");
+      win.setMember("app", this);
+
+        toggleDetailsPanel();
     }
 
-    /**
+
+  /**
      * Toggle the markers on and off
      */
     public void toggleMarkers() {
@@ -124,6 +167,77 @@ public class MapController extends DataObserver implements Initializable {
      */
     public void toggleOnlySelected() {
         webEngine.executeScript("toggleOnlySelected();");
+    }
+
+    /**
+     * Set the details for a given record
+     * @param id ID of record to get details from
+     */
+    public void setDetails(int id) {
+        CrimeRecord record = DBMS.getRecord(id);
+        if (textBoxDict == null)
+            createTextBoxDict();
+
+        for (DataCategory category : textBoxDict.keySet()) {
+            try {
+                textBoxDict.get(category).setText(category.getRecordCategory(record).getValueString());
+            } catch (NullPointerException exception) {
+                textBoxDict.get(category).setText("");
+            }
+
+        }
+//        idText.setText("" + record.getID());
+//        caseNumText.setText("" + record.getCaseNum());
+//        try {
+//            fbiCodeText.setText(record.getFbiCode());
+//        } catch (NullPointerException exception) {
+//            fbiCodeText.setText("N/A");
+//        }
+//
+//        dateText.setText("" + record.getDateCategory().getValueString());
+//        iucrCodeText.setText("" + record.getIucr());
+//        primaryText.setText("" + record.getPrimaryDescription());
+//        secondaryText.setText("" + record.getSecondaryDescription());
+//        arrestText.setText("" + record.getArrest());
+//        domesticText.setText("" + record.getDomestic());
+//
+//
+//      //  locationText.setText("" + record.getLocationDescription());
+////        blockText.setText("" + record.getBlock());
+////        beatText.setText("" + record.getBeat());
+////        wardText.setText("" + record.getWard());
+////        lattitudeText.setText("" + record.getLatitude());
+////        longitudeText.setText("" + record.getLongitude());
+    }
+
+    private void createTextBoxDict() {
+        textBoxDict = new HashMap<>();
+        textBoxDict.put(new ID(), idText);
+        textBoxDict.put(new CaseNumber(), caseNumText);
+        textBoxDict.put(new FBICode(), fbiCodeText);
+        textBoxDict.put(new Date(), dateText);
+        textBoxDict.put(new IUCRCode(), iucrCodeText);
+        textBoxDict.put(new PrimaryDescription(), primaryText);
+        textBoxDict.put(new SecondaryDescription(), secondaryText);
+        textBoxDict.put(new Arrest(), arrestText);
+        textBoxDict.put(new Domestic(), domesticText);
+        textBoxDict.put(new LocationDescription(), locationText);
+        textBoxDict.put(new Block(), blockText);
+        textBoxDict.put(new Beat(), beatText);
+        textBoxDict.put(new Ward(), wardText);
+        textBoxDict.put(new Latitude(), lattitudeText);
+        textBoxDict.put(new Longitude(), longitudeText);
+    }
+
+  /**
+     * Toggle the details panel open and closed
+     */
+    public void toggleDetailsPanel() {
+        if (borderPane.getLeft() != null) {
+            borderPane.setLeft(null);
+        } else {
+            borderPane.setLeft(recordInfoPane);
+        }
     }
 
     /**
@@ -191,7 +305,7 @@ public class MapController extends DataObserver implements Initializable {
      */
     public void setBounds() {
         webEngine.executeScript(
-                "setBounds();"
+                "setBoundsJS();"
         );
     }
 
@@ -289,65 +403,65 @@ public class MapController extends DataObserver implements Initializable {
     };
 
     /**
-	 * This showExportWindow method opens the export window and brings it to the front.
-	 * It allows the user to export the current map window as a visual.
-	 */
-	public void showExportWindow() {
+     * This showExportWindow method opens the export window and brings it to the front.
+     * It allows the user to export the current map window as a visual.
+     */
+    public void showExportWindow() {
 
         if (stage == null) {
             showExportErrorDialogue();
             return;
         }
 
-		/*Currently this section assumes that the stage exists (i.e. to click the export button
-		 * the window must be opened.
-		 *Find the edges of the window. These are rounded to give the equivalent of integer values.
-		 */
-		double x = Math.floor(stage.getX());
-		double y = Math.floor(stage.getY());
-		double width = Math.floor(stage.getWidth());
-		double height = Math.floor(stage.getHeight());
+        /*Currently this section assumes that the stage exists (i.e. to click the export button
+         * the window must be opened.
+         *Find the edges of the window. These are rounded to give the equivalent of integer values.
+         */
+        double x = Math.floor(stage.getX());
+        double y = Math.floor(stage.getY());
+        double width = Math.floor(stage.getWidth());
+        double height = Math.floor(stage.getHeight());
 
-		//Set the bounds of the area to select.
-		Rectangle2D bounds = new Rectangle2D(x + 5, y + 90, width - 70, height - 120);
+        //Set the bounds of the area to select.
+        Rectangle2D bounds = new Rectangle2D(x + 5, y + 90, width - 70, height - 120);
 
-		//Select the given area and create an image
-		javafx.scene.robot.Robot robot = new Robot();
-		WritableImage exportVisual = robot.getScreenCapture(null, bounds);
+        //Select the given area and create an image
+        javafx.scene.robot.Robot robot = new Robot();
+        WritableImage exportVisual = robot.getScreenCapture(null, bounds);
 
-		//Save the image
-		//Create a save dialog
-		FileChooser saveChooser = new FileChooser();
-		saveChooser.setTitle("Save Image");
-		FileChooser.ExtensionFilter saveTypes = new FileChooser.ExtensionFilter("image files (*.png)", "*.png");
-		saveChooser.getExtensionFilters().add(saveTypes);
+        //Save the image
+        //Create a save dialog
+        FileChooser saveChooser = new FileChooser();
+        saveChooser.setTitle("Save Image");
+        FileChooser.ExtensionFilter saveTypes = new FileChooser.ExtensionFilter("image files (*.png)", "*.png");
+        saveChooser.getExtensionFilters().add(saveTypes);
 
-		Stage stage = new Stage();
-		File save = saveChooser.showSaveDialog(stage);
+        Stage stage = new Stage();
+        File save = saveChooser.showSaveDialog(stage);
 
-		//Check filename is not null and save file
-		if(save != null) {
-			String saveName = save.getName();
-			//check whether user put ".png" on the filename
-			if(!saveName.toUpperCase().endsWith(".PNG")) {
-				save = new File(save.getAbsolutePath() + ".png");
-			}
+        //Check filename is not null and save file
+        if(save != null) {
+            String saveName = save.getName();
+            //check whether user put ".png" on the filename
+            if(!saveName.toUpperCase().endsWith(".PNG")) {
+                save = new File(save.getAbsolutePath() + ".png");
+            }
 
-			//Write to the file
-			try {
-				ImageIO.write(SwingFXUtils.fromFXImage(exportVisual, null), "png", save);
-			} catch(IOException e) {
-				// This is where you would enter the error handling code, for now just print the stacktrace
-				e.printStackTrace();
-			}
-		}
-	}
+            //Write to the file
+            try {
+                ImageIO.write(SwingFXUtils.fromFXImage(exportVisual, null), "png", save);
+            } catch(IOException e) {
+                // This is where you would enter the error handling code, for now just print the stacktrace
+                e.printStackTrace();
+            }
+        }
+    }
 
-	/**
-	 * Stores the stage that the map is drawn on.
-	 * @param stage The stage this map is drawn on.
-	 */
-	public void setStage(Stage stage) {
-		this.stage = stage;
-	}
+    /**
+     * Stores the stage that the map is drawn on.
+     * @param stage The stage this map is drawn on.
+     */
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 }

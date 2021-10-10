@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -108,7 +109,22 @@ public class GraphController extends DataObserver {
 
 	@FXML public void plotGraph() {
 		if (graph != null)
+			
+			Platform.runLater(new Runnable() {
+			    @Override
+			    public void run() {
+			        stage.getScene().setCursor(Cursor.WAIT);
+			    }
+			});
+		
 			graph.plotGraph();
+			
+			Platform.runLater(new Runnable() {
+			    @Override
+			    public void run() {
+			        stage.getScene().setCursor(Cursor.DEFAULT);
+			    }
+			});
 	}
 
 	public void showExportErrorDialogue() {

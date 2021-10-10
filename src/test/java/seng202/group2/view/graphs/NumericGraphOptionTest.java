@@ -1,6 +1,7 @@
 package seng202.group2.view.graphs;
 
 import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -15,9 +16,7 @@ class NumericGraphOptionTest {
     /** JavaFX environment must be initialised to use JavaFX components. */
     @BeforeAll
     static void initializeJavaFXEnvironment() {
-        try {
-            Platform.startup(() -> {});
-        } catch (IllegalStateException e) {}
+        JFXPanel p = new JFXPanel();
     }
 
     /** Tests getting and setting of the numerical value. */

@@ -13,7 +13,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class Beat extends DataCategory implements Importable, Numerical, Categorical {
+public class Beat extends DataCategory implements Importable, Exportable, Numerical, Categorical {
 
 	/**
 	 * Police district where the crime incident occurred.
@@ -59,7 +59,7 @@ public class Beat extends DataCategory implements Importable, Numerical, Categor
 	public Short parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
-		else if (value == "")
+		else if (value.equals(""))
 			return null;
 		
 		try {

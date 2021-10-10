@@ -12,13 +12,14 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class CaseNumber extends DataCategory implements Importable, Categorical {
+public class CaseNumber extends DataCategory implements Importable, Exportable, Categorical {
 
 	/** The case number associated with the crime record in the police database */
 	private String caseNum = null;
 
 	private static final Set<String> identifierStrings = new HashSet<>(Arrays.asList(
-			"CASE#"
+			"CASE#",
+			"CASENUMBER"
 	));
 	private static final CaseNumber instance = new CaseNumber();
 	public static CaseNumber getInstance() {
@@ -31,7 +32,7 @@ public class CaseNumber extends DataCategory implements Importable, Categorical 
 			throw new IllegalArgumentException("Cannot set attribute value of null record.");
 		
 		if (data == null)
-			record.setCaseNum(null);
+			throw new IllegalArgumentException("Required field cannot be null");
 		else if (data instanceof String)
 			record.setCaseNum((String) data);
 		else
@@ -53,9 +54,10 @@ public class CaseNumber extends DataCategory implements Importable, Categorical 
 
 	@Override
 	public String parseString(String value) {
+
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
-		else if (value == "")
+		else if (value.equals(""))
 			return null;
 		return value;
 	}

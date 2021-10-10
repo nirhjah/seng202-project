@@ -91,6 +91,8 @@ public class ScatterGraph extends Graph implements Plottable {
         // Set axis labels
         xAxis.setLabel(xCat.toString());
         yAxis.setLabel(yCat.toString());
+        
+        scatterChart.setTitle(yCat.toString() + " vs " + xCat.toString());
 
         // Generate data set from records
         ArrayList<CrimeRecord> records = DBMS.getActiveData().getActiveRecords();

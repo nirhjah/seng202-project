@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class PrimaryDescription extends DataCategory implements Importable, Categorical {
+public class PrimaryDescription extends DataCategory implements Importable, Exportable, Categorical {
 
 	/** The primary description of the crime type this code corresponds to */
 	private String primaryDescription = null;
@@ -55,7 +55,7 @@ public class PrimaryDescription extends DataCategory implements Importable, Cate
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
-		else if (value == "")
+		else if (value.equals(""))
 			return null;
 		return value;
 	}

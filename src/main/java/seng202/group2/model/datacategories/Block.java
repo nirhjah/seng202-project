@@ -14,7 +14,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class Block extends DataCategory implements Importable, Categorical {
+public class Block extends DataCategory implements Importable, Exportable, Categorical {
 	
 	/**
 	 * The address of the crime incident at a city block level.
@@ -60,7 +60,7 @@ public class Block extends DataCategory implements Importable, Categorical {
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
-		else if (value == "")
+		else if (value.equals(""))
 			return null;
 		return value;
 	}

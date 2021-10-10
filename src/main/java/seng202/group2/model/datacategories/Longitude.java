@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class Longitude extends DataCategory implements Importable, Numerical {
+public class Longitude extends DataCategory implements Importable, Exportable, Numerical {
 
 	/** The longitudinal location where the crime incident occurred. */
 	private Float longitude = null;
@@ -55,7 +55,7 @@ public class Longitude extends DataCategory implements Importable, Numerical {
 	public Float parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
-		else if (value == "")
+		else if (value.equals(""))
 			return null;
 
 		try {

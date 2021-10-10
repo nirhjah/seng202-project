@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class LocationDescription extends DataCategory implements Importable, Categorical {
+public class LocationDescription extends DataCategory implements Importable, Exportable, Categorical {
 
 	/** A textual description of the location where the crime incident occurred */
 	private String locationDescription = null;
@@ -55,7 +55,7 @@ public class LocationDescription extends DataCategory implements Importable, Cat
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
-		else if (value == "")
+		else if (value.equals(""))
 			return null;
 		return value;
 	}

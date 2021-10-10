@@ -1,6 +1,7 @@
 package seng202.group2.view.graphs;
 
 import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import org.junit.jupiter.api.AfterEach;
@@ -35,9 +36,7 @@ class GraphTest {
     /** JavaFX environment and toolkits must be initialised to be able to create JavaFX components. */
     @BeforeAll
     static void initializeJavaFXEnvironment() {
-        try {
-            Platform.startup(() -> {});
-        } catch (IllegalStateException e) {}
+        JFXPanel p = new JFXPanel();
 
         testGraph.initialize(new BorderPane(), new VBox());
     }

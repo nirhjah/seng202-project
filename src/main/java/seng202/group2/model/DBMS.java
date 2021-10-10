@@ -2,13 +2,12 @@ package seng202.group2.model;
 
 import seng202.group2.model.datacategories.DataCategory;
 import seng202.group2.model.datacategories.ID;
+import seng202.group2.model.datacategories.UnsupportedCategoryException;
 
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
+import java.util.List;
 
 /**
  * DataBaseManagementSystem. This controls the SQLite database and connects the data model together.
@@ -18,7 +17,6 @@ public class DBMS {
 
     private static final ActiveData activeData = new ActiveData();               //Active data class
     public static final String DATE_FORMAT = "dd'/'MM'/'yyyy hh':'mm':'ss a";     //Date format
-    private static  boolean hasDataBase = false;                           //Database is created
     private static Connection conn;                                        //Database connection
     private static int idCounter = -1;                                     //Current item ID
 
@@ -41,7 +39,7 @@ public class DBMS {
 
     /**
      * Create a table in the database
-     * @param tableName
+     * @param tableName Table name as a string
      */
     private static void createTable(String tableName) {
         try {
@@ -226,29 +224,6 @@ public class DBMS {
     }
 
     /**
-     * Gets a record from ActiveRecords table by ID.
-     *
-     * @param id Integer representing the ID of the record
-     * @return CrimeRecord retrieved from Records. NULL if the record does not exist
-     */
-    public static CrimeRecord getActiveRecord(int id) {
-        if (conn == null) {
-            getConnection();
-        }
-
-        try {
-            //Get record
-            Statement state = conn.createStatement();
-            ResultSet result = state.executeQuery("SELECT * FROM ActiveRecords WHERE id =" + id);
-            return generateCrimeRecord(result);
-        } catch (SQLException e) {
-            System.out.println("Could not retrieve record with ID: " + id + " from ActiveRecords table. DBMS:getActiveRecord");
-        }
-
-        return null;
-    }
-
-    /**
      * Get multiple records from ActiveRecords table as an ArrayList.
      *
      * @return ArrayList of CrimeRecords.
@@ -287,22 +262,37 @@ public class DBMS {
     /**
      * Gets all records in the database.
      *
-     * @return ResultSet (java.sql) Representing Query results. NULL if an error occurs.
+     * @return An ArrayList of all crime records stored in the database.
      */
-    public static ResultSet getAllRecords() {
+    public static ArrayList<CrimeRecord> getAllRecords() {
         if (conn == null) {
             getConnection();
         }
 
+        ResultSet results;
         try {
             Statement state = conn.createStatement();
-            return state.executeQuery("SELECT * FROM Records;");
+            results = state.executeQuery("SELECT * FROM Records;");
         } catch (SQLException e) {
             System.out.println("Could not get all records from the database. DBMS:getAllRecords");
             //e.printStackTrace();
+            return null;
         }
 
-        return null;
+        //Generate and add the records to the records ArrayList
+        ArrayList<CrimeRecord> records = new ArrayList<>();
+        while (true) {
+            try {
+                if (!results.next()) break;
+                records.add(generateCrimeRecord(results));
+            } catch (SQLException e) {
+                System.out.println("Could not retrieve record from record table.");
+                e.printStackTrace();
+                continue;
+            }
+        }
+
+        return records;
     }
 
     /**
@@ -333,12 +323,12 @@ public class DBMS {
         SQLInsertStatement state = new SQLInsertStatement("Records");
         for (DataCategory category : DataCategory.getCategories()) {
             try {
-                state.setValue(category.getSQL(), category.getRecordCategory(record).getValueString());
+                state.setValue(category.getSQL(), category.getRecordCategory(record).getValueString(), category.getValueType() == String.class);
             } catch (NullPointerException e) {
-                state.setValue(category.getSQL(), null);
+                state.setValue(category.getSQL(), null, false);
             }
         }
-        state.setValue(ID.getInstance().getSQL(), Integer.toString(idCounter++));
+        state.setValue(ID.getInstance().getSQL(), Integer.toString(idCounter++), false);
 
         try {
             //Insert into the database
@@ -355,20 +345,65 @@ public class DBMS {
     }
 
     /**
+     * Updaet record in database. Updating based on records ID
+     *
+     * @param record Record holding all the new data to set
+     */
+    public static void updateRecord(CrimeRecord record) {
+        if (conn == null) {
+            getConnection();
+        }
+
+        // Generate update statement
+        String updateRecordsString = "UPDATE Records";
+        String updateActiveRecordsString = "UPDATE ActiveRecords";
+        String updateString = "";
+
+        boolean first = true;
+        for (DataCategory category : DataCategory.getCategories()) {
+            //Skip ID
+            if (category.getRecordCategory(record) instanceof ID) {
+                continue;
+            }
+
+            //Add category to string
+            try {
+                String value = SQLInsertStatement.formatValue(category.getSQL(), category.getRecordCategory(record).getValueString(), category.getValueType() == String.class);
+                updateString += (first? " SET " : ", ") + category.getSQL() + " = " + value;
+            } catch (NullPointerException e) {
+                continue;
+            }
+            if (first) first = false;
+        }
+
+        updateRecordsString += updateString + " WHERE id = " + record.getID();
+        updateActiveRecordsString += updateString + " WHERE id = " + record.getID();
+
+        try {
+            //Update in the database
+            Statement updateRecords = conn.createStatement();
+            updateRecords.execute(updateRecordsString);
+
+            Statement updateActiveRecords = conn.createStatement();
+            updateActiveRecords.execute(updateActiveRecordsString);
+
+            //Update observers
+            activeData.updateActiveData();
+        } catch (SQLException e) {
+            System.out.println("Could not update record: " + e.toString());
+            System.out.println(updateString);
+        }
+    }
+
+    /**
      * Add an ArrayList of CrimeRecords to the database.
      *
      * @param records -- ArrayList of CrimeRecords to add to the database
      */
-    public static void addRecords(ArrayList<CrimeRecord> records) {
-        int count = 0;
+    public static void addRecords(List<CrimeRecord> records) {
         for (CrimeRecord record : records) {
             addRecord(record, false);
-            System.out.print("\rAdded " + ++count + " records to database");
         }
-        System.out.println();
-
-        activeData.updateActiveRecords();
-        activeData.updateActiveData();
     }
 
     /**

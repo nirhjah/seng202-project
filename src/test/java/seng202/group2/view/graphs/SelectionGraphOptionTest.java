@@ -1,6 +1,7 @@
 package seng202.group2.view.graphs;
 
 import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -18,9 +19,7 @@ class SelectionGraphOptionTest {
     /** JFX must be initialised to construct JFX components. */
     @BeforeAll
     static void initializeJavaFXEnvironment() {
-        try {
-            Platform.startup(() -> {});
-        } catch (IllegalStateException e) {}
+        JFXPanel p = new JFXPanel();
     }
 
     /** Tests setting and getting of choices */

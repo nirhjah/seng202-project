@@ -13,7 +13,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class SecondaryDescription extends DataCategory implements Importable, Categorical {
+public class SecondaryDescription extends DataCategory implements Importable, Exportable, Categorical {
 
 	/** The secondary description of the crime type this code corresponds to */
 	private String secondaryDescription = null;
@@ -56,7 +56,7 @@ public class SecondaryDescription extends DataCategory implements Importable, Ca
 	public String parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
-		else if (value == "")
+		else if (value.equals(""))
 			return null;
 		return value;
 	}

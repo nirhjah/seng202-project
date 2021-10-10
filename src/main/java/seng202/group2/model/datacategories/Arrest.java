@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class Arrest extends DataCategory implements Importable, Categorical {
+public class Arrest extends DataCategory implements Importable, Exportable, Categorical {
 	
 	/**
 	 * 1 if the crime incident resulted in an arrest being made
@@ -60,11 +60,11 @@ public class Arrest extends DataCategory implements Importable, Categorical {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
 		
-		if (value == "")
+		if (value.equals(""))
 			return null;
-		else if (value.equals("Y") || value.equals("TRUE"))
+		else if (value.equals("Y") || value.equals("TRUE") || value.equals("true"))
 			return true;
-		else if (value.equals("N") || value.equals("FALSE"))
+		else if (value.equals("N") || value.equals("FALSE") || value.equals("false"))
 			return false;
 		else
 			throw new IllegalArgumentException("String was invalid.");

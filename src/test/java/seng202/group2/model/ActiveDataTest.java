@@ -160,7 +160,6 @@ public class ActiveDataTest {
         activeData.addFilter(FilterType.SORT.createFilter(new Beat(), "ASC"));
         activeData.updateActiveRecords();
         assertEquals(DBMS.getRecordsSize(), DBMS.getActiveRecordsSize());
-
     }
     
     @Test

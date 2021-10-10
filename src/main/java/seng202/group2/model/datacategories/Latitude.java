@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Connor Dunlop
  *
  */
-public class Latitude extends DataCategory implements Importable, Numerical {
+public class Latitude extends DataCategory implements Importable, Exportable, Numerical {
 
 	/** The latitudinal location where the crime incident occurred. */
 	private Float latitude = null;
@@ -55,7 +55,7 @@ public class Latitude extends DataCategory implements Importable, Numerical {
 	public Float parseString(String value) {
 		if (value == null)
 			throw new IllegalArgumentException("Cannot parse null string.");
-		else if (value == "")
+		else if (value.equals(""))
 			return null;
 
 		try {

@@ -4,6 +4,7 @@
 <head>
     <title>Map</title>
     <style>
+
         html, body {
             height: 100%;
             margin: 0;
@@ -51,6 +52,7 @@
         fullscreenControl: false,
         scaleControl: true,
         styles: styles,
+
     };
 
     //Map objects
@@ -58,6 +60,11 @@
     let heatmap = null;
     let infoWindow = null;
     let line = null;
+
+
+    changeCursor();
+
+
 
     //Markers
     let markers = [];
@@ -68,6 +75,20 @@
     let heatMapData = []
     let heatMapEnabled = false;
     let heatMapRadius = 50;
+
+
+    /**
+	* Changes the cursor to 'wait' when map is being loaded, then cursor is reverted back to default.
+	*/
+	function changeCursor() {
+  		document.getElementById("map").style.cursor = "wait";
+	}
+
+
+
+
+
+
 
     /**
     * Creates the google.maps.Map to be rendered on the html map div element with optional Map options.
@@ -80,14 +101,24 @@
             fullscreenControl: false,
             scaleControl: true,
             styles: fixedStyles,
+
+
         };
+
 
         map = new google.maps.Map(document.getElementById("map"), initialMapOptions);
 
+
+
         heatmap = new google.maps.visualization.HeatmapLayer({
             data: heatMapData
+
         });
+
     }
+
+
+
 
     /**
      * Change the heatmap raduus variable and update
@@ -244,6 +275,7 @@
         });
 
         //Add to map and list
+
         markers.push(marker);
         if (marker.selected) markersSelected.push(marker);
 
@@ -401,6 +433,9 @@
             infoWindow.setContent(contentString); //"<div style ='width:200px; min-height:40px'>" + marker.position + "</div>");
             infoWindow.open(map, marker);
 
+            map.panTo(marker.getPosition());
+            app.setDetails(marker.crimeId);
+
             //Update active data selection
             app.selectRecord(marker.crimeId);
         }
@@ -424,7 +459,7 @@
     * The map centered and the zoom is adjusted based on the markers and their positions.
     * The best possible view of Google Map is then shown to the user
     */
-    function setBounds() {
+    function setBoundsJS() {
         var bounds = new google.maps.LatLngBounds();
 
         for (let i = 0; i < markers.length; i++) {
@@ -485,9 +520,7 @@
     }
 
 </script>
-
-<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAka2EHrmJfR-AU7CkIJFzplWzG2Z-x_qo&callback=initMap&libraries=visualization&v=weekly" async></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=API_KEY_MATCHER&callback=initMap&libraries=visualization&v=weekly" async></script>
 
 </body>
 </html>
