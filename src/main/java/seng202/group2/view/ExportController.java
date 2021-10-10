@@ -50,12 +50,20 @@ public class ExportController {
     @FXML private HBox exportProgressMessageBox;
     @FXML private Label recordsSoFar;
     @FXML private Label recordsToExport;
+    @FXML private Button browseButton;
     @FXML private Button exportButton;
 
     /** The number of crime records exported so far. */
     private int numExported = 0;
     /** The total number of crime records stored in the database, to be exported. */
     private int totalToExport = 0;
+
+    /** Sets initial focus to browse button. */
+    public void initialise() {
+        Platform.runLater(() -> {
+            browseButton.requestFocus();
+        });
+    }
 
     /**
      * Displays a message indicating which exporting state/status the controller is in, and updates the user interface

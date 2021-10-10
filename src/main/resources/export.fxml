@@ -30,8 +30,8 @@
             <Font name="Tahoma" size="15.0" />
          </font>
       </Text>
-      <TextField fx:id="exportPathTextField" promptText="Output file path" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-      <Button mnemonicParsing="false" onAction="#browseImportDirectory" prefWidth="70.0" text="Browse" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <TextField fx:id="exportPathTextField" editable="false" focusTraversable="false" mouseTransparent="true" promptText="Output file path" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+      <Button fx:id="browseButton" mnemonicParsing="false" onAction="#browseImportDirectory" prefWidth="70.0" text="Browse" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
       <Button fx:id="exportButton" mnemonicParsing="false" onAction="#exportFileFromField" prefWidth="70.0" text="Export" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
       <ProgressBar fx:id="progressBar" prefWidth="1000.0" progress="0.0" visible="false" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <Label fx:id="exportMessage" text="Select an output path." GridPane.rowIndex="3" />
