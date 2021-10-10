@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.robot.Robot;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
@@ -56,7 +57,9 @@ public class MapController extends DataObserver implements Initializable {
     @FXML private Label radiusSliderLabel;
     @FXML private Slider radiusSlider;
 
-    @FXML private BorderPane recordInfoPane;
+    //Extra details
+    @FXML private GridPane recordInfoPane;
+    @FXML private BorderPane borderPane;
     @FXML private Text idText;
 
     /** WebEngine is a non-visual object to support web page managements
@@ -105,6 +108,8 @@ public class MapController extends DataObserver implements Initializable {
         //Connect javascript to this Java class so that it can call methods
         JSObject win = (JSObject) webEngine.executeScript("window");
         win.setMember("app", this);
+
+        toggleDetailsPanel();
     }
 
     /**
@@ -142,11 +147,24 @@ public class MapController extends DataObserver implements Initializable {
         webEngine.executeScript("toggleOnlySelected();");
     }
 
-    public void toggleDetailsPane() {
-        if (recordInfoPane.isVisible()) {
-            recordInfoPane.setVisible(false);
+    /**
+     * Set the details for a given record
+     * @param id ID of record to get details from
+     */
+    public void setDetails(int id) {
+        CrimeRecord record = DBMS.getRecord(id);
+
+        idText.setText("ID: " + record.getID());
+    }
+
+    /**
+     * Toggle the details panel open and closed
+     */
+    public void toggleDetailsPanel() {
+        if (borderPane.getLeft() != null) {
+            borderPane.setLeft(null);
         } else {
-            recordInfoPane.setVisible(true);
+            borderPane.setLeft(recordInfoPane);
         }
     }
 
@@ -178,7 +196,6 @@ public class MapController extends DataObserver implements Initializable {
     public void selectRecord(int id) {
         DBMS.getActiveData().selectRecord(id);
         DBMS.getActiveData().updateSelectionObservers();
-        showMarkerDetails(id);
     }
 
     /**
@@ -189,17 +206,6 @@ public class MapController extends DataObserver implements Initializable {
     public void deselectRecord(int id) {
         DBMS.getActiveData().deselectRecord(id);
         DBMS.getActiveData().updateSelectionObservers();
-    }
-
-  /**
-   * Open a side panel with record details grabbed from the database
-   *
-   * @param id ID of record to populate side panel with details of
-   */
-  public void showMarkerDetails(int id) {
-        CrimeRecord selectedRecord = DBMS.getRecord(id);
-
-        System.out.println("[DEBUG] selected marker: "  + selectedRecord);
     }
 
     /**
