@@ -9,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
-import org.apache.commons.lang3.ObjectUtils;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;
@@ -59,7 +58,8 @@ public class TableController extends DataObserver implements Initializable {
                 String labelMessage = "No crime records in table.\n\n" +
                         "To see table content, either \n" +
                         "1. Add a new record to the database or\n" +
-                        "2. Import a .csv file into the database.";
+                        "2. Import a .csv file into the database or\n" +
+                        "3. Change your filter or search query";
                 final Label message = new Label(labelMessage);
                 tableView.setPlaceholder(message);
             }

@@ -86,5 +86,9 @@ public enum FilterType {
      */
     public abstract Filter createFilter(DataCategory category, String secondParam);
 
+    /**
+     * Convert ENUM type into string
+     * @return String representation of ENUM
+     */
     public abstract String toString();
 }

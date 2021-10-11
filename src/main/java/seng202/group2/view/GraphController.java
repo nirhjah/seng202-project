@@ -6,14 +6,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.imageio.ImageIO;
-
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
@@ -40,7 +37,6 @@ import seng202.group2.view.graphs.Plottable;
  * @author George Hampton
  * @author Yiyang Yu
  */
-
 public class GraphController extends DataObserver {
 
 	@FXML private BorderPane graphPane;
@@ -78,6 +74,9 @@ public class GraphController extends DataObserver {
 		graphTypeSelector.getItems().addAll(sortedGraphTypes);
 	}
 
+	/**
+	 * Select graph type based on user selection
+	 */
 	@FXML public void selectGraphType() {
 		try {
 			graph = Graph.newGraph(graphTypes.get(graphTypeSelector.getSelectionModel().getSelectedItem()));
@@ -92,14 +91,23 @@ public class GraphController extends DataObserver {
 		graph.initialize(graphPane, optionList);
 	}
 
+	/**
+	 * Hide control menu
+	 */
 	@FXML public void hideControlMenu() {
 		controlPane.setVisible(false);
 	}
 
+	/**
+	 * Show control menu
+	 */
 	@FXML public void showControlMenu() {
 		controlPane.setVisible(true);
 	}
 
+	/**
+	 * Toggle control menu
+	 */
 	@FXML public void toggleControlMenu() {
 		if (controlPane.isVisible())
 			hideControlMenu();
@@ -107,6 +115,9 @@ public class GraphController extends DataObserver {
 			showControlMenu();
 	}
 
+	/**
+	 * Plot graph
+	 */
 	@FXML public void plotGraph() {
 		if (graph != null) {
 
@@ -128,6 +139,9 @@ public class GraphController extends DataObserver {
 		}
 	}
 
+	/**
+	 * Show export error dialogue
+	 */
 	public void showExportErrorDialogue() {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(CamsApplication.class.getClassLoader().getResource("export-unsupported-dialog.fxml"));
@@ -149,7 +163,9 @@ public class GraphController extends DataObserver {
 		}
 	};
 
-	// TODO Hide graph options pane when taking a screencap
+	/**
+	 * Open export window and create a screenshot
+	 */
 	@FXML public void showExportWindow() {
 
 		if (stage == null) {
@@ -170,9 +186,15 @@ public class GraphController extends DataObserver {
 		//Set the bounds of the area to select.
 		Rectangle2D bounds = new Rectangle2D(x + 10, y + 31, width - 20, height - 33);
 
+		//Hide the control menu
+		hideControlMenu();
+
 		//Select the given area and create an image
 		javafx.scene.robot.Robot robot = new Robot();
 		WritableImage exportVisual = robot.getScreenCapture(null, bounds);
+
+		//Show the control menu
+		showControlMenu();
 
 		//Save the image
 		//Create a save dialog
@@ -220,7 +242,7 @@ public class GraphController extends DataObserver {
 
 	/**
 	 * Used to define for this class the window in which it exists
-	 * @param stage
+	 * @param stage Stage to set
 	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;

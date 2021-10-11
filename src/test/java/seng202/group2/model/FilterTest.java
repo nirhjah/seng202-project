@@ -1,16 +1,22 @@
 package seng202.group2.model;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import seng202.group2.model.datacategories.Beat;
 import seng202.group2.model.datacategories.Latitude;
 import seng202.group2.model.datacategories.Ward;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashSet;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FilterTest {
     private static final String DATE_FORMAT = "yyyy/MM/dd hh:mm:ss a";

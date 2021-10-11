@@ -7,10 +7,17 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.time.LocalDateTime;
 
+/**
+ * Program Entry
+ */
 public class ApplicationEnvironment {
 	//Enable logging
-	private static final boolean logMessages = false;
+	private static final boolean logMessages = true;
 
+	/**
+	 * Program Entry, startup
+	 * @param args Extra start parameters
+	 */
 	public static void main(String[] args) throws IOException {
 		if (logMessages) setSystemToLog();
 		DBMS.clearDB();

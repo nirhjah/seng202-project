@@ -427,6 +427,10 @@ public class MainController extends DataObserver implements Initializable {
 		updateText();
 	}
 
+	/**
+	 * Get the split pane object that splits the filters from the tabs
+	 * @return SplitPane
+	 */
 	public SplitPane getSplitPane() {
 		return splitPane;
 	}

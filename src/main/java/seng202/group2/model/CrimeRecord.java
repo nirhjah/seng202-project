@@ -7,11 +7,7 @@ import java.util.Calendar;
 /**
  * CrimeRecord stores the categorical data associated with a record of a crime.
  * 
- * TODO: Implement validity checking when setting attributes that should follow a format,
- * or whose domain is a proper subset of its type, such as fbiCode.
- * 
  * @author Connor Dunlop
- *
  */
 public class CrimeRecord {
 

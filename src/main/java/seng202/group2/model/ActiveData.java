@@ -349,35 +349,68 @@ public class ActiveData extends DataSource {
         return selectedRecords.contains(id);
     }
 
+    /**
+     * Get an ArrayList of current filters
+     *
+     * @return Filters
+     */
     public ArrayList<Filter> getFilters() {
         return filters;
     }
 
+    /**
+     * Get selected records
+     * @return Selected records
+     */
     public HashSet<Integer> getSelectedRecords() {
         return selectedRecords;
     }
 
+    /**
+     * Get frame size
+     * @return Frame size
+     */
     public int getFrameSize() {
         return frameSize;
     }
 
+    /**
+     * Get database record count
+     * @return Record count
+     */
     public int getRecordCount() {
         return recordCount;
     }
 
+    /**
+     * Get current frame minimum
+     * @return Frame minimum
+     */
     public int getCurrentMin() {
         return currentMin;
     }
 
+    /**
+     * Get current frame maximum
+     * @return Frame maximum
+     */
     public int getCurrentMax() {
         return currentMax;
     }
-    
+
+    /**
+     * Set search pattern
+     * @param newPattern New pattern to set as
+     */
     public void setSearchPattern(String newPattern) {
     	this.searchPattern = newPattern;
     	updateActiveData();
     }
-    
+
+    /**
+     * Get search pattern
+     * @return Search pattern
+     */
     public String getSearchPattern() {
     	return searchPattern;
     }

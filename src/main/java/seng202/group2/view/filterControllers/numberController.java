@@ -9,14 +9,16 @@ import javafx.util.Callback;
 import seng202.group2.model.Filter;
 import seng202.group2.model.FilterType;
 import seng202.group2.model.datacategories.DataCategory;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controls the filter inputs for numeric categories
+ */
 public class numberController extends OptionsController {
+    //Inputs
     @FXML
     private TextField value;
-
     @FXML
     private ComboBox<FilterType> comparators;
 

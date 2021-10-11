@@ -2,11 +2,10 @@ package seng202.group2.view.filterControllers;
 
 import seng202.group2.model.Filter;
 import seng202.group2.model.datacategories.DataCategory;
-
 import java.util.List;
 
 /**
- * Parent class for filter option controllers
+ * Parent class for filter option controllers. These classes control how the filter inputs are managed
  */
 public abstract class OptionsController {
     /**

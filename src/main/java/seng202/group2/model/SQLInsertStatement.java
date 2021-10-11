@@ -53,7 +53,7 @@ public class SQLInsertStatement {
             value = value.toUpperCase();
         }
 
-        //Adds quotes if string
+        //Add quotes if string
         if (isString) {
             value = "'" + value + "'";
         }

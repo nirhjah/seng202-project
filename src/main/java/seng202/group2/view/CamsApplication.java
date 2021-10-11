@@ -1,7 +1,6 @@
 package seng202.group2.view;
 
 import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -47,7 +46,10 @@ public class CamsApplication extends Application {
         });
     }
 
-
+    /**
+     * Entry point for the UI
+     * @param args Launch arguments
+     */
     public static void main(String[] args) {
         launch(args);
     }
