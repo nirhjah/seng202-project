@@ -514,9 +514,12 @@ public class DBMS {
         } catch (SQLException e) {
             System.out.println("Could not delete all records from database. DBMS:clearDB");
         }
-
+        
         //Reset counter
         idCounter = -1;
+        activeData.clearSelection();
+        activeData.setSearchPattern("");
+        activeData.clearFilters(false);
     }
 
     /**

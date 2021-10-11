@@ -163,11 +163,14 @@ public class DBMSTest {
     void deleteSelectedRecordsTest() throws SQLException, ParseException, ClassNotFoundException, InterruptedException {
         addRecords(10);
         int oldSize = DBMS.getRecordsSize();
+        System.out.println(oldSize);
         // select ids 2 and 3 to delete.
         DBMS.getActiveData().selectRecord(2);
         DBMS.getActiveData().selectRecord(3);
         // delete the selected records
+        System.out.println(DBMS.getActiveData().getSelectedRecords().size());
         DBMS.deleteSelectedRecords();
+        System.out.println(DBMS.getRecordsSize());
         assertEquals((oldSize-2), DBMS.getRecordsSize());
         assertEquals(0, DBMS.getActiveData().getSelectedRecords().size());
     }

@@ -150,7 +150,7 @@ public class CSVImporter extends DataImporter {
 		String[] values;
 		while ((values = fileReader.readNextSilently()) != null) {
 			crimeData.add(parseRecord(values));
-			System.out.print("\rImported " + ++count + " records so far.");
+			//System.out.print("\rImported " + ++count + " records so far.");
 		}
 		System.out.println();
 		
