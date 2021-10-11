@@ -67,11 +67,6 @@
                   <ListView fx:id="invalidRecordList" prefHeight="200.0" prefWidth="200.0" />
                </content>
           </TitledPane>
-          <TitledPane animated="false" text="Duplicate Records">
-               <content>
-                  <ListView fx:id="duplicateRecordList" prefHeight="200.0" prefWidth="200.0" />
-               </content>
-          </TitledPane>
         </panes>
       </Accordion>
    </center>

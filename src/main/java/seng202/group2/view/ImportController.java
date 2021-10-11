@@ -72,7 +72,6 @@ public class ImportController {
 
 	private int numSuccessful = 0;
 	private ArrayList<CrimeRecord> invalidRecords = new ArrayList<>();
-	private ArrayList<CrimeRecord> duplicateRecords = new ArrayList<>();
 	private ArrayList<String> discardedFields = new ArrayList<>();
 
 	/** Sets initial focus to browse button. */
@@ -168,7 +167,6 @@ public class ImportController {
 		summaryController.setTotalRecords(totalToImport);
 		summaryController.setDiscardedFields(discardedFields);
 		summaryController.setInvalidRecords(invalidRecords);
-		summaryController.setDuplicateRecords(duplicateRecords);
 
 		// Open import summary window
 		stage = new Stage();
