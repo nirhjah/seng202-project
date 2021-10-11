@@ -25,6 +25,11 @@ public class Domestic extends DataCategory implements Importable, Exportable, Ca
 			"DOMESTIC"
 	));
 	private static final Domestic instance = new Domestic();
+
+	/**
+	 * Returns the static instance of this class, stored by this class.
+	 * @return The static instance of this class, stored by this class.
+	 */
 	public static Domestic getInstance() {
 		return instance;
 	}

@@ -25,6 +25,11 @@ public class Arrest extends DataCategory implements Importable, Exportable, Cate
 			"ARREST"
 	));
 	private static final Arrest instance = new Arrest();
+
+	/**
+	 * Returns the static instance of this class, stored by this class.
+	 * @return The static instance of this class, stored by this class.
+	 */
 	public static Arrest getInstance() {
 		return instance;
 	}

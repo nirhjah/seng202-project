@@ -25,6 +25,11 @@ public class Beat extends DataCategory implements Importable, Exportable, Numeri
 			"BEAT"
 	));
 	private static final Beat instance = new Beat();
+
+	/**
+	 * Returns the static instance of this class, stored by this class.
+	 * @return The static instance of this class, stored by this class.
+	 */
 	public static Beat getInstance() {
 		return instance;
 	}

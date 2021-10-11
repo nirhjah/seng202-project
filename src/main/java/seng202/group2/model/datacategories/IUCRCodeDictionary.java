@@ -37,8 +37,14 @@ public class IUCRCodeDictionary {
 	public static void clear() {
 		IUCRCodes = new HashMap<String, IUCRCodeStruct>();
 	}
-	
-	/** Adds an iucr code to the dictionary of valid iucr codes */
+
+	/**
+	 * Adds an IUCRCode to the dictionary of valid codes.
+	 * @param iucr The IUCR code.
+	 * @param primaryDescription The primary description associated with this IUCR code.
+	 * @param secondaryDescription The secondary description associated with this IUCR code.
+	 * @param is_index True if this code is an index code, false otherwise.
+	 */
 	public static void addCode(String iucr, String primaryDescription, String secondaryDescription, Boolean is_index) {
 		IUCRCodes.put(iucr, new IUCRCodeStruct(iucr, primaryDescription, secondaryDescription, is_index));
 	}

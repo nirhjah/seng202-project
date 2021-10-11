@@ -21,6 +21,11 @@ public class PrimaryDescription extends DataCategory implements Importable, Expo
 			"PRIMARYDESCRIPTION"
 	));
 	private static final PrimaryDescription instance = new PrimaryDescription();
+
+	/**
+	 * Returns the static instance of this class, stored by this class.
+	 * @return The static instance of this class, stored by this class.
+	 */
 	public static PrimaryDescription getInstance() {
 		return instance;
 	}

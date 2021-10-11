@@ -21,6 +21,11 @@ public class Ward extends DataCategory implements Importable, Exportable, Numeri
 			"WARD"
 	));
 	private static final Ward instance = new Ward();
+
+	/**
+	 * Returns the static instance of this class, stored by this class.
+	 * @return The static instance of this class, stored by this class.
+	 */
 	public static Ward getInstance() {
 		return instance;
 	}

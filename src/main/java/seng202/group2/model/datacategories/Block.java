@@ -26,6 +26,11 @@ public class Block extends DataCategory implements Importable, Exportable, Categ
 			"BLOCK"
 	));
 	private static final Block instance = new Block();
+
+	/**
+	 * Returns the static instance of this class, stored by this class.
+	 * @return The static instance of this class, stored by this class.
+	 */
 	public static Block getInstance() {
 		return instance;
 	}

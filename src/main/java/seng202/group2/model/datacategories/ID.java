@@ -21,6 +21,11 @@ public class ID extends DataCategory implements Importable, Numerical, Categoric
             "ID"
     ));
     private static final ID instance = new ID();
+
+    /**
+     * Returns the static instance of this class, stored by this class.
+     * @return The static instance of this class, stored by this class.
+     */
     public static ID getInstance() {
         return instance;
     }

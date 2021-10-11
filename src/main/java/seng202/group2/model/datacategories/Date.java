@@ -36,6 +36,11 @@ public class Date extends DataCategory implements Importable, Exportable {
 			"DATE"
 	));
 	private static final Date instance = new Date();
+
+	/**
+	 * Returns the static instance of this class, stored by this class.
+	 * @return The static instance of this class, stored by this class.
+	 */
 	public static Date getInstance() {
 		return instance;
 	}

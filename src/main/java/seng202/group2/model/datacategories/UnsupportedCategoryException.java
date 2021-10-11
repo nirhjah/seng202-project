@@ -8,7 +8,10 @@ package seng202.group2.model.datacategories;
  *
  */
 public class UnsupportedCategoryException extends Exception {
-	
+	/**
+	 * A simple wrapper initializer for creating this exception with an error message.
+	 * @param category A string representing the category causing the error.
+	 */
 	public UnsupportedCategoryException(String category) {
 		super(category);
 	}

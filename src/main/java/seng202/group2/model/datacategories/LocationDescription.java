@@ -21,6 +21,11 @@ public class LocationDescription extends DataCategory implements Importable, Exp
 			"LOCATIONDESCRIPTION"
 	));
 	private static final LocationDescription instance = new LocationDescription();
+
+	/**
+	 * Returns the static instance of this class, stored by this class.
+	 * @return The static instance of this class, stored by this class.
+	 */
 	public static LocationDescription getInstance() {
 		return instance;
 	}

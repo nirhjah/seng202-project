@@ -21,6 +21,11 @@ public class Longitude extends DataCategory implements Importable, Exportable, N
 			"LONGITUDE"
 	));
 	private static final Longitude instance = new Longitude();
+
+	/**
+	 * Returns the static instance of this class, stored by this class.
+	 * @return The static instance of this class, stored by this class.
+	 */
 	public static Longitude getInstance() {
 		return instance;
 	}

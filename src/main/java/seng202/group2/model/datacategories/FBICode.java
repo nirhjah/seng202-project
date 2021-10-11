@@ -27,6 +27,11 @@ public class FBICode extends DataCategory implements Importable, Exportable, Cat
 			"FBICODE"
 	));
 	private static final FBICode instance = new FBICode();
+
+	/**
+	 * Returns the static instance of this class, stored by this class.
+	 * @return The static instance of this class, stored by this class.
+	 */
 	public static FBICode getInstance() {
 		return instance;
 	}

@@ -22,6 +22,11 @@ public class CaseNumber extends DataCategory implements Importable, Exportable, 
 			"CASENUMBER"
 	));
 	private static final CaseNumber instance = new CaseNumber();
+
+	/**
+	 * Returns the static instance of this class, stored by this class.
+	 * @return The static instance of this class, stored by this class.
+	 */
 	public static CaseNumber getInstance() {
 		return instance;
 	}

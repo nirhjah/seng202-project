@@ -42,6 +42,11 @@ public abstract class DataCategory {
 		return dataCategories;
 	}
 
+	/**
+	 * Gets the set of static DataCategory instances of DataCategory subtypes that have been given a certain classification.
+	 * @param classification The class object of a DataClassification type used to classify DataCategory subtypes.
+	 * @return A set of the instances stored by each DataCategory subtype found using reflection.
+	 */
 	public static final Set<DataCategory> getCategories(Class<? extends DataClassification> classification) {
 		Set<DataCategory> subSetCategories = new HashSet<>();
 		for (DataCategory dataCategory : getCategories()) {

@@ -22,6 +22,11 @@ public class SecondaryDescription extends DataCategory implements Importable, Ex
 			"SECONDARYDESCRIPTION"
 	));
 	private static final SecondaryDescription instance = new SecondaryDescription();
+
+	/**
+	 * Returns the static instance of this class, stored by this class.
+	 * @return The static instance of this class, stored by this class.
+	 */
 	public static SecondaryDescription getInstance() {
 		return instance;
 	}

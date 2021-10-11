@@ -21,6 +21,11 @@ public class Latitude extends DataCategory implements Importable, Exportable, Nu
 			"LATITUDE"
 	));
 	private static final Latitude instance = new Latitude();
+
+	/**
+	 * Returns the static instance of this class, stored by this class.
+	 * @return The static instance of this class, stored by this class.
+	 */
 	public static Latitude getInstance() {
 		return instance;
 	}

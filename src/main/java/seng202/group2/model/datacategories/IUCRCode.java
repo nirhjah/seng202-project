@@ -23,6 +23,11 @@ public class IUCRCode extends DataCategory implements Importable, Exportable, Ca
 			"IUCRCODE"
 	));
 	private static final IUCRCode instance = new IUCRCode();
+
+	/**
+	 * Returns the static instance of this class, stored by this class.
+	 * @return The static instance of this class, stored by this class.
+	 */
 	public static IUCRCode getInstance() {
 		return instance;
 	}
