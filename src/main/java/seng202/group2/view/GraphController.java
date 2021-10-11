@@ -108,23 +108,24 @@ public class GraphController extends DataObserver {
 	}
 
 	@FXML public void plotGraph() {
-		if (graph != null)
-			
+		if (graph != null) {
+
 			Platform.runLater(new Runnable() {
-			    @Override
-			    public void run() {
-			        stage.getScene().setCursor(Cursor.WAIT);
-			    }
+				@Override
+				public void run() {
+					stage.getScene().setCursor(Cursor.WAIT);
+				}
 			});
-		
+
 			graph.plotGraph();
-			
+
 			Platform.runLater(new Runnable() {
-			    @Override
-			    public void run() {
-			        stage.getScene().setCursor(Cursor.DEFAULT);
-			    }
+				@Override
+				public void run() {
+					stage.getScene().setCursor(Cursor.DEFAULT);
+				}
 			});
+		}
 	}
 
 	public void showExportErrorDialogue() {
