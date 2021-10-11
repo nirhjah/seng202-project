@@ -182,13 +182,13 @@ public class ExportController {
     }
 
     /**
-     * Opens a FileChooser to browse for a file to import.
+     * Opens a FileChooser to browse for a file to export.
      *
-     * This method uses a {@link FileChooser} to select a file to import. When a file is selected
+     * This method uses a {@link FileChooser} to select a filepath to export to. When a filepath is selected
      * it sets the text of {@link ExportController#exportPathTextField} to the selected file path,
-     * ready to be imported.
+     * ready to be exported.
      */
-    public void browseImportDirectory()
+    public void browseExportDirectory()
     {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Comma Separated Value","*.csv"));
