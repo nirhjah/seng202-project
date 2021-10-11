@@ -18,7 +18,9 @@ import java.util.HashMap;
  * ({@link AddRecordController} and {@link EditRecordController}. Both of these classes use the add_edit.fxml file
  * for laying out the used JavaFX components.
  *
- * @author Sam Clark, Yiyang Yu, Moses Wescombe
+ * @author Sam Clark
+ * @author Yiyang Yu
+ * @author Moses Wescombe
  */
 public class AddEditController {
 
