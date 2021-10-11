@@ -345,7 +345,7 @@ public class DBMS {
     }
 
     /**
-     * Updaet record in database. Updating based on records ID
+     * Update record in database. Updating based on records ID
      *
      * @param record Record holding all the new data to set
      */

@@ -85,7 +85,9 @@ public class CrimeRecord {
 	/** The longitudinal location where the crime incident occurred. */
 	private Longitude longitude = new Longitude();
 
-	
+	/**
+	 * Returns a formatted string displaying information about this CrimeRecord
+	 */
 	public String toString() {
 		
 		return "Crime record: " + ID + "\n" +
@@ -106,15 +108,26 @@ public class CrimeRecord {
 	}
 
 	//Getters/Setters:
-
+	/**
+	 * Gets the crime id value of this CrimeRecord
+	 * @return the value that this CrimeRecord has stored as its ID
+	 */
 	public int getID() {
 		return this.ID.getValue();
 	}
-
+	
+	/**
+	 * Sets the crime id of this CrimeRecord
+	 * @param ID the ID to set it to
+	 */
 	public void setID(int ID) {
 		this.ID.setValue(ID);
 	}
 
+	/**
+	 * Gets the CrimeRecord's ID category
+	 * @return this CrimeRecord's ID category
+	 */
 	public ID getIDCategory() {
 		return this.ID;
 	}
@@ -135,6 +148,10 @@ public class CrimeRecord {
 		return caseNum.getValue();
 	}
 
+	/**
+	 * Gets the CrimeRecord's caseNum category
+	 * @return this CrimeRecord's caseNum category
+	 */
 	public CaseNumber getCaseNumCategory() {
 		return caseNum;
 	}
@@ -155,6 +172,10 @@ public class CrimeRecord {
 		return date.getValue();
 	}
 
+	/**
+	 * Gets the CrimeRecord's Date category
+	 * @return this CrimeRecord's date category
+	 */
 	public Date getDateCategory() {
 		return date;
 	}
@@ -175,6 +196,10 @@ public class CrimeRecord {
 		return block.getValue();
 	}
 
+	/**
+	 * Gets the CrimeRecord's block category
+	 * @return this CrimeRecord's block category
+	 */
 	public Block getBlockCategory() {
 		return block;
 	}
@@ -195,6 +220,10 @@ public class CrimeRecord {
 		return iucr.getValue();
 	}
 
+	/**
+	 * Gets the CrimeRecord's IUCR category
+	 * @return this CrimeRecord's IUCRD category
+	 */
 	public IUCRCode getIucrCategory() {
 		return iucr;
 	}
@@ -215,6 +244,10 @@ public class CrimeRecord {
 		return primaryDescription.getValue();
 	}
 
+	/**
+	 * Gets the CrimeRecord's primaryDescription category
+	 * @return this CrimeRecord's ID primaryDescription category
+	 */
 	public PrimaryDescription getPrimaryDescriptionCategory() {
 		return primaryDescription;
 	}
@@ -235,6 +268,10 @@ public class CrimeRecord {
 		return secondaryDescription.getValue();
 	}
 
+	/**
+	 * Gets the CrimeRecord's secondaryDescription category
+	 * @return this CrimeRecord's secondaryDescription category
+	 */
 	public SecondaryDescription getSecondaryDescriptionCategory() {
 		return secondaryDescription;
 	}
@@ -255,6 +292,10 @@ public class CrimeRecord {
 		return locationDescription.getValue();
 	}
 
+	/**
+	 * Gets the CrimeRecord's locationDescription category
+	 * @return this CrimeRecord's locationDescription category
+	 */
 	public LocationDescription getLocationDescriptionCategory() {
 		return locationDescription;
 	}
@@ -275,6 +316,10 @@ public class CrimeRecord {
 		return arrest.getValue();
 	}
 
+	/**
+	 * Gets the CrimeRecord's arrest category
+	 * @return this CrimeRecord's arrest category
+	 */
 	public Arrest getArrestCategory() {
 		return arrest;
 	}
@@ -295,6 +340,10 @@ public class CrimeRecord {
 		return domestic.getValue();
 	}
 
+	/**
+	 * Gets the CrimeRecord's domestic category
+	 * @return this CrimeRecord's domestic category
+	 */
 	public Domestic getDomesticCategory() {
 		return domestic;
 	}
@@ -315,6 +364,10 @@ public class CrimeRecord {
 		return beat.getValue();
 	}
 
+	/**
+	 * Gets the CrimeRecord's beat category
+	 * @return this CrimeRecord's beat category
+	 */
 	public Beat getBeatCategory() {
 		return beat;
 	}
@@ -335,6 +388,10 @@ public class CrimeRecord {
 		return ward.getValue();
 	}
 
+	/**
+	 * Gets the CrimeRecord's ward category
+	 * @return this CrimeRecord's ward category
+	 */
 	public Ward getWardCategory() {
 		return ward;
 	}
@@ -355,6 +412,10 @@ public class CrimeRecord {
 		return fbiCode.getValue();
 	}
 
+	/**
+	 * Gets the CrimeRecord's fbiCode category
+	 * @return this CrimeRecord's fbiCode category
+	 */
 	public FBICode getFbiCodeCategory() {
 		return fbiCode;
 	}
@@ -375,6 +436,10 @@ public class CrimeRecord {
 		return latitude.getValue();
 	}
 
+	/**
+	 * Gets the CrimeRecord's latitude category
+	 * @return this CrimeRecord's latitude category
+	 */
 	public Latitude getLatitudeCategory() {
 		return latitude;
 	}
@@ -395,6 +460,10 @@ public class CrimeRecord {
 		return longitude.getValue();
 	}
 
+	/**
+	 * Gets the CrimeRecord's longitude category
+	 * @return this CrimeRecord's longitude category
+	 */
 	public Longitude getLongitudeCategory() {
 		return longitude;
 	}

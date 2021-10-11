@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * Controls the filter inputs for string categories
+ * @author Moses Wescombe
+ * @author Sam Clark
  */
 public class stringController extends OptionsController {
     //Inputs

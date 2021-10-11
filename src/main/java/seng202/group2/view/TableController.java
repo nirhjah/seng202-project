@@ -18,9 +18,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 
+/**
+ * The controller that handles the table view of CAMS
+ * @author Sam Clark
+ *
+ */
 public class TableController extends DataObserver implements Initializable {
     //Parent controller
     private MainController parentController;
+    
+    /** Controls whether only selected records are shown */
     private boolean selectedOnly = false;
 
     //Table

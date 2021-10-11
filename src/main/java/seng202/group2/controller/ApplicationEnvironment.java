@@ -8,17 +8,25 @@ import java.io.PrintStream;
 import java.time.LocalDateTime;
 
 /**
- * Program Entry
+ * This is the main class that initialises the CAMS application. 
+ * It sets up the output method and runs the GUI controller.
+ * @author Connor Dunlop
+ * @author Sam Clark
+ * @author Moses Wescombe
+ * @author Nirhjah Selvarajah
+ * @author Yiyang Yu
  */
 public class ApplicationEnvironment {
 	//Enable logging
 	private static final boolean logMessages = true;
 
 	/**
-	 * Program Entry, startup
+	 * This defines the output method (logging or console output), clears
+	 * the local database, and starts the GUI.
 	 * @param args Extra start parameters
 	 */
 	public static void main(String[] args) throws IOException {
+		//Check if the system should be logging and if so, set it to create logs
 		if (logMessages) setSystemToLog();
 		DBMS.clearDB();
 		CamsApplication.main(args);

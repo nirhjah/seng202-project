@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * Controls the filter inputs for boolean values
+ * @author Moses Wescombe
+ * @author Sam Clark
  */
 public class boolController extends OptionsController {
     //Input

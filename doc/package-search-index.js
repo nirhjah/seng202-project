@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"seng202.group2.controller"},{"l":"seng202.group2.datacategories"},{"l":"seng202.group2.model"},{"l":"seng202.group2.model.datacategories"},{"l":"seng202.group2.view.graphs"}]
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"seng202.group2.model.datacategories"},{"l":"seng202.group2.view"},{"l":"seng202.group2.view.addEditControllers"},{"l":"seng202.group2.view.filterControllers"},{"l":"seng202.group2.view.graphs"}]

@@ -6,6 +6,8 @@ import java.util.List;
 
 /**
  * Parent class for filter option controllers. These classes control how the filter inputs are managed
+ * @author Sam Clark
+ * @author Moses Wescombe
  */
 public abstract class OptionsController {
     /**

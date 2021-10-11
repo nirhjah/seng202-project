@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Controls the filter inputs when sorting a category
+ * @author Moses Wescombe
  */
 public class sortController extends OptionsController{
     //Inputs

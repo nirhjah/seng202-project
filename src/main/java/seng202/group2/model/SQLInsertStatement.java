@@ -80,6 +80,10 @@ public class SQLInsertStatement {
         }
     }
 
+    /**
+     * Gets the SQL form of the insert statement
+     * @return
+     */
     public String getStatement() {
         return intoString + ")" + valuesString + ");";
     }

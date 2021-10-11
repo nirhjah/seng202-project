@@ -18,7 +18,7 @@ import java.util.*;
  */
 public class CSVExporter extends DataExporter {
 
-    /** A CSV file writer from OpenCSV used to write exported crime data to a csv file. */
+    /** A CSV file writer from OpenCSV used to write exported crime data to a CSV file. */
     private CSVWriter fileWriter;
     /** A flag indicating whether the category headers have been written to the file yet. */
     private Boolean headerExists = false;
@@ -49,6 +49,7 @@ public class CSVExporter extends DataExporter {
      *
      * @param file A File instance constructed from the path of the file to be imported from.
      * @throws IOException If the given file could not be opened for reading.
+     * @throws UnsupportedFileTypeException if the file is not a CSV
      */
     public CSVExporter(File file) throws UnsupportedFileTypeException, IOException {
         super(file);
@@ -64,7 +65,8 @@ public class CSVExporter extends DataExporter {
     }
 
     /**
-     * Close the CSV importer
+     * Close the CSV importer.
+     * @throws IOException if the closing of the file causes an error in file writing
      */
     @Override
     public void close() throws IOException {
@@ -86,7 +88,7 @@ public class CSVExporter extends DataExporter {
     }
 
     /**
-     * Export records to a csv file
+     * Export records to a CSV file.
      * @param records A List of the crime records to write to the file.
      */
     @Override

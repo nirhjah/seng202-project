@@ -51,7 +51,7 @@ import javax.imageio.ImageIO;
  *  @author Yiyang Yu
  *  @author Connor Dunlop
  *  @author George Hampton
- *  @author Sam Clarke
+ *  @author Sam Clark
  */
 
 public class MapController extends DataObserver implements Initializable {

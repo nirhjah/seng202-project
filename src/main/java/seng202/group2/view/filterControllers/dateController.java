@@ -14,6 +14,8 @@ import java.util.List;
 
 /**
  * Controls the filter inputs for date values
+ * @author Moses Wescombe
+ * @author Sam Clark
  */
 public class dateController extends OptionsController{
     //Inputs

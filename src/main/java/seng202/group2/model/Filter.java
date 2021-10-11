@@ -24,6 +24,7 @@ public class Filter {
     }
 
     /**
+     * Gets the SQL text version of this filter
      * @return SQLText
      */
     public String getSQLText() {
@@ -61,6 +62,7 @@ public class Filter {
     }
 
     /**
+     * Gets the type of this filter
      * @return Type
      */
     public FilterType getType() {

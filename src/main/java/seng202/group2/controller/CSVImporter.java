@@ -26,8 +26,9 @@ public class CSVImporter extends DataImporter {
 	private CSVReader fileReader;
 	/**
 	 * A map of the indices of the different DataCategory's of a crime record in each line of data.
-	 * Used when parsing data into a CrimeRecord to keep track of which column represents which category of data.
-	 * */
+	 * Used when parsing data into a CrimeRecord to keep track of which column represents which 
+	 * category of data.
+	 */
 	private HashMap<Integer, DataCategory> categoryMap;
 	
 	/**
@@ -49,14 +50,11 @@ public class CSVImporter extends DataImporter {
 		fileReader = new CSVReader(new FileReader(file));
 	}
 
-	/**
-	 * Close the file reader
-	 */
 	@Override
 	public void close() throws IOException {
 		fileReader.close();
 	}
-
+	
 	@Override
 	public Integer countRecords() throws IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -159,7 +157,7 @@ public class CSVImporter extends DataImporter {
 		
 		return crimeData;
 	}
-
+	
 	@Override
 	public ArrayList<CrimeRecord> importRecords(Integer recordCount) throws IOException {
 		// Parse the header row if it has not been parsed yet.

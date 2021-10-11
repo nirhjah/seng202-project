@@ -14,6 +14,8 @@ import java.util.List;
 
 /**
  * Controls the filter inputs for numeric categories
+ * @author Moses Wescombe
+ * @auhtor Sam Clark
  */
 public class numberController extends OptionsController {
     //Inputs

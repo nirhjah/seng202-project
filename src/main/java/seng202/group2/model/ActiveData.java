@@ -12,6 +12,9 @@ import java.util.List;
 /**
  * Active data class manages the filters, frame size and selected data, allowing the views to display a subset of the database
  * @author George Hampton
+ * @author Moses Wescombe
+ * @author Sam Clark
+ * @author Connor Dunlop
  */
 public class ActiveData extends DataSource {
     //List of filters
