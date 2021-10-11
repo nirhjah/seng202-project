@@ -50,7 +50,6 @@ import javax.imageio.ImageIO;
  *
  *  @author Yiyang Yu
  *  @author Connor Dunlop
- *  @author Moses Wescombe
  *  @author George Hampton
  *  @author Sam Clarke
  */
@@ -186,30 +185,12 @@ public class MapController extends DataObserver implements Initializable {
             }
 
         }
-//        idText.setText("" + record.getID());
-//        caseNumText.setText("" + record.getCaseNum());
-//        try {
-//            fbiCodeText.setText(record.getFbiCode());
-//        } catch (NullPointerException exception) {
-//            fbiCodeText.setText("N/A");
-//        }
-//
-//        dateText.setText("" + record.getDateCategory().getValueString());
-//        iucrCodeText.setText("" + record.getIucr());
-//        primaryText.setText("" + record.getPrimaryDescription());
-//        secondaryText.setText("" + record.getSecondaryDescription());
-//        arrestText.setText("" + record.getArrest());
-//        domesticText.setText("" + record.getDomestic());
-//
-//
-//      //  locationText.setText("" + record.getLocationDescription());
-////        blockText.setText("" + record.getBlock());
-////        beatText.setText("" + record.getBeat());
-////        wardText.setText("" + record.getWard());
-////        lattitudeText.setText("" + record.getLatitude());
-////        longitudeText.setText("" + record.getLongitude());
     }
 
+    /**
+     * Create a text box dictionary storing categories and their assigned
+     * text box.
+     */
     private void createTextBoxDict() {
         textBoxDict = new HashMap<>();
         textBoxDict.put(new ID(), idText);
@@ -229,7 +210,7 @@ public class MapController extends DataObserver implements Initializable {
         textBoxDict.put(new Longitude(), longitudeText);
     }
 
-  /**
+    /**
      * Toggle the details panel open and closed
      */
     public void toggleDetailsPanel() {

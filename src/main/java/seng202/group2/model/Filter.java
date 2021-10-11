@@ -2,7 +2,6 @@ package seng202.group2.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Filters allow specific data and data order to be retrieved from the database.

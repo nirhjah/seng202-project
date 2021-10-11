@@ -48,7 +48,10 @@ public class CSVImporter extends DataImporter {
 		// Make a new CSV file parser from OpenCSV
 		fileReader = new CSVReader(new FileReader(file));
 	}
-	
+
+	/**
+	 * Close the file reader
+	 */
 	@Override
 	public void close() throws IOException {
 		fileReader.close();

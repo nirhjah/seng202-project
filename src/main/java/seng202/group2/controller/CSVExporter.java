@@ -4,7 +4,6 @@ import com.opencsv.CSVWriter;
 import seng202.group2.model.CrimeRecord;
 import seng202.group2.model.datacategories.*;
 import seng202.group2.model.datacategories.Date;
-
 import java.io.*;
 import java.util.*;
 
@@ -64,6 +63,9 @@ public class CSVExporter extends DataExporter {
         fileWriter = new CSVWriter(new FileWriter(file));
     }
 
+    /**
+     * Close the CSV importer
+     */
     @Override
     public void close() throws IOException {
         fileWriter.close();
@@ -83,6 +85,10 @@ public class CSVExporter extends DataExporter {
         headerExists = true;
     }
 
+    /**
+     * Export records to a csv file
+     * @param records A List of the crime records to write to the file.
+     */
     @Override
     public void exportRecords(List<CrimeRecord> records) {
         // If the file header hasn't yet been written, write the header.

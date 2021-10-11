@@ -9,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
-import org.apache.commons.lang3.ObjectUtils;
 import seng202.group2.controller.DataObserver;
 import seng202.group2.model.ActiveData;
 import seng202.group2.model.CrimeRecord;

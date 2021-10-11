@@ -2,10 +2,10 @@ package seng202.group2.controller;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for DataImporter class.

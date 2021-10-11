@@ -5,11 +5,14 @@ import javafx.scene.control.TextField;
 import seng202.group2.model.Filter;
 import seng202.group2.model.FilterType;
 import seng202.group2.model.datacategories.DataCategory;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controls the filter inputs for string categories
+ */
 public class stringController extends OptionsController {
+    //Inputs
     @FXML private TextField value;
 
     @Override
@@ -24,7 +27,5 @@ public class stringController extends OptionsController {
     }
 
     @Override
-    public void initialize() {
-
-    }
+    public void initialize() {}
 }

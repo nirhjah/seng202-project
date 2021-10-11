@@ -5,11 +5,14 @@ import javafx.scene.control.CheckBox;
 import seng202.group2.model.Filter;
 import seng202.group2.model.FilterType;
 import seng202.group2.model.datacategories.DataCategory;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controls the filter inputs for boolean values
+ */
 public class boolController extends OptionsController {
+    //Input
     @FXML private CheckBox value;
 
     @Override
@@ -24,7 +27,5 @@ public class boolController extends OptionsController {
     }
 
     @Override
-    public void initialize() {
-
-    }
+    public void initialize() {}
 }

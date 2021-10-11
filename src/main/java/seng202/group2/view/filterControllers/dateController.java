@@ -2,7 +2,6 @@ package seng202.group2.view.filterControllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
-import seng202.group2.model.DBMS;
 import seng202.group2.model.Filter;
 import seng202.group2.model.FilterType;
 import seng202.group2.model.datacategories.DataCategory;
@@ -13,7 +12,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * Controls the filter inputs for date values
+ */
 public class dateController extends OptionsController{
+    //Inputs
     @FXML
     private DatePicker initialDate;
     @FXML
@@ -52,7 +55,5 @@ public class dateController extends OptionsController{
     }
 
     @Override
-    public void initialize() {
-
-    }
+    public void initialize() {}
 }

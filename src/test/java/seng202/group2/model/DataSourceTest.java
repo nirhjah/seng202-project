@@ -3,11 +3,13 @@ package seng202.group2.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seng202.group2.controller.ObserverTestClass;
+
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
