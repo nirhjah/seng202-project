@@ -79,13 +79,9 @@ public class CSVImporter extends DataImporter {
 		
 		categoryMap = new HashMap<Integer, DataCategory>();
 		String[] categoryLine = {};
-		
-		try {
-			// Try to parse header line into String[]
-			categoryLine = fileReader.readNextSilently();
-		} catch (IOException error) {
-			throw error;
-		}
+
+		// Try to parse header line into String[]
+		categoryLine = fileReader.readNextSilently();
 		
 		// Map supported DataCategory's to their index in a row
 		for (int i = 0; i < categoryLine.length; i++) {
@@ -102,6 +98,7 @@ public class CSVImporter extends DataImporter {
 			} catch (UnsupportedCategoryException error) {
 				// If DataCategory could not be determined from header string
 				// It is assumed to be an unsupported category of data
+				addDiscardedField(categoryLine[i]);
 				System.out.println("Did not import data category " + categoryLine[i] + ": " + error.getMessage());
 			}
 			
@@ -118,7 +115,8 @@ public class CSVImporter extends DataImporter {
 	 */
 	private CrimeRecord parseRecord(String[] values) {
 		CrimeRecord record = new CrimeRecord();
-		
+
+		boolean invalidRecord = false;
 		// For each DataCategory included in the file
 		for (int i : categoryMap.keySet()) {
 			DataCategory category = categoryMap.get(i);
@@ -128,11 +126,17 @@ public class CSVImporter extends DataImporter {
 				category.setRecordValue(record, value);
 			} catch (IllegalArgumentException e) {
 				// An error occurred while trying to parse the value
+				invalidRecord = true;
 				System.out.println("Error parsing value: " + values[i] + " for category: " + category);
 			}
 		}
 		
-		return record;
+		if (invalidRecord) {
+			addInvalidRecord(record);
+			return null;
+		} else {
+			return record;
+		}
 	}
 	
 	@Override
@@ -149,7 +153,9 @@ public class CSVImporter extends DataImporter {
 		// Read all crime records into crimeData object
 		String[] values;
 		while ((values = fileReader.readNextSilently()) != null) {
-			crimeData.add(parseRecord(values));
+			CrimeRecord record = parseRecord(values);
+			if (record != null)
+				crimeData.add(record);
 			System.out.print("\rImported " + ++count + " records so far.");
 		}
 		System.out.println();
@@ -172,7 +178,10 @@ public class CSVImporter extends DataImporter {
 			if (values == null) // If no more crime records
 				break;
 
-			crimeData.add(parseRecord(values));
+			// Parse record
+			CrimeRecord record = parseRecord(values);
+			if (record != null)
+				crimeData.add(record);
 		}
 
 		return crimeData;

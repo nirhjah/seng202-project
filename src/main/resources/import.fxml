@@ -43,6 +43,7 @@
             <Label text=" Records." />
          </children>
       </HBox>
+      <Button fx:id="summaryButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#displayImportSummary" text="Display Summary" textAlignment="CENTER" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
    </children>
    <opaqueInsets>
       <Insets />

@@ -2,11 +2,15 @@ package seng202.group2.view;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -59,11 +63,17 @@ public class ImportController {
 	@FXML private Label recordsToImport;
 	@FXML private Button browseButton;
 	@FXML private Button importButton;
+	@FXML private Button summaryButton;
 
 	/** The number of crime records imported so far. */
 	private int numImported = 0;
 	/** The total number of crime records stored in the file to be imported. */
 	private int totalToImport = 0;
+
+	private int numSuccessful = 0;
+	private ArrayList<CrimeRecord> invalidRecords = new ArrayList<>();
+	private ArrayList<CrimeRecord> duplicateRecords = new ArrayList<>();
+	private ArrayList<String> discardedFields = new ArrayList<>();
 
 	/** Sets initial focus to browse button. */
 	public void initialise() {
@@ -81,7 +91,9 @@ public class ImportController {
 			case IDLE:
 				Platform.runLater(() -> {
 					importMessage.setText("Select a file to import.");
+
 					progressBar.setVisible(false);
+					browseButton.setDisable(false);
 					importButton.setDisable(false);
 					importProgressMessageBox.setVisible(false);
 					progressBar.setProgress(0);
@@ -91,9 +103,12 @@ public class ImportController {
 			case IMPORTING:
 				Platform.runLater(() -> {
 					importMessage.setText("Importing Records:");
+
 					importProgressMessageBox.setVisible(true);
+					browseButton.setDisable(true);
 					importButton.setDisable(true);
 					progressBar.setVisible(true);
+
 					recordsSoFar.setText(Integer.toString(numImported));
 					recordsToImport.setText(Integer.toString(totalToImport));
 					progressBar.setProgress(((double) numImported) / ((double) totalToImport));
@@ -103,6 +118,7 @@ public class ImportController {
 			case POPULATING_DATABASE:
 				Platform.runLater(() -> {
 					importMessage.setText("Adding to Database:");
+
 					recordsSoFar.setText(Integer.toString(numImported));
 					recordsToImport.setText(Integer.toString(totalToImport));
 					progressBar.setProgress(((double) numImported) / ((double) totalToImport));
@@ -111,13 +127,57 @@ public class ImportController {
 
 			case DONE:
 				Platform.runLater(() -> {
-					importMessage.setText("Done.");
+					importMessage.setText("Import finished.");
+
+					importProgressMessageBox.setVisible(false);
+					summaryButton.setVisible(true);
+
 					Stage stage = (Stage) importPathTextField.getScene().getWindow();
 					stage.getScene().setCursor(Cursor.DEFAULT);
-					stage.close();
 				});
 				break;
 		}
+	}
+
+	/**
+	 * Shows a new window summarising number of records imported successfully, duplicate records, invalid records,
+	 * discarded data fields, etc.
+	 */
+	@FXML private void displayImportSummary() {
+
+		Parent root = null;
+		ImportSummaryController summaryController = null;
+		try {
+			// Try to load the import summary window.
+			FXMLLoader fxmlLoader = new FXMLLoader(CamsApplication.class.getClassLoader().getResource("import-summary.fxml"));
+			root = fxmlLoader.load();
+			summaryController = fxmlLoader.getController();
+		} catch (IOException e) {
+			// If failed, abort
+			importMessage.setText("Unable to open summary.");
+			summaryButton.setDisable(true);
+			return;
+		}
+
+		// Close the import window
+		Stage stage = (Stage) summaryButton.getScene().getWindow();
+		stage.close();
+
+		// Initialise summary controller with summary information
+		summaryController.setNumSuccessful(numSuccessful);
+		summaryController.setTotalRecords(totalToImport);
+		summaryController.setDiscardedFields(discardedFields);
+		summaryController.setInvalidRecords(invalidRecords);
+		summaryController.setDuplicateRecords(duplicateRecords);
+
+		// Open import summary window
+		stage = new Stage();
+		stage.setResizable(false);
+		stage.setTitle("Import Summary");
+		stage.setScene(new Scene(root, 400, 300));
+		stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/CAMS_logo.png")));
+		stage.show();
+
 	}
 
 	/**
@@ -190,6 +250,11 @@ public class ImportController {
 				numImported += nextRecords.size();
 				updateProgress();
 			}
+
+			// Get summary info from importer
+			discardedFields = importer.getDiscardedFields();
+			invalidRecords = importer.getInvalidRecords();
+			numSuccessful = numImported;
 
 		} catch (IOException e) {
 			e.printStackTrace();

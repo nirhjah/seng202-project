@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.view.ImportSummaryController">
+   <top>
+      <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="100.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+         <items>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="85.0" prefWidth="411.0" text="Import Summary." textAlignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <padding>
+                  <Insets bottom="25.0" top="25.0" />
+               </padding>
+            </Label>
+            <HBox alignment="CENTER" prefWidth="398.0" spacing="5.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" text="Successfully imported: " textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="numSuccessfulLabel" text="0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="/">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="totalRecordsLabel" text="0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="Records.">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </items>
+      </SplitPane>
+   </top>
+   <center>
+      <Accordion BorderPane.alignment="CENTER">
+        <panes>
+          <TitledPane animated="false" text="Discarded Fields">
+               <content>
+                  <ListView fx:id="discardedFieldList" prefHeight="200.0" prefWidth="200.0" />
+               </content>
+          </TitledPane>
+          <TitledPane animated="false" text="Invalid Records">
+               <content>
+                  <ListView fx:id="invalidRecordList" prefHeight="200.0" prefWidth="200.0" />
+               </content>
+          </TitledPane>
+          <TitledPane animated="false" text="Duplicate Records">
+               <content>
+                  <ListView fx:id="duplicateRecordList" prefHeight="200.0" prefWidth="200.0" />
+               </content>
+          </TitledPane>
+        </panes>
+      </Accordion>
+   </center>
+</BorderPane>

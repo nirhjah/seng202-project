@@ -69,6 +69,43 @@ public abstract class DataImporter {
 		}
 	}
 
+	/** An array list of the data fields which exist in the imported file, but are unsupported, and ignored. */
+	private ArrayList<String> discardedFields = new ArrayList<>();
+	/** An array list of all the records for which an error occurred trying to parse. */
+	private ArrayList<CrimeRecord> invalidRecords = new ArrayList<>();
+
+	/**
+	 * Adds an ignored field to the array of ignored data fields.
+	 * @param field An ignored data field.
+	 */
+	protected void addDiscardedField(String field) {
+		discardedFields.add(field);
+	}
+
+	/**
+	 * Returns the list of ignored data fields from the file.
+	 * @return The list of ignored data fields.
+	 */
+	public ArrayList<String> getDiscardedFields() {
+		return discardedFields;
+	}
+
+	/**
+	 * Adds an invalid record to the array of invalid records.
+	 * @param record An invalid record.
+	 */
+	protected void addInvalidRecord(CrimeRecord record) {
+		invalidRecords.add(record);
+	}
+
+	/**
+	 * Returns the list of invalid records from the file.
+	 * @return The list of invalid records.
+	 */
+	public ArrayList<CrimeRecord> getInvalidRecords() {
+		return invalidRecords;
+	}
+
 	/**
 	 * Counts the number of crime records stored in the file this importer is bound to.
 	 * Does not check if the crime record is valid.
