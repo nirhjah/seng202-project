@@ -74,7 +74,9 @@ public class ExportController {
             case IDLE:
                 Platform.runLater(() -> {
                     exportMessage.setText("Select an output path.");
+
                     progressBar.setVisible(false);
+                    browseButton.setDisable(false);
                     exportButton.setDisable(false);
                     exportProgressMessageBox.setVisible(false);
                     progressBar.setProgress(0);
@@ -84,9 +86,12 @@ public class ExportController {
             case EXPORTING:
                 Platform.runLater(() -> {
                     exportMessage.setText("Exporting Records:");
+
                     exportProgressMessageBox.setVisible(true);
+                    browseButton.setDisable(true);
                     exportButton.setDisable(true);
                     progressBar.setVisible(true);
+
                     recordsSoFar.setText(Integer.toString(numExported));
                     recordsToExport.setText(Integer.toString(totalToExport));
                     progressBar.setProgress(((double) numExported) / ((double) totalToExport));
@@ -95,10 +100,14 @@ public class ExportController {
 
             case DONE:
                 Platform.runLater(() -> {
-                    exportMessage.setText("Done.");
+                    exportMessage.setText("Successfully exported: ");
+
+                    recordsSoFar.setText(Integer.toString(numExported));
+                    recordsToExport.setText(Integer.toString(totalToExport));
+                    progressBar.setProgress(((double) numExported) / ((double) totalToExport));
+
                     Stage stage = (Stage) exportPathTextField.getScene().getWindow();
                     stage.getScene().setCursor(Cursor.DEFAULT);
-                    stage.close();
                 });
                 break;
         }
