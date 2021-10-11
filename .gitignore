@@ -22,4 +22,4 @@ dependancy-reduced-pom.xml
 #Project
 CrimeRecords.db
 /backups/
-logs/
+logs/2*
