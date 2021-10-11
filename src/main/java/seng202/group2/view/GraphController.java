@@ -32,7 +32,7 @@ import seng202.group2.view.graphs.Plottable;
 
 /**
  * Graph Controller class which controls the data to be displayed on the graph, which type of graph to use and the categories used for the axis.
- * @author nse41
+ * @author Nirhjah Selvarajah
  * @author Connor Dunlop
  * @author George Hampton
  * @author Yiyang Yu

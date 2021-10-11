@@ -30,7 +30,8 @@ import java.util.ResourceBundle;
  * ActiveData. This class allows the user to add filters, remove a specific pre-applied filter and
  * remove all pre-applied filters at once.
  *
- * @author Sam Clark, Moses Wescombe
+ * @author Sam Clark
+ * @author Moses Wescombe
  */
 public class FilterController implements Initializable {
     //Filter options
